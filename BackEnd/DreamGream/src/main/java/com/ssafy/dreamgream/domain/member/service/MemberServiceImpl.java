@@ -1,0 +1,33 @@
+package com.ssafy.dreamgream.domain.member.service;
+
+import com.ssafy.dreamgream.domain.member.dao.MemberRepository;
+import com.ssafy.dreamgream.domain.member.entity.Member;
+import com.ssafy.dreamgream.domain.member.enums.Gender;
+import com.ssafy.dreamgream.domain.member.enums.Provider;
+import com.ssafy.dreamgream.domain.member.enums.Role;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class MemberServiceImpl implements MemberService {
+
+    private final MemberRepository memberRepository;
+
+    @Transactional
+    @Override
+    public Long join() {
+        Member member = new Member().builder()
+                .email("ssafy@ssafy.com")
+                .nickname("김싸피")
+                .gender(Gender.FEMALE)
+                .provider(Provider.KAKAO)
+                .role(Role.ROLE_USER)
+                .build();
+        memberRepository.save(member);
+        return member.getId();
+    }
+}
