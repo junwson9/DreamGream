@@ -52,9 +52,13 @@ public class Post {
 
     @CreatedDate
     @Column(name = "created_date")
-    Timestamp createdDate;
+    private Timestamp createdDate;
 
     @LastModifiedDate
     @Column(name = "modified_date")
-    Timestamp modifiedDate;
+    private Timestamp modifiedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
