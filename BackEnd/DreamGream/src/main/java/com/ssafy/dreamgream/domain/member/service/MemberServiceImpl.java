@@ -1,6 +1,6 @@
 package com.ssafy.dreamgream.domain.member.service;
 
-import com.ssafy.dreamgream.domain.member.dao.MemberRepository;
+import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.enums.Provider;
@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
                 .email("ssafy@ssafy.com")
                 .nickname("김싸피")
                 .gender(Gender.FEMALE)
-                .provider(Provider.KAKAO)
+                .provider(null)
                 .role(Role.ROLE_USER)
                 .build();
         memberRepository.save(member);
