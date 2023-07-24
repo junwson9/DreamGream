@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    include: oauth
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/dreamgream
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+# MySQL 연결
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username:
+#    password:
+#    url: jdbc:mysql://localhost:3306/dreamgream?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show-sql: true
+#    database: mysql
+#    database-platform: org.hibernate.dialect.MySQL8Dialect
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace #query의 ?에 어떤 값이 들어가는 지 표기
