@@ -1,4 +1,4 @@
-package com.ssafy.dreamgream.domain.member.dao;
+package com.ssafy.dreamgream.domain.member.repository;
 
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
