@@ -1,0 +1,9 @@
+insert into category (category_name) values ('Travel');
+insert into category (category_name) values ('Health');
+insert into category (category_name) values ('Learning');
+insert into category (category_name) values ('Culture');
+insert into category (category_name) values ('Love');
+insert into category (category_name) values ('Food');
+insert into category (category_name) values ('Shopping');
+insert into category (category_name) values ('Work');
+insert into category (category_name) values ('etc');
