@@ -1,0 +1,43 @@
+#default 공통설정
+spring:
+  jpa:
+    show-sql: false
+    open-in-view: false
+    database-platform: MYSQL
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: true
+    properties:
+      hibernate.format_sql: true
+      hibernate.show_sql: false
+
+--- # local 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-local"
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show-sql: true
+    database-platform: H2
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/dreamgream
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+--- # prod 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-dev"
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username:
+    password:
+    url: jdbc:mysql://localhost:3306/dreamgream?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+
