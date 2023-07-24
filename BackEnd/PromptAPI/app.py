@@ -4,10 +4,12 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import asyncio
+from langchain import PromptTemplate
+import json
 
-#load_dotenv()
 
 # OpenAI API 액세스 키 설정
+load_dotenv()
 openai.api_key = os.getenv("API_KEY")
 app = FastAPI()
 
@@ -19,6 +21,12 @@ class PromptRequest(BaseModel):
     age: str
     gender: str
     category: str
+
+class PromptTemplateJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, PromptTemplate):
+            return obj.__dict__
+        return super().default(obj)
 
 async def chat_gpt3(prompt):
     response = await asyncio.to_thread(openai.Completion.create,
@@ -49,27 +57,31 @@ async def process_prompt(request: PromptRequest):
     gender = request.gender
     category = request.category
     
+    print(age)
+
     #전처리 부분
     if gender == "F":
         gender = "여성"
     else:
         gender = "남성"
     
-    start1 = "이제부터 너는 버킷리스트를 그림으로 바꾸기 위한 최적의 프롬프트를 작성할거야. 너가 작성한 프롬프트는 stable-diffusion 모델에 text부분으로 들어갈거야."
-    start2 = "해당 버킷리스트를 들어보고 특징을 추출해서 그림으로 그려질 수 있게 상세히 작성해서 주면 돼."
-    final = "이걸 그림으로 그릴 수 있게 영어로 번역해서 특징을 자세하게 추출해서 작성해줘. 다시 결과를 반환할 때 한글로 번역해서 알려줘."
-    #prompt 예시
-    if category is "null":
-        content = age + "대" + gender + "의 버킷리스트야. 내용은 '" + content + "'이야."
-    else:
-        content = age + "대" + gender + "의 버킷리스트야. 내용은 '" + content + "'이고 이 글의 카테고리는 " + category + "이야."
-    
-    content = start1 + start2 + content + final
+    prompt = PromptTemplate(
+        input_variables=["age", "gender", "content", "category"],
+        template=
+                " {age} 대 {gender} 의 버킷리스트야. 내용은 {content}이고, 카테고리는 {category}."
+                + "이걸 그림으로 그릴 수 있게 영어로 번역해서 특징을 자세하게 추출해서 작성해줘."
+                + "문장의 시작은 'a photo of'로 시작해."
+    )
     
     #print(content)
-    
-    response = await chat_gpt3(content)
-    
+
+    prompt = prompt.format(age=age, gender=gender, content=content, category=category)
+    print(prompt)
+    #prompt_json = json.dumps(prompt, cls=PromptTemplateJSONEncoder)
+    #print(prompt_json)
+
+    #response = await chat_gpt3(prompt_json)
+    response = await chat_gpt3(prompt)
     print(response)
     #request to generate_image_url
     
