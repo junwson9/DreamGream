@@ -24,4 +24,14 @@ public class MemberController {
         return ResponseEntity.ok(memberId);
     }
 
+    @GetMapping
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok("test");
+    }
+
+    @GetMapping("/test2")
+    public ResponseEntity<?> test2() {
+        return ResponseEntity.ok("test");
+    }
+
 }
