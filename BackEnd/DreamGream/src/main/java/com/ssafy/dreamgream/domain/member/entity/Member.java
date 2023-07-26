@@ -53,4 +53,6 @@ public class Member {
         this.provider = provider;
         this.role = role;
     }
+
+
 }
