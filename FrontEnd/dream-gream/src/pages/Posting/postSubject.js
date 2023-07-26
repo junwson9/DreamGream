@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import axios from 'axios';
-import CategoryButtons from "../../components/CategoryButtons";
+import CategoryButtons from '../../components/CategoryButtons';
 
 function PostSubject() {
-    const [text, setText] = useState('');
+    const [title, setTitle] = useState('');
     const [category, setCategory] = useState('기타');
     const onChange = (e) => {
-        setText(e.target.value);
+        setTitle(e.target.value);
     };
 
     const onPostSubject = async () => {
@@ -14,10 +14,10 @@ function PostSubject() {
         // POST 요청은 body에 실어 보냄
             await axios.post('/post',
             {
-                subject: text,
-                category,
+                title,
+                category_name: category,
             });
-            setText('');
+            setTitle('');
         } catch (e) {
               console.error(e);
             }
@@ -25,9 +25,9 @@ function PostSubject() {
 
     return (
         <div>
-            <input onChange={onChange} value={text}/>
-            <button onClick={onPostSubject}type="submit">제출</button>
-            <b>값: {text}</b>
+            <input onChange={onChange} value={title}/>
+            <button onClick={onPostSubject}type='submit'>제출</button>
+            <b>값: {title}</b>
             <CategoryButtons setCategory={setCategory}/>
             
         </div>
