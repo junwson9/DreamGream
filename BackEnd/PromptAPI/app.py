@@ -5,7 +5,6 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import asyncio
 from langchain import PromptTemplate
-import json
 
 # OpenAI API 액세스 키 설정
 load_dotenv()
@@ -14,12 +13,10 @@ app = FastAPI()
 
 #요청 형식 정의
 class PromptRequest(BaseModel):
-    user_id: str
-    prompt_id: str
-    content: str
-    age: str
+    title: str
+    birthyear: str
     gender: str
-    category: str
+    category_name: str
 
 #프롬프트 비동기 요청 함수
 async def chat_gpt3(prompt):
@@ -41,12 +38,10 @@ async def chat_gpt3(prompt):
 #프롬프트 생성 요청
 @app.post("/prompt")
 async def process_prompt(request: PromptRequest):
-    user_id = request.user_id
-    prompt_id = request.prompt_id
-    content = request.content
-    age = request.age
+    title = request.title
+    birthyear = request.birthyear
     gender = request.gender
-    category = request.category
+    category_name = request.category_name
     
     #전처리 부분
     if gender == "F":
@@ -56,17 +51,17 @@ async def process_prompt(request: PromptRequest):
     
     #LangChain PromptTemplate 사용
     prompt = PromptTemplate(
-        input_variables=["age", "gender", "content", "category"],
+        input_variables=["birthyear", "gender", "title", "category_name"],
         template=
-                " {age} 대 {gender} 의 버킷리스트야. 내용은 {content}이고, 카테고리는 {category}."
+                " {birthyear}년에 태어난 {gender} 의 버킷리스트야. 내용은 {title}이고, 카테고리는 {category_name}."
                 + "이걸 그림으로 그릴 수 있게 영어로 번역해서 특징을 자세하게 추출해서 작성해줘."
                 + "문장의 시작은 'a photo of'로 시작해."
     )
     
     #Template에 값 대입
-    prompt = prompt.format(age=age, gender=gender, content=content, category=category)
+    prompt = prompt.format(birthyear=birthyear, gender=gender, title=title, category_name=category_name)
 
     #API 비동기 요청
     response = await chat_gpt3(prompt)
 
-    return {"user_id": user_id, "prompt_id": prompt_id, "response": response}
+    return {"response": response}
