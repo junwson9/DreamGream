@@ -7,7 +7,6 @@ function LogIn() {
   const redirectUri = 'http://localhost:3000/auth/kakao/callback';
   const kauthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${restapiKey}&redirect_uri=${redirectUri}&response_type=code`;
   const query = queryString.parse(window.location.search);
-
   const getJwtTokenFromServer = async (code) => {
     try {
       const data = {
@@ -44,10 +43,8 @@ function LogIn() {
   return (
     <a href={kauthUrl}>
       <img
-        src="/assets/kakao_login.png"
+        src="/public_assets/kakao_login.png"
         id="kakao-login-btn"
-        width="250"
-        height="100"
         alt="kakao"
       />
     </a>
