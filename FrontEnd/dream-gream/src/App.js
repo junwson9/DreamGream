@@ -1,12 +1,13 @@
 import './App.css';
 import React from 'react';
-import LogIn from './pages/Logintest';
+import { Routes, Route } from 'react-router-dom';
+import PostSubject from './pages/Posting/postSubject';
 
 function App() {
   return (
-    <div>
-      <LogIn> </LogIn>
-    </div>
+    <Routes>
+      <Route path="/post" element={<PostSubject />} />
+    </Routes>
   );
 }
 
