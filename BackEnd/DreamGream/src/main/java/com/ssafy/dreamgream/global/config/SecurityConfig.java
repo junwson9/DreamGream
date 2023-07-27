@@ -7,6 +7,7 @@ import com.ssafy.dreamgream.global.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -40,8 +41,8 @@ public class SecurityConfig {
 			.and()
 			.authorizeHttpRequests()
 			.antMatchers("/**").permitAll() // 테스트를 위해 모든 요청에 대해 허용해둠
-//			.antMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
-//			.antMatchers("/swagger-ui/**", "/auth/**", "/api/members").permitAll()
+			.antMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
+			.antMatchers("/swagger-ui/**", "/auth/**", "/api/members").permitAll()
 //			.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 //			.anyRequest().authenticated()
 
@@ -49,6 +50,12 @@ public class SecurityConfig {
 			.formLogin().disable()
 
 			.oauth2Login()
+			.authorizationEndpoint()
+			.baseUri("/oauth2/authorize")
+			.and()
+			.redirectionEndpoint()
+			.baseUri("/oauth2/callback/*")
+			.and()
 			.successHandler(oAuth2AuthenticationSuccessHandler)
 			.failureHandler(oAuth2AuthenticationFailureHandler)
 			.userInfoEndpoint().userService(customOAuth2UserService);
