@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @Slf4j
@@ -37,7 +38,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		redisTemplate.opsForValue()
 			.set("RT:" + authentication.getName(), tokenDto.getRefreshToken(),
 				tokenDto.getRefreshTokenExpireIn(), TimeUnit.MILLISECONDS);
+		log.info("access token : " + tokenDto.getAccessToken());
+		log.info("refresh token : " + tokenDto.getRefreshToken());
 
+		/* GET 요청이라 BODY로 전달 못해서 아래 코드 지워야 함
 		// TokenDto 객체를 JSON으로 변환
 		ObjectMapper objectMapper = new ObjectMapper();
 		String tokenJson = objectMapper.writeValueAsString(tokenDto);
@@ -46,6 +50,20 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		response.setContentType("application/json");
 		response.getWriter().write(tokenJson);
 		response.setStatus(HttpServletResponse.SC_OK);
+
+//		String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
+//			.build().toUriString();
+		 */
+
+		// response body에 담는 게 안 된다면 파라미터로 access token, refresh token만 보내는 경우 (보안에 안 좋음)
+		String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
+			.queryParam("access-token", tokenDto.getAccessToken())
+			.queryParam("refresh-token", tokenDto.getRefreshToken())
+			.build().toUriString();
+
+		log.info("targetUrl : " + targetUrl);
+
+		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
 
 }
