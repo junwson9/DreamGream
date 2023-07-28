@@ -1,8 +1,6 @@
-package com.ssafy.dreamgream.domain.post.service;
+package com.ssafy.dreamgream.global.sse;
 
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
-import com.ssafy.dreamgream.global.config.rabbitMQ.ImageCreationResponseConsumer;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 

@@ -1,6 +1,6 @@
-package com.ssafy.dreamgream.global.config.rabbitMQ;
+package com.ssafy.dreamgream.global.rabbitMQ;
 
-import com.ssafy.dreamgream.global.config.rabbitMQ.dto.ImageCreationConsumeDto;
+import com.ssafy.dreamgream.global.rabbitMQ.dto.ImageCreationConsumeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
