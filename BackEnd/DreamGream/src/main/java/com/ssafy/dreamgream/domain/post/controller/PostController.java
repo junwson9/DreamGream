@@ -1,29 +1,22 @@
 package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
-import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
 import com.ssafy.dreamgream.domain.post.service.PostService;
-import com.ssafy.dreamgream.domain.post.service.SSEService;
-import com.ssafy.dreamgream.global.config.rabbitMQ.ImageService;
-import com.ssafy.dreamgream.global.config.rabbitMQ.dto.PromptCreationProduceDto;
+import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
     private final ImageService imageService;
-    private final SSEService sseService;
 
     @GetMapping("/test")
     public String Test() {
@@ -32,28 +25,12 @@ public class PostController {
     }
 
     @PostMapping("/image")
-    public SseEmitter handleSSE(@RequestBody ImageGenerateRequestDto dto) {
-        // Create an SSE emitter for the client
-        SseEmitter emitter = new SseEmitter();
-        log.info("emitter created");
-        // Store the emitter in a map with a unique identifier (e.g., user ID)
+    public ResponseEntity<String> generateImage(@RequestBody ImageGenerateRequestDto dto) {
         Long userId = 123L;
-        sseService.addSseEmitter(userId, emitter);
 
-/*        // Set SSE emitter timeout and complete the connection when finished
-        emitter.onTimeout(() -> removeEmitter(userId));
-        emitter.onCompletion(() -> removeEmitter(userId));*/
+        // 이미지 생성 프로세스 시작
+        imageService.processImageCreation(userId, dto);
 
-        // image processing logic
-        //imageService.processImageCreation(userId, dto);
-
-        // emitter send test
-        ImageGenerateResponseDto testDto = ImageGenerateResponseDto.builder().url("test.url").build();
-        sseService.sendImageResponse(userId, testDto);
-
-
-        return emitter;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }

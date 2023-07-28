@@ -1,6 +1,6 @@
-package com.ssafy.dreamgream.global.config.rabbitMQ;
+package com.ssafy.dreamgream.global.rabbitMQ;
 
-import com.ssafy.dreamgream.global.config.rabbitMQ.dto.ImageCreationProduceDto;
+import com.ssafy.dreamgream.global.rabbitMQ.dto.ImageCreationProduceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -21,6 +21,7 @@ public class ImageCreationRequestProducer {
     private String imageCreationRequestRoutingKey;
 
     public void sendImageCreationRequest(Long sseId, String prompt) {
+        log.info("message producer started");
         ImageCreationProduceDto dto = ImageCreationProduceDto.builder()
                 .sseID(sseId)
                 .prompt(prompt)

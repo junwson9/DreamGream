@@ -1,4 +1,4 @@
-package com.ssafy.dreamgream.global.config.rabbitMQ.dto;
+package com.ssafy.dreamgream.global.rabbitMQ.dto;
 
 import lombok.*;
 
