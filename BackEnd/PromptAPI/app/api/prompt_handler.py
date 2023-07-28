@@ -26,9 +26,9 @@ class PromptHandler:
         if 'choices' in response and len(response['choices']) > 0:
             choices = response['choices']
             #print(type(choices))
-            print(choices)
-            print(choices[0]['text'].strip())
-            return {'image_prompt': choices[0]['text']}
+            #print(choices)
+            #print(choices[0]['text'].strip())
+            return {'image_prompt': choices[0]['text'].strip()}
         return None
 
     async def process_prompt(self, request: PromptRequest):
