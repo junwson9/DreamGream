@@ -1,4 +1,4 @@
-package com.ssafy.dreamgream.global.config.rabbitMQ;
+package com.ssafy.dreamgream.global.config;
 
 
 import org.springframework.amqp.core.*;

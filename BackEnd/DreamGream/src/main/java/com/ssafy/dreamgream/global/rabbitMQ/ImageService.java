@@ -1,8 +1,8 @@
-package com.ssafy.dreamgream.global.config.rabbitMQ;
+package com.ssafy.dreamgream.global.rabbitMQ;
 
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
-import com.ssafy.dreamgream.global.config.rabbitMQ.dto.PromptCreationProduceDto;
-import com.ssafy.dreamgream.global.config.rabbitMQ.dto.PromptCreationConsumeDto;
+import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationProduceDto;
+import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationConsumeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
