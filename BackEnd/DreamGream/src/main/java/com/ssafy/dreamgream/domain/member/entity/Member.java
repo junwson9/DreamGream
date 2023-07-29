@@ -46,13 +46,19 @@ public class Member {
     private LocalDateTime createdDate;
 
     @Builder
-    public Member(String email, String nickname, Gender gender, Provider provider, Role role) {
+    public Member(String email, String nickname, Gender gender, Year birthyear, Provider provider, Role role) {
         this.email = email;
         this.nickname = nickname;
         this.gender = gender;
+        this.birthyear = birthyear;
         this.provider = provider;
         this.role = role;
     }
 
+    public void updateMemberRoleToUser(Gender gender, Year birthyear, Role role) {
+        this.gender = gender;
+        this.birthyear = birthyear;
+        this.role = role;
+    }
 
 }
