@@ -2,7 +2,7 @@ package com.ssafy.dreamgream.global.config.oauth.handler;
 
 import static com.ssafy.dreamgream.global.jwt.JwtAuthenticationFilter.AUTHORIZATION_HEADER;
 
-import com.ssafy.dreamgream.domain.member.service.MemberService;
+import com.ssafy.dreamgream.global.auth.service.AuthService;
 import com.ssafy.dreamgream.global.config.oauth.CustomOAuth2User;
 import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
 import com.ssafy.dreamgream.global.jwt.TokenDto;
@@ -22,7 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	private final JwtTokenProvider jwtTokenProvider;
-	private final MemberService memberService;
+	private final AuthService authService;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -33,7 +33,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		// JWT 생성 및 Redis에 refresh token 저장
 		TokenDto tokenDto = jwtTokenProvider.generateTokenDto(authentication);
-		memberService.saveRefreshTokenRedis(authentication, tokenDto);
+		authService.saveRefreshTokenRedis(authentication, tokenDto);
 
 		// response body에 담는 게 안 된다면 파라미터로 access token, refresh token만 보내는 경우 (보안에 안 좋음)
 		String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
