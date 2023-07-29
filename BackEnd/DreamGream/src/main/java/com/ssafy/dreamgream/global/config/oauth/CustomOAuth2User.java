@@ -19,6 +19,7 @@ public class CustomOAuth2User implements OAuth2User {
 
 	private final Long id;
 	private final String email;
+	private final Role role;
 	private final Collection<GrantedAuthority> authorities;
 	private Map<String, Object> attributes;
 
@@ -41,9 +42,10 @@ public class CustomOAuth2User implements OAuth2User {
 		this.attributes = attributes;
 	}
 
-	public CustomOAuth2User(Long id, String email, Collection<GrantedAuthority> authorities) {
+	public CustomOAuth2User(Long id, String email, Role role, Collection<GrantedAuthority> authorities) {
 		this.id = id;
 		this.email = email;
+		this.role = role;
 		this.authorities = authorities;
 	}
 
@@ -57,7 +59,8 @@ public class CustomOAuth2User implements OAuth2User {
 		CustomOAuth2User customOAuth2User = new CustomOAuth2User(
 			member.getId(),
 			member.getEmail(),
-			Collections.singletonList(new SimpleGrantedAuthority(Role.ROLE_USER.name()))
+			member.getRole(),
+			Collections.singletonList(new SimpleGrantedAuthority(member.getRole().name()))
 		);
 		return customOAuth2User;
 	}

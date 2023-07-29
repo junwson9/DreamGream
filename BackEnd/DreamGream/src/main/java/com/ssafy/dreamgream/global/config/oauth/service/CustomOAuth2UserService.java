@@ -39,10 +39,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		Member savedMember = memberRepository.findByEmail(userInfo.getEmail());
 
 		if (savedMember != null) {
-			log.debug("회원가입이 되어있는 계정입니다.");
+			log.info("회원가입이 되어있는 계정입니다.");
 		} else {
 			savedMember = createMember(userInfo, provider);
 		}
+
+		log.info("memberId: " + savedMember.getId());
 
 		// OAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
 		return CustomOAuth2User.create(savedMember, oAuth2User.getAttributes());
@@ -54,7 +56,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			.nickname(userInfo.getNickname())
 			.gender(null)
 			.birthyear(null)
-			.role(Role.ROLE_USER)
+			.role(Role.ROLE_GUEST)
 			.provider(provider)
 			.build();
 		return memberRepository.saveAndFlush(member);

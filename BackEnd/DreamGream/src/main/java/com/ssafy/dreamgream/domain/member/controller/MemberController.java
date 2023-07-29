@@ -4,6 +4,8 @@ import com.ssafy.dreamgream.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +26,18 @@ public class MemberController {
         return ResponseEntity.ok(memberId);
     }
 
-    @GetMapping
-    public ResponseEntity<?> test() {
-        return ResponseEntity.ok("test");
+    @GetMapping("/testUser")
+    public ResponseEntity<?> testUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info(String.valueOf(SecurityContextHolder.getContext()));
+        return ResponseEntity.ok(authentication);
     }
 
-    @GetMapping("/test2")
-    public ResponseEntity<?> test2() {
-        return ResponseEntity.ok("test");
+    @GetMapping("/testGuest")
+    public ResponseEntity<?> testGuest() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info(String.valueOf(SecurityContextHolder.getContext()));
+        return ResponseEntity.ok(authentication);
     }
 
 }
