@@ -7,8 +7,7 @@ import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.global.auth.dto.request.TokenRequestDto;
 import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
-import com.ssafy.dreamgream.global.jwt.TokenDto;
-import java.time.Year;
+import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	@Transactional
-	public TokenDto reissue(TokenRequestDto tokenRequestDto) {
+	public TokenResponseDto reissue(TokenRequestDto tokenRequestDto) {
 		// 1. Access Token 에서 memberId 가져오기
 		log.info("accessToken: {}", tokenRequestDto.getAccessToken());
 		Authentication authentication = jwtTokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
@@ -64,20 +63,20 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		// 4. 새로운 토큰 생성
-		TokenDto tokenDto = jwtTokenProvider.generateTokenDto(authentication);
+		TokenResponseDto tokenResponseDto = jwtTokenProvider.generateTokenDto(authentication);
 
 		// 5. RefreshToken Redis 업데이트
 		redisTemplate.opsForValue()
-			.set("RT:" + authentication.getName(), tokenDto.getRefreshToken(),
-				tokenDto.getRefreshTokenExpireIn(), TimeUnit.MILLISECONDS);
+			.set("RT:" + authentication.getName(), tokenResponseDto.getRefreshToken(),
+				tokenResponseDto.getRefreshTokenExpireIn(), TimeUnit.MILLISECONDS);
 
-		return tokenDto;
+		return tokenResponseDto;
 	}
 
 
 	@Override
 	@Transactional
-	public TokenDto updateRoleToUser(Gender gender, Integer birthyear) {
+	public TokenResponseDto updateRoleToUser(Gender gender, Integer birthyear) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("수정전 Authentication : {}", authentication);
 
@@ -101,17 +100,17 @@ public class AuthServiceImpl implements AuthService {
 		log.info("newAuthentication : {}", newAuthentication);
 
 		// JWT 재발급
-		TokenDto tokenDto = jwtTokenProvider.generateTokenDto(newAuthentication);
-		saveRefreshTokenRedis(newAuthentication, tokenDto);
-		return tokenDto;
+		TokenResponseDto tokenResponseDto = jwtTokenProvider.generateTokenDto(newAuthentication);
+		saveRefreshTokenRedis(newAuthentication, tokenResponseDto);
+		return tokenResponseDto;
 	}
 
 	@Override
 	@Transactional
-	public void saveRefreshTokenRedis(Authentication authentication, TokenDto tokenDto) {
+	public void saveRefreshTokenRedis(Authentication authentication, TokenResponseDto tokenResponseDto) {
 		redisTemplate.opsForValue()
-			.set("RT:" + authentication.getName(), tokenDto.getRefreshToken(),
-				tokenDto.getRefreshTokenExpireIn(), TimeUnit.MILLISECONDS);
+			.set("RT:" + authentication.getName(), tokenResponseDto.getRefreshToken(),
+				tokenResponseDto.getRefreshTokenExpireIn(), TimeUnit.MILLISECONDS);
 	}
 
 
