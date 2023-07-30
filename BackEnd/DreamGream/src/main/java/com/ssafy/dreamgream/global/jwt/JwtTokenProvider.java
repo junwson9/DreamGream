@@ -69,9 +69,9 @@ public class JwtTokenProvider {
 			.build();
 	}
 
-	public TokenDto generateTokenDto(Authentication authentication) {
-		CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();
-		String memberId = String.valueOf(principal.getName());
+	public TokenDto generateOAuth2TokenDto(Authentication authentication) {
+		UserDetails principal = (CustomOAuth2User) authentication.getPrincipal();
+		String memberId = String.valueOf(principal.getUsername());
 		String authorities = authentication.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.joining(","));
@@ -79,7 +79,7 @@ public class JwtTokenProvider {
 		return createTokenDto(memberId, authorities);
 	}
 
-	public TokenDto generateUpdatedRoleTokenDto(Authentication authentication) {
+	public TokenDto generateTokenDto(Authentication authentication) {
 		UserDetails principal = (User) authentication.getPrincipal();
 		String memberId = principal.getUsername();
 		String authorities = authentication.getAuthorities().stream()
@@ -95,13 +95,13 @@ public class JwtTokenProvider {
 			Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
 			return true;
 		} catch (SecurityException | MalformedJwtException e) {
-			log.info("유효하지 않은 토큰입니다", e);
+			log.error("유효하지 않은 토큰입니다", e);
 		} catch (ExpiredJwtException e) {
-			log.info("만료된 토큰입니다.", e);
+			log.error("만료된 토큰입니다.", e);
 		} catch (UnsupportedJwtException e) {
-			log.info("지원하지 않는 토큰입니다.", e);
+			log.error("지원하지 않는 토큰입니다.", e);
 		} catch (IllegalArgumentException e) {
-			log.info("토큰이 잘못되었습니다", e);
+			log.error("토큰이 잘못되었습니다", e);
 		}
 		return false;
 	}
