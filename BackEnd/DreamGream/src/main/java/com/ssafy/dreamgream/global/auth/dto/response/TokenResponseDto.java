@@ -1,4 +1,4 @@
-package com.ssafy.dreamgream.global.jwt;
+package com.ssafy.dreamgream.global.auth.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenDto {
+public class TokenResponseDto {
 
 	private String grantType;
 	private String accessToken;

@@ -1,5 +1,6 @@
 package com.ssafy.dreamgream.global.jwt;
 
+import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
 import com.ssafy.dreamgream.global.config.oauth.CustomOAuth2User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -41,7 +42,7 @@ public class JwtTokenProvider {
 		this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
 	}
 
-	public TokenDto createTokenDto(String memberId, String authorities) {
+	public TokenResponseDto createTokenDto(String memberId, String authorities) {
 		long now = (new Date()).getTime();
 		Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_VALIDATE_TIME);
 		Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_VALIDATE_TIME);
@@ -60,7 +61,7 @@ public class JwtTokenProvider {
 			.compact();
 		log.info("refreshToken 유효 시간: {}", refreshTokenExpiresIn);
 
-		return TokenDto.builder()
+		return TokenResponseDto.builder()
 			.grantType(BEARER_TYPE)
 			.accessToken(accessToken)
 			.accessTokenExpireIn(accessTokenExpiresIn.getTime())
@@ -69,7 +70,7 @@ public class JwtTokenProvider {
 			.build();
 	}
 
-	public TokenDto generateOAuth2TokenDto(Authentication authentication) {
+	public TokenResponseDto generateOAuth2TokenDto(Authentication authentication) {
 		UserDetails principal = (CustomOAuth2User) authentication.getPrincipal();
 		String memberId = String.valueOf(principal.getUsername());
 		String authorities = authentication.getAuthorities().stream()
@@ -79,7 +80,7 @@ public class JwtTokenProvider {
 		return createTokenDto(memberId, authorities);
 	}
 
-	public TokenDto generateTokenDto(Authentication authentication) {
+	public TokenResponseDto generateTokenDto(Authentication authentication) {
 		UserDetails principal = (User) authentication.getPrincipal();
 		String memberId = principal.getUsername();
 		String authorities = authentication.getAuthorities().stream()
