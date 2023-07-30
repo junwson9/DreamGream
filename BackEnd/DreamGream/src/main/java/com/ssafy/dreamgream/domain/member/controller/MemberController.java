@@ -68,5 +68,9 @@ public class MemberController {
         return ResponseEntity.ok(member);
     }
 
-
+    @GetMapping
+    public ResponseEntity<?> findByNickname(@RequestParam @NotBlank String nickname) {
+        List<Member> members = memberService.findByNickname(nickname);
+        return ResponseEntity.ok(members);
+    }
 }

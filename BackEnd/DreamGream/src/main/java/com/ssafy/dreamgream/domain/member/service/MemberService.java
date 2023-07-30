@@ -11,4 +11,5 @@ public interface MemberService {
 
 	Member updateInfo(String nickname, Gender gender, Integer birthyear);
 
+	List<Member> findByNickname(String nickname);
 }
