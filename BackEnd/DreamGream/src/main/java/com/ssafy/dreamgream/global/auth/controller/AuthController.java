@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+	private static final String success = "SUCCESS";
+	private static final String fail = "FAIL";
+
 	private final AuthService authService;
 	private final JwtTokenProvider jwtTokenProvider;
 
@@ -41,5 +44,12 @@ public class AuthController {
 		return ResponseEntity.ok(tokenResponseDto);
 	}
 
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(HttpServletRequest request) {
+		String accessToken = jwtTokenProvider.resolveAccessToken(request);
+		log.info("로그아웃 accessToken: {}", accessToken);
+		authService.logout(accessToken);
+		return ResponseEntity.ok(success);
+	}
 
 }

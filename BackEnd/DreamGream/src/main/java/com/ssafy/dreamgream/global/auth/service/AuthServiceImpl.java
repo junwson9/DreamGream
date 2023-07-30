@@ -6,8 +6,10 @@ import com.ssafy.dreamgream.domain.member.enums.Role;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
+import com.ssafy.dreamgream.global.config.oauth.CustomOAuth2User;
 import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
@@ -96,13 +98,41 @@ public class AuthServiceImpl implements AuthService {
 		return tokenResponseDto;
 	}
 
+
+	/**
+	 * 1. 요청 헤더에 담긴 access token 검증 (Filter에 구현)
+	 * 2. 검증이 되면 Redis에 저장된 RT 삭제
+	 * 3. Access Token을 key, 'logout' 문자열을 value로 Redis에 저장하여 토큰을 Black List 처리
+	 * 4. 로그아웃 처리한 JWT로 요청을 보내면 검증을 통해 로그아웃 사용자인 경우 인증 거부 (Filter에 구현)
+	 */
 	@Override
-	@Transactional
-	public void saveRefreshTokenRedis(Authentication authentication, TokenResponseDto tokenResponseDto) {
-		redisTemplate.opsForValue()
-			.set("RT:" + authentication.getName(), tokenResponseDto.getRefreshToken(),
-				tokenResponseDto.getRefreshTokenExpireIn(), TimeUnit.MILLISECONDS);
+	public void logout(String accessToken) {
+		Member member = memberService.getCurrentMember();
+
+		// Redis에 저장된 refresh token 삭제
+		if (redisTemplate.opsForValue().get("RT:" + member.getId()) != null) {
+			redisTemplate.delete("RT:" + member.getId());
+		} else {
+			/*
+			TODO: 예외처리
+			throw new BadRequestException("Refresh Token 정보가 일치하지 않습니다");
+			*/
+		}
+
+		// Access Token 유효시간을 가져와서 BlackList 로 저장
+		Long expiration = jwtTokenProvider.getExpiration(accessToken) - System.currentTimeMillis();
+		log.info("access token 만료시간: {}", expiration);
+		redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
 	}
 
 
+
+	@Override
+	@Transactional
+	public void saveRefreshTokenRedis(Authentication authentication, TokenResponseDto tokenResponseDto) {
+		log.info("refresh token 만료시간: {}", tokenResponseDto.getRefreshTokenExpireIn() - System.currentTimeMillis());
+		redisTemplate.opsForValue()
+			.set("RT:" + authentication.getName(), tokenResponseDto.getRefreshToken(),
+				tokenResponseDto.getRefreshTokenExpireIn() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+	}
 }
