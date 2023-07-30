@@ -39,5 +39,11 @@ public class MemberServiceImpl implements MemberService {
         return member;
     }
 
+    @Override
+    public List<Member> findByNickname(String nickname) {
+        List<Member> members = memberRepository.findByNicknameContaining(nickname);
+        return members;
+    }
+
 
 }
