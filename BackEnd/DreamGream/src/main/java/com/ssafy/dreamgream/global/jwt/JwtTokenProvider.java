@@ -1,7 +1,7 @@
 package com.ssafy.dreamgream.global.jwt;
 
+import com.ssafy.dreamgream.domain.member.enums.Role;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
-import com.ssafy.dreamgream.global.config.oauth.CustomOAuth2User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,16 +23,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 @Slf4j
 public class JwtTokenProvider {
 
-	private final Long ACCESS_TOKEN_VALIDATE_TIME; // 30분
+	private final Long ACCESS_TOKEN_VALIDATE_TIME; // 5분
 	private final Long REFRESH_TOKEN_VALIDATE_TIME; // 7일
 	private static String SECRET_KEY;
 	private static final String AUTHORITIES_KEY = "auth";
 	private static final String BEARER_TYPE = "Bearer";
+	public static final String AUTHORIZATION_HEADER = "Authorization";
+	public static final String REFRESH_HEADER = "X-Refresh-Token";
 
 	public JwtTokenProvider(
 		@Value("${jwt.secret}") String secretKey,
@@ -70,15 +74,35 @@ public class JwtTokenProvider {
 			.build();
 	}
 
-	public TokenResponseDto generateOAuth2TokenDto(Authentication authentication) {
-		UserDetails principal = (CustomOAuth2User) authentication.getPrincipal();
-		String memberId = String.valueOf(principal.getUsername());
-		String authorities = authentication.getAuthorities().stream()
-			.map(GrantedAuthority::getAuthority)
-			.collect(Collectors.joining(","));
 
-		return createTokenDto(memberId, authorities);
+	public TokenResponseDto createTokenDto(Long memberId, Role role) {
+		long now = (new Date()).getTime();
+		Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_VALIDATE_TIME);
+		Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_VALIDATE_TIME);
+
+		String accessToken = Jwts.builder()
+			.setSubject(memberId.toString())
+			.claim(AUTHORITIES_KEY, role)
+			.setExpiration(accessTokenExpiresIn)
+			.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+			.compact();
+		log.info("accessToken 유효 시간: {}", accessTokenExpiresIn);
+
+		String refreshToken = Jwts.builder()
+			.setExpiration(refreshTokenExpiresIn)
+			.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+			.compact();
+		log.info("refreshToken 유효 시간: {}", refreshTokenExpiresIn);
+
+		return TokenResponseDto.builder()
+			.grantType(BEARER_TYPE)
+			.accessToken(accessToken)
+			.accessTokenExpireIn(accessTokenExpiresIn.getTime())
+			.refreshToken(refreshToken)
+			.refreshTokenExpireIn(refreshTokenExpiresIn.getTime())
+			.build();
 	}
+
 
 	public TokenResponseDto generateTokenDto(Authentication authentication) {
 		UserDetails principal = (User) authentication.getPrincipal();
@@ -124,7 +148,7 @@ public class JwtTokenProvider {
 	}
 
 	/**
-	 * accessToken 클레임에서 정보 가져오기
+	 * Access Token 클레임에서 정보 가져오기
 	 */
 	public static Claims parseClaims(String accessToken) {
 		try {
@@ -134,5 +158,36 @@ public class JwtTokenProvider {
 			return e.getClaims();
 		}
 	}
+
+	/**
+	 * Token에서 Expiration 가져오기
+	 */
+	public Long getExpiration(String token) {
+		return parseClaims(token).getExpiration().getTime();
+	}
+
+	/**
+	 * Request Header에서 Access Token 정보 추출
+	 */
+	public String resolveAccessToken(HttpServletRequest request) {
+		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
+			return bearerToken.substring(7);
+		}
+		return null;
+	}
+
+	/**
+	 * Request Header에서 Refresh Token 정보 추출
+	 */
+	public String resolveRefreshToken(HttpServletRequest request) {
+		String bearerToken = request.getHeader(REFRESH_HEADER);
+		if (StringUtils.hasText(bearerToken)) {
+			return bearerToken;
+		}
+		return null;
+	}
+
+
 
 }
