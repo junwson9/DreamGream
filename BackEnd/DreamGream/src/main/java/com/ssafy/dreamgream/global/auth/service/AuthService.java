@@ -11,4 +11,6 @@ public interface AuthService {
 	TokenResponseDto updateRoleToUser(Gender gender, Integer birthyear);
 
 	void saveRefreshTokenRedis(Authentication authentication, TokenResponseDto tokenResponseDto);
+
+	void logout(String accessToken);
 }
