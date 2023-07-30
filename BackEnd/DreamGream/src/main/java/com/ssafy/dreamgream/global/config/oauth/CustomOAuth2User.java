@@ -2,20 +2,20 @@ package com.ssafy.dreamgream.global.config.oauth;
 
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Role;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 
 
 @Getter
 @AllArgsConstructor
-public class CustomOAuth2User implements OAuth2User {
+public class CustomOAuth2User implements OAuth2User, UserDetails {
 
 	private final Long id;
 	private final String email;
@@ -31,6 +31,36 @@ public class CustomOAuth2User implements OAuth2User {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
+	}
+
+	@Override
+	public String getPassword() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return String.valueOf(id);
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return false;
 	}
 
 	@Override

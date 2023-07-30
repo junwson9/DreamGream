@@ -65,7 +65,6 @@ public class AuthServiceImpl implements AuthService {
 
 		// 4. 새로운 토큰 생성
 		TokenDto tokenDto = jwtTokenProvider.generateTokenDto(authentication);
-		log.info("tokenDTO: {}", tokenDto);
 
 		// 5. RefreshToken Redis 업데이트
 		redisTemplate.opsForValue()
@@ -102,7 +101,7 @@ public class AuthServiceImpl implements AuthService {
 		log.info("newAuthentication : {}", newAuthentication);
 
 		// JWT 재발급
-		TokenDto tokenDto = jwtTokenProvider.generateUpdatedRoleTokenDto(newAuthentication);
+		TokenDto tokenDto = jwtTokenProvider.generateTokenDto(newAuthentication);
 		saveRefreshTokenRedis(newAuthentication, tokenDto);
 		return tokenDto;
 	}
