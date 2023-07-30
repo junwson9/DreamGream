@@ -1,10 +1,11 @@
 package com.ssafy.dreamgream.global.auth.controller;
 
 import com.ssafy.dreamgream.domain.member.enums.Gender;
-import com.ssafy.dreamgream.global.auth.dto.request.TokenRequestDto;
 import com.ssafy.dreamgream.global.auth.dto.request.UpdateRoleToUserRequestDto;
-import com.ssafy.dreamgream.global.auth.service.AuthService;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
+import com.ssafy.dreamgream.global.auth.service.AuthService;
+import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+	private static final String success = "SUCCESS";
+	private static final String fail = "FAIL";
+
 	private final AuthService authService;
+	private final JwtTokenProvider jwtTokenProvider;
+
+	@PostMapping("/token")
+	public ResponseEntity<?> reissue(HttpServletRequest request) {
+		String accessToken = jwtTokenProvider.resolveAccessToken(request);
+		String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
+		TokenResponseDto tokenResponseDto = authService.reissue(accessToken, refreshToken);
+		return ResponseEntity.ok(tokenResponseDto);
+	}
 
 	@PutMapping("/role")
 	public ResponseEntity<?> updateRoleToUser(@RequestBody @Validated UpdateRoleToUserRequestDto requestDto) {
@@ -31,10 +44,12 @@ public class AuthController {
 		return ResponseEntity.ok(tokenResponseDto);
 	}
 
-	@PostMapping("/token")
-	public ResponseEntity<?> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
-		TokenResponseDto tokenResponseDto = authService.reissue(tokenRequestDto);
-		return ResponseEntity.ok(tokenResponseDto);
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(HttpServletRequest request) {
+		String accessToken = jwtTokenProvider.resolveAccessToken(request);
+		log.info("로그아웃 accessToken: {}", accessToken);
+		authService.logout(accessToken);
+		return ResponseEntity.ok(success);
 	}
 
 }

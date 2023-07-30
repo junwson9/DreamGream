@@ -32,8 +32,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
 		// JWT 생성 및 Redis에 refresh token 저장
-		TokenResponseDto tokenResponseDto = jwtTokenProvider.generateOAuth2TokenDto(authentication);
+//		TokenResponseDto tokenResponseDto = jwtTokenProvider.generateOAuth2TokenDto(authentication);
+
+		TokenResponseDto tokenResponseDto = jwtTokenProvider.createTokenDto(oAuth2User.getId(), oAuth2User.getRole());
 		authService.saveRefreshTokenRedis(authentication, tokenResponseDto);
+
 
 		// response body에 담는 게 안 된다면 파라미터로 access token, refresh token만 보내는 경우 (보안에 안 좋음)
 		String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
