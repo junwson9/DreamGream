@@ -3,19 +3,25 @@ package com.ssafy.dreamgream.domain.member.entity;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.enums.Provider;
 import com.ssafy.dreamgream.domain.member.enums.Role;
-import java.util.Date;
+import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.Year;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Builder
 @NoArgsConstructor
@@ -43,9 +49,13 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @CreatedDate
     @Column(name = "created_date")
-    @CreationTimestamp
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
+
+    @LastModifiedDate
+    @Column(name = "modified_date")
+    private Timestamp modifiedDate;
 
     @Builder
     public Member(String email, String nickname, Gender gender, Integer birthyear, Provider provider, Role role) {
