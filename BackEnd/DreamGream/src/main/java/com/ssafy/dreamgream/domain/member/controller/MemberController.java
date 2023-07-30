@@ -19,13 +19,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping
-    public ResponseEntity<?> join() {
-        log.info("회원가입 요청");
-        Long memberId = memberService.join();
-        return ResponseEntity.ok(memberId);
-    }
-
     @GetMapping("/testUser")
     public ResponseEntity<?> testUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
