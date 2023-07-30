@@ -6,10 +6,8 @@ import com.ssafy.dreamgream.domain.member.enums.Role;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
-import com.ssafy.dreamgream.global.config.oauth.CustomOAuth2User;
 import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
@@ -47,9 +45,10 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		// Redis 의 Refresh Token 값과 비교
-		Member member = memberService.getCurrentMember();
-		log.info("memberId: {}", member.getId());
-		String redisRefreshToken = (String) redisTemplate.opsForValue().get("RT:" + member.getId());
+//		Member member = memberService.getCurrentMember();
+		Long memberId = Long.valueOf(jwtTokenProvider.parseClaims(accessToken).getSubject());
+		log.info("memberId: {}", memberId);
+		String redisRefreshToken = (String) redisTemplate.opsForValue().get("RT:" + memberId);
 		log.info("refresh token of redis: {}", redisRefreshToken);
 		if(!refreshToken.equals(redisRefreshToken)) {
 			/*
@@ -77,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
 		Member currentMember = memberService.getCurrentMember();
 
 		// DB 업데이트
-		currentMember.updateMemberRoleToUser(gender, birthyear, Role.ROLE_USER);
+		currentMember.updateRoleToUser(gender, birthyear, Role.ROLE_USER);
 		memberRepository.save(currentMember);
 		log.info("member: {}", currentMember);
 
@@ -124,7 +123,6 @@ public class AuthServiceImpl implements AuthService {
 		log.info("access token 만료시간: {}", expiration);
 		redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
 	}
-
 
 
 	@Override

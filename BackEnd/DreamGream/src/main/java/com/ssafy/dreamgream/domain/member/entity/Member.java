@@ -67,10 +67,16 @@ public class Member {
         this.role = role;
     }
 
-    public void updateMemberRoleToUser(Gender gender, Integer birthyear, Role role) {
+    public void updateRoleToUser(Gender gender, Integer birthyear, Role role) {
         this.gender = gender;
         this.birthyear = birthyear;
         this.role = role;
+    }
+
+    public void updateInfo(String nickname, Gender gender, Integer birthyear) {
+        this.nickname = nickname;
+        this.gender = gender;
+        this.birthyear = birthyear;
     }
 
 }
