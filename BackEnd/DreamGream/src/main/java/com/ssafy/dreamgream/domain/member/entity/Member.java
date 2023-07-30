@@ -3,6 +3,7 @@ package com.ssafy.dreamgream.domain.member.entity;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.enums.Provider;
 import com.ssafy.dreamgream.domain.member.enums.Role;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +34,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private Year birthyear;
+    @Column(columnDefinition = "YEAR")
+    private Integer birthyear;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
@@ -46,7 +48,7 @@ public class Member {
     private LocalDateTime createdDate;
 
     @Builder
-    public Member(String email, String nickname, Gender gender, Year birthyear, Provider provider, Role role) {
+    public Member(String email, String nickname, Gender gender, Integer birthyear, Provider provider, Role role) {
         this.email = email;
         this.nickname = nickname;
         this.gender = gender;
@@ -55,7 +57,7 @@ public class Member {
         this.role = role;
     }
 
-    public void updateMemberRoleToUser(Gender gender, Year birthyear, Role role) {
+    public void updateMemberRoleToUser(Gender gender, Integer birthyear, Role role) {
         this.gender = gender;
         this.birthyear = birthyear;
         this.role = role;

@@ -78,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	@Transactional
-	public TokenDto updateRoleToUser(Gender gender, Year birthyear) {
+	public TokenDto updateRoleToUser(Gender gender, Integer birthyear) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("수정전 Authentication : {}", authentication);
 
