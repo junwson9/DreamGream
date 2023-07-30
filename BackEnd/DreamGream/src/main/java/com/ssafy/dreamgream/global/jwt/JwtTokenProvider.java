@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 @Slf4j
@@ -32,6 +34,8 @@ public class JwtTokenProvider {
 	private static String SECRET_KEY;
 	private static final String AUTHORITIES_KEY = "auth";
 	private static final String BEARER_TYPE = "Bearer";
+	public static final String AUTHORIZATION_HEADER = "Authorization";
+	public static final String REFRESH_HEADER = "X-Refresh-Token";
 
 	public JwtTokenProvider(
 		@Value("${jwt.secret}") String secretKey,
@@ -133,6 +137,28 @@ public class JwtTokenProvider {
 		} catch (ExpiredJwtException e) {
 			return e.getClaims();
 		}
+	}
+
+	/**
+	 * Request Header에서 accessToken 정보 추출
+	 */
+	public String resolveAccessToken(HttpServletRequest request) {
+		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
+			return bearerToken.substring(7);
+		}
+		return null;
+	}
+
+	/**
+	 * Request Header에서 refreshToken 정보 추출
+	 */
+	public String resolveRefreshToken(HttpServletRequest request) {
+		String bearerToken = request.getHeader(REFRESH_HEADER);
+		if (StringUtils.hasText(bearerToken)) {
+			return bearerToken;
+		}
+		return null;
 	}
 
 }
