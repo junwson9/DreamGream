@@ -10,7 +10,7 @@ public interface AuthService {
 
 	public TokenDto reissue(TokenRequestDto tokenRequestDto);
 
-	TokenDto updateRoleToUser(Long id, Gender gender, Year birthyear);
+	TokenDto updateRoleToUser(Gender gender, Year birthyear);
 
 	void saveRefreshTokenRedis(Authentication authentication, TokenDto tokenDto);
 }
