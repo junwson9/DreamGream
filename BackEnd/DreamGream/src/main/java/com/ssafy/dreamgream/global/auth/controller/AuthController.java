@@ -6,15 +6,11 @@ import com.ssafy.dreamgream.global.auth.dto.request.UpdateRoleToUserRequestDto;
 import com.ssafy.dreamgream.global.auth.service.AuthService;
 import com.ssafy.dreamgream.global.jwt.TokenDto;
 import java.time.Year;
-import java.util.HashMap;
-import java.util.Map;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,9 +26,9 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PutMapping("/role")
-	public ResponseEntity<?> updateRoleToUser(@RequestBody @Valid UpdateRoleToUserRequestDto requestDto) {
+	public ResponseEntity<?> updateRoleToUser(@RequestBody @Validated UpdateRoleToUserRequestDto requestDto) {
 		Gender gender = requestDto.getGender();
-		Year birthyear = requestDto.getBirthyear();
+		Integer birthyear = requestDto.getBirthyear();
 		TokenDto tokenDto = authService.updateRoleToUser(gender, birthyear);
 		return ResponseEntity.ok(tokenDto);
 	}
