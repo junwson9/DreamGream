@@ -42,8 +42,10 @@ public class SecurityConfig {
 			.authorizeHttpRequests()
 			.antMatchers("/**").permitAll() // 테스트를 위해 모든 요청에 대해 허용해둠
 			.antMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
-			.antMatchers("/swagger-ui/**", "/auth/**", "/api/members").permitAll()
-//			.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+			.antMatchers("/swagger-ui/**", "/auth/**", "/oauth2/**").permitAll()
+			.antMatchers("/api/members/testGuest").hasRole("GUEST")
+			.antMatchers("/api/members/testUser").hasRole("USER")
+//			.antMatchers("/admin/**").hasRole("ADMIN")
 //			.anyRequest().authenticated()
 
 			.and()

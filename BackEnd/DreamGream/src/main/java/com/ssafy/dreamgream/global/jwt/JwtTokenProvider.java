@@ -1,7 +1,18 @@
 package com.ssafy.dreamgream.global.jwt;
 
+import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
 import com.ssafy.dreamgream.global.config.oauth.CustomOAuth2User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,12 +22,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -37,18 +42,10 @@ public class JwtTokenProvider {
 		this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
 	}
 
-	public TokenDto generateTokenDto(Authentication authentication) {
+	public TokenResponseDto createTokenDto(String memberId, String authorities) {
 		long now = (new Date()).getTime();
 		Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_VALIDATE_TIME);
 		Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_VALIDATE_TIME);
-
-		CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();
-		String memberId = String.valueOf(principal.getName());
-		String authorities = authentication.getAuthorities().stream()
-			.map(GrantedAuthority::getAuthority)
-			.collect(Collectors.joining(","));
-		log.debug("memberId: " + memberId);
-		log.debug("authorities: " + authorities);
 
 		String accessToken = Jwts.builder()
 			.setSubject(memberId)
@@ -56,15 +53,15 @@ public class JwtTokenProvider {
 			.setExpiration(accessTokenExpiresIn)
 			.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
 			.compact();
-		log.debug("accessToken 유효 시간: {}", accessTokenExpiresIn);
+		log.info("accessToken 유효 시간: {}", accessTokenExpiresIn);
 
 		String refreshToken = Jwts.builder()
 			.setExpiration(refreshTokenExpiresIn)
 			.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
 			.compact();
-		log.debug("refreshToken 유효 시간: {}", refreshTokenExpiresIn);
+		log.info("refreshToken 유효 시간: {}", refreshTokenExpiresIn);
 
-		return TokenDto.builder()
+		return TokenResponseDto.builder()
 			.grantType(BEARER_TYPE)
 			.accessToken(accessToken)
 			.accessTokenExpireIn(accessTokenExpiresIn.getTime())
@@ -73,18 +70,39 @@ public class JwtTokenProvider {
 			.build();
 	}
 
+	public TokenResponseDto generateOAuth2TokenDto(Authentication authentication) {
+		UserDetails principal = (CustomOAuth2User) authentication.getPrincipal();
+		String memberId = String.valueOf(principal.getUsername());
+		String authorities = authentication.getAuthorities().stream()
+			.map(GrantedAuthority::getAuthority)
+			.collect(Collectors.joining(","));
+
+		return createTokenDto(memberId, authorities);
+	}
+
+	public TokenResponseDto generateTokenDto(Authentication authentication) {
+		UserDetails principal = (User) authentication.getPrincipal();
+		String memberId = principal.getUsername();
+		String authorities = authentication.getAuthorities().stream()
+			.map(GrantedAuthority::getAuthority)
+			.collect(Collectors.joining(","));
+
+		return createTokenDto(memberId, authorities);
+	}
+
+
 	public boolean validateToken(String token) {
 		try {
 			Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
 			return true;
 		} catch (SecurityException | MalformedJwtException e) {
-			log.info("유효하지 않은 토큰입니다", e);
+			log.error("유효하지 않은 토큰입니다", e);
 		} catch (ExpiredJwtException e) {
-			log.info("만료된 토큰입니다.", e);
+			log.error("만료된 토큰입니다.", e);
 		} catch (UnsupportedJwtException e) {
-			log.info("지원하지 않는 토큰입니다.", e);
+			log.error("지원하지 않는 토큰입니다.", e);
 		} catch (IllegalArgumentException e) {
-			log.info("토큰이 잘못되었습니다", e);
+			log.error("토큰이 잘못되었습니다", e);
 		}
 		return false;
 	}
