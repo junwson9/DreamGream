@@ -4,7 +4,6 @@ import com.ssafy.dreamgream.domain.member.dto.response.MemberResponseDto;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -62,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = getCurrentMember();
         member.updateInfo(nickname, gender, birthyear);
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
-                .id(member.getId())
+                .id(member.getMemberId())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .gender(member.getGender())

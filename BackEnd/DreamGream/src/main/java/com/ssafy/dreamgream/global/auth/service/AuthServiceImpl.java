@@ -109,8 +109,8 @@ public class AuthServiceImpl implements AuthService {
 		Member member = memberService.getCurrentMember();
 
 		// Redis에 저장된 refresh token 삭제
-		if (redisTemplate.opsForValue().get("RT:" + member.getId()) != null) {
-			redisTemplate.delete("RT:" + member.getId());
+		if (redisTemplate.opsForValue().get("RT:" + member.getMemberId()) != null) {
+			redisTemplate.delete("RT:" + member.getMemberId());
 		} else {
 			/*
 			TODO: 예외처리
