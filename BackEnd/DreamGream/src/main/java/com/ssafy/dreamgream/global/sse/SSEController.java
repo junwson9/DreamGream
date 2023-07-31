@@ -14,7 +14,7 @@ public class SSEController {
 
     private final SSEService sseService;
 
-    @GetMapping("/sse")
+    @GetMapping()
     public SseEmitter handleSSE() {
         SseEmitter emitter = new SseEmitter();
         log.info("emitter created");
