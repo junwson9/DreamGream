@@ -2,31 +2,45 @@ package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.LikeDto;
 import com.ssafy.dreamgream.domain.post.service.RedisService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
+
+import java.util.Set;
 
 @RestController
-@Slf4j
-@RequestMapping("/redistest")
+@RequestMapping("/api/likes")
 public class LikeController {
 
     @Autowired
     private RedisService redisService;
-    @PostMapping("/add")
-    public ResponseEntity<String> addData(@RequestBody LikeDto likedto) {
-        String key = likedto.getKey();
-        String member = likedto.getMember();
+    @Qualifier("redisTemplate")
+    @Autowired
+    private RedisTemplate redisTemplate;
 
-        // 여기서 key와 member를 이용하여 Redis에 데이터 추가하는 작업 수행
-        redisService.addMemberToSet(key, member);
-        return ResponseEntity.ok("Data added successfully.");
+    @PostMapping("/add")
+    public ResponseEntity<String> addLike(@RequestBody LikeDto likeDto) {
+        redisService.addLike(likeDto.getPostId(), likeDto.getUserId());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Like added successfully for Post ID: " + likeDto.getPostId() + " and User ID: " + likeDto.getUserId());
     }
 
     @DeleteMapping("/remove")
-    public void removeFromSet(@RequestParam String key, @RequestParam String member) {
-        redisService.removeMemberFromSet(key, member);
+    public ResponseEntity<String> removeLike(@RequestBody LikeDto likeDto) {
+        redisService.removeLike(likeDto.getPostId(), likeDto.getUserId());
+        return ResponseEntity.ok("Like removed for Post ID: " + likeDto.getPostId() + " and User ID: " + likeDto.getUserId());
     }
-}
 
+    @GetMapping("/{postId}")
+    public Set<String> getLikedUserIds(@PathVariable String postId) {
+        return redisService.getLikedUserIds(postId);
+    }
+
+
+
+
+}
