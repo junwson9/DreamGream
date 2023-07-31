@@ -40,7 +40,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(columnDefinition = "YEAR")
     private Integer birthyear;
 
     @Enumerated(EnumType.STRING)
