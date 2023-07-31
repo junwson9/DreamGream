@@ -1,30 +1,37 @@
 package com.ssafy.dreamgream.domain.post.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+@Slf4j
 @Service
 public class RedisService {
+
+    private static final String LIKES_SET_KEY = "Likes";
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    // SADD 명령어 사용 예시
-    public void addMemberToSet(String key, String member) {
-        redisTemplate.opsForSet().add(key, member);
+    public void addLike(String postId, String userId) {
+        String key = postId;
+        String member = userId;
+        redisTemplate.opsForSet().add(LIKES_SET_KEY, key + ":" + member);
+        log.info(key);
     }
 
-    // SREM 명령어 사용 예시
-    public void removeMemberFromSet(String key, String member) {
-        redisTemplate.opsForSet().remove(key, member);
+    public void removeLike(String postId, String userId) {
+        String key = postId;
+        String member = userId;
+        redisTemplate.opsForSet().remove(LIKES_SET_KEY, key + ":" + member);
     }
 
-    // SMEMBERS 명령어 사용 예시
-    public Set<String> getMembersFromSet(String key) {
+    public Set<String> getLikedUserIds(String postId) {
+        String key = "Likes";
         return redisTemplate.opsForSet().members(key);
     }
-}
 
+}
