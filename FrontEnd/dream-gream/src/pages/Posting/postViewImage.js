@@ -10,7 +10,6 @@ function PostViewImage() {
     if (event.data) {
       const imageData = JSON.parse(event.data);
       setImage(imageData)
-        // 이전 이미지와 URL이 같은지 확인
       setIsLoading(false);
       eventSource.current.close();
     }
