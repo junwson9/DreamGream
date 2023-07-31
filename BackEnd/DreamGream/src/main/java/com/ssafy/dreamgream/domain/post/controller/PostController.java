@@ -2,22 +2,30 @@ package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
-import com.ssafy.dreamgream.domain.post.service.PostService;
+import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
+import com.ssafy.dreamgream.domain.post.service.PostServiceImpl;
+import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
 import com.ssafy.dreamgream.global.sse.SSEService;
+import java.util.Collections;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostService postService;
+    private static final String success = "SUCCESS";
+    private static final String fail = "FAIL";
+
+    private final PostServiceImpl postServiceImpl;
     private final ImageService imageService;
     private final SSEService sseService;
 
@@ -47,4 +55,37 @@ public class PostController {
         sseService.sendImageResponse(userId, testDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /**
+     * 달성완료 피드 조회
+     * TODO: 캐싱, 페이징
+     * @param categoryName
+     * @return postList
+     */
+    @GetMapping("/achieved")
+    public ResponseEntity<?> findAchievedPostList(@RequestParam(value = "category-name", required = false) String categoryName) {
+        List<PostListResponseDto> postList = postServiceImpl.findAchievedPostList(categoryName, true);
+
+        ResponseDto responseDto = new ResponseDto(success, "달성중 피드를 조회했습니다.",
+            Collections.singletonMap("postList", postList));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    /**
+     * 달성중 피드 조회
+     * TODO: 캐싱, 페이징
+     * @param categoryName
+     * @return postList 
+     */
+    @GetMapping
+    public ResponseEntity<?> findNotAchievedPostList(@RequestParam(value = "category-name", required = false) String categoryName) {
+        List<PostListResponseDto> postList = postServiceImpl.findAchievedPostList(categoryName, false);
+
+        ResponseDto responseDto = new ResponseDto(success, "달성중 피드를 조회했습니다.",
+            Collections.singletonMap("postList", postList));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+
+
 }
