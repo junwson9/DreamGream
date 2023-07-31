@@ -21,7 +21,7 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	@Override
 	public List<PostListResponseDto> findPostListByAchievedStatus(String categoryName, Boolean isAchieved) {
 
-		BooleanExpression expression = post.isAchieved.eq(isAchieved);
+		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
 
 		if (StringUtils.hasText(categoryName)) {
 			expression = expression.and(post.category.categoryName.eq(categoryName));
