@@ -32,10 +32,10 @@ public class Post {
     private String deadLine;
 
     @Column(name = "is_display")
-    private String isDisplay;
+    private Boolean isDisplay;
 
     @Column(name = "is_achieved")
-    private String isAchieved;
+    private Boolean isAchieved;
 
     @Column(name = "achievement_content")
     private String achievementContent;
