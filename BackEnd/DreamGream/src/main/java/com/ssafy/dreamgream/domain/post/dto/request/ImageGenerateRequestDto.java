@@ -1,12 +1,13 @@
 package com.ssafy.dreamgream.domain.post.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@Data
-@ToString
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ImageGenerateRequestDto {
     String title;
     @JsonProperty("category_name")
