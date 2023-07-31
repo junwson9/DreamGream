@@ -16,6 +16,9 @@ function ProfileEdit() {
     setProfile((prevProfile) => ({ ...prevProfile, [name]: value }));
   };
 
+  const navigateToMyFeed = () => {
+    Navigate('/myFeed');
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     // TODO: 프로필 수정 요청 보내기
@@ -76,7 +79,9 @@ function ProfileEdit() {
           value={profile.birthYear}
         />
       </div>
-      <button type="submit">확인</button>
+      <button type="submit" onClick={navigateToMyFeed}>
+        확인
+      </button>
     </form>
     // 확인시 어디로 보내고 어떻게 해야할지
   );

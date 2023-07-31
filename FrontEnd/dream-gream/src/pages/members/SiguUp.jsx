@@ -2,30 +2,53 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 function SiginupGenderBirth() {
   const [gender, setGender] = useState('');
   const [birthYear, setBirthYear] = useState('');
+  const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
 
+  const navigateToMyFeed = () => {
+    Navigate('/myFeed');
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // 어디로 보내는지 주소 확인, 데이터 형태랑
-      const response = await axios.post('/api/submit', { gender, birthYear });
-      console.log(response.data);
+      const response = await axios.put(
+        'http://localhost:8000/api/auth/role',
+        {
+          gender: gender,
+          birthyear: birthYear,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      const tokenResponse = await axios.get(
+        "'http://localhost:8000/api/auth/token",
+      );
+      ACCESS_TOKEN = tokenResponse.token.access_token;
+      REFRESH_TOKEN = tokenResponse.token.refresh_token;
+      localStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);
+      localStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
       // Handle success
     } catch (error) {
       console.error(error);
       // Handle error
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <label>
         성별:
         <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value="male">남성</option>
-          <option value="female">여성</option>
+          <option value="MALE">남성</option>
+          <option value="FEMALE">여성</option>
         </select>
       </label>
       <br />
@@ -38,9 +61,10 @@ function SiginupGenderBirth() {
         />
       </label>
       <br />
-      <input type="submit" value="제출" />
+      <input type="submit" value="제출" onClick={navigateToMyFeed} />
     </form>
   );
 }
 
 export default SiginupGenderBirth;
+// onClick 위치 체크할 필요성이 있음
