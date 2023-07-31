@@ -9,5 +9,5 @@ import lombok.*;
 @Builder
 public class ImageCreationConsumeDto {
     Long sseId;
-    String base64EncodedImage;
+    String url;
 }

@@ -27,7 +27,7 @@ public class Post {
     @Column(name = "dead_line")
     private String deadline;
 
-    @Column(name = "id_display")
+    @Column(name = "is_display")
     private String isDisplay;
 
     @Column(name = "is_achieved")
