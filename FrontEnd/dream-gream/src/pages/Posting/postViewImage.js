@@ -25,7 +25,8 @@ function PostViewImage() {
   );
 
   useEffect(() => {
-    eventSource.current = new EventSource('http://localhost:5000/sse');
+    console.log('sse 요청 보내기');
+    eventSource.current = new EventSource('http://localhost:8000/sse');
     eventSource.current.addEventListener('message', handleEvent);
     eventSource.current.addEventListener('error', handleError);
     return () => {

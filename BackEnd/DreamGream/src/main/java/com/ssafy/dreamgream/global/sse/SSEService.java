@@ -1,12 +1,14 @@
 package com.ssafy.dreamgream.global.sse;
 
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class SSEService {
 
@@ -19,15 +21,19 @@ public class SSEService {
     }
 
     public void sendImageResponse(Long sseId, ImageGenerateResponseDto dto) {
+        log.info("sending image url");
         SseEmitter emitter = sseEmitters.get(sseId);
+        log.info("sseId : {}", sseId);
         if (emitter != null) {
             try {
+                log.info("sending data to client");
                 emitter.send(dto);
             } catch (IOException e) {
                 // Handle exception when sending the response to the client
                 e.printStackTrace();
             } finally {
-              emitter.complete();
+                log.info("emitter complete");
+                emitter.complete();
             }
         } else {
             // Handle case when SSEEmitter is not found for the given SSE ID

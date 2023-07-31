@@ -23,7 +23,7 @@ server:
 logging:
   level:
     org:
-      springframework: INFO
+      springframework: DEBUG
       hibernate:
         type:
           descriptor:

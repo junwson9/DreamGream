@@ -19,13 +19,14 @@ function PostSubject() {
     const onPostSubject = async () => {
         try {
         // POST 요청은 body에 실어 보냄
-            await axios.post('/post',
-            {
-                title,
-                category_name: category,
+            await axios.post('http://localhost:8000/posts/image', {
+              title,
+              category_name: category,
             });
             setTitle('');
             navigateToDetail();
+            console.log(title);
+            console.log(category);
         } catch (e) {
               console.error(e);
             }
