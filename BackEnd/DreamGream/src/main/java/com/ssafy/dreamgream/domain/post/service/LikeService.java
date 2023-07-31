@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class RedisService {
+public class LikeService {
 
     private static final String LIKES_SET_KEY = "Likes";
 
