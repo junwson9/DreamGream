@@ -1,5 +1,6 @@
 package com.ssafy.dreamgream.domain.post.entity;
 
+import com.ssafy.dreamgream.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,10 +47,12 @@ public class Post {
     @Column(name = "cheer_cnt")
     private Long cheerCnt;
 
+    @Column(name = "celebrate_cnt")
+    private Long celebrateCnt;
+
     @Column(name = "ai_img")
     private String aiImg;
 
-    @Lob
     @Column(name = "achievement_img")
     private String achievementImg;
 
@@ -64,4 +67,9 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
 }
