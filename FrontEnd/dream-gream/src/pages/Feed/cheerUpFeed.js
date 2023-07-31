@@ -7,8 +7,9 @@ import Feed from '../../components/Feed/Feed';
 import Navbar from '../../components/Common/Navbar';
 // import Rightbar from '../components/Rightbar';
 
-export default function Main() {
+export default function cheerUpFeed() {
   const [feeddata, setFeedData] = useState([]);
+  const [bestfeeddata, setBestFeedData] = useState([]);
 
   useEffect(() => {
     //++여기서 넘겨주는 데이터 형식이 어떤건지 확인이 필요하다
@@ -17,6 +18,12 @@ export default function Main() {
       .then((data) => {
         setFeedData(data);
       });
+
+    fetch('/posts/best', { method: 'GET' })
+      .then((res) => res.json())
+      .then((data) => {
+        setBestFeedData(data);
+      });
   }, []);
 
   return (
@@ -24,7 +31,7 @@ export default function Main() {
       <Topbar />
       <div className="header">
         <CategoryButtons />
-        <BestBucketList />
+        <BestBucketList bestfeeddata={bestfeeddata} />
       </div>
       <div className="main">
         {/* props로 전달하는 부분! */}
