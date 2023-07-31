@@ -41,7 +41,6 @@ function SiginupGenderBirth() {
       // Handle error
     }
   };
-
   return (
     <form onSubmit={handleSubmit}>
       <label>
