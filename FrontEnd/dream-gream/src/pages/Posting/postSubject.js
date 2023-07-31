@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import CategoryButtons from '../../components/CategoryButtons';
 
 function PostSubject() {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('기타');
+    const navigate = useNavigate();
+ 
+    const navigateToDetail = () => {
+      navigate('/image');
+    };
+
     const onChange = (e) => {
         setTitle(e.target.value);
     };
@@ -18,6 +25,7 @@ function PostSubject() {
                 category_name: category,
             });
             setTitle('');
+            navigateToDetail();
         } catch (e) {
               console.error(e);
             }
@@ -27,7 +35,6 @@ function PostSubject() {
         <div>
             <input onChange={onChange} value={title}/>
             <button onClick={onPostSubject}type='submit'>제출</button>
-            <b>값: {title}</b>
             <CategoryButtons setCategory={setCategory}/>
             
         </div>
