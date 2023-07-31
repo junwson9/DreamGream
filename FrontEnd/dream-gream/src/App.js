@@ -16,7 +16,7 @@ function App() {
       <Route path="/following" element={<followingUser />} />
       <Route path="/findmember" element={<findMember />} />
       <Route path="/cheerupfeed" element={<cheerUpFeed />} />
-      <Route path="/archivefeed" element={<archiveFeed />} />
+      <Route path="/acheivefeed" element={<acheiveFeed />} />
       <Route path="/feed/:id" element={<feedDetail />} />
       <Route path="/post" element={<PostSubject />} />
       <Route path="/postdetail" element={<PostDetail />} />
