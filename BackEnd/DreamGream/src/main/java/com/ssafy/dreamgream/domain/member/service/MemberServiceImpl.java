@@ -7,6 +7,7 @@ import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +26,29 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member getCurrentMember() throws AuthenticationException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (User) authentication.getPrincipal();
+//        UserDetails userDetails = (User) authentication.getPrincipal();
+//        Long memberId = Long.valueOf(userDetails.getUsername());
+//
+//        Member currentMember = memberRepository.findById(memberId).orElseThrow(); // TODO: 예외처리
+//        return currentMember;
+
+
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            // 사용자가 인증되지 않았거나 익명 사용자인 경우
+            throw new IllegalAccessError("인증되지 않았거나 익명 사용자 입니다.");
+            /*
+            TODO 예외처리
+            throw new AccessDeniedException("User is not authenticated.");
+             */
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UserDetails)) {
+            // Principal이 UserDetails 타입이 아닌 경우
+            throw new IllegalArgumentException("Principal is not of type UserDetails.");
+        }
+
+        UserDetails userDetails = (UserDetails) principal;
         Long memberId = Long.valueOf(userDetails.getUsername());
 
         Member currentMember = memberRepository.findById(memberId).orElseThrow(); // TODO: 예외처리
