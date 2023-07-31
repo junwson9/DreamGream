@@ -19,5 +19,7 @@ public class ImageCreationResponseConsumer {
 
         // Your logic to handle the SSE ID and the base64 encoded photo
         imageService.processImageResponse(sseId, base64EncodedPhoto);
+
+        // sse service
     }
 }
