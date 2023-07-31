@@ -2,9 +2,11 @@ package com.ssafy.dreamgream.global.rabbitMQ;
 
 import com.ssafy.dreamgream.global.rabbitMQ.dto.ImageCreationConsumeDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ImageCreationResponseConsumer {
@@ -15,11 +17,9 @@ public class ImageCreationResponseConsumer {
     public void receiveImageCreationResponse(ImageCreationConsumeDto responseDto) {
         // Process the image creation response
         Long sseId = responseDto.getSseId();
-        String base64EncodedPhoto = responseDto.getBase64EncodedImage();
+        String url = responseDto.getUrl();
 
-        // Your logic to handle the SSE ID and the base64 encoded photo
-        imageService.processImageResponse(sseId, base64EncodedPhoto);
+        log.info("url : {}", url);
 
-        // sse service
     }
 }
