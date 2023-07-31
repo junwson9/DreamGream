@@ -23,6 +23,7 @@ function App() {
       <Route path="/image" element={<PostViewImage />} />
       <Route path="/myfeed" element={<myFeed />} />
       <Route path="/about" element={<viewAbout />} />
+
     </Routes>
   );
 }
