@@ -8,6 +8,9 @@ import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -70,10 +73,15 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findByNickname(@RequestParam @NotBlank String nickname) {
-        List<Member> members = memberService.findByNickname(nickname);
-        ResponseDto responseDto = new ResponseDto
-                (success, "닉네임으로 회원 목록을 조회합니다.", Collections.singletonMap("member_list", members));
+    public ResponseEntity<?> findByNickname(@RequestParam @NotBlank String nickname,
+                                            @PageableDefault(size = 10, sort = "nickname") Pageable pageable) {
+        Page<Member> members = memberService.findByNickname(nickname, pageable);
+
+        ResponseDto responseDto = new ResponseDto(
+                success,
+                "닉네임으로 회원 목록을 조회합니다.",
+                Collections.singletonMap("member_list", members.getContent()));
+
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

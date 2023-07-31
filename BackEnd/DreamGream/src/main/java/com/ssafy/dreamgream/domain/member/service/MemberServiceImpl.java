@@ -7,11 +7,12 @@ import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,8 +74,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> findByNickname(String nickname) {
-        List<Member> members = memberRepository.findByNicknameContaining(nickname);
+    public Page<Member> findByNickname(String nickname, Pageable pageable) {
+        Page<Member> members = memberRepository.findByNicknameContaining(nickname, pageable);
         return members;
     }
 
