@@ -12,7 +12,7 @@ spring:
       - db
 # RabbitMQ 연결 정보
   rabbitmq:
-    host: 0.0.0.0
+    host: 127.0.0.1
     port: 5672
     username: guest
     password: guest
@@ -31,12 +31,11 @@ logging:
   pattern:
     console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
 
-<<<<<<< Updated upstream
 jwt:
   secret: test123test1234test123test1234test123test1234test123test1234
   access_time: 300000 #5분
   refresh_time: 1800000 #7일
-=======
+
 rabbitmq:
   exchange:
     name: image-creation-exchange
@@ -49,4 +48,3 @@ rabbitmq:
     response:
       name: image-creation-response-queue
       routing-key: image.creation.response
->>>>>>> Stashed changes
