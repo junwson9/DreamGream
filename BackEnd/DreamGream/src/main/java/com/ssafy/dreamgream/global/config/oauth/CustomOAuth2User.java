@@ -87,7 +87,7 @@ public class CustomOAuth2User implements OAuth2User, UserDetails {
 
 	private static CustomOAuth2User create(Member member) {
 		CustomOAuth2User customOAuth2User = new CustomOAuth2User(
-			member.getId(),
+			member.getMemberId(),
 			member.getEmail(),
 			member.getRole(),
 			Collections.singletonList(new SimpleGrantedAuthority(member.getRole().name()))
