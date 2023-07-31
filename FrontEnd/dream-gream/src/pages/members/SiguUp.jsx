@@ -10,7 +10,7 @@ function SignupGenderBirth() {
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
   const Navigate = useNavigate();
   const navigateToMyFeed = () => {
-    Navigate('/myFeed');
+    Navigate('/myfeed');
   };
   const handleSubmit = async (event) => {
     event.preventDefault();

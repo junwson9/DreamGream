@@ -20,7 +20,7 @@ function OAuth2RedirectHandler() {
       localStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
       navigate('/SiginupGenderBirth');
       if (role == 'ROLE_USER') {
-        navigate('/myFeed');
+        navigate('/myfeed');
       }
     } else {
       navigate('/login');

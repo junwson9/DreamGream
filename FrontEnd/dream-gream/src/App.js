@@ -8,6 +8,7 @@ import LogIn from './pages/members/Logintest';
 import OAuth2RedirectHandler from './pages/members/OAuth2RedirectHandler';
 import ProfileEdit from './pages/members/ProfileEdit';
 import SignupGenderBirth from './pages/members/SiguUp';
+import MyFeed from './pages/MyFeed/MyFeed';
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
       <Route path="/post" element={<PostSubject />} />
       <Route path="/postdetail" element={<PostDetail />} />
       <Route path="/image" element={<PostViewImage />} />
-      <Route path="/myfeed" element={<myFeed />} />
+      <Route path="/myfeed" element={<MyFeed />} />
       <Route path="/about" element={<viewAbout />} />
 
     </Routes>
