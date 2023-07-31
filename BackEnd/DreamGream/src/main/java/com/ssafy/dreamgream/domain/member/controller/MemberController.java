@@ -1,6 +1,7 @@
 package com.ssafy.dreamgream.domain.member.controller;
 
 import com.ssafy.dreamgream.domain.member.dto.request.UpdateInfoRequestDto;
+import com.ssafy.dreamgream.domain.member.dto.response.MemberResponseDto;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
@@ -63,8 +64,8 @@ public class MemberController {
 
         }
 
-        Member member = memberService.updateInfo(nickname, gender, birthyear);
-        ResponseDto responseDto = new ResponseDto(success, "회원 정보를 수정했습니다.", Collections.singletonMap("member", member));
+        MemberResponseDto memberResponseDto = memberService.updateInfo(nickname, gender, birthyear);
+        ResponseDto responseDto = new ResponseDto(success, "회원 정보를 수정했습니다.", Collections.singletonMap("member", memberResponseDto));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -72,7 +73,8 @@ public class MemberController {
     public ResponseEntity<?> findByNickname(@RequestParam @NotBlank String nickname) {
         List<Member> members = memberService.findByNickname(nickname);
         ResponseDto responseDto = new ResponseDto
-                (success, "닉네임으로 회원 목록을 조회합니다.", Collections.singletonMap("memberList", members));
+                (success, "닉네임으로 회원 목록을 조회합니다.", Collections.singletonMap("member_list", members));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
 }
