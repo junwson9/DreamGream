@@ -1,5 +1,6 @@
 package com.ssafy.dreamgream.domain.member.service;
 
+import com.ssafy.dreamgream.domain.member.dto.response.MemberResponseDto;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
@@ -33,10 +34,19 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Member updateInfo(String nickname, Gender gender, Integer birthyear) {
+    public MemberResponseDto updateInfo(String nickname, Gender gender, Integer birthyear) {
         Member member = getCurrentMember();
         member.updateInfo(nickname, gender, birthyear);
-        return member;
+        MemberResponseDto memberResponseDto = MemberResponseDto.builder()
+                .id(member.getId())
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .gender(member.getGender())
+                .birthyear(member.getBirthyear())
+                .provider(member.getProvider())
+                .role(member.getRole())
+                .build();
+        return memberResponseDto;
     }
 
     @Override
