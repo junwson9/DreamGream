@@ -20,7 +20,7 @@ function ProfileEdit() {
   };
 
   const navigateToMyFeed = () => {
-    Navigate('/myFeed');
+    Navigate('/myfeed');
   };
 
   const handleSubmit = async (event) => {
