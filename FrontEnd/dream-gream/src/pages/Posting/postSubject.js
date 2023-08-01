@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CategoryButtons from '../../components/Button/CategoryButtons';
+import SolidButton from '../../components/Button/SolidButton';
 
 function PostSubject() {
     const [title, setTitle] = useState('');
@@ -36,6 +37,7 @@ function PostSubject() {
             <input onChange={onChange} value={title}/>
             <button onClick={onPostSubject}type='submit'>제출</button>
             <CategoryButtons setCategory={setCategory}/>
+            <SolidButton />
             
         </div>
     );
