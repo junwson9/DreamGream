@@ -1,10 +1,13 @@
 package com.ssafy.dreamgream.domain.post.repository;
 
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+
 import java.util.List;
 
 public interface PostQueryDslRepository {
 
-	List<PostListResponseDto> findPostListByAchievedStatus(String categoryName, Boolean isAchieved);
+	Slice<PostListResponseDto> findPostListByAchievedStatus(String categoryName, Boolean isAchieved, Long lastPostId, Pageable pageable);
 
 }
