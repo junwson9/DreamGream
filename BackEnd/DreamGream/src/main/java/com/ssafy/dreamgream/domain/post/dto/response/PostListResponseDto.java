@@ -26,21 +26,22 @@ public class PostListResponseDto {
 
 	private String achievementImg;
 
-	private String categoryName;
+	private Long categoryId;
 
 	// == Member 데이터 == //
 	private Long memberId;
 	
 	private String nickname;
-	
-	//TODO : member profile 추가 필요
+
+	private String profileImg;
 
 	public PostListResponseDto() {
 	}
 
 	public PostListResponseDto(Long postId, String title, Boolean isDisplay, Boolean isAchieved,
 		Timestamp createdDate, Timestamp achievedDate, Long cheerCnt, Long celebrateCnt,
-		String aiImg, String achievementImg, String categoryName, Long memberId, String nickname) {
+		String aiImg, String achievementImg, Long categoryId,
+		Long memberId, String nickname, String profileImg) {
 		this.postId = postId;
 		this.title = title;
 		this.isDisplay = isDisplay;
@@ -51,9 +52,10 @@ public class PostListResponseDto {
 		this.celebrateCnt = celebrateCnt;
 		this.aiImg = aiImg;
 		this.achievementImg = achievementImg;
-		this.categoryName = categoryName;
+		this.categoryId = categoryId;
 		this.memberId = memberId;
 		this.nickname = nickname;
+		this.profileImg = profileImg;
 	}
 
 }
