@@ -30,23 +30,39 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 			expression = expression.and(post.category.categoryName.eq(categoryName));
 		}
 
-		List<PostListResponseDto> results = jpaQueryFactory
-			.select(Projections.constructor(PostListResponseDto.class,
-				post.postId, post.title, post.isDisplay, post.isAchieved,
-				post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
-				post.aiImg, post.achievementImg, post.category.categoryName,
-				post.member.memberId, post.member.nickname))
-			.from(post)
-			.where(
-				ltPostId(lastPostId),
-				expression
-			)
-			.orderBy(post.postId.desc())
-			.limit(pageable.getPageSize()+1)
-			.fetch();
-
+		List<PostListResponseDto> results = getPostListQuery(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
 	}
+
+
+	@Override
+	public Slice<PostListResponseDto> findPostListByMember(Long memberId, Long lastPostId, Pageable pageable, Boolean isAchieved) {
+
+		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
+
+		List<PostListResponseDto> results = getPostListQuery(expression, lastPostId, pageable);
+		return checkLastPage(pageable, results);
+	}
+
+
+	// expression(where) 조건에 맞는 게시글 목록을 조회해오는 메서드
+	private List<PostListResponseDto> getPostListQuery(BooleanExpression expression, Long lastPostId, Pageable pageable) {
+		return jpaQueryFactory
+				.select(Projections.constructor(PostListResponseDto.class,
+						post.postId, post.title, post.isDisplay, post.isAchieved,
+						post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
+						post.aiImg, post.achievementImg, post.category.categoryName,
+						post.member.memberId, post.member.nickname))
+				.from(post)
+				.where(
+						ltPostId(lastPostId),
+						expression
+				)
+				.orderBy(post.postId.desc())
+				.limit(pageable.getPageSize()+1)
+				.fetch();
+	}
+
 
 	// 첫 페이지인 경우 post.postId.lt(lastPostId) 가 조건문에 없기 하기 위한 메서드
 	private BooleanExpression ltPostId(Long lastPostId) {
@@ -56,6 +72,7 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 		return post.postId.lt(lastPostId);
 	}
+
 
 	// 무한 스크롤 처리를 위해 마지막 페이지를 체크하는 메서드
 	private Slice<PostListResponseDto> checkLastPage(Pageable pageable, List<PostListResponseDto> results) {

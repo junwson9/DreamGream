@@ -5,7 +5,7 @@ import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.service.PostServiceImpl;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
-import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
+//import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
 import com.ssafy.dreamgream.global.sse.SSEService;
 import java.util.Collections;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class PostController {
 
         // 이미지 생성 프로세스 시작
         //imageService.processImageCreation(userId, dto);
-        imageService.sendTest();
+//        imageService.sendTest();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

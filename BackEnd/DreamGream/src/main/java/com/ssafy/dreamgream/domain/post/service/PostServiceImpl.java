@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -20,4 +22,10 @@ public class PostServiceImpl {
 		return postRepository.findPostListByAchievedStatus(categoryName, isAchieved, lastPostId, pageable);
 	}
 
+	@Transactional
+	public Slice<PostListResponseDto> findPostListByMember(Long memberId, Long lastPostId, Pageable pageable, Boolean isAchieved) {
+		//TODO 존재하지 않는 memberId 예외처리
+
+		return postRepository.findPostListByMember(memberId, lastPostId, pageable, isAchieved);
+	}
 }
