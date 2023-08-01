@@ -11,7 +11,7 @@ const FeedAcheived = ({ acheivedfeeddata }) => {
 
   return (
     <>
-      {acheivedfeeddata.map((el, index) => (
+      {acheivedfeeddata.map((el) => (
         <article className="feed" key={el.id}>
           <div className="feedBox">
             {/* 유저 프로필 부분 */}
@@ -32,12 +32,7 @@ const FeedAcheived = ({ acheivedfeeddata }) => {
 
           {/* 컨텐츠 부분 */}
           <div className="contentLine">
-            <span>
-              {el.title}
-              {/* <a href="#" className="type3">
-                ...더 보기
-              </a> */}
-            </span>
+            <span>{el.title}</span>
           </div>
           {/* 버튼 부분 */}
           <div className="buttonLine">
