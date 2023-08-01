@@ -10,6 +10,13 @@ import java.util.Set;
 @Slf4j
 @Service
 public class LikeService {
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2c0c86e70f30dfba97560b40d529c6931507b6de
+>>>>>>> Stashed changes
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 

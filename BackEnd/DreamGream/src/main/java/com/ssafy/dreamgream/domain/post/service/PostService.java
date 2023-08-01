@@ -53,4 +53,11 @@ public class PostService {
         BeanUtils.copyProperties(post,postUpdateRequestDto);
         return postUpdateRequestDto;
     }
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> Stashed changes
 }
+=======
+}
+>>>>>>> 2c0c86e70f30dfba97560b40d529c6931507b6de
