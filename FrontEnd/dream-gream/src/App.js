@@ -9,29 +9,34 @@ import OAuth2RedirectHandler from './pages/members/OAuth2RedirectHandler';
 import ProfileEdit from './pages/members/ProfileEdit';
 import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
+import InputBox from './components/InputBox/InputBox';
+// import ToggleSwitch from './components/Button/ToggleButton';
+import TopBar from './components/Common/Topbar';
+// import TopTap from './components/TopTab';
 
 function App() {
   return (
-    <div className='App'>
-    <Routes>
-      <Route path="/logIn" element={<LogIn />} />
-      <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-      <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
-      <Route path="/profileedit" element={<ProfileEdit />} />
-      <Route path="/follow" element={<followUser />} />
-      <Route path="/following" element={<followingUser />} />
-      <Route path="/findmember" element={<findMember />} />
-      <Route path="/cheerupfeed" element={<cheerUpFeed />} />
-      <Route path="/acheivefeed" element={<acheiveFeed />} />
-      <Route path="/feed/:id" element={<feedDetail />} />
-      <Route path="/post" element={<PostSubject />} />
-      <Route path="/postdetail" element={<PostDetail />} />
-      <Route path="/image" element={<PostViewImage />} />
-      <Route path="/myfeed" element={<MyFeed />} />
-      <Route path="/about" element={<viewAbout />} />
-
-    </Routes>
-  </div>
+    <div className="App">
+      <Routes>
+        <Route path="/logIn" element={<LogIn />} />
+        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+        <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
+        <Route path="/profileedit" element={<ProfileEdit />} />
+        <Route path="/follow" element={<followUser />} />
+        <Route path="/following" element={<followingUser />} />
+        <Route path="/findmember" element={<findMember />} />
+        <Route path="/cheerupfeed" element={<cheerUpFeed />} />
+        <Route path="/acheivefeed" element={<acheiveFeed />} />
+        <Route path="/feed/:id" element={<feedDetail />} />
+        <Route path="/post" element={<PostSubject />} />
+        <Route path="/postdetail" element={<PostDetail />} />
+        <Route path="/image" element={<PostViewImage />} />
+        <Route path="/myfeed" element={<MyFeed />} />
+        <Route path="/about" element={<viewAbout />} />
+        <Route path="/test" element={<InputBox />} />
+        <Route path="/test1" element={<TopBar />} />
+      </Routes>
+    </div>
   );
 }
 

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import InputBox from '../../components/InputBox/InputBox.jsx';
 
 function SignupGenderBirth() {
   const [gender, setGender] = useState('');
@@ -42,26 +43,29 @@ function SignupGenderBirth() {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        성별:
-        <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value="MALE">남성</option>
-          <option value="FEMALE">여성</option>
-        </select>
-      </label>
-      <br />
-      <label>
-        태어난 연도:
-        <input
-          type="number"
-          value={birthYear}
-          onChange={(e) => setBirthYear(e.target.value)}
-        />
-      </label>
-      <br />
-      <input type="submit" value="제출" onClick={navigateToMyFeed} />
-    </form>
+    <>
+      <InputBox />
+      <form onSubmit={handleSubmit}>
+        <label>
+          성별:
+          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <option value="MALE">남성</option>
+            <option value="FEMALE">여성</option>
+          </select>
+        </label>
+        <br />
+        <label>
+          태어난 연도:
+          <input
+            type="number"
+            value={birthYear}
+            onChange={(e) => setBirthYear(e.target.value)}
+          />
+        </label>
+        <br />
+        <input type="submit" value="제출" onClick={navigateToMyFeed} />
+      </form>
+    </>
   );
 }
 
