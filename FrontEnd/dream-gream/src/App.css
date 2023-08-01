@@ -1,8 +1,13 @@
+body {
+  margin: 0;
+  background-color: #f2f2f2; /* Gray background color for the margin part */
+}
 .App {
   width: 360px;
   height: 800px;
   margin: auto;
   text-align: center;
+  background-color: white;
 }
 
 .App-logo {
