@@ -2,15 +2,15 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function SiginupGenderBirth() {
+function SignupGenderBirth() {
   const [gender, setGender] = useState('');
   const [birthYear, setBirthYear] = useState('');
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
-
+  const Navigate = useNavigate();
   const navigateToMyFeed = () => {
-    Navigate('/myFeed');
+    Navigate('/myfeed');
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -65,5 +65,5 @@ function SiginupGenderBirth() {
   );
 }
 
-export default SiginupGenderBirth;
+export default SignupGenderBirth;
 // onClick 위치 체크할 필요성이 있음

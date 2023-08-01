@@ -1,15 +1,18 @@
 /* eslint-disable */
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function ProfileEdit() {
   const [profile, setProfile] = useState({
     profileImage: '',
     nickname: '',
-    introduction: '',
     gender: '',
-    birthYear: '',
+    birthyear: '',
   });
+  // const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+  const Navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -17,11 +20,29 @@ function ProfileEdit() {
   };
 
   const navigateToMyFeed = () => {
-    Navigate('/myFeed');
+    Navigate('/myfeed');
   };
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // TODO: 프로필 수정 요청 보내기
+    try {
+      const response = await axios.put(
+        'http://localhost:8000/api/members/info',
+        {
+          nickname: profile.nickname,
+          gender: profile.gender,
+          birthyear: profile.birthyear,
+        },
+      );
+
+      if (response.status === 200) {
+        navigateToMyFeed();
+      } else {
+        console.log('Error updating profile:', response);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -48,15 +69,6 @@ function ProfileEdit() {
         />
       </div>
       <div>
-        <label htmlFor="introduction">소개글</label>
-        <textarea
-          id="introduction"
-          name="introduction"
-          onChange={handleChange}
-          value={profile.introduction}
-        />
-      </div>
-      <div>
         <label htmlFor="gender">성별</label>
         <select
           id="gender"
@@ -70,11 +82,11 @@ function ProfileEdit() {
         </select>
       </div>
       <div>
-        <label htmlFor="birthYear">태어난 연도</label>
+        <label htmlFor="birthyear">태어난 연도</label>
         <input
           type="number"
-          id="birthYear"
-          name="birthYear"
+          id="birthyear"
+          name="birthyear"
           onChange={handleChange}
           value={profile.birthYear}
         />
@@ -86,5 +98,4 @@ function ProfileEdit() {
     // 확인시 어디로 보내고 어떻게 해야할지
   );
 }
-
 export default ProfileEdit;
