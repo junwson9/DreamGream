@@ -35,9 +35,8 @@ function PostSubject() {
     return (
         <div>
             <input onChange={onChange} value={title}/>
-            <button onClick={onPostSubject}type='submit'>제출</button>
             <CategoryButtons setCategory={setCategory}/>
-            <SolidButton />
+            <SolidButton onClick={onPostSubject} name='제출하기'/>
             
         </div>
     );
