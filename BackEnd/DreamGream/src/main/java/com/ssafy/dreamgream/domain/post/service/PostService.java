@@ -1,6 +1,5 @@
 package com.ssafy.dreamgream.domain.post.service;
 
-import com.ssafy.dreamgream.domain.post.dto.request.PostRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
@@ -8,32 +7,28 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Optional;
-//import java.util.Date;
 
 @Service
 public class PostService {
 
     private PostRepository postRepository;
+
     @Autowired
-    public PostService(PostRepository postRepository){
+    public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
     @Transactional
-    public PostUpdateRequestDto updatePostPartially(Long postId, PostUpdateRequestDto requestDto){
+    public PostUpdateRequestDto updatePostPartially(Long postId, PostUpdateRequestDto requestDto) {
         Post existingPost = postRepository.findById(postId).orElse(null);
 
-        if(existingPost == null) {
+        if (existingPost == null) {
             //예외처리
             return null;
-        }else{
+        } else {
             Optional.ofNullable(requestDto.getAchievedDate()).ifPresent(existingPost::setAchievedDate);
             Optional.ofNullable(requestDto.getAchievementContent()).ifPresent(existingPost::setAchievementContent);
             Optional.ofNullable(requestDto.getAchievementImg()).ifPresent(existingPost::setAchievementImg);
@@ -48,16 +43,10 @@ public class PostService {
         existingPost = postRepository.save(existingPost);
         return convertToDto(existingPost);
     }
-    private PostUpdateRequestDto convertToDto(Post post){
+
+    private PostUpdateRequestDto convertToDto(Post post) {
         PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto();
-        BeanUtils.copyProperties(post,postUpdateRequestDto);
+        BeanUtils.copyProperties(post, postUpdateRequestDto);
         return postUpdateRequestDto;
     }
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
->>>>>>> Stashed changes
 }
-=======
-}
->>>>>>> 2c0c86e70f30dfba97560b40d529c6931507b6de

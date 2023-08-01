@@ -1,9 +1,7 @@
 package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.CheerDto;
-import com.ssafy.dreamgream.domain.post.dto.request.LikeDto;
 import com.ssafy.dreamgream.domain.post.service.CheerService;
-import com.ssafy.dreamgream.domain.post.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;

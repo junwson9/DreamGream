@@ -1,17 +1,11 @@
 package com.ssafy.dreamgream.domain.post.entity;
 
-<<<<<<< Updated upstream
 import lombok.*;
-=======
-<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-=======
-import lombok.*;
->>>>>>> 2c0c86e70f30dfba97560b40d529c6931507b6de
->>>>>>> Stashed changes
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -25,7 +19,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 public class Post {
 
     @Id
