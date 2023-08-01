@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface PostQueryDslRepository {
 
-	Slice<PostListResponseDto> findPostListByAchievedStatus(String categoryName, Boolean isAchieved, Long lastPostId, Pageable pageable);
+	Slice<PostListResponseDto> findPostListByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable);
 
-	Slice<PostListResponseDto> findPostListByMember(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable);
+	Slice<PostListResponseDto> findPostListOfMember(Long memberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable);
+
+	Slice<PostListResponseDto> findMyPostList(Long currentMemberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable);
 }

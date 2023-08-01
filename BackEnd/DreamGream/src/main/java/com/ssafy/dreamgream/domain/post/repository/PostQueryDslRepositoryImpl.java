@@ -4,7 +4,6 @@ import static com.ssafy.dreamgream.domain.post.entity.QPost.post;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,38 +19,57 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
+
 	@Override
-	public Slice<PostListResponseDto> findPostListByAchievedStatus(String categoryName, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+	public Slice<PostListResponseDto> findPostListByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
 
 		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
+		createPostExpression(expression, categoryId, null);
 
-		if (StringUtils.hasText(categoryName)) {
-			expression = expression.and(post.category.categoryName.eq(categoryName));
-		}
-
-		List<PostListResponseDto> results = getPostListQuery(expression, lastPostId, pageable);
+		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
 	}
 
 
 	@Override
-	public Slice<PostListResponseDto> findPostListByMember(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+	public Slice<PostListResponseDto> findPostListOfMember(Long memberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
 
 		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
+		createPostExpression(expression, categoryId, memberId);
+
+		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
+		return checkLastPage(pageable, results);
+	}
+
+
+	@Override
+	public Slice<PostListResponseDto> findMyPostList(Long currentMemberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
+
+		BooleanExpression expression = post.isAchieved.eq(isAchieved);
+		createPostExpression(expression, categoryId, currentMemberId);
+
+		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
+		return checkLastPage(pageable, results);
+	}
+
+
+	// BooleanExpression 객체를 생성하는 메서드
+	private BooleanExpression createPostExpression(BooleanExpression expression, Long categoryId, Long memberId) {
 
 		if (categoryId != null && categoryId != 0L) {
 			expression = expression.and(post.category.categoryId.eq(categoryId));
 		}
 
-		expression.and(post.member.memberId.eq(memberId));
+		if (memberId != null) {
+			expression = expression.and(post.member.memberId.eq(memberId));
+		}
 
-		List<PostListResponseDto> results = getPostListQuery(expression, lastPostId, pageable);
-		return checkLastPage(pageable, results);
+		return expression;
 	}
 
 
 	// expression(where) 조건에 맞는 게시글 목록을 조회해오는 메서드
-	private List<PostListResponseDto> getPostListQuery(BooleanExpression expression, Long lastPostId, Pageable pageable) {
+	private List<PostListResponseDto> getPostListResults(BooleanExpression expression, Long lastPostId, Pageable pageable) {
 		return jpaQueryFactory
 				.select(Projections.constructor(PostListResponseDto.class,
 						post.postId, post.title, post.isDisplay, post.isAchieved,
@@ -70,13 +87,9 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	}
 
 
-	// 첫 페이지인 경우 post.postId.lt(lastPostId) 가 조건문에 없기 하기 위한 메서드
+	// 첫 페이지인 경우 lastPostId == null 처리하기 위한 메서드
 	private BooleanExpression ltPostId(Long lastPostId) {
-		if (lastPostId == null) {
-			return null;
-		}
-
-		return post.postId.lt(lastPostId);
+		return lastPostId == null ? null : post.postId.lt(lastPostId);
 	}
 
 
