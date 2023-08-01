@@ -9,14 +9,18 @@ function CategoryButtons({ setCategory }) {
     };
 
     return (
-        <div>
+        <div className="w-[267px] h-[93px] justify-start items-start gap-[9px] inline-flex">
             {categorys.map((category) => (
                 <button 
-                key={category}  
+                key={category}
+                className="w-[83px] h-[29px] px-[19px] py-1.5 bg-white rounded-[10px] border border-indigo-400 justify-center items-center gap-2.5 flex"  
                 type='submit' onClick={() =>handleClick(category)}>
+                    <div className="text-center text-indigo-400 text-[13px] font-bold leading-[18.20px]">
                     {category}
+                    </div>
                 </button>
             ))}
+            
         </div>
     )
 }
