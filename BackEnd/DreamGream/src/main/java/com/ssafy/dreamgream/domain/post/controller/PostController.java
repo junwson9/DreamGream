@@ -45,8 +45,6 @@ public class PostController {
 
         // 이미지 생성 프로세스 시작
         //imageService.processImageCreation(userId, dto);
-        imageService.sendTest();
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
