@@ -11,8 +11,8 @@ import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import InputBox from './components/InputBox/InputBox';
 // import ToggleSwitch from './components/Button/ToggleButton';
-import TopBar from './components/Common/Topbar';
-// import TopTap from './components/TopTab';
+// import TopBar from './components/Common/Topbar';
+import TopTap from './components/Common/TopTab';
 
 function App() {
   return (
