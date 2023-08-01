@@ -18,18 +18,22 @@ public class ImageCreationRequestProducer {
     @Value("${rabbitmq.exchange.name}")
     private String imageCreationRequestExchange;
 
-    @Value("${rabbitmq.queue.request.routing-key}")
+    @Value("${rabbitmq.queue.response.routing-key}")
     private String imageCreationRequestRoutingKey;
 
-    public void sendImageCreationRequest(Long sseId, String prompt) {
-        log.info("message producer started");
+    public void sendImageCreationRequest(Long sseId, String url) {
+        log.info("이미지 생성 완료");
+        // 사진을 만들고 응답을 받으면 S3에 저장하고 url을 전송
+        // 1. 사진 요청 보내기
 
-        ImageCreationRequestDto dto = ImageCreationRequestDto.builder()
+        // 2. 이미지 변환 및 S3 저장
+
+        //
+        ImageCreationResponseDto dto = ImageCreationResponseDto.builder()
                 .sseId(sseId)
-                .prompt(prompt)
+                .url(url)
                 .build();
-
         rabbitTemplate.convertAndSend(imageCreationRequestExchange, imageCreationRequestRoutingKey, dto);
-        log.info("message sent!");
+        log.info("이미지 url 전송 완료");
     }
 }

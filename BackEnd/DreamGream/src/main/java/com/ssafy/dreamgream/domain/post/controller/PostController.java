@@ -45,15 +45,8 @@ public class PostController {
 
         // 이미지 생성 프로세스 시작
         //imageService.processImageCreation(userId, dto);
+        imageService.sendTest();
 
-        ImageGenerateResponseDto testDto = ImageGenerateResponseDto.builder()
-                .url("test.com")
-                .build();
-        log.info("sleep start");
-        Thread.sleep(5000);
-        log.info("sleep end");
-
-        sseService.sendImageResponse(userId, testDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

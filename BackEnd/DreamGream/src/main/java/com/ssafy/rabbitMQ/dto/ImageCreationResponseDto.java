@@ -1,4 +1,4 @@
-package com.ssafy.dreamgream.global.rabbitMQ.dto;
+package com.ssafy.rabbitMQ.dto;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ImageCreationConsumeDto {
+public class ImageCreationResponseDto {
     Long sseId;
     String url;
 }

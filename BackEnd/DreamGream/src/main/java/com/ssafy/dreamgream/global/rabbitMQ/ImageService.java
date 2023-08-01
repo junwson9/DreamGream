@@ -59,4 +59,10 @@ public class ImageService {
         return response.getImagePrompt();
     }
 
+    public void sendTest() {
+        log.info("test start");
+        imageCreationRequestProducer.sendImageCreationRequest(123L, "test prompt");
+    }
+
+
 }
