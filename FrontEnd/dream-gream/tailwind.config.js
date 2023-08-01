@@ -4,9 +4,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['Noto Sans KR', 'sans-serif'],
+        sans: ['Noto Sans KR', 'sans-serif'],
+      },
+      colors: {
+        MainColor: '#7887D4',
       },
     },
   },
   plugins: [],
-}
+};
