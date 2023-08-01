@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@AllArgsConstructor
 @RequestMapping("/api/posts")
+@AllArgsConstructor
 public class PostController {
 
     private final PostService postService;

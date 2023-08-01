@@ -10,12 +10,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 @Service
 public class PostService {
-
     private PostRepository postRepository;
-
 
     @Autowired
     public PostService(PostRepository postRepository) {

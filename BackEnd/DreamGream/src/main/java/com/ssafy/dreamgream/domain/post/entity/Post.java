@@ -1,5 +1,4 @@
 package com.ssafy.dreamgream.domain.post.entity;
-
 import lombok.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,9 +41,8 @@ public class Post {
 
     @Column(name = "achievement_content")
     private String achievementContent;
-
     @Column(name = "achieved_date")
-    private Timestamp achievedDate;
+    private LocalDateTime achievedDate;
 
     @Column(name = "cheer_cnt")
     private Long cheerCnt;
@@ -63,7 +61,7 @@ public class Post {
 
     @LastModifiedDate
     @Column(name = "modified_date")
-    private Timestamp modifiedDate;
+    private LocalDateTime modifiedDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
