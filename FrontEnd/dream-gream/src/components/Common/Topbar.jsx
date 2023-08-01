@@ -20,7 +20,7 @@ function TopBar({ title }) {
       <LeftIcon
         className="w-[26px] h-[26px] left-[20px] top-[18px] absolute z-[1]"
         onClick={handleLeftIconClick}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer' }} // 커서 pointer로 설정
       />
       <div className="w-[360px] h-[60px] left-0 top-0 absolute bg-white border-b border-neutral-100">
         <div className="left-[49px] top-[14px] absolute text-zinc-800 text-[22px] font-bold leading-[30.80px]">
