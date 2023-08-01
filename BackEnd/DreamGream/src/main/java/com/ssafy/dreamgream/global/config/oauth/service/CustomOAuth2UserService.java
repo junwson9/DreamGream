@@ -44,7 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			savedMember = createMember(userInfo, provider);
 		}
 
-		log.info("memberId: " + savedMember.getId());
+		log.info("memberId: " + savedMember.getMemberId());
 
 		// OAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
 		return CustomOAuth2User.create(savedMember, oAuth2User.getAttributes());
