@@ -10,5 +10,5 @@ public interface PostQueryDslRepository {
 
 	Slice<PostListResponseDto> findPostListByAchievedStatus(String categoryName, Boolean isAchieved, Long lastPostId, Pageable pageable);
 
-	Slice<PostListResponseDto> findPostListByMember(Long memberId, Long lastPostId, Pageable pageable, Boolean isAchieved);
+	Slice<PostListResponseDto> findPostListByMember(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable);
 }

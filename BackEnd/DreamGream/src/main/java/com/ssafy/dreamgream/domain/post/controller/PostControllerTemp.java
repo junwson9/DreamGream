@@ -38,10 +38,12 @@ public class PostControllerTemp {
      */
     @GetMapping("/members/{memberId}")
     public ResponseEntity<?> findPostListByMember(@PathVariable(required = true) Long memberId,
+                                                 @RequestParam(required = false) Long categoryId,
+                                                 @RequestParam(required = true) Boolean isAchieved,
                                                  @RequestParam(value = "last-post-id", required = false) Long lastPostId,
                                                  @PageableDefault(size = 10) Pageable pageable) {
 
-        Slice<PostListResponseDto> postList = postServiceImpl.findPostListByMember(memberId, lastPostId, pageable, true);
+        Slice<PostListResponseDto> postList = postServiceImpl.findPostListByMember(memberId, categoryId, isAchieved, lastPostId, pageable);
         ResponseDto responseDto = new ResponseDto(success, "개인 피드를 조회했습니다.", Collections.singletonMap("postList", postList));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

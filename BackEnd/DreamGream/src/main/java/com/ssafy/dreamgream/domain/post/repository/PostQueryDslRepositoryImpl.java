@@ -36,9 +36,15 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 
 	@Override
-	public Slice<PostListResponseDto> findPostListByMember(Long memberId, Long lastPostId, Pageable pageable, Boolean isAchieved) {
+	public Slice<PostListResponseDto> findPostListByMember(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
 
 		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
+
+		if (categoryId != null && categoryId != 0L) {
+			expression = expression.and(post.category.categoryId.eq(categoryId));
+		}
+
+		expression.and(post.member.memberId.eq(memberId));
 
 		List<PostListResponseDto> results = getPostListQuery(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
@@ -51,8 +57,8 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 				.select(Projections.constructor(PostListResponseDto.class,
 						post.postId, post.title, post.isDisplay, post.isAchieved,
 						post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
-						post.aiImg, post.achievementImg, post.category.categoryName,
-						post.member.memberId, post.member.nickname))
+						post.aiImg, post.achievementImg, post.category.categoryId,
+						post.member.memberId, post.member.nickname, post.member.profileImg))
 				.from(post)
 				.where(
 						ltPostId(lastPostId),

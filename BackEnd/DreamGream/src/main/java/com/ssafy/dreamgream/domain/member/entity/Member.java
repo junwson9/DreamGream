@@ -4,6 +4,7 @@ import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.enums.Provider;
 import com.ssafy.dreamgream.domain.member.enums.Role;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -50,11 +51,13 @@ public class Member {
 
     @CreatedDate
     @Column(name = "created_date")
-    private Timestamp createdDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(name = "modified_date")
-    private Timestamp modifiedDate;
+    private LocalDateTime modifiedDate;
+
+    private String profileImg;
 
     @Builder
     public Member(String email, String nickname, Gender gender, Integer birthyear, Provider provider, Role role) {

@@ -23,9 +23,9 @@ public class PostServiceImpl {
 	}
 
 	@Transactional
-	public Slice<PostListResponseDto> findPostListByMember(Long memberId, Long lastPostId, Pageable pageable, Boolean isAchieved) {
+	public Slice<PostListResponseDto> findPostListByMember(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
 		//TODO 존재하지 않는 memberId 예외처리
 
-		return postRepository.findPostListByMember(memberId, lastPostId, pageable, isAchieved);
+		return postRepository.findPostListByMember(memberId, categoryId, isAchieved, lastPostId, pageable);
 	}
 }
