@@ -22,9 +22,14 @@ const Member = (props) => {
         />
         {/* 프로필 닉네임 */}
         <div className="textLine">
-          <span className="">{props.nickname}</span>
-          {/* ++날짜 => 부모 컴포넌트인 member.js 에서 created_data라는 변수로 db에서 받아와야 함*/}
+          <span className="nickname">{props.nickname}</span>
           <span className="created date">{props.created_date}</span>
+          <span className="deadline">{props.deadline}</span>
+          {/* ++로그인 유저 닉네임 가져오는거 추가해야함 */}
+          {props.is_display === false &&
+          loggedInUserNickname === props.nickname ? (
+            <span className="is_display">비공개</span>
+          ) : null}
         </div>
       </div>
       {/* 더보기 점 세개 모달 */}
