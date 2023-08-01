@@ -3,9 +3,8 @@ import { React, useState, useEffect } from 'react';
 import Topbar from '../../components/Common/Topbar';
 import CategoryButtons from '../../components/Button/CategoryButtons';
 import BestBucketList from '../../components/Feed/BestBucketList';
-import Feed from '../../components/Feed/Feed';
+import FeedForExplore from '../../components/Feed/FeedForExplore';
 import Navbar from '../../components/Common/Navbar';
-// import Rightbar from '../components/Rightbar';
 
 export default function cheerUpFeed() {
   const [feeddata, setFeedData] = useState([]);
@@ -35,7 +34,7 @@ export default function cheerUpFeed() {
       </div>
       <div className="main">
         {/* props로 전달하는 부분! */}
-        <Feed feeddata={feeddata} />
+        <FeedForExplore feeddata={feeddata} />
       </div>
       <div className="footer">
         <Navbar />
