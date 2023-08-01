@@ -7,6 +7,7 @@ import PostDetail from './pages/Posting/postDetail';
 
 function App() {
   return (
+    <div className='App'>
     <Routes>
       <Route path="/logIn" element={<logIn />} />
       <Route path="/oauth2/redirect" element={<oAuth2RedirectHandler />} />
@@ -25,6 +26,7 @@ function App() {
       <Route path="/about" element={<viewAbout />} />
 
     </Routes>
+  </div>
   );
 }
 
