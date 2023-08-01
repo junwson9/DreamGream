@@ -12,39 +12,4 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 @Service
 public class PostService {
-    private PostRepository postRepository;
-
-    @Autowired
-    public PostService(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
-
-    @Transactional
-    public PostUpdateRequestDto updatePostPartially(Long postId, PostUpdateRequestDto requestDto) {
-        Post existingPost = postRepository.findById(postId).orElse(null);
-
-        if (existingPost == null) {
-            //예외처리
-            return null;
-        } else {
-            Optional.ofNullable(requestDto.getAchievedDate()).ifPresent(existingPost::setAchievedDate);
-            Optional.ofNullable(requestDto.getAchievementContent()).ifPresent(existingPost::setAchievementContent);
-            Optional.ofNullable(requestDto.getAchievementImg()).ifPresent(existingPost::setAchievementImg);
-            Optional.ofNullable(requestDto.getAiImg()).ifPresent(existingPost::setAiImg);
-            Optional.ofNullable(requestDto.getCheerCnt()).ifPresent(existingPost::setCheerCnt);
-            Optional.ofNullable(requestDto.getContent()).ifPresent(existingPost::setContent);
-            Optional.ofNullable(requestDto.getDeadline()).ifPresent(existingPost::setDeadline);
-            Optional.ofNullable(requestDto.getIsAchieved()).ifPresent(existingPost::setIsAchieved);
-            Optional.ofNullable(requestDto.getIsDisplay()).ifPresent(existingPost::setIsDisplay);
-            existingPost.setModifiedDate(LocalDateTime.now());
-        }
-        existingPost = postRepository.save(existingPost);
-        return convertToDto(existingPost);
-    }
-
-    private PostUpdateRequestDto convertToDto(Post post) {
-        PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto();
-        BeanUtils.copyProperties(post, postUpdateRequestDto);
-        return postUpdateRequestDto;
-    }
 }

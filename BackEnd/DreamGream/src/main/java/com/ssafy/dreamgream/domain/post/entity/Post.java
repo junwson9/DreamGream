@@ -42,7 +42,7 @@ public class Post {
     @Column(name = "achievement_content")
     private String achievementContent;
     @Column(name = "achieved_date")
-    private LocalDateTime achievedDate;
+    private Timestamp achievedDate;
 
     @Column(name = "cheer_cnt")
     private Long cheerCnt;
@@ -61,7 +61,7 @@ public class Post {
 
     @LastModifiedDate
     @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
+    private Timestamp modifiedDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
