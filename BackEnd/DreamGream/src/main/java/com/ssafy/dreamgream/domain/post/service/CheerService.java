@@ -9,24 +9,24 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class LikeService {
+public class CheerService {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     public void addLike(String postId, String userId) {
-        String key = "like_post_"+postId;
+        String key = "cheer_post_"+postId;
         String member = "member_"+userId;
         redisTemplate.opsForSet().add(key,member);
     }
 
     public void removeLike(String postId, String userId) {
-        String key = "like_post_"+postId;
+        String key = "cheer_post_"+postId;
         String member = "member_"+userId;
         redisTemplate.opsForSet().remove(key,member);
     }
 
     public Set<String> getLikedUserIds(String postId) {
-        String key = "like_post_" + postId;
+        String key = "cheer_post_" + postId;
         return redisTemplate.opsForSet().members(key);
     }
 

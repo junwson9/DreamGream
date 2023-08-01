@@ -1,16 +1,17 @@
 package com.ssafy.dreamgream.domain.post.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post {
@@ -37,7 +38,7 @@ public class Post {
     private String achievementContent;
 
     @Column(name = "achieved_date")
-    private Timestamp achievedDate;
+    private LocalDateTime achievedDate;
 
     @Column(name = "cheer_cnt")
     private Long cheerCnt;
@@ -56,7 +57,7 @@ public class Post {
 
     @LastModifiedDate
     @Column(name = "modified_date")
-    private Timestamp modifiedDate;
+    private LocalDateTime modifiedDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

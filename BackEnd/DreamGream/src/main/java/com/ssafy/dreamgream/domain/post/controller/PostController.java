@@ -2,6 +2,7 @@ package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
+import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
 import com.ssafy.dreamgream.global.sse.SSEService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 public class PostController {
 
     private final PostService postService;
@@ -47,4 +48,15 @@ public class PostController {
         sseService.sendImageResponse(userId, testDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PatchMapping("/{postId}")
+    public ResponseEntity<PostUpdateRequestDto> updatePostPartially(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto) {
+        log.info(String.valueOf(postId));
+        PostUpdateRequestDto updatedPost = postService.updatePostPartially(postId, requestDto);
+        if (updatedPost == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(updatedPost);
+    }
+
 }

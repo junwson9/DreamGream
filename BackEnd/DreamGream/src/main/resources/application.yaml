@@ -10,6 +10,12 @@ spring:
     include:
       - oauth
       - db
+    jackson:
+      serialization:
+        - write-dates-as-timestamps: false
+        - write-date-timestamps-as-nanoseconds: false
+      deserialization:
+        - adjust-dates-to-context-time-zone: false
 # RabbitMQ 연결 정보
   rabbitmq:
     host: 127.0.0.1
