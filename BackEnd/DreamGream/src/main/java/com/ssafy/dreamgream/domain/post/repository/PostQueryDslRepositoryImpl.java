@@ -32,7 +32,7 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 				post.postId, post.title, post.isDisplay, post.isAchieved,
 				post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
 				post.aiImg, post.achievementImg, post.category.categoryName,
-				post.member.id, post.member.nickname))
+				post.member.memberId, post.member.nickname))
 			.from(post)
 			.where(expression)
 			.orderBy(post.createdDate.desc())
