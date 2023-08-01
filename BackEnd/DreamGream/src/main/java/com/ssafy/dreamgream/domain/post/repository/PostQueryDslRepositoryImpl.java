@@ -8,12 +8,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Slf4j
 @RequiredArgsConstructor
 public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
@@ -23,8 +25,8 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	@Override
 	public Slice<PostListResponseDto> findPostListByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
 
-		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
-		createPostExpression(expression, categoryId, null);
+		BooleanExpression expression = createPostExpression(isAchieved, categoryId, null);
+		expression = expression.and(post.isDisplay.eq(true));
 
 		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
@@ -34,8 +36,9 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	@Override
 	public Slice<PostListResponseDto> findPostListOfMember(Long memberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
 
-		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
-		createPostExpression(expression, categoryId, memberId);
+		log.info("findPostListOfMember isAchieved: {}", isAchieved);
+		BooleanExpression expression = createPostExpression(isAchieved, categoryId, memberId);
+		expression = expression.and(post.isDisplay.eq(true));
 
 		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
@@ -45,8 +48,7 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	@Override
 	public Slice<PostListResponseDto> findMyPostList(Long currentMemberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
 
-		BooleanExpression expression = post.isAchieved.eq(isAchieved);
-		createPostExpression(expression, categoryId, currentMemberId);
+		BooleanExpression expression = createPostExpression(isAchieved, categoryId, currentMemberId);
 
 		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
@@ -54,7 +56,9 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 
 	// BooleanExpression 객체를 생성하는 메서드
-	private BooleanExpression createPostExpression(BooleanExpression expression, Long categoryId, Long memberId) {
+	private BooleanExpression createPostExpression(Boolean isAchieved, Long categoryId, Long memberId) {
+
+		BooleanExpression expression = post.isAchieved.eq(isAchieved);
 
 		if (categoryId != null && categoryId != 0L) {
 			expression = expression.and(post.category.categoryId.eq(categoryId));
