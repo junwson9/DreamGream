@@ -16,6 +16,7 @@ public class PostService {
 
     private PostRepository postRepository;
 
+
     @Autowired
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
