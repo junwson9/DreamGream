@@ -7,8 +7,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.sql.Blob;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -123,4 +124,16 @@ public class Post {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    @OneToMany(mappedBy = "cheerPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberPostCheer> memberPostCheers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "celebratePost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberPostCelebrate> memberPostCelebrates = new ArrayList<>();
+
+//    public void removeMemberPostCelebrate(MemberPostCelebrate memberPostCelebrate) {
+//        memberPostCelebrates.remove(memberPostCelebrate);
+//        memberPostCelebrate.setPost(null);
+//    }
+
 }
