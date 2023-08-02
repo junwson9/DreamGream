@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/likes")
+@RequestMapping("/api/congrats")
 public class LikeController {
 
     @Autowired

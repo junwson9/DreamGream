@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/cheers")
+@RequestMapping("/api/posts/cheering")
 public class CheerController {
 
     @Autowired
