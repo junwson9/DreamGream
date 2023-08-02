@@ -86,17 +86,6 @@ public class PostController {
     }
 
 
-    @PatchMapping("/{postId}")
-    public ResponseEntity<PostUpdateRequestDto> updatePostPartially(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto) {
-        log.info(String.valueOf(postId));
-        PostUpdateRequestDto updatedPost = postService.updatePostPartially(postId, requestDto);
-        if (updatedPost == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(updatedPost);
-    }
-
-
     /**
      * 개인피드 - 타인피드 조회
      */
