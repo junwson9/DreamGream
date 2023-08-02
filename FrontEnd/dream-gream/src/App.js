@@ -13,10 +13,12 @@ import InputBox from './components/InputBox/InputBox';
 // import ToggleSwitch from './components/Button/ToggleButton';
 // import TopBar from './components/Common/Topbar';
 import TopTap from './components/Common/TopTab';
+import Navbar from './components/Common/Navbar';
 
 function App() {
   return (
     <div className="App">
+      <div className="content">
       <Routes>
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
@@ -34,6 +36,8 @@ function App() {
         <Route path="/myfeed" element={<MyFeed />} />
         <Route path="/about" element={<viewAbout />} />
       </Routes>
+      </div>
+      <Navbar/>
     </div>
   );
 }

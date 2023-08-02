@@ -12,7 +12,7 @@ function CategoryButtons({ setCategory }) {
     };
 
     return (
-        <div className="w-[267px] flex flex-wrap justify-between mx-auto">
+        <div className="w-[267px] flex flex-wrap justify-between">
             {categorys.map((category) => (
                 <button
                     key={category}

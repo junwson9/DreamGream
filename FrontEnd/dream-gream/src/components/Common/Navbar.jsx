@@ -68,7 +68,7 @@ function Navbar() {
 
 
           <div className="w-[72px] h-16 relative">
-          <Link to="/acheivefeed">
+          <Link to="/myfeed">
             <button
               type="button"
               className='w-[26px] h-[26px] left-[23px] top-[19px] absolute'
