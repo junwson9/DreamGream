@@ -130,5 +130,11 @@ public class PostController {
         return ResponseEntity.ok(updatedPost);
     }
 
+    @DeleteMapping("/{post_id}")
+    public String deletePost(@PathVariable("post_id") Long postId) {
+        postService.deletePost(postId);
+        return "Post with ID " + postId + " has been deleted successfully.";
+    }
+
 
 }
