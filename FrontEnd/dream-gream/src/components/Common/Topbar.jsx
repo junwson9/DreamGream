@@ -2,26 +2,35 @@
 
 import React from 'react';
 import { ReactComponent as LeftIcon } from './leftIcon.svg';
+import { ReactComponent as CloseIcon } from '../../assets/close.svg'; 
 import { useNavigate } from 'react-router-dom';
 
-function TopBar({ title, showProfileButton = true, showConfirmButton = true }) {
+function TopBar({ pathName, onConfirm, title, confirmName, showProfileButton = true, showConfirmButton = true, showLeftButton = true, showCloseButton = true}) {
   const navigate = useNavigate();
 
   const handleLeftIconClick = () => {
     navigate(-1);
   };
-
-  const handleConfirmClick = () => {
-    navigate('/다른페이지로 이동 다른 event 나 post는 알아서 만드삼');
+  const handleConfirmClick = async () => {
+    if (onConfirm) {
+      await onConfirm(); // Trigger the onConfirm function (POST request)
+    }
+    navigate(pathName); // Navigate to the specified pathName after the onConfirm function completes
   };
 
   return (
     <div className="w-[360px] h-[60px] relative">
-      <LeftIcon
+      {showLeftButton && <LeftIcon
         className="w-[26px] h-[26px] left-[20px] top-[18px] absolute z-[1]"
         onClick={handleLeftIconClick}
         style={{ cursor: 'pointer' }}
-      />
+      />}
+
+      {showCloseButton && <CloseIcon
+        className="w-[26px] h-[26px] left-[20px] top-[18px] absolute z-[1]"
+        onClick={handleLeftIconClick}
+        style={{ cursor: 'pointer' }}
+      />}
 
       {showProfileButton && (
         <div className="w-[360px] h-[60px] left-0 top-0 absolute bg-white border-b border-neutral-100">
@@ -35,7 +44,7 @@ function TopBar({ title, showProfileButton = true, showConfirmButton = true }) {
           className="left-[307px] top-[19px] absolute text-right text-zinc-800 text-lg font-bold leading-[25.20px] cursor-pointer"
           onClick={handleConfirmClick}
         >
-          확인
+          {confirmName}
         </div>
       )}
     </div>
