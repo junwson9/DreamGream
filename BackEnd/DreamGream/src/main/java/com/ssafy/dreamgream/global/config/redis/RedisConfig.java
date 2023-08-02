@@ -1,7 +1,7 @@
 package com.ssafy.dreamgream.global.config.redis;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -19,11 +19,15 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 public class RedisConfig {
 
-	private final RedisProperties redisProperties;
+	@Value("${spring.data.redis.host}")
+	private String redisHost;
+
+	@Value("${spring.data.redis.port}")
+	private Integer redisPort;
 
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
-		return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
+		return new LettuceConnectionFactory(redisHost, redisPort);
 	}
 
 	@Bean
