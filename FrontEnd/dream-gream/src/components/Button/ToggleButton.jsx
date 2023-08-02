@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { useState } from 'react';
 
-function ToggleSwitch() {
+function ToggleButton() {
   const [isChecked, setIsChecked] = useState(false);
   const toggleSwitch = () => {
     setIsChecked((prevState) => !prevState);
@@ -23,4 +23,4 @@ function ToggleSwitch() {
   );
 }
 
-export default ToggleSwitch;
+export default ToggleButton;
