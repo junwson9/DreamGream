@@ -1,0 +1,24 @@
+/* eslint-disable */
+import React from 'react';
+import LogoBig from '../../assets/LogoBig.png';
+import { ReactComponent as LogoBig1 } from '../../assets/LogoBig1.svg';
+import { ReactComponent as KakaoLogin } from '../../assets/KakaoLogin.svg';
+
+function LogIn() {
+  const kauthUrl = 'http://localhost:8000/oauth2/authorize/kakao';
+
+  return (
+    <>
+      <div class="w-[360px] h-[800px] pt-[165px] pb-[295px] bg-blue-300 bg-opacity-40 flex-col justify-start items-center inline-flex">
+        <div class="mb-20">
+          <LogoBig1 />
+        </div>
+        <a href={kauthUrl}>
+          <KakaoLogin />
+        </a>
+      </div>
+    </>
+  );
+}
+
+export default LogIn;
