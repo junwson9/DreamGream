@@ -6,7 +6,12 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +37,39 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 		return checkLastPage(pageable, results);
 	}
 
+	@Override
+	public Map<String, List<PostListResponseDto>> findPostListOfMember(Long memberId) {
+		BooleanExpression expression = post.member.memberId.eq(memberId).and(post.isDisplay.eq(true));
+		return getPersonalPostListMap(expression);
+	}
+
+	@Override
+	public Map<String, List<PostListResponseDto>> findMyPostList(Long memberId) {
+		BooleanExpression expression = post.member.memberId.eq(memberId);
+		return getPersonalPostListMap(expression);
+	}
+
+	private Map<String, List<PostListResponseDto>> getPersonalPostListMap(BooleanExpression expression) {
+		Map<String, List<PostListResponseDto>> resultMap = new HashMap<>();
+
+		List<PostListResponseDto> postListResults = getNotPageablePostListResults(expression);
+
+		List<PostListResponseDto> achievedPostList = postListResults.stream()
+				.filter(post -> post.getIsAchieved())
+				.collect(Collectors.toList());
+
+		List<PostListResponseDto> postList = postListResults.stream()
+				.filter(post -> !post.getIsAchieved())
+				.collect(Collectors.toList());
+
+		resultMap.put("achieved_post_list", achievedPostList);
+		resultMap.put("post_list", postList);
+
+		return resultMap;
+	}
+
+
+	/* 개인 피드 조회 방식 변경으로 아래 코드 폐기
 
 	@Override
 	public Slice<PostListResponseDto> findPostListOfMember(Long memberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
@@ -53,6 +91,7 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
 	}
+	*/
 
 
 	// BooleanExpression 객체를 생성하는 메서드
@@ -87,6 +126,21 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 				)
 				.orderBy(post.postId.desc())
 				.limit(pageable.getPageSize()+1)
+				.fetch();
+	}
+
+	private List<PostListResponseDto> getNotPageablePostListResults(BooleanExpression expression) {
+		return jpaQueryFactory
+				.select(Projections.constructor(PostListResponseDto.class,
+						post.postId, post.title, post.isDisplay, post.isAchieved,
+						post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
+						post.aiImg, post.achievementImg, post.category.categoryId,
+						post.member.memberId, post.member.nickname, post.member.profileImg))
+				.from(post)
+				.where(
+						expression
+				)
+				.orderBy(post.postId.desc())
 				.fetch();
 	}
 

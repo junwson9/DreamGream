@@ -21,15 +21,19 @@ public class PostServiceImpl {
 		return postRepository.findPostListByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
 	}
 
-	public Slice<PostListResponseDto> findPostListOfMember(Long memberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
-		//TODO 존재하지 않는 memberId 예외처리
 
-		return postRepository.findPostListOfMember(memberId, isAchieved, categoryId, lastPostId, pageable);
-	}
 
-	public Slice<PostListResponseDto> findMyPostList(Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
-		Long currentMemberId = memberService.getCurrentMember().getMemberId();
-		return postRepository.findMyPostList(currentMemberId, isAchieved, categoryId, lastPostId, pageable);
-	}
+//  // 개인 피드 조회 방식 변경으로 아래 코드 폐기
+//	public Slice<PostListResponseDto> findPostListOfMember(Long memberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
+//		//TODO 존재하지 않는 memberId 예외처리
+//
+//		return postRepository.findPostListOfMember(memberId, isAchieved, categoryId, lastPostId, pageable);
+//	}
+//
+//	public Slice<PostListResponseDto> findMyPostList(Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
+//		Long currentMemberId = memberService.getCurrentMember().getMemberId();
+//		return postRepository.findMyPostList(currentMemberId, isAchieved, categoryId, lastPostId, pageable);
+//	}
+
 
 }

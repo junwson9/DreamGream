@@ -1,6 +1,8 @@
 package com.ssafy.dreamgream.domain.post.dto.response;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 
 @Getter
@@ -14,9 +16,9 @@ public class PostListResponseDto {
 
 	private Boolean isAchieved;
 
-	private Timestamp createdDate;
+	private LocalDateTime createdDate;
 
-	private Timestamp achievedDate;
+	private LocalDateTime achievedDate;
 
 	private Long cheerCnt;
 
@@ -39,7 +41,7 @@ public class PostListResponseDto {
 	}
 
 	public PostListResponseDto(Long postId, String title, Boolean isDisplay, Boolean isAchieved,
-		Timestamp createdDate, Timestamp achievedDate, Long cheerCnt, Long celebrateCnt,
+		LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt,
 		String aiImg, String achievementImg, Long categoryId,
 		Long memberId, String nickname, String profileImg) {
 		this.postId = postId;

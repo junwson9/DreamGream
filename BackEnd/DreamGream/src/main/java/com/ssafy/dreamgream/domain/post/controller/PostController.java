@@ -10,6 +10,9 @@ import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
 import com.ssafy.dreamgream.global.sse.SSEService;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +56,7 @@ public class PostController {
 
 
     /**
-     * 전체피드-달성완료 조회
+     * 전체피드 - 달성완료 조회
      * @param categoryId, lastPostId
      * @return postList
      */
@@ -70,7 +73,7 @@ public class PostController {
 
 
     /**
-     * 전체피드-달성중 조회
+     * 전체피드 - 달성중 조회
      * @param categoryId, lastPostId
      * @return postList 
      */
@@ -86,39 +89,43 @@ public class PostController {
     }
 
 
-    /**
-     * 타인 피드 조회
-     * @param isAchieved, categoryId, lastPostId
-     * @return postList
-     */
-    @GetMapping("/members/{memberId}")
-    public ResponseEntity<?> findPostListOfMember(@PathVariable Long memberId,
-                                                @RequestParam(value = "is-achieved") Boolean isAchieved,
-                                                @RequestParam(value = "category-id", required = false) Long categoryId,
-                                                @RequestParam(value = "last-post-id", required = false) Long lastPostId,
-                                                @PageableDefault(size = 10) Pageable pageable) {
+//    // 개인 피드 조회 방식 변경으로 아래 코드 폐기
+//
+//    /**
+//     * 타인 피드 조회
+//     * @param isAchieved, categoryId, lastPostId
+//     * @return postList
+//     */
+//    @GetMapping("/members/{memberId}")
+//    public ResponseEntity<?> findPostListOfMember(@PathVariable Long memberId,
+//                                                @RequestParam(value = "is-achieved") Boolean isAchieved,
+//                                                @RequestParam(value = "category-id", required = false) Long categoryId,
+//                                                @RequestParam(value = "last-post-id", required = false) Long lastPostId,
+//                                                @PageableDefault(size = 10) Pageable pageable) {
+//
+//        Slice<PostListResponseDto> postList = postServiceImpl.findPostListOfMember(memberId, isAchieved, categoryId, lastPostId, pageable);
+//        ResponseDto responseDto = new ResponseDto(success, "개인 피드를 조회했습니다.", Collections.singletonMap("postList", postList));
+//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+//    }
+//
+//
+//    /**
+//     * 본인 피드 조회
+//     * @param isAchieved, categoryId, lastPostId
+//     * @return postList
+//     */
+//    @GetMapping("/my")
+//    public ResponseEntity<?> findMyPostList(@RequestParam(value = "is-achieved") Boolean isAchieved,
+//                                            @RequestParam(value = "category-id", required = false) Long categoryId,
+//                                            @RequestParam(value = "last-post-id", required = false) Long lastPostId,
+//                                            @PageableDefault(size = 10) Pageable pageable) {
+//
+//        Slice<PostListResponseDto> postList = postServiceImpl.findMyPostList(isAchieved, categoryId, lastPostId, pageable);
+//        ResponseDto responseDto = new ResponseDto(success, "마이 피드를 조회했습니다.", Collections.singletonMap("postList", postList));
+//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+//    }
+//
 
-        Slice<PostListResponseDto> postList = postServiceImpl.findPostListOfMember(memberId, isAchieved, categoryId, lastPostId, pageable);
-        ResponseDto responseDto = new ResponseDto(success, "개인 피드를 조회했습니다.", Collections.singletonMap("postList", postList));
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-    }
-
-
-    /**
-     * 본인 피드 조회
-     * @param isAchieved, categoryId, lastPostId
-     * @return postList
-     */
-    @GetMapping("/my")
-    public ResponseEntity<?> findMyPostList(@RequestParam(value = "is-achieved") Boolean isAchieved,
-                                            @RequestParam(value = "category-id", required = false) Long categoryId,
-                                            @RequestParam(value = "last-post-id", required = false) Long lastPostId,
-                                            @PageableDefault(size = 10) Pageable pageable) {
-
-        Slice<PostListResponseDto> postList = postServiceImpl.findMyPostList(isAchieved, categoryId, lastPostId, pageable);
-        ResponseDto responseDto = new ResponseDto(success, "마이 피드를 조회했습니다.", Collections.singletonMap("postList", postList));
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-    }
 
     @PatchMapping("/{postId}")
     public ResponseEntity<PostUpdateRequestDto> updatePostPartially(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto) {
@@ -128,6 +135,28 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(updatedPost);
+    }
+
+
+    /**
+     * 개인피드 - 타인피드 조회
+     */
+    @GetMapping("/members/{memberId}")
+    public ResponseEntity<?> findPostListOfMember(@PathVariable Long memberId) {
+        Map<String, List<PostListResponseDto>> data = postService.findPostListOfMember(memberId);
+        ResponseDto responseDto = new ResponseDto(success, "개인 피드를 조회했습니다.", data);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    /**
+     * 개인피드 - 본인피드 조회
+     * @return
+     */
+    @GetMapping("/my")
+    public ResponseEntity<?> findMyPostList() {
+        Map<String, List<PostListResponseDto>> data = postService.findMyPostList();
+        ResponseDto responseDto = new ResponseDto(success, "본인 피드를 조회했습니다.", data);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 
