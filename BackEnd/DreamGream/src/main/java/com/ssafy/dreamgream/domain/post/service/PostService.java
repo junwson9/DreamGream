@@ -80,6 +80,22 @@ public class PostService {
     }
 
 
+    public PostResponseDto findPostById(Long postId) {
+        // TODO 예외처리: postId 존재하지 않는 경우
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if(!post.getIsDisplay()) {
+            if(!memberService.getCurrentMemberId().equals(post.getMember().getMemberId())) {
+                // TODO 예외처리 : isDisplay = false 인데 작성자 본인이 아닌 경우
+                return null;
+            }
+        }
+
+        return new PostResponseDto(post);
+    }
+
+
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
     }
