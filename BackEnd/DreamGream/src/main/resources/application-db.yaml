@@ -3,11 +3,9 @@ spring:
   jpa:
     show-sql: false
     open-in-view: false
-    database-platform: MYSQL
     hibernate:
       ddl-auto: none
       use-new-id-generator-mappings: true
-    properties:
       hibernate.format_sql: true
       hibernate.show_sql: false
 
@@ -16,6 +14,10 @@ spring:
   config:
     activate:
       on-profile: "db-local"
+  data:
+    redis:
+      host: localhost
+      port: 6379
   jpa:
     defer-datasource-initialization: true
     hibernate:
@@ -30,24 +32,30 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  data:
-    redis:
-      host: localhost
-      port: 6379
 
 
 --- # prod 설정
 spring:
   config:
     activate:
-      on-profile: "db-dev"
-  jpa:
-    hibernate:
-      ddl-auto: update
-    defer-datasource-initialization: true
+      on-profile: "db-prod"
+  data:
+    redis:
+      host: ssafy-redis
+      port: 6379
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username:
-    password:
-    url: jdbc:mysql://localhost:3306/dreamgream?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: ssafya609
+    url: jdbc:mysql://ssafy-db:3306/dreamgream?characterEncoding=UTF-8&serverTimezone=UTC
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        format_sql: true
 
