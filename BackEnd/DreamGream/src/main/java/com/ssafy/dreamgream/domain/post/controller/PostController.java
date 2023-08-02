@@ -3,6 +3,7 @@ package com.ssafy.dreamgream.domain.post.controller;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
+import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
@@ -125,4 +126,10 @@ public class PostController {
     }
 
 
+    @GetMapping("/{postId}")
+    public ResponseEntity<?> findPostById(@PathVariable Long postId) {
+        PostResponseDto postResponseDto = postService.findPostById(postId);
+        ResponseDto responseDto = new ResponseDto(success, "게시글을 조회했습니다.", Collections.singletonMap("post", postResponseDto));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }

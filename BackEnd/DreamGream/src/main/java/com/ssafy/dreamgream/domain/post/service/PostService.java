@@ -3,6 +3,7 @@ package com.ssafy.dreamgream.domain.post.service;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
+import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +70,7 @@ public class PostService {
 
 
     public Map<String, List<PostListResponseDto>> findMyPosts() {
-        Long memberId = memberService.getCurrentMember().getMemberId();
+        Long memberId = memberService.getCurrentMemberId();
         log.info("currentMemberId: {}", memberId);
 
         Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId);
@@ -81,4 +82,21 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
+
+
+
+    public PostResponseDto findPostById(Long postId) {
+        // TODO 예외처리: postId 존재하지 않는 경우
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if(!post.getIsDisplay()) {
+            if(!memberService.getCurrentMemberId().equals(post.getMember().getMemberId())) {
+               // TODO 예외처리 : isDisplay = false 인데 작성자 본인이 아닌 경우
+                return null;
+            }
+        }
+
+        return new PostResponseDto(post);
+    }
 }
