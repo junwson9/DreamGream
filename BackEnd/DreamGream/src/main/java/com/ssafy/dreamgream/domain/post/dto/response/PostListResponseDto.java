@@ -41,7 +41,7 @@ public class PostListResponseDto {
 	}
 
 	public PostListResponseDto(Long postId, String title, Boolean isDisplay, Boolean isAchieved,
-		LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt,
+							   LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt,
 		String aiImg, String achievementImg, Long categoryId,
 		Long memberId, String nickname, String profileImg) {
 		this.postId = postId;

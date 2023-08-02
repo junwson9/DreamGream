@@ -119,5 +119,21 @@ public class PostController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @PatchMapping("/{postId}")
+    public ResponseEntity<PostUpdateRequestDto> updatePostPartially(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto) {
+        log.info(String.valueOf(postId));
+        PostUpdateRequestDto updatedPost = postService.updatePostPartially(postId, requestDto);
+        if (updatedPost == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(updatedPost);
+    }
+
+    @DeleteMapping("/{post_id}")
+    public String deletePost(@PathVariable("post_id") Long postId) {
+        postService.deletePost(postId);
+        return "Post with ID " + postId + " has been deleted successfully.";
+    }
+
 
 }
