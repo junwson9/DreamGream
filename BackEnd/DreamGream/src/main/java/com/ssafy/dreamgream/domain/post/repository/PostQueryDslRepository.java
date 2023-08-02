@@ -9,15 +9,10 @@ import java.util.Map;
 
 public interface PostQueryDslRepository {
 
-	Slice<PostListResponseDto> findPostListByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable);
+	Slice<PostListResponseDto> findPublicPostsByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable);
 
-	Map<String, List<PostListResponseDto>> findPostListOfMember(Long memberId);
+	Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId);
 
-	Map<String, List<PostListResponseDto>> findMyPostList(Long memberId);
+	Map<String, List<PostListResponseDto>> findPostsByMember(Long memberId);
 
-	/* 	개인 피드 조회 방식 변경으로 아래 코드 폐기
-	Slice<PostListResponseDto> findPostListOfMember(Long memberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable);
-
-	Slice<PostListResponseDto> findMyPostList(Long currentMemberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable);
-	*/
 }

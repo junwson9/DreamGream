@@ -26,33 +26,32 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-
 	@Override
-	public Slice<PostListResponseDto> findPostListByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+	public Slice<PostListResponseDto> findPublicPostsByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
 
-		BooleanExpression expression = createPostExpression(isAchieved, categoryId, null);
+		BooleanExpression expression = createPostExpression(isAchieved, categoryId);
 		expression = expression.and(post.isDisplay.eq(true));
 
-		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
+		List<PostListResponseDto> results = getPostsResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
 	}
 
 	@Override
-	public Map<String, List<PostListResponseDto>> findPostListOfMember(Long memberId) {
+	public Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId) {
 		BooleanExpression expression = post.member.memberId.eq(memberId).and(post.isDisplay.eq(true));
-		return getPersonalPostListMap(expression);
+		return getPersonalPostsMap(expression);
 	}
 
 	@Override
-	public Map<String, List<PostListResponseDto>> findMyPostList(Long memberId) {
+	public Map<String, List<PostListResponseDto>> findPostsByMember(Long memberId) {
 		BooleanExpression expression = post.member.memberId.eq(memberId);
-		return getPersonalPostListMap(expression);
+		return getPersonalPostsMap(expression);
 	}
 
-	private Map<String, List<PostListResponseDto>> getPersonalPostListMap(BooleanExpression expression) {
+	private Map<String, List<PostListResponseDto>> getPersonalPostsMap(BooleanExpression expression) {
 		Map<String, List<PostListResponseDto>> resultMap = new HashMap<>();
 
-		List<PostListResponseDto> postListResults = getNotPageablePostListResults(expression);
+		List<PostListResponseDto> postListResults = getNotPageablePostsResults(expression);
 
 		List<PostListResponseDto> achievedPostList = postListResults.stream()
 				.filter(post -> post.getIsAchieved())
@@ -69,33 +68,8 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	}
 
 
-	/* 개인 피드 조회 방식 변경으로 아래 코드 폐기
-
-	@Override
-	public Slice<PostListResponseDto> findPostListOfMember(Long memberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
-
-		log.info("findPostListOfMember isAchieved: {}", isAchieved);
-		BooleanExpression expression = createPostExpression(isAchieved, categoryId, memberId);
-		expression = expression.and(post.isDisplay.eq(true));
-
-		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
-		return checkLastPage(pageable, results);
-	}
-
-
-	@Override
-	public Slice<PostListResponseDto> findMyPostList(Long currentMemberId, Boolean isAchieved, Long categoryId, Long lastPostId, Pageable pageable) {
-
-		BooleanExpression expression = createPostExpression(isAchieved, categoryId, currentMemberId);
-
-		List<PostListResponseDto> results = getPostListResults(expression, lastPostId, pageable);
-		return checkLastPage(pageable, results);
-	}
-	*/
-
-
-	// BooleanExpression 객체를 생성하는 메서드
-	private BooleanExpression createPostExpression(Boolean isAchieved, Long categoryId, Long memberId) {
+	// 전체피드 BooleanExpression 객체를 생성하는 메서드
+	private BooleanExpression createPostExpression(Boolean isAchieved, Long categoryId) {
 
 		BooleanExpression expression = post.isAchieved.eq(isAchieved);
 
@@ -103,16 +77,12 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 			expression = expression.and(post.category.categoryId.eq(categoryId));
 		}
 
-		if (memberId != null) {
-			expression = expression.and(post.member.memberId.eq(memberId));
-		}
-
 		return expression;
 	}
 
 
-	// expression(where) 조건에 맞는 게시글 목록을 조회해오는 메서드
-	private List<PostListResponseDto> getPostListResults(BooleanExpression expression, Long lastPostId, Pageable pageable) {
+	// 전체피드 expression 조건에 맞는 게시글 목록을 조회해오는 메서드
+	private List<PostListResponseDto> getPostsResults(BooleanExpression expression, Long lastPostId, Pageable pageable) {
 		return jpaQueryFactory
 				.select(Projections.constructor(PostListResponseDto.class,
 						post.postId, post.title, post.isDisplay, post.isAchieved,
@@ -129,7 +99,9 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 				.fetch();
 	}
 
-	private List<PostListResponseDto> getNotPageablePostListResults(BooleanExpression expression) {
+
+	// 개인피드 expression 조건에 맞는 게시글 목록을 조회해오는 메서드
+	private List<PostListResponseDto> getNotPageablePostsResults(BooleanExpression expression) {
 		return jpaQueryFactory
 				.select(Projections.constructor(PostListResponseDto.class,
 						post.postId, post.title, post.isDisplay, post.isAchieved,
