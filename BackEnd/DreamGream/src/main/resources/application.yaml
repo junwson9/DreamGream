@@ -5,17 +5,14 @@ spring:
     group:
       local:
         - db-local
+        - rabbitmq-local
       prod:
-        - db-dev
+        - db-prod
+        - rabbitmq-prod
     include:
       - oauth
       - db
-# RabbitMQ 연결 정보
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: guest
-    password: guest
+      - rabbitmq
 
 server:
   port: 8000
