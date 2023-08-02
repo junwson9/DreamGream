@@ -1,8 +1,12 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 
 import Member from './Member';
 
-const FeedAcheived = ({ acheivedfeeddata }) => {
+function FeedAcheived({ acheivedfeeddata }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const handleSlideChange = (nextSlide) => {
@@ -62,6 +66,6 @@ const FeedAcheived = ({ acheivedfeeddata }) => {
       ))}
     </>
   );
-};
+}
 
 export default FeedAcheived;
