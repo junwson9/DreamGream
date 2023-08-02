@@ -1,11 +1,15 @@
 package com.ssafy.dreamgream.domain.post.controller;
 
+import com.ssafy.dreamgream.domain.member.entity.Member;
+import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
+import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationProduceDto;
 import com.ssafy.dreamgream.global.sse.SSEService;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +36,7 @@ public class PostController {
     private final ImageService imageService;
     private final SSEService sseService;
     private final PostService postService;
+    private final MemberService memberService;
 
     @GetMapping("/test")
     public String Test() {
@@ -40,15 +45,21 @@ public class PostController {
     }
 
     @PostMapping("/image")
-    public ResponseEntity<String> generateImage(@RequestBody ImageGenerateRequestDto dto) throws InterruptedException {
-        Long userId = 123L;
-
+    public void generateImage(@RequestBody ImageGenerateRequestDto dto){
         log.info("title : {}", dto.getTitle());
         log.info("category : {}", dto.getCategoryName());
 
         // 이미지 생성 프로세스 시작
-        //imageService.processImageCreation(userId, dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Member currentMember = memberService.getCurrentMember();
+        PromptCreationProduceDto produceDto = PromptCreationProduceDto.builder()
+                .gender(currentMember.getGender().toString())
+                .birthyear(currentMember.getBirthyear().toString())
+                .title(dto.getTitle())
+                .categoryName(dto.getCategoryName())
+                .build();
+
+        imageService.processImageCreation(currentMember.getMemberId(), produceDto);
+
     }
 
 
