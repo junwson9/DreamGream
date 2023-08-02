@@ -1,30 +1,30 @@
 package com.ssafy.dreamgream.domain.post.service;
 
-import com.ssafy.dreamgream.domain.post.dto.request.PostRequestDto;
+import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
-import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-//import java.util.Date;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class PostService {
 
-    private PostRepository postRepository;
-    @Autowired
-    public PostService(PostRepository postRepository){
-        this.postRepository = postRepository;
-    }
+    private final PostRepository postRepository;
+    private final MemberService memberService;
 
     @Transactional
     public PostUpdateRequestDto updatePostPartially(Long postId, PostUpdateRequestDto postUpdateRequestDto){
@@ -54,8 +54,26 @@ public class PostService {
         return postUpdateRequestDto;
     }
 
-    public void deletePost(Long postId) {
-        postRepository.deleteById(postId);
+
+    public Slice<PostListResponseDto> findPublicPosts(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+        return postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
+    }
+
+
+    public Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId) {
+        //TODO 존재하지 않는 memberId 예외 처리
+
+        Map<String, List<PostListResponseDto>> resultMap = postRepository.findPublicPostsByMember(memberId);
+        return resultMap;
+    }
+
+
+    public Map<String, List<PostListResponseDto>> findMyPosts() {
+        Long memberId = memberService.getCurrentMember().getMemberId();
+        log.info("currentMemberId: {}", memberId);
+
+        Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId);
+        return resultMap;
     }
 
 }
