@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 public class MemberPostCheer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +19,19 @@ public class MemberPostCheer {
     @Column(name = "post_id")
     private Long postId;
 
-    @Column(name = "cheer_cnt")
-    private Long cheerCnt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", insertable = false, updatable = false)
+    private Post cheerPost;
+
+    public void setPost(Post cheerPost) {
+        this.cheerPost = cheerPost;
+    }
+
+    public void setPostId(Long postId){
+        this.postId = postId;
+    }
+
+    public void setMemberId(Long memberId){
+        this.memberId = memberId;
+    }
 }

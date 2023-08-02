@@ -53,4 +53,9 @@ public class PostService {
         BeanUtils.copyProperties(post,postUpdateRequestDto);
         return postUpdateRequestDto;
     }
+
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
+    }
+
 }
