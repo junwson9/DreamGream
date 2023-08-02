@@ -55,7 +55,7 @@ public class Post {
     private String aiImg;
 
     @Column(name = "achievement_img")
-    private Blob achievementImg;
+    private String achievementImg;
 
     @CreatedDate
     @Column(name = "created_date")
@@ -109,7 +109,7 @@ public class Post {
         this.aiImg = aiImg;
     }
 
-    public void setAchievementImg(Blob achievementImg) {
+    public void setAchievementImg(String achievementImg) {
         this.achievementImg = achievementImg;
     }
 

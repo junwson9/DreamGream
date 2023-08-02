@@ -20,7 +20,7 @@ public class PostUpdateRequestDto {
     private String achievedDate;
     private Long cheerCnt;
     private String aiImg;
-    private Blob achievementImg;
+    private String achievementImg;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     public LocalDateTime getAchievedDate() {
