@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Slf4j
 @Component
-public class myScheduler {
+public class MyScheduler {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
