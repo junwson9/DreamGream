@@ -131,6 +131,14 @@ public class Post {
     @OneToMany(mappedBy = "celebratePost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberPostCelebrate> memberPostCelebrates = new ArrayList<>();
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateMember(Member member){
+        this.member = member;
+    }
+
 //    public void removeMemberPostCelebrate(MemberPostCelebrate memberPostCelebrate) {
 //        memberPostCelebrates.remove(memberPostCelebrate);
 //        memberPostCelebrate.setPost(null);
