@@ -2,7 +2,6 @@ import { React, useState, useEffect } from 'react';
 // import './Main.scss';
 import Topbar from '../../components/Common/Topbar';
 import FeedForDetail from '../../components/Feed/FeedForDetail';
-import ContentCard from '../../components/Feed/ContentCard';
 import ScrapLikeBtns from '../../components/Button/ScrapLikeBtns';
 import AcheiveBtn from '../../components/Button/AcheiveBtn';
 import Navbar from '../../components/Common/Navbar';

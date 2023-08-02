@@ -7,7 +7,7 @@ import FeedAcheived from '../../components/Feed/FeedAcheived';
 import Navbar from '../../components/Common/Navbar';
 
 export default function acheiveFeed() {
-  const [, setAcheivedFeedData] = useState([]);
+  const [acheivedfeeddata, setAcheivedFeedData] = useState([]);
   const [bestfeeddata, setBestFeedData] = useState([]);
 
   useEffect(() => {

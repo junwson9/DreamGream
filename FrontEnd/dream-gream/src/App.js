@@ -35,6 +35,8 @@ function App() {
         <Route path="/image" element={<PostViewImage />} />
         <Route path="/myfeed" element={<MyFeed />} />
         <Route path="/about" element={<viewAbout />} />
+        <Route path="/updatepost" element={<updatePost />} />
+        <Route path="/acheivementupdate" element={<acheivementUpdate />} />
       </Routes>
       </div>
       <Navbar/>
