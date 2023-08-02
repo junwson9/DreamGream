@@ -24,14 +24,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    public Member getCurrentMember() throws AuthenticationException {
+    public Long getCurrentMemberId() throws AuthenticationException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        UserDetails userDetails = (User) authentication.getPrincipal();
-//        Long memberId = Long.valueOf(userDetails.getUsername());
-//
-//        Member currentMember = memberRepository.findById(memberId).orElseThrow(); // TODO: 예외처리
-//        return currentMember;
-
 
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
             // 사용자가 인증되지 않았거나 익명 사용자인 경우
@@ -51,9 +45,17 @@ public class MemberServiceImpl implements MemberService {
         UserDetails userDetails = (UserDetails) principal;
         Long memberId = Long.valueOf(userDetails.getUsername());
 
+        return memberId;
+    }
+
+    @Override
+    public Member getCurrentMember() throws AuthenticationException {
+        Long memberId = getCurrentMemberId();
+
         Member currentMember = memberRepository.findById(memberId).orElseThrow(); // TODO: 예외처리
         return currentMember;
     }
+
 
     @Override
     @Transactional

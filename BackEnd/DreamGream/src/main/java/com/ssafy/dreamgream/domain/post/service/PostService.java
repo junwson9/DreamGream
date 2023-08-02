@@ -4,6 +4,7 @@ import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.MemberServiceImpl;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
+import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.member.entity.Member;
@@ -71,7 +72,7 @@ public class PostService {
 
 
     public Map<String, List<PostListResponseDto>> findMyPosts() {
-        Long memberId = memberService.getCurrentMember().getMemberId();
+        Long memberId = memberService.getCurrentMemberId();
         log.info("currentMemberId: {}", memberId);
 
         Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId);
