@@ -3,6 +3,7 @@ package com.ssafy.dreamgream.domain.post.dto.request;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Blob;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +21,7 @@ public class PostUpdateRequestDto {
     private String achievedDate;
     private Long cheerCnt;
     private String aiImg;
-    private String achievementImg;
+    private Blob achievementImg;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     public LocalDateTime getAchievedDate() {

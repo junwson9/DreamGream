@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -53,11 +54,11 @@ public class Post {
     private String aiImg;
 
     @Column(name = "achievement_img")
-    private String achievementImg;
+    private Blob achievementImg;
 
     @CreatedDate
     @Column(name = "created_date")
-    private Timestamp createdDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(name = "modified_date")
@@ -107,11 +108,11 @@ public class Post {
         this.aiImg = aiImg;
     }
 
-    public void setAchievementImg(String achievementImg) {
+    public void setAchievementImg(Blob achievementImg) {
         this.achievementImg = achievementImg;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
