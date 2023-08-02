@@ -76,4 +76,9 @@ public class PostService {
         return resultMap;
     }
 
+
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
+    }
+
 }
