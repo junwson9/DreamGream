@@ -57,7 +57,7 @@ public class Post {
 
     @CreatedDate
     @Column(name = "created_date")
-    private Timestamp createdDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(name = "modified_date")
@@ -111,7 +111,7 @@ public class Post {
         this.achievementImg = achievementImg;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 

@@ -29,8 +29,11 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	@Override
 	public Slice<PostListResponseDto> findPublicPostsByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
 
-		BooleanExpression expression = createPostExpression(isAchieved, categoryId);
-		expression = expression.and(post.isDisplay.eq(true));
+		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
+
+		if (categoryId != null && categoryId != 0L) {
+			expression = expression.and(post.category.categoryId.eq(categoryId));
+		}
 
 		List<PostListResponseDto> results = getPostsResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
@@ -65,19 +68,6 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 		resultMap.put("post_list", postList);
 
 		return resultMap;
-	}
-
-
-	// 전체피드 BooleanExpression 객체를 생성하는 메서드
-	private BooleanExpression createPostExpression(Boolean isAchieved, Long categoryId) {
-
-		BooleanExpression expression = post.isAchieved.eq(isAchieved);
-
-		if (categoryId != null && categoryId != 0L) {
-			expression = expression.and(post.category.categoryId.eq(categoryId));
-		}
-
-		return expression;
 	}
 
 
