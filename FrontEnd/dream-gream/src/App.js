@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import PostSubject from './pages/Posting/postSubject';
 import PostViewImage from './pages/Posting/postViewImage';
 import PostDetail from './pages/Posting/postDetail';
-import LogIn from './pages/members/Logintest';
+import LogIn from './pages/members/Login';
 import OAuth2RedirectHandler from './pages/members/OAuth2RedirectHandler';
 import ProfileEdit from './pages/members/ProfileEdit';
 import SignupGenderBirth from './pages/members/SiguUp';
