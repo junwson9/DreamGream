@@ -13,6 +13,8 @@ public interface MemberService {
 
     Member getCurrentMember() throws AuthenticationException;
 
+	Long getCurrentMemberId() throws AuthenticationException;
+
 	MemberResponseDto updateInfo(String nickname, Gender gender, Integer birthyear);
 
 	Page<Member> findByNickname(String nickname, Pageable pageable);
