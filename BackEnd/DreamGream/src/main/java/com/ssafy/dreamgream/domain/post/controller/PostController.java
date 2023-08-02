@@ -2,7 +2,9 @@ package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
+import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
+import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.domain.post.service.PostServiceImpl;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
@@ -29,6 +31,7 @@ public class PostController {
     private final PostServiceImpl postServiceImpl;
     private final ImageService imageService;
     private final SSEService sseService;
+    private final PostService postService;
 
     @GetMapping("/test")
     public String Test() {
@@ -117,6 +120,16 @@ public class PostController {
         Slice<PostListResponseDto> postList = postServiceImpl.findMyPostList(isAchieved, categoryId, lastPostId, pageable);
         ResponseDto responseDto = new ResponseDto(success, "마이 피드를 조회했습니다.", Collections.singletonMap("postList", postList));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{postId}")
+    public ResponseEntity<PostUpdateRequestDto> updatePostPartially(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto) {
+        log.info(String.valueOf(postId));
+        PostUpdateRequestDto updatedPost = postService.updatePostPartially(postId, requestDto);
+        if (updatedPost == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(updatedPost);
     }
 
 
