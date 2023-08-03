@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React from 'react';
 
-function ToggleButton() {
-  const [isChecked, setIsChecked] = useState(false);
+function ToggleButton({ isChecked, onToggle }) {
+  
   const toggleSwitch = () => {
-    setIsChecked((prevState) => !prevState);
+    onToggle(); // 토글 버튼 상태 변화 이벤트를 부모 컴포넌트로 전달
   };
 
   const switchContainerStyle = 'relative w-12 h-6';
