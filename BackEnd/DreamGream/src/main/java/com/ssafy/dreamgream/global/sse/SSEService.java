@@ -33,6 +33,7 @@ public class SSEService {
                 e.printStackTrace();
             } finally {
                 log.info("emitter complete");
+                removeEmitter(sseId);
                 emitter.complete();
             }
         } else {
@@ -41,8 +42,8 @@ public class SSEService {
         }
     }
 
-    private void removeEmitter(String userId) {
-        sseEmitters.remove(userId);
-        System.out.println("SSE connection closed for user: " + userId);
+    private void removeEmitter(Long sseId) {
+        sseEmitters.remove(sseId);
+        System.out.println("SSE connection closed for user: " + sseId);
     }
 }

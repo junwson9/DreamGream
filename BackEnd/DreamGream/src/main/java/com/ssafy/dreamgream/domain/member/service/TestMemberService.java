@@ -1,6 +1,8 @@
 package com.ssafy.dreamgream.domain.member.service;
 
 import com.ssafy.dreamgream.domain.member.entity.Member;
+import com.ssafy.dreamgream.domain.member.enums.Gender;
+import com.ssafy.dreamgream.domain.member.enums.Role;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,13 @@ public class TestMemberService {
 
     public Member getTestMember() {
 
-        Member member = memberRepository.findById(2L).orElseThrow();
+        Member member = Member.builder()
+                .memberId(1L)
+                .birthyear(1997)
+                .gender(Gender.MALE)
+                .role(Role.ROLE_USER)
+                .email("test.com")
+                .build();
 
         return member;
     }
