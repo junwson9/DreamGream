@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect,useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +12,10 @@ function Posting() {
     const [activeComponent, setActiveComponent] = useState('PostSubject');
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    let eventSource = null;
     
     const setupSSE= () => {
-        const eventSource = new EventSource('http://i9a609.p.ssafy.io:8000/sse'); // Replace the URL with your SSE endpoint
+        eventSource = new EventSource('http://i9a609.p.ssafy.io:8000/sse'); // Replace the URL with your SSE endpoint
       
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
@@ -32,6 +34,9 @@ function Posting() {
         };
       }
     const handleCloseIconClick = () => {
+      if (eventSource) {
+        eventSource.close();
+      }
       navigate(-1);
     };
     const handleNextButtonClick = () => {
@@ -73,6 +78,12 @@ function Posting() {
     
       useEffect(() => {
         setupSSE();
+        return () => {
+          // 컴포넌트가 언마운트되기 전에 SSE 연결 종료
+          if (eventSource) {
+            eventSource.close();
+          }
+        };
       }, []);
     
       return <div>{renderActiveComponent()}</div>;
