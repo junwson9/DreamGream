@@ -1,12 +1,8 @@
 package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.CheerDto;
-import com.ssafy.dreamgream.domain.post.dto.request.LikeDto;
 import com.ssafy.dreamgream.domain.post.service.CheerService;
-import com.ssafy.dreamgream.domain.post.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,26 +15,24 @@ public class CheerController {
 
     @Autowired
     private CheerService cheerService;
-    @Qualifier("redisTemplate")
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addLike(@RequestBody CheerDto cheerDto) {
-        cheerService.addLike(cheerDto.getPostId(), cheerDto.getUserId());
+    public ResponseEntity<String> addCheer(@RequestBody CheerDto cheerDto) {
+        cheerService.addCheer(cheerDto.getPostId(), cheerDto.getMemberId());
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Like added successfully for Post ID: " + cheerDto.getPostId() + " and User ID: " + cheerDto.getUserId());
+                .body("Cheer added successfully for Post ID: " + cheerDto.getPostId() + " and Member ID: " + cheerDto.getMemberId());
     }
 
     @DeleteMapping("/remove")
-    public ResponseEntity<String> removeLike(@RequestBody CheerDto cheerDto) {
-        cheerService.removeLike(cheerDto.getPostId(), cheerDto.getUserId());
-        return ResponseEntity.ok("Like removed for Post ID: " + cheerDto.getPostId() + " and User ID: " + cheerDto.getUserId());
+    public ResponseEntity<String> removeCheer(@RequestBody CheerDto cheerDto) {
+        cheerService.removeCheer(cheerDto.getPostId(), cheerDto.getMemberId());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Cheer removed for Post ID: " + cheerDto.getPostId() + " and Member ID: " + cheerDto.getMemberId());
     }
 
-    @GetMapping("/{postId}")
-    public Set<String> getLikedUserIds(@PathVariable String postId) {
-        return cheerService.getLikedUserIds(postId);
-    }
+//    @GetMapping("/{postId}")
+//    public Set<String> getCheerMemberIds(String postId) {
+//        return cheerService.getCheerMemberIds(postId);
+//    }
 
 }

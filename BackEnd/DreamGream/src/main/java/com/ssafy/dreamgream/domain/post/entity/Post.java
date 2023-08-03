@@ -6,7 +6,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +128,7 @@ public class Post {
     private List<MemberPostCheer> memberPostCheers = new ArrayList<>();
 
     @OneToMany(mappedBy = "celebratePost", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberPostCelebrate> memberPostCelebrates = new ArrayList<>();
+    private List<MemberPostCongrat> memberPostCongrats = new ArrayList<>();
 
     public void setTitle(String title) {
         this.title = title;

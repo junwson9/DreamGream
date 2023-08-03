@@ -23,15 +23,8 @@ public class MemberPostCheer {
     @JoinColumn(name = "post_id", insertable = false, updatable = false)
     private Post cheerPost;
 
-    public void setPost(Post cheerPost) {
-        this.cheerPost = cheerPost;
-    }
-
-    public void setPostId(Long postId){
+    public void setCheer(Long postId, Long memberId){
         this.postId = postId;
-    }
-
-    public void setMemberId(Long memberId){
         this.memberId = memberId;
     }
 }
