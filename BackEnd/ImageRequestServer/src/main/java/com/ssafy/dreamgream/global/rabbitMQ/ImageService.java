@@ -32,17 +32,20 @@ public class ImageService {
     public void creatImage(Long sseId, String prompt) {
         // colab 서버로 이미지 생성 요청 보냄
 
-        byte[] ImageBytes = sendRequestToColab(prompt);
-        String url = null;
-        try {
-            url = s3Uploader.uploadAIImage(ImageBytes);
-        } catch (IOException e) {
-            log.error("s3 이미지 업로드 중 에러 발생");
-            throw new RuntimeException(e);
+        byte[] imageBytes = sendRequestToColab(prompt);
+
+        if (imageBytes == null) {
+            producer.sendImageCreationRequest(sseId, "error");
+        } else {
+            String url = null;
+            try {
+                url = s3Uploader.uploadAIImage(imageBytes);
+            } catch (IOException e) {
+                log.error("s3 이미지 업로드 중 에러 발생");
+                throw new RuntimeException(e);
+            }
+            producer.sendImageCreationRequest(sseId, url);
         }
-
-        producer.sendImageCreationRequest(sseId, url);
-
     }
 
     // 코랩 서버에 이미지 생성 요청
@@ -53,8 +56,15 @@ public class ImageService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         String image_prompt = prompt;
         HttpEntity<String> requestEntity = new HttpEntity<>("{\"image_prompt\" : \"" + prompt + "\"}", headers);
-        ResponseEntity<byte[]> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, byte[].class);
-        byte[] ImageBytes = response.getBody();
+        byte[] ImageBytes = null;
+        try {
+            ResponseEntity<byte[]> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, byte[].class);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                ImageBytes = response.getBody();
+            }
+        } catch (Exception e) {
+            log.error("ERROR: 이미지 서버로 요청 전송 실패");
+        }
 
         return ImageBytes;
     }
