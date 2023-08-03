@@ -6,8 +6,8 @@ import OAuth2RedirectHandler from './pages/members/OAuth2RedirectHandler';
 import ProfileEdit from './pages/members/ProfileEdit';
 import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
-import Posting from './pages/Posting/Posting';
-import CheerUpFeed from './pages/Feed/cheerUpFeed';
+import ToggleButton from './components/Button/ToggleButton';
+import Navbar from './components/Common/Navbar';
 
 function App() {
   return (
