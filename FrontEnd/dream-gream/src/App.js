@@ -19,27 +19,27 @@ function App() {
   return (
     <div className="App">
       <div className="content">
-      <Routes>
-        <Route path="/logIn" element={<LogIn />} />
-        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-        <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
-        <Route path="/profileedit" element={<ProfileEdit />} />
-        <Route path="/follow" element={<followUser />} />
-        <Route path="/following" element={<followingUser />} />
-        <Route path="/findmember" element={<findMember />} />
-        <Route path="/cheerupfeed" element={<cheerUpFeed />} />
-        <Route path="/acheivefeed" element={<acheiveFeed />} />
-        <Route path="/feedid" element={<feedDetail />} />
-        <Route path="/post" element={<PostSubject />} />
-        <Route path="/postdetail" element={<PostDetail />} />
-        <Route path="/image" element={<PostViewImage />} />
-        <Route path="/myfeed" element={<MyFeed />} />
-        <Route path="/about" element={<viewAbout />} />
-        <Route path="/updatepost" element={<updatePost />} />
-        <Route path="/acheivementupdate" element={<acheivementUpdate />} />
-      </Routes>
+        <Routes>
+          <Route path="/logIn" element={<LogIn />} />
+          <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+          <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
+          <Route path="/profileedit" element={<ProfileEdit />} />
+          <Route path="/follow" element={<followUser />} />
+          <Route path="/following" element={<followingUser />} />
+          <Route path="/findmember" element={<findMember />} />
+          <Route path="/cheerupfeed" element={<cheerUpFeed />} />
+          <Route path="/acheivefeed" element={<acheiveFeed />} />
+          <Route path="/feedid" element={<feedDetail />} />
+          <Route path="/post" element={<PostSubject />} />
+          <Route path="/postdetail" element={<PostDetail />} />
+          <Route path="/image" element={<PostViewImage />} />
+          <Route path="/myfeed" element={<MyFeed />} />
+          <Route path="/about" element={<viewAbout />} />
+          <Route path="/updatepost" element={<updatePost />} />
+          <Route path="/acheivementupdate" element={<acheivementUpdate />} />
+        </Routes>
       </div>
-      <Navbar/>
+      <Navbar />
     </div>
   );
 }
