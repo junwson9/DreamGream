@@ -1,16 +1,12 @@
 import './App.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import PostSubject from './pages/Posting/postSubject';
-import PostViewImage from './pages/Posting/postViewImage';
-import PostDetail from './pages/Posting/postDetail';
 import LogIn from './pages/members/Login';
 import OAuth2RedirectHandler from './pages/members/OAuth2RedirectHandler';
 import ProfileEdit from './pages/members/ProfileEdit';
 import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
-import ToggleButton from './components/Button/ToggleButton';
-import Navbar from './components/Common/Navbar';
+import Posting from './pages/Posting/Posting';
 
 function App() {
   return (
@@ -26,9 +22,7 @@ function App() {
         <Route path="/cheerupfeed" element={<cheerUpFeed />} />
         <Route path="/acheivefeed" element={<acheiveFeed />} />
         <Route path="/feedid" element={<feedDetail />} />
-        <Route path="/post" element={<PostSubject />} />
-        <Route path="/postdetail" element={<PostDetail />} />
-        <Route path="/image" element={<PostViewImage />} />
+        <Route path="/post" element={<Posting />} />
         <Route path="/myfeed" element={<MyFeed />} />
         <Route path="/about" element={<viewAbout />} />
         <Route path="/updatepost" element={<updatePost />} />
