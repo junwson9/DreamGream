@@ -1,13 +1,12 @@
 package com.ssafy.dreamgream.domain.post.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-public class MemberPostCelebrate {
+public class MemberPostCongrat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "celebrate_id")
@@ -23,15 +22,8 @@ public class MemberPostCelebrate {
     @JoinColumn(name = "post_id", insertable = false, updatable = false)
     private Post celebratePost;
 
-    public void setPost(Post celebratePost) {
-        this.celebratePost = celebratePost;
-    }
-
-    public void setPostId(Long postId){
+    public void setCongrat(Long postId, Long memberId){
         this.postId = postId;
-    }
-
-    public void setMemberId(Long memberId){
         this.memberId = memberId;
     }
 }

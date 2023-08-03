@@ -1,6 +1,6 @@
 package com.ssafy.dreamgream;
 
-import com.ssafy.dreamgream.domain.post.entity.MemberPostCelebrate;
+import com.ssafy.dreamgream.domain.post.entity.MemberPostCongrat;
 import com.ssafy.dreamgream.domain.post.entity.MemberPostCheer;
 import com.ssafy.dreamgream.domain.post.repository.MemberPostCelebrateRepository;
 import com.ssafy.dreamgream.domain.post.repository.MemberPostCheerRepository;
@@ -30,24 +30,22 @@ public class MyScheduler {
             Set<String> members = redisTemplate.opsForSet().members(key);
             String post_number = key.substring(key.lastIndexOf("_") + 1);
             int postId = Integer.parseInt(post_number);
-            if (key.contains("like_post")) {
+            if (key.contains("cheer_post")) {
                 for (String member : members) {
                     MemberPostCheer memberPostCheer = new MemberPostCheer();
-                    memberPostCheer.setPostId((long) postId);
                     String member_number = member.substring(member.lastIndexOf("_") + 1);
                     int memberId = Integer.parseInt(member_number);
-                    memberPostCheer.setMemberId(Long.valueOf(memberId));
+                    memberPostCheer.setCheer((long) postId,Long.valueOf(memberId));
                     memberPostCheerRepository.save(memberPostCheer);
                 }
             }
-            if (key.contains("cheer_post")) {
+            if (key.contains("congrat_post")) {
                 for (String member : members) {
-                    MemberPostCelebrate memberPostCelebrate = new MemberPostCelebrate();
-                    memberPostCelebrate.setPostId((long) postId);
+                    MemberPostCongrat memberPostCongrat = new MemberPostCongrat();
                     String member_number = member.substring(member.lastIndexOf("_") + 1);
                     int memberId = Integer.parseInt(member_number);
-                    memberPostCelebrate.setMemberId(Long.valueOf(memberId));
-                    memberPostCelebrateRepository.save(memberPostCelebrate);
+                    memberPostCongrat.setCongrat((long) postId,Long.valueOf(memberId));
+                    memberPostCelebrateRepository.save(memberPostCongrat);
                 }
             }
         }
