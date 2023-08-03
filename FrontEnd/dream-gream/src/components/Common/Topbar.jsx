@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import { ReactComponent as LeftIcon } from './leftIcon.svg';
+import { ReactComponent as LeftIcon } from '../../assets/leftIcon.svg';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import { useNavigate } from 'react-router-dom';
 
