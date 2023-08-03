@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { ReactComponent as CheerUpIcon } from '../../assets/icons/CheerUpIcon.svg';
 import { ReactComponent as CelebrateIcon } from '../../assets/icons/CelebrateIcon.svg';
 
 // ++페이지 이동 다시 구현하기
 function BestBucketList({ bestfeeddata }) {
+  const navigate = useNavigate();
+
   const goFeedDetailPage = () => {
-    navigate('localhost:3000/');
+    // ++url 수정 필요
+    navigate('/feedid');
   };
 
   return (
