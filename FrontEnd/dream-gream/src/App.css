@@ -15,12 +15,6 @@ body {
   overflow-x: hidden;
 }
 
-.content {
-  flex: 1; /* Allow the content to take up all available vertical space */
-  padding-bottom: 80px; /* Set the padding at the bottom to accommodate the height of the Navbar */
-  overflow-y: auto;
-  overflow-x: hidden;
-}
 
 .Navbar {
   position: fixed;

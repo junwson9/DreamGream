@@ -18,7 +18,6 @@ import Navbar from './components/Common/Navbar';
 function App() {
   return (
     <div className="App">
-      <div className="content">
       <Routes>
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
@@ -37,8 +36,6 @@ function App() {
         <Route path="/about" element={<viewAbout />} />
       </Routes>
       </div>
-      <Navbar/>
-    </div>
   );
 }
 

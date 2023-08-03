@@ -8,6 +8,7 @@ function PostViewImage() {
 
   const handleEvent = useCallback(event => {
     if (event.data) {
+      console.log(event.data)
       const imageData = JSON.parse(event.data);
       setImage(imageData)
       setIsLoading(false);
@@ -25,7 +26,7 @@ function PostViewImage() {
   );
 
   useEffect(() => {
-    eventSource.current = new EventSource('http://localhost:5000/sse');
+    eventSource.current = new EventSource('http://i9a609.p.ssafy.io:8000/sse');
     eventSource.current.addEventListener('message', handleEvent);
     eventSource.current.addEventListener('error', handleError);
     return () => {
@@ -37,7 +38,7 @@ function PostViewImage() {
 
   return (
     <div>
-      {isLoading ? <Loading /> : <img src={image} alt="postcapture" />}
+      {isLoading ? <Loading /> : console.log(image)}
     </div>
   );
 }
