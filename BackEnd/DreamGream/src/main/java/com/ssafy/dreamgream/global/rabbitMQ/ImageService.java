@@ -19,20 +19,12 @@ public class ImageService {
     private final ImageCreationRequestProducer imageCreationRequestProducer;
 
     // 생성된 prompt를 producer에게 전달
-    public void processImageCreation(Long sseId, ImageGenerateRequestDto dto) {
+    public void processImageCreation(Long sseId, PromptCreationProduceDto produceDto) {
 
         // 선택된 카테고리, 성별, 태어난 연도
-        String gender = "M";
-        String birthyear = "1997";
 
-        PromptCreationProduceDto produceDto = PromptCreationProduceDto.builder()
-                .title(dto.getTitle())
-                .categoryName(dto.getCategoryName())
-                .gender(gender)
-                .birthyear(birthyear)
-                .build();
-
-        String prompt = callPromptServer(produceDto);
+        //String prompt = callPromptServer(produceDto);
+        String prompt = "a image of cat";
         log.info("prompt: ", prompt);
 
         imageCreationRequestProducer.sendImageCreationRequest(sseId, prompt);

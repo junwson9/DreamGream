@@ -23,12 +23,6 @@ public class ImageCreationRequestProducer {
 
     public void sendImageCreationRequest(Long sseId, String url) {
         log.info("이미지 생성 완료");
-        // 사진을 만들고 응답을 받으면 S3에 저장하고 url을 전송
-        // 1. 사진 요청 보내기
-
-        // 2. 이미지 변환 및 S3 저장
-
-        //
         ImageCreationResponseDto dto = ImageCreationResponseDto.builder()
                 .sseId(sseId)
                 .url(url)
