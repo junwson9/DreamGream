@@ -116,7 +116,7 @@ public class PostController {
      * 개인피드 - 본인피드 조회
      * @return
      */
-    @GetMapping("/my")
+    @GetMapping("/myPosts")
     public ResponseEntity<?> findMyPosts() {
         Map<String, List<PostListResponseDto>> data = postService.findMyPosts();
         ResponseDto responseDto = new ResponseDto(success, "본인 피드를 조회했습니다.", data);
