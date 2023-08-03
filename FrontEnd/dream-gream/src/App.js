@@ -9,7 +9,7 @@ import OAuth2RedirectHandler from './pages/members/OAuth2RedirectHandler';
 import ProfileEdit from './pages/members/ProfileEdit';
 import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
-import TwoSolidButton from './components/Button/TwoSolidButton';
+import ToggleButton from './components/Button/ToggleButton';
 import Navbar from './components/Common/Navbar';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         <Routes>
           <Route path="/logIn" element={<LogIn />} />
           <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
-          <Route path="/TwoSolidButton" element={<TwoSolidButton />} />
+          <Route path="/ToggleButton" element={<ToggleButton />} />
         </Routes>
       </div>
       <div className="content">

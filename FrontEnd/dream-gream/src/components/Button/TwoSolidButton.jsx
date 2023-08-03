@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 function TwoSolidButton({ leftLabel, rightLabel, onClick }) {
   const [isLeftSelected, setIsLeftSelected] = useState(true);
-  console.log(isLeftSelected);
+  // console.log(isLeftSelected);
   const handleLeftButtonClick = () => {
     setIsLeftSelected(true);
     onClick(leftLabel);
