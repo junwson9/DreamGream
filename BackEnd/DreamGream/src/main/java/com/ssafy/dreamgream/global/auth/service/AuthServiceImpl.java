@@ -38,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
 	public TokenResponseDto reissue(String accessToken, String refreshToken) {
 		// Refresh Token 검증
 		if (!jwtTokenProvider.validateToken(refreshToken)) {
+			log.info("유효하지 않은 refresh token");
 			/*
 			TODO: 예외처리
 			throw new BadRequestException("Refresh Token 정보가 유효하지 않습니다");
@@ -45,7 +46,6 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		// Redis 의 Refresh Token 값과 비교
-//		Member member = memberService.getCurrentMember();
 		Long memberId = Long.valueOf(jwtTokenProvider.parseClaims(accessToken).getSubject());
 		log.info("memberId: {}", memberId);
 		String redisRefreshToken = (String) redisTemplate.opsForValue().get("RT:" + memberId);
@@ -106,11 +106,13 @@ public class AuthServiceImpl implements AuthService {
 	 */
 	@Override
 	public void logout(String accessToken) {
-		Member member = memberService.getCurrentMember();
-
+		Long memberId = memberService.getCurrentMemberId();
+		String key = "RT:" + memberId;
+		log.info("key: {}", key);
 		// Redis에 저장된 refresh token 삭제
-		if (redisTemplate.opsForValue().get("RT:" + member.getMemberId()) != null) {
-			redisTemplate.delete("RT:" + member.getMemberId());
+		if (redisTemplate.opsForValue().get(key) != null) {
+			redisTemplate.delete(key);
+			log.info("로그아웃하며 RT 삭제");
 		} else {
 			/*
 			TODO: 예외처리
