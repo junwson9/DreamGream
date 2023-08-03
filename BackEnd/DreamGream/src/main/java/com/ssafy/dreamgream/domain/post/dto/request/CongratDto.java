@@ -9,11 +9,13 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class CheerDto {
+public class CongratDto {
     @JsonProperty("postId")
     private String postId;
 
     @JsonProperty("memberId")
     private String memberId;
 
+
 }
+
