@@ -2,20 +2,15 @@ package com.ssafy.dreamgream.global.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,7 +20,7 @@ import java.util.UUID;
 public class S3Uploader {
 
     private static final String S3_BUCKET_DIRECTORY_NAME = "ai";
-    private static final String IMAGE_TYPE = "png";
+    private static final String IMAGE_TYPE = "image/png";
 
     private final AmazonS3Client amazonS3Client;
 
@@ -36,10 +31,10 @@ public class S3Uploader {
         // metadata 설정
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(IMAGE_TYPE);
-
+        objectMetadata.setContentLength(imageBytes.length);
         InputStream fileInputStream = new ByteArrayInputStream(imageBytes);
 
-        String imageKey = S3_BUCKET_DIRECTORY_NAME + "/" + UUID.randomUUID() + "_" + getDate();
+        String imageKey = S3_BUCKET_DIRECTORY_NAME + "/" + UUID.randomUUID() + "_" + getDate() + ".png";
 
         // uploading image to s3 bucket
         amazonS3Client.putObject(bucket, imageKey, fileInputStream, objectMetadata);
