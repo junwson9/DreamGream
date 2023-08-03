@@ -3,15 +3,17 @@ import React from 'react';
 import { ReactComponent as CheerUpIcon } from '../../assets/icons/CheerUpIcon.svg';
 import { ReactComponent as CelebrateIcon } from '../../assets/icons/CelebrateIcon.svg';
 
+// ++페이지 이동 다시 구현하기
 function BestBucketList({ bestfeeddata }) {
-  const handleClick = () => {
-    window.location.href = 'localhost:3000/url주소 넣어라';
+  const goFeedDetailPage = () => {
+    navigate('localhost:3000/');
   };
+
   return (
     <div className="w-[148.24px] h-32 relative">
       <button
         type="button"
-        onClick={handleClick}
+        onClick={goFeedDetailPage}
         style={{ border: 'none', background: 'none', padding: 0 }}
       >
         <div className="w-[148.24px] h-32 left-0 top-0 absolute bg-black bg-opacity-40 rounded-lg" />
