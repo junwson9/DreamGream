@@ -2,10 +2,19 @@
 
 import React from 'react';
 import { ReactComponent as LeftIcon } from './leftIcon.svg';
-import { ReactComponent as CloseIcon } from '../../assets/close.svg'; 
+import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import { useNavigate } from 'react-router-dom';
 
-function TopBar({ pathName, onConfirm, title, confirmName, showProfileButton = true, showConfirmButton = true, showLeftButton = true, showCloseButton = true}) {
+function TopBar({
+  pathName,
+  onConfirm,
+  title,
+  confirmName,
+  showProfileButton = true,
+  showConfirmButton = true,
+  showLeftButton = true,
+  showCloseButton = true,
+}) {
   const navigate = useNavigate();
 
   const handleLeftIconClick = () => {
@@ -20,17 +29,21 @@ function TopBar({ pathName, onConfirm, title, confirmName, showProfileButton = t
 
   return (
     <div className="w-[360px] h-[60px] relative">
-      {showLeftButton && <LeftIcon
-        className="w-[26px] h-[26px] left-[20px] top-[18px] absolute z-[1]"
-        onClick={handleLeftIconClick}
-        style={{ cursor: 'pointer' }}
-      />}
+      {showLeftButton && (
+        <LeftIcon
+          className="w-[26px] h-[26px] left-[20px] top-[18px] absolute z-[1]"
+          onClick={handleLeftIconClick}
+          style={{ cursor: 'pointer' }}
+        />
+      )}
 
-      {showCloseButton && <CloseIcon
-        className="w-[26px] h-[26px] left-[20px] top-[18px] absolute z-[1]"
-        onClick={handleLeftIconClick}
-        style={{ cursor: 'pointer' }}
-      />}
+      {showCloseButton && (
+        <CloseIcon
+          className="w-[26px] h-[26px] left-[20px] top-[18px] absolute z-[1]"
+          onClick={handleLeftIconClick}
+          style={{ cursor: 'pointer' }}
+        />
+      )}
 
       {showProfileButton && (
         <div className="w-[360px] h-[60px] left-0 top-0 absolute bg-white border-b border-neutral-100">
