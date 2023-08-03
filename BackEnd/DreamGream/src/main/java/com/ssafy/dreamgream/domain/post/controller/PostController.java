@@ -2,6 +2,7 @@ package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
+import com.ssafy.dreamgream.domain.member.service.TestMemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
@@ -37,6 +38,7 @@ public class PostController {
     private final SSEService sseService;
     private final PostService postService;
     private final MemberService memberService;
+    private final TestMemberService testMemberService;
 
     @GetMapping("/test")
     public String Test() {
@@ -50,7 +52,8 @@ public class PostController {
         log.info("category : {}", dto.getCategoryName());
 
         // 이미지 생성 프로세스 시작
-        Member currentMember = memberService.getCurrentMember();
+//        Member currentMember = memberService.getCurrentMember();
+        Member currentMember = testMemberService.getTestMember();
         PromptCreationProduceDto produceDto = PromptCreationProduceDto.builder()
                 .gender(currentMember.getGender().toString())
                 .birthyear(currentMember.getBirthyear().toString())
