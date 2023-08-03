@@ -15,8 +15,6 @@ function SignupGenderBirth() {
   const years = Array.from({ length: 100 }, (_, idx) =>
     (new Date().getFullYear() - idx).toString(),
   );
-  console.log(typeof gender);
-  console.log(typeof birthYear);
   const handleYearSelection = (year) => {
     setBirthYear(year);
   };
@@ -56,16 +54,7 @@ function SignupGenderBirth() {
       localStorage.setItem('ACCESS_TOKEN', access_token);
       const refresh_token = response.data.data.token.refreshToken;
       localStorage.setItem('REFRESH_TOKEN', refresh_token);
-      const tokenResponse = await axios.post(
-        'http://i9a609.p.ssafy.io:8000/api/auth/token',
-        {
-          headers: {
-            Authorization: `Bearer ${access_token} ${refresh_token}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      console.log(tokenResponse.data.data);
+
       // ACCESS_TOKEN = tokenResponse.token.access_token;
       // REFRESH_TOKEN = tokenResponse.token.refresh_token;
       // Handle success
@@ -73,6 +62,7 @@ function SignupGenderBirth() {
       console.error(error);
       // Handle error
     }
+    navigateToMyFeed();
   };
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
@@ -84,8 +74,7 @@ function SignupGenderBirth() {
           태어난 연도
         </div>
         <div className="left-0 top-0 absolute text-zinc-800 text-[28px] font-medium leading-[39.20px]">
-          성별과 태어난 연도를 <br />
-          알려주시면
+          당신에 대해 알려주시면
           <br />꼭 맞는 버킷리스트 그림을 <br />
           그려드릴게요!
         </div>
@@ -101,7 +90,11 @@ function SignupGenderBirth() {
         </div>
       </div>
       <div className="w-[360px] h-[60px] left-0 top-0 absolute">
-        <TopBar showProfileButton={false} showConfirmButton={false} />
+        <TopBar
+          showProfileButton={false}
+          showConfirmButton={false}
+          showCloseButton={false}
+        />
         <div className="w-[26px] h-[26px] left-[20px] top-[18px] absolute" />
       </div>
       <div
