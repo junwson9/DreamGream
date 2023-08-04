@@ -58,10 +58,10 @@ public class Member {
     private String profileImg;
 
     @OneToMany(mappedBy = "follower")
-    private List<Member> followings = new ArrayList<>();
+    private List<Follow> followings = new ArrayList<>();
 
     @OneToMany(mappedBy = "target")
-    private List<Member> followers = new ArrayList<>();
+    private List<Follow> followers = new ArrayList<>();
 
 
     @Builder
