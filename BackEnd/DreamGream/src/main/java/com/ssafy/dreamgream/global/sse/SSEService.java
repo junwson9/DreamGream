@@ -46,4 +46,11 @@ public class SSEService {
         sseEmitters.remove(sseId);
         System.out.println("SSE connection closed for user: " + sseId);
     }
+
+    public boolean checkEmitter(Long sseId) {
+        if (!sseEmitters.containsKey(sseId)) {
+
+        }
+        return sseEmitters.containsKey(sseId);
+    }
 }

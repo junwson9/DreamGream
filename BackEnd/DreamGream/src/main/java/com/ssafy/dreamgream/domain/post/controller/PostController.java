@@ -62,8 +62,11 @@ public class PostController {
                 .categoryName(dto.getCategoryName())
                 .build();
 
-        imageService.processImageCreation(currentMember.getMemberId(), produceDto);
-
+        try {
+            imageService.processImageCreation(currentMember.getMemberId(), produceDto);
+        } catch (Exception e) {
+            log.error("이미지 생성 취소");
+        }
     }
 
 
