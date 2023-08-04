@@ -16,6 +16,5 @@ public class CongratDto {
     @JsonProperty("memberId")
     private String memberId;
 
-
 }
 

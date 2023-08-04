@@ -12,10 +12,10 @@ public class CheerService {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    public void addCheer(String postId, String userId) {
+    public void addCheer(String postId, String memberId) {
         String keyPost = "cheer_post_"+postId;
-        String keyMember = "member_"+userId;
-        redisTemplate.opsForSet().add(keyPost,userId);
+        String keyMember = "member_"+memberId;
+        redisTemplate.opsForSet().add(keyPost,memberId);
         redisTemplate.opsForSet().add(keyMember,postId);
     }
 
