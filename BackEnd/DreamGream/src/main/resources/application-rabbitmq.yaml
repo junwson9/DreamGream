@@ -4,7 +4,7 @@ spring:
       on-profile: "rabbitmq-local"
   # RabbitMQ 연결 정보
   rabbitmq:
-    host: 0.0.0.0
+    host: localhost
     port: 5672
     username: guest
     password: guest
