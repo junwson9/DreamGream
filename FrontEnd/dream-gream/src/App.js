@@ -7,6 +7,8 @@ import ProfileEdit from './pages/members/ProfileEdit';
 import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
+import CheerUpFeed from './pages/Feed/cheerUpFeed';
+import ExFeed from './pages/Feed/ExFeed';
 
 function App() {
   return (
@@ -19,7 +21,7 @@ function App() {
         <Route path="/follow" element={<followUser />} />
         <Route path="/following" element={<followingUser />} />
         <Route path="/findmember" element={<findMember />} />
-        <Route path="/cheerupfeed" element={<CheerUpFeed />} />
+        <Route path="/cheerUpFeed" element={<CheerUpFeed />} />
         <Route path="/acheivefeed" element={<acheiveFeed />} />
         <Route path="/feedid" element={<feedDetail />} />
         <Route path="/post" element={<Posting />} />
@@ -27,6 +29,7 @@ function App() {
         <Route path="/about" element={<viewAbout />} />
         <Route path="/updatepost" element={<updatePost />} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
+        <Route path="/exfeed" element={<ExFeed />} />
       </Routes>
     </div>
   );
