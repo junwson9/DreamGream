@@ -15,21 +15,16 @@ public class CongratService {
     private RedisTemplate<String, String> redisTemplate;
 
     public void addCongrat(String postId, String memberId) {
-        String key = "congrat_post_"+postId;
-        String member = "member_"+memberId;
-        redisTemplate.opsForSet().add(key,member);
+        String keyPost = "congrat_post_"+postId;
+        String keyMember = "member_"+memberId;
+        redisTemplate.opsForSet().add(keyPost,memberId);
+        redisTemplate.opsForSet().add(keyMember,postId);
     }
 
     public void removeCongrat(String postId, String memberId) {
-        String key = "congrat_post_"+postId;
-        String member = "member_"+memberId;
-        redisTemplate.opsForSet().remove(key,member);
-    }
-
-    public Set<String> getCongratMemberIds(String postId) {
-        String key = "congrat_post_" + postId;
-        log.info(postId);
-        //log.info("type of return {}",redisTemplate.opsForSet().members(key).getClass());
-        return redisTemplate.opsForSet().members(key);
+        String keyPost = "congrat_post_"+postId;
+        String keyMember = "member_"+memberId;
+        redisTemplate.opsForSet().remove(keyPost,memberId);
+        redisTemplate.opsForSet().remove(keyMember,postId);
     }
 }

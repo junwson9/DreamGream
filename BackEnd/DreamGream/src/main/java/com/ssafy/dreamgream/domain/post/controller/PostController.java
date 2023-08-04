@@ -6,8 +6,11 @@ import com.ssafy.dreamgream.domain.member.service.TestMemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
+import com.ssafy.dreamgream.domain.post.dto.response.UnAchievedPostUpdateResponseDto;
+import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
@@ -19,6 +22,7 @@ import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
@@ -40,6 +44,7 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
     private final TestMemberService testMemberService;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @GetMapping("/test")
     public String Test() {
@@ -136,6 +141,22 @@ public class PostController {
         return ResponseEntity.ok(updatedPost);
     }
 
+    @PostMapping("/{postId}/unachieved")
+    public ResponseEntity<UnAchievedPostUpdateResponseDto> unAchievedPostUpdate(@PathVariable Long postId, @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto) {
+        Post updatedPost = postService.UnAchievedPostUpdateRequestDto(postId, unAchievedPostUpdateRequestDto);
+
+        if (updatedPost == null) {
+            // postId에 해당하는 포스트가 없는 경우 404 Not Found 응답
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // 포스트 업데이트 성공 시 200 OK 응답과 업데이트된 포스트 객체를 ResponseDto로 변환하여 반환
+        UnAchievedPostUpdateResponseDto responseDto = modelMapper.map(updatedPost, UnAchievedPostUpdateResponseDto.class);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+
+
     @DeleteMapping("/{post_id}")
     public String deletePost(@PathVariable("post_id") Long postId) {
         postService.deletePost(postId);
@@ -148,9 +169,6 @@ public class PostController {
         postService.saveScrappedPost(postId);
         return ResponseEntity.status(HttpStatus.CREATED).body("Post 스크랩이 완료되었습니다.");
     }
-
-
-
 
     @GetMapping("/{postId}")
     public ResponseEntity<?> findPostById(@PathVariable Long postId) {
