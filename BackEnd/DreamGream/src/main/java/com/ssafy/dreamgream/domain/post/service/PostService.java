@@ -121,14 +121,10 @@ public class PostService {
     @Transactional
     public void saveScrappedPost(Long postId) {
         Member currentMember = memberService.getCurrentMember();
-
-        log.info(String.valueOf(currentMember.getMemberId()));
-        log.info(String.valueOf(postId));
         if (currentMember != null) {
             Post existingPost = postRepository.findById(postId).orElse(null);
             if (existingPost != null) {
                 Post scrapPost = Post.builder()
-                        .postId(existingPost.getPostId())
                         .title(existingPost.getTitle())
                         .content(existingPost.getContent())
                         .deadLine(existingPost.getDeadLine())
@@ -139,6 +135,8 @@ public class PostService {
                         .aiImg(existingPost.getAiImg())
                         .achievementImg(existingPost.getAchievementImg())
                         .modifiedDate(existingPost.getModifiedDate())
+                        .category(existingPost.getCategory())
+                        .member(currentMember)
                         .build();
                 postRepository.save(scrapPost);
             } else {

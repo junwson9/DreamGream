@@ -163,9 +163,10 @@ public class PostController {
         return "Post with ID " + postId + " has been deleted successfully.";
     }
 
-    @PostMapping("/{post_id}/scrap")
-    public ResponseEntity<String> scrapPost(@PathVariable("post_id") Long postId) {
+    @PostMapping("/{postId}/scrap")
+    public ResponseEntity<String> scrapPost(@PathVariable("postId") Long postId) {
         // postId를 이용하여 해당 Post를 스크랩하고 저장합니다.
+        log.info(String.valueOf(postId));
         postService.saveScrappedPost(postId);
         return ResponseEntity.status(HttpStatus.CREATED).body("Post 스크랩이 완료되었습니다.");
     }
