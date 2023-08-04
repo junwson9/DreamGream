@@ -68,7 +68,9 @@ function Posting() {
                 handleNextButtonClick={handleNextButtonClick} />
             );
           case 'PostViewImage':
-            return <PostViewImage />;
+            return <PostViewImage 
+            handleCloseIconClick={handleCloseIconClick}
+              />;
           default:
             return (
               <PostViewImage/>
