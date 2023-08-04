@@ -29,7 +29,6 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberService memberService;
 
-    @Transactional
     public PostUpdateRequestDto updatePostPartially(Long postId, PostUpdateRequestDto postUpdateRequestDto){
         Post existingPost = postRepository.findById(postId).orElse(null);
 
@@ -38,16 +37,21 @@ public class PostService {
             return null;
         }else{
             Optional.ofNullable(postUpdateRequestDto.getAchievedDate()).ifPresent(existingPost::setAchievedDate);
-            Optional.ofNullable(postUpdateRequestDto.getAchievementContent()).ifPresent(existingPost::setAchievementContent);
-            Optional.ofNullable(postUpdateRequestDto.getAchievementImg()).ifPresent(existingPost::setAchievementImg);
-            Optional.ofNullable(postUpdateRequestDto.getAiImg()).ifPresent(existingPost::setAiImg);
-            Optional.ofNullable(postUpdateRequestDto.getCheerCnt()).ifPresent(existingPost::setCheerCnt);
+            Optional.ofNullable(postUpdateRequestDto.getAchievementcontent()).ifPresent(existingPost::setAchievementContent);
+            Optional.ofNullable(postUpdateRequestDto.getAchievementimg()).ifPresent(existingPost::setAchievementImg);
+            Optional.ofNullable(postUpdateRequestDto.getAiimg()).ifPresent(existingPost::setAiImg);
+            Optional.ofNullable(postUpdateRequestDto.getCheercnt()).ifPresent(existingPost::setCheerCnt);
             Optional.ofNullable(postUpdateRequestDto.getContent()).ifPresent(existingPost::setContent);
             Optional.ofNullable(postUpdateRequestDto.getDeadline()).ifPresent(existingPost::setDeadline);
-            Optional.ofNullable(postUpdateRequestDto.getIsAchieved()).ifPresent(existingPost::setIsAchieved);
-            Optional.ofNullable(postUpdateRequestDto.getIsDisplay()).ifPresent(existingPost::setIsDisplay);
+            Optional.ofNullable(postUpdateRequestDto.getIsachieved()).ifPresent(existingPost::setIsAchieved);
+            Optional.ofNullable(postUpdateRequestDto.getIsdisplay()).ifPresent(existingPost::setIsDisplay);
             existingPost.setModifiedDate(LocalDateTime.now());
         }
+
+        PostUpdateRequestDto sadf = PostUpdateRequestDto.builder()
+                .aiimg("sadf")
+                .cheercnt(1L)
+                .build();
         existingPost = postRepository.save(existingPost);
         return convertToDto(existingPost);
     }
@@ -101,22 +105,28 @@ public class PostService {
     }
 
     @Transactional
-    public void saveScrappedPost(Long post_id) {
+    public void saveScrappedPost(Long postId) {
         Member currentMember = memberService.getCurrentMember();
 
         log.info(String.valueOf(currentMember.getMemberId()));
-        log.info(String.valueOf(post_id));
+        log.info(String.valueOf(postId));
         if (currentMember != null) {
-            // 현재 사용자가 로그인 상태인 경우에만 스크랩을 진행합니다.
-
-            // postId를 이용하여 데이터베이스에서 해당 Post를 찾아옵니다.
-            Post existingPost = postRepository.findById(post_id).orElse(null);
+            Post existingPost = postRepository.findById(postId).orElse(null);
             if (existingPost != null) {
-                Post newPost = new Post();
-                newPost.setTitle(existingPost.getTitle());
-                newPost.setContent(existingPost.getContent());
-                newPost.updateMember(currentMember);
-                postRepository.save(newPost);
+                Post scrapPost = Post.builder()
+                        .postId(existingPost.getPostId())
+                        .title(existingPost.getTitle())
+                        .content(existingPost.getContent())
+                        .deadLine(existingPost.getDeadLine())
+                        .isDisplay(existingPost.getIsDisplay())
+                        .isAchieved(existingPost.getIsAchieved())
+                        .achievementContent(existingPost.getAchievementContent())
+                        .achievedDate(existingPost.getAchievedDate())
+                        .aiImg(existingPost.getAiImg())
+                        .achievementImg(existingPost.getAchievementImg())
+                        .modifiedDate(existingPost.getModifiedDate())
+                        .build();
+                postRepository.save(scrapPost);
             } else {
                 // TODO: 예외처리 - 해당 Post가 존재하지 않는 경우
             }
