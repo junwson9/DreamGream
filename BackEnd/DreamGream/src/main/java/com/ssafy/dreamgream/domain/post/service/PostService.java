@@ -3,6 +3,7 @@ package com.ssafy.dreamgream.domain.post.service;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.MemberServiceImpl;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
@@ -14,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.modelmapper.ModelMapper;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -28,6 +30,18 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberService memberService;
+    private final ModelMapper modelMapper = new ModelMapper();
+
+    public Post UnAchievedPostUpdateRequestDto(Long postId, UnAchievedPostUpdateRequestDto unAchievedPostUpdateDto) {
+        Post nowpost = postRepository.findById(postId).orElse(null);
+        if (nowpost == null) {
+            return null;
+        } else {
+            modelMapper.map(unAchievedPostUpdateDto, nowpost);
+            postRepository.save(nowpost);
+            return nowpost;
+        }
+    }
 
     public PostUpdateRequestDto updatePostPartially(Long postId, PostUpdateRequestDto postUpdateRequestDto){
         Post existingPost = postRepository.findById(postId).orElse(null);

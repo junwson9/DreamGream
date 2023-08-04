@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @RestController
 @RequestMapping("/api/posts/congrats")
 public class CongratController {
@@ -29,13 +27,4 @@ public class CongratController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Congrat removed for Post ID: " + congratDto.getPostId() + " and User ID: " + congratDto.getMemberId());
     }
-
-//    @GetMapping("/{postId}")
-//    public Set<String> getCongratMemberIds(String postId) {
-//        return congratService.getCongratMemberIds(postId);
-//    }
-
-
-
-
 }
