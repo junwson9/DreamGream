@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -14,20 +13,16 @@ public class CheerService {
     private RedisTemplate<String, String> redisTemplate;
 
     public void addCheer(String postId, String userId) {
-        String key = "cheer_post_"+postId;
-        String member = "member_"+userId;
-        redisTemplate.opsForSet().add(key,member);
+        String keyPost = "cheer_post_"+postId;
+        String keyMember = "member_"+userId;
+        redisTemplate.opsForSet().add(keyPost,userId);
+        redisTemplate.opsForSet().add(keyMember,postId);
     }
 
     public void removeCheer(String postId, String userId) {
-        String key = "cheer_post_"+postId;
-        String member = "member_"+userId;
-        redisTemplate.opsForSet().remove(key,member);
+        String keyPost = "cheer_post_"+postId;
+        String keyMember = "member_"+userId;
+        redisTemplate.opsForSet().remove(keyPost,userId);
+        redisTemplate.opsForSet().remove(keyMember,postId);
     }
-
-    public Set<String> getCheerMemberIds(String postId) {
-        String key = "cheer_post_" + postId;
-        return redisTemplate.opsForSet().members(key);
-    }
-
 }

@@ -25,7 +25,7 @@ public class MyScheduler {
 
     @Scheduled(cron = "0 0 6 * * ?")
     public void scheduleTest(){
-        Set<String> keys = redisTemplate.keys("*");
+        Set<String> keys = redisTemplate.keys("cheer_post");
         for (String key : keys) {
             Set<String> members = redisTemplate.opsForSet().members(key);
             String post_number = key.substring(key.lastIndexOf("_") + 1);
