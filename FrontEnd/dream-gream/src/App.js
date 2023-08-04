@@ -7,6 +7,7 @@ import ProfileEdit from './pages/members/ProfileEdit';
 import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
+import CheerUpFeed from './pages/Feed/cheerUpFeed';
 
 function App() {
   return (
