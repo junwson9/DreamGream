@@ -1,11 +1,12 @@
 package com.ssafy.dreamgream.global.rabbitMQ.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PromptCreationConsumeDto {
     @JsonProperty("image_prompt")
     String imagePrompt;

@@ -7,6 +7,7 @@ import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationConsumeDto;
 import com.ssafy.dreamgream.global.sse.SSEService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,6 +21,10 @@ public class ImageService {
 
     private final ImageCreationRequestProducer imageCreationRequestProducer;
     private final SSEService sseService;
+    private final RestTemplate restTemplate;
+
+    @Value("${prompt.url}")
+    private String promptUrl;
 
     // 생성된 prompt를 producer에게 전달
     public void processImageCreation(Long sseId, PromptCreationProduceDto produceDto) {
@@ -28,17 +33,17 @@ public class ImageService {
             log.error("ERROR: 존재하지 않는 sseId 입니다");
             throw new RuntimeException();
         }
-        // 선택된 카테고리, 성별, 태어난 연도
 
-
-        //String prompt = callPromptServer(produceDto);
-        String prompt = "a photo of man riding bike";
+        String prompt = callPromptServer(produceDto);
         log.info("prompt: ", prompt);
+
+        if (prompt == null) {
+            throw new RuntimeException();
+        }
 
         imageCreationRequestProducer.sendImageCreationRequest(sseId, prompt);
 
     }
-
 
     public void processImageResponse(Long sseId, String url) {
         log.info("Received SSE ID: " + sseId);
@@ -50,23 +55,20 @@ public class ImageService {
 
     // 프롬프트 생성 서버로 프롬프트 생성 요청을 보냄
     public String callPromptServer(PromptCreationProduceDto dto) {
-        String fastAPIUrl = "http://localhost:8002/prompt";
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<PromptCreationProduceDto> requestEntity = new HttpEntity<>(dto, headers);
+        String generatedPrompt = null;
+        try {
+            PromptCreationConsumeDto response = restTemplate.postForObject(promptUrl, requestEntity, PromptCreationConsumeDto.class);
+            generatedPrompt = response.getImagePrompt();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("프롬프트 생성 안됨");
+        }
 
-        RestTemplate restTemplate = new RestTemplate();
-        PromptCreationConsumeDto response = restTemplate.postForObject(fastAPIUrl, requestEntity, PromptCreationConsumeDto.class);
-
-        return response.getImagePrompt();
+        return generatedPrompt;
     }
-
-    public void sendTest() {
-        log.info("test start");
-        imageCreationRequestProducer.sendImageCreationRequest(123L, "test prompt");
-    }
-
 
 }
