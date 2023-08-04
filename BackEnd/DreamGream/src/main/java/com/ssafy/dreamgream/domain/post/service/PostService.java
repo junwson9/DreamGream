@@ -12,6 +12,7 @@ import com.ssafy.dreamgream.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -30,16 +31,16 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberService memberService;
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
 
     public Post UnAchievedPostUpdateRequestDto(Long postId, UnAchievedPostUpdateRequestDto unAchievedPostUpdateDto) {
-        Post nowpost = postRepository.findById(postId).orElse(null);
-        if (nowpost == null) {
+        Post updatedpost = postRepository.findById(postId).orElse(null);
+        if (updatedpost == null) {
             return null;
         } else {
-            modelMapper.map(unAchievedPostUpdateDto, nowpost);
-            postRepository.save(nowpost);
-            return nowpost;
+            modelMapper.map(unAchievedPostUpdateDto, updatedpost);
+            postRepository.save(updatedpost);
+            return updatedpost;
         }
     }
 
