@@ -16,7 +16,7 @@ spring:
       on-profile: "db-local"
   data:
     redis:
-      host: localhost
+      host: 0.0.0.0
       port: 6379
   jpa:
     defer-datasource-initialization: true
