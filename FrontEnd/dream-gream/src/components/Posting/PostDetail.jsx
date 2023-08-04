@@ -1,14 +1,16 @@
 import React, { useState,useRef,useEffect } from 'react';
 import PropTypes from 'prop-types'; 
-// import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import ToggleButton from '../Button/ToggleButton';
 import Container from './Container';
+import {saveDetail} from '../../store/actions/postActions';
 
 function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
     const [detail, setDetail] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const textareaRef = useRef(null);
+    const dispatch = useDispatch();
     
     const onTogglePublic = () => {
       setIsPublic((prevIsPublic) => !prevIsPublic);
@@ -17,19 +19,9 @@ function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
         setDetail(e.target.value);
     };
 
-    const onPostDetail = async () => {
-        try {
-        // POST 요청은 body에 실어 보냄
-            // await axios.post('http://i9a609.p.ssafy.io:8000/api/posts/test',
-            // {
-            //     detail,
-            //     isPublic: isPublic ? '공개' : '비공개',
-            // });
-            setDetail('');
+    const onPostDetail = () => {
+          dispatch(saveDetail({ content: detail, isPublic }));
             handleNextButtonClick();
-        } catch (e) {
-              console.error(e);
-            }
     };
 
     useEffect(() => {
