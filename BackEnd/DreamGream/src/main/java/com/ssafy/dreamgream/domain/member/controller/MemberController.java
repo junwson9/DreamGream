@@ -4,6 +4,7 @@ import com.ssafy.dreamgream.domain.member.dto.request.UpdateInfoRequestDto;
 import com.ssafy.dreamgream.domain.member.dto.response.MemberResponseDto;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
+import com.ssafy.dreamgream.domain.member.service.FollowService;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,8 @@ public class MemberController {
     private static final String fail = "FAIL";
 
     private final MemberService memberService;
+
+    private final FollowService followService;
 
     @GetMapping("/testUser")
     public ResponseEntity<?> testUser() {
@@ -83,6 +86,26 @@ public class MemberController {
                 Collections.singletonMap("member_list", members.getContent()));
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+
+    /**
+     * 특정 회원의 팔로워 목록 조회
+     */
+    @GetMapping("/{memberId}/followers")
+    public ResponseEntity<?> getFollowers(@PathVariable Long memberId) {
+        List<Member> followers = followService.getFollowers(memberId);
+        return null;
+    }
+
+
+    /**
+     * 특정 회원이 팔로우하는 목록 조회
+     */
+    @GetMapping("/{memberId}/followings")
+    public ResponseEntity<?> getFollowings(@PathVariable Long memberId) {
+        List<Member> follwings = followService.getFollowings(memberId);
+        return null;
     }
 
 }

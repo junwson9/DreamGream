@@ -5,13 +5,10 @@ import com.ssafy.dreamgream.domain.member.enums.Provider;
 import com.ssafy.dreamgream.domain.member.enums.Role;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,7 +54,15 @@ public class Member {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
+    @Column(name = "profile_img")
     private String profileImg;
+
+    @OneToMany(mappedBy = "follower")
+    private List<Member> followings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "target")
+    private List<Member> followers = new ArrayList<>();
+
 
     @Builder
     public Member(String email, String nickname, Gender gender, Integer birthyear, Provider provider, Role role) {
