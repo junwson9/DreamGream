@@ -24,19 +24,25 @@ public class ImageService {
     // 생성된 prompt를 producer에게 전달
     public void processImageCreation(Long sseId, PromptCreationProduceDto produceDto) {
 
+        if (!sseService.checkEmitter(sseId)) {
+            log.error("ERROR: 존재하지 않는 sseId 입니다");
+            throw new RuntimeException();
+        }
         // 선택된 카테고리, 성별, 태어난 연도
+
 
         //String prompt = callPromptServer(produceDto);
         String prompt = "a photo of man riding bike";
         log.info("prompt: ", prompt);
 
         imageCreationRequestProducer.sendImageCreationRequest(sseId, prompt);
+
     }
 
 
     public void processImageResponse(Long sseId, String url) {
-        System.out.println("Received SSE ID: " + sseId);
-        System.out.println("Received url: " + url);
+        log.info("Received SSE ID: " + sseId);
+        log.info("Received url: " + url);
 
         ImageGenerateResponseDto imageGenerateResponseDto = ImageGenerateResponseDto.builder().url(url).build();
         sseService.sendImageResponse(sseId, imageGenerateResponseDto);
