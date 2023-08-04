@@ -11,6 +11,7 @@ import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.UnAchievedPostUpdateResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
+import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
@@ -23,6 +24,7 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
@@ -44,7 +46,9 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
     private final TestMemberService testMemberService;
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final PostRepository postRepository;
+
+    private final ModelMapper modelMapper;
 
     @GetMapping("/test")
     public String Test() {
@@ -149,9 +153,13 @@ public class PostController {
             // postId에 해당하는 포스트가 없는 경우 404 Not Found 응답
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
+        log.info(String.valueOf(updatedPost.getContent()));
+        log.info(String.valueOf(updatedPost.getTitle()));
+        log.info(String.valueOf(updatedPost.getDeadLine()));
+        UnAchievedPostUpdateResponseDto responseDto = new UnAchievedPostUpdateResponseDto();
         // 포스트 업데이트 성공 시 200 OK 응답과 업데이트된 포스트 객체를 ResponseDto로 변환하여 반환
-        UnAchievedPostUpdateResponseDto responseDto = modelMapper.map(updatedPost, UnAchievedPostUpdateResponseDto.class);
+        modelMapper.map(updatedPost, responseDto);
+        log.info(responseDto.getContent());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
