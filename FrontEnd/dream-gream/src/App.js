@@ -20,7 +20,7 @@ function App() {
         <Route path="/follow" element={<followUser />} />
         <Route path="/following" element={<followingUser />} />
         <Route path="/findmember" element={<findMember />} />
-        <Route path="/cheerupfeed" element={<CheerUpFeed />} />
+        <Route path="/cheerUpFeed" element={<CheerUpFeed />} />
         <Route path="/acheivefeed" element={<acheiveFeed />} />
         <Route path="/feedid" element={<feedDetail />} />
         <Route path="/post" element={<Posting />} />
@@ -28,6 +28,7 @@ function App() {
         <Route path="/about" element={<viewAbout />} />
         <Route path="/updatepost" element={<updatePost />} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
+        <Route path="/exfeed" element={<ExFeed />} />
       </Routes>
     </div>
   );
