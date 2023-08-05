@@ -3,10 +3,8 @@ package com.ssafy.dreamgream.domain.post.controller;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.TestMemberService;
-import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
-import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
-import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
-import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.*;
+import com.ssafy.dreamgream.domain.post.dto.response.AchievedPostUpdateResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.UnAchievedPostUpdateResponseDto;
@@ -31,6 +29,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -153,13 +152,23 @@ public class PostController {
             // postId에 해당하는 포스트가 없는 경우 404 Not Found 응답
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        log.info(String.valueOf(updatedPost.getContent()));
-        log.info(String.valueOf(updatedPost.getTitle()));
-        log.info(String.valueOf(updatedPost.getDeadLine()));
         UnAchievedPostUpdateResponseDto responseDto = new UnAchievedPostUpdateResponseDto();
         // 포스트 업데이트 성공 시 200 OK 응답과 업데이트된 포스트 객체를 ResponseDto로 변환하여 반환
         modelMapper.map(updatedPost, responseDto);
-        log.info(responseDto.getContent());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{postId}/achieved", consumes = "multipart/form-data")
+    public ResponseEntity<AchievedPostUpdateResponseDto> achievedPostUpdate (@PathVariable Long postId,
+                                                                             @RequestPart AchievedPostUpdateRequestDto achievedPostUpdateRequestDto,
+                                                                             @RequestParam("file") MultipartFile file) {
+        Post updatedPost = postService.AchievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
+
+        if (updatedPost == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        AchievedPostUpdateResponseDto responseDto = modelMapper.map(updatedPost, AchievedPostUpdateResponseDto.class);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -174,7 +183,6 @@ public class PostController {
     @PostMapping("/{postId}/scrap")
     public ResponseEntity<String> scrapPost(@PathVariable("postId") Long postId) {
         // postId를 이용하여 해당 Post를 스크랩하고 저장합니다.
-        log.info(String.valueOf(postId));
         postService.saveScrappedPost(postId);
         return ResponseEntity.status(HttpStatus.CREATED).body("Post 스크랩이 완료되었습니다.");
     }

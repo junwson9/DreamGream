@@ -2,6 +2,7 @@ package com.ssafy.dreamgream.domain.post.service;
 
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.MemberServiceImpl;
+import com.ssafy.dreamgream.domain.post.dto.request.AchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -41,6 +43,25 @@ public class PostService {
             modelMapper.map(unAchievedPostUpdateDto, updatedpost);
             postRepository.save(updatedpost);
             return updatedpost;
+        }
+    }
+
+    public Post AchievedPostUpdate(Long postId, AchievedPostUpdateRequestDto achievedPostUpdateRequestDto, MultipartFile file){
+        Post toupdatepost = postRepository.findById(postId).orElse(null);
+        if(toupdatepost == null){
+            return null;
+        }else{
+            modelMapper.map(achievedPostUpdateRequestDto,toupdatepost);
+            if (achievedPostUpdateRequestDto.getImgUpdateFlag()==Boolean.TRUE && file.isEmpty()){
+                toupdatepost.setAchievementImg(null);
+            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag()==Boolean.TRUE && !file.isEmpty()) {
+                //여기에 받은 이미지 multipartfile => url 바꾸는 로직 들어가야할듯
+                toupdatepost.setAchievementImg("수정되라");
+            } else {
+                return null;
+            }
+            postRepository.save(toupdatepost);
+            return toupdatepost;
         }
     }
 
