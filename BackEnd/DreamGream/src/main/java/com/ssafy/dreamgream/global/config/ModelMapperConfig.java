@@ -17,10 +17,10 @@ public class ModelMapperConfig {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         // 만약 필드명이 일치하지 않을 경우 수동으로 매핑 규칙을 추가해줄 수 있습니다.
-        modelMapper.typeMap(Post.class, UnAchievedPostUpdateResponseDto.class)
-                .addMapping(src -> src.getContent(), UnAchievedPostUpdateResponseDto::setContent)
-                .addMapping(src -> src.getTitle(), UnAchievedPostUpdateResponseDto::setTitle)
-                .addMapping(src -> src.getDeadLine(), UnAchievedPostUpdateResponseDto::setDeadLine);
+//        modelMapper.typeMap(Post.class, UnAchievedPostUpdateResponseDto.class)
+//                .addMapping(src -> src.getContent(), UnAchievedPostUpdateResponseDto::setContent)
+//                .addMapping(src -> src.getTitle(), UnAchievedPostUpdateResponseDto::setTitle)
+//                .addMapping(src -> src.getDeadLine(), UnAchievedPostUpdateResponseDto::setDeadLine);
 
         return modelMapper;
     }
