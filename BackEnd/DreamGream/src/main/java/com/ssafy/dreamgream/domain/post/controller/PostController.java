@@ -4,11 +4,13 @@ import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.TestMemberService;
-import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
-import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
-import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.*;
+import com.ssafy.dreamgream.domain.post.dto.response.AchievedPostUpdateResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
+import com.ssafy.dreamgream.domain.post.dto.response.UnAchievedPostUpdateResponseDto;
+import com.ssafy.dreamgream.domain.post.entity.Post;
+import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
@@ -20,12 +22,15 @@ import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -41,6 +46,9 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
     private final TestMemberService testMemberService;
+    private final PostRepository postRepository;
+
+    private final ModelMapper modelMapper;
 
     @GetMapping("/test")
     public String Test() {
@@ -135,15 +143,35 @@ public class PostController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PatchMapping("/{postId}")
-    public ResponseEntity<PostUpdateRequestDto> updatePostPartially(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto) {
-        log.info(String.valueOf(postId));
-        PostUpdateRequestDto updatedPost = postService.updatePostPartially(postId, requestDto);
+    @PostMapping("/{postId}/unachieved")
+    public ResponseEntity<UnAchievedPostUpdateResponseDto> unAchievedPostUpdate(@PathVariable Long postId, @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto) {
+        Post updatedPost = postService.UnAchievedPostUpdateRequestDto(postId, unAchievedPostUpdateRequestDto);
+
+        if (updatedPost == null) {
+            // postId에 해당하는 포스트가 없는 경우 404 Not Found 응답
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        UnAchievedPostUpdateResponseDto responseDto = new UnAchievedPostUpdateResponseDto();
+        // 포스트 업데이트 성공 시 200 OK 응답과 업데이트된 포스트 객체를 ResponseDto로 변환하여 반환
+        modelMapper.map(updatedPost, responseDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{postId}/achieved", consumes = "multipart/form-data")
+    public ResponseEntity<AchievedPostUpdateResponseDto> achievedPostUpdate (@PathVariable Long postId,
+                                                                             @RequestPart AchievedPostUpdateRequestDto achievedPostUpdateRequestDto,
+                                                                             @RequestParam("file") MultipartFile file) {
+        Post updatedPost = postService.AchievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
+
         if (updatedPost == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(updatedPost);
+
+        AchievedPostUpdateResponseDto responseDto = modelMapper.map(updatedPost, AchievedPostUpdateResponseDto.class);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+
 
     @DeleteMapping("/{post_id}")
     public String deletePost(@PathVariable("post_id") Long postId) {
@@ -151,15 +179,12 @@ public class PostController {
         return "Post with ID " + postId + " has been deleted successfully.";
     }
 
-    @PostMapping("/{post_id}/scrap")
-    public ResponseEntity<String> scrapPost(@PathVariable("post_id") Long postId) {
+    @PostMapping("/{postId}/scrap")
+    public ResponseEntity<String> scrapPost(@PathVariable("postId") Long postId) {
         // postId를 이용하여 해당 Post를 스크랩하고 저장합니다.
         postService.saveScrappedPost(postId);
         return ResponseEntity.status(HttpStatus.CREATED).body("Post 스크랩이 완료되었습니다.");
     }
-
-
-
 
     @GetMapping("/{postId}")
     public ResponseEntity<?> findPostById(@PathVariable Long postId) {

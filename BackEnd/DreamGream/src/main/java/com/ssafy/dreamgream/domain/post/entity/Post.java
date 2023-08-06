@@ -2,6 +2,7 @@ package com.ssafy.dreamgream.domain.post.entity;
 
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -45,9 +46,11 @@ public class Post {
     private LocalDateTime achievedDate;
 
     @Column(name = "cheer_cnt")
+    @ColumnDefault("0")
     private Long cheerCnt;
 
     @Column(name = "celebrate_cnt")
+    @ColumnDefault("0")
     private Long celebrateCnt;
 
     @Column(name = "ai_img")
@@ -71,6 +74,7 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
 
     public void setDeadline(String deadLine) {
         this.deadLine = deadLine;
@@ -100,10 +104,6 @@ public class Post {
         this.cheerCnt = cheerCnt;
     }
 
-    public void setCelebrateCnt(Long celebrateCnt) {
-        this.celebrateCnt = celebrateCnt;
-    }
-
     public void setAiImg(String aiImg) {
         this.aiImg = aiImg;
     }
@@ -112,16 +112,8 @@ public class Post {
         this.achievementImg = achievementImg;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     @OneToMany(mappedBy = "cheerPost", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -130,13 +122,6 @@ public class Post {
     @OneToMany(mappedBy = "celebratePost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberPostCongrat> memberPostCongrats = new ArrayList<>();
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void updateMember(Member member){
-        this.member = member;
-    }
 
 //    public void removeMemberPostCelebrate(MemberPostCelebrate memberPostCelebrate) {
 //        memberPostCelebrates.remove(memberPostCelebrate);

@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @RestController
 @RequestMapping("/api/posts/cheering")
 public class CheerController {
@@ -29,10 +27,4 @@ public class CheerController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Cheer removed for Post ID: " + cheerDto.getPostId() + " and Member ID: " + cheerDto.getMemberId());
     }
-
-//    @GetMapping("/{postId}")
-//    public Set<String> getCheerMemberIds(String postId) {
-//        return cheerService.getCheerMemberIds(postId);
-//    }
-
 }
