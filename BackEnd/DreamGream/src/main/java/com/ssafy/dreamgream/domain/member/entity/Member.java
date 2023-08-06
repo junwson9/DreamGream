@@ -5,13 +5,8 @@ import com.ssafy.dreamgream.domain.member.enums.Provider;
 import com.ssafy.dreamgream.domain.member.enums.Role;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long memberId;
 

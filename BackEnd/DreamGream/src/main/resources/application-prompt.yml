@@ -13,4 +13,4 @@ spring:
     activate:
       on-profile: "prompt-prod"
 prompt:
-  url: "http://prompt-api:8002/prompt"
+  url: "http://prompt-api:8002/api/prompt"

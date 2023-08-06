@@ -9,9 +9,13 @@ import lombok.ToString;
 @ToString
 public class PostRequestDto {
     String title;
+    @JsonProperty("category_id")
+    String categoryId;
+    @JsonProperty("ai_img_url")
+    String aiImg;
     String content;
-    String deadline;
+    @JsonProperty("dead_line")
+    boolean deadline;
     @JsonProperty("is_display")
-    String isDisplay;
-    // 카테고리
+    boolean isDisplay;
 }
