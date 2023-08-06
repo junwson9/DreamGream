@@ -15,9 +15,10 @@ public class SSEService {
     private final ConcurrentHashMap<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
 
     public void addSseEmitter(Long sseId, SseEmitter emitter) {
-        sseEmitters.put(sseId, emitter);
         emitter.onCompletion(() -> sseEmitters.remove(sseId));
         emitter.onTimeout(() -> sseEmitters.remove(sseId));
+        sseEmitters.put(sseId, emitter);
+
     }
 
     public void sendImageResponse(Long sseId, ImageGenerateResponseDto dto) {
@@ -31,9 +32,9 @@ public class SSEService {
             } catch (IOException e) {
                 // Handle exception when sending the response to the client
                 e.printStackTrace();
+                log.error("ERROR 발생 : {} ", e.getMessage());
             } finally {
                 log.info("emitter complete");
-                removeEmitter(sseId);
                 emitter.complete();
             }
         } else {
