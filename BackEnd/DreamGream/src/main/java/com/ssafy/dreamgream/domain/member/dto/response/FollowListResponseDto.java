@@ -15,7 +15,7 @@ public class FollowListResponseDto {
 
 	private String profileImg;
 
-	private Boolean isFollowing;
+	private Boolean isFollowed;
 
 	public FollowListResponseDto(Long memberId, String nickname, String profileImg) {
 		this.memberId = memberId;

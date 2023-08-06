@@ -9,10 +9,14 @@ import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.service.FollowService;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -117,18 +121,25 @@ public class MemberController {
      * 특정 회원의 팔로워 목록 조회
      */
     @GetMapping("/{memberId}/followers")
-    public ResponseEntity<?> getFollowers(@PathVariable Long memberId) {
-        List<FollowListResponseDto> followers = followService.getFollowers(memberId);
-        return new ResponseEntity<>(followers, HttpStatus.OK);
+    public ResponseEntity<?> getFollowers(@PathVariable Long memberId,
+                                            @PageableDefault(size = 10) Pageable pageable) {
+        List<FollowListResponseDto> followers = followService.getFollowers(memberId, pageable);
+
+        ResponseDto responseDto = new ResponseDto(success, "팔로워 목록을 조회했습니다.",
+            Collections.singletonMap("followerList", followers));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
      * 특정 회원이 팔로우한 회원 목록 조회
      */
     @GetMapping("/{memberId}/followings")
-    public ResponseEntity<?> getFollowings(@PathVariable Long memberId) {
-        List<FollowListResponseDto> followings = followService.getFollowings(memberId);
-        return new ResponseEntity<>(followings, HttpStatus.OK);
+    public ResponseEntity<?> getFollowings(@PathVariable Long memberId,
+                                            @PageableDefault(size = 10) Pageable pageable) {
+        List<FollowListResponseDto> followings = followService.getFollowings(memberId, pageable);
+
+        ResponseDto responseDto = new ResponseDto(success, "팔로잉 목록을 조회했습니다.", Collections.singletonMap("followingList", followings));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 

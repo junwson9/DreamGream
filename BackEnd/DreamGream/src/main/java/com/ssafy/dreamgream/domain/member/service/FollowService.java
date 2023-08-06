@@ -5,12 +5,14 @@ import com.ssafy.dreamgream.domain.member.entity.Follow;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @Slf4j
@@ -23,28 +25,28 @@ public class FollowService {
 
 
     // 특정 회원을 팔로우한 회원 목록 + 현재 로그인한 회원의 팔로우 여부
-    public List<FollowListResponseDto> getFollowers(Long memberId) {
+    public List<FollowListResponseDto> getFollowers(Long memberId, Pageable pageable) {
         // TODO 존재하는 memberId인지 검증
         Member toMember = memberRepository.findById(memberId).orElseThrow();
 
         // TODO fromMember test가 아닌 진짜 currentMember로 교체
         Member currentMember = testMemberService.getTestMember();
 
-        List<FollowListResponseDto> followers = followRepository.findFollowers(toMember, currentMember);
+        List<FollowListResponseDto> followers = followRepository.findFollowersWithPage(toMember, currentMember, pageable);
 
         return followers;
     }
 
 
     // 특정 회원이 팔로우한 회원 목록 + 현재 로그인한 회원의 팔로우 여부
-    public List<FollowListResponseDto> getFollowings(Long memberId) {
+    public List<FollowListResponseDto> getFollowings(Long memberId, Pageable pageable) {
         // TODO 존재하는 memberId인지 검증
         Member fromMember = memberRepository.findById(memberId).orElseThrow();
 
         // TODO fromMember test가 아닌 진짜 currentMember로 교체
         Member currentMember = testMemberService.getTestMember();
 
-        List<FollowListResponseDto> followings = followRepository.findFollowings(fromMember, currentMember);
+        List<FollowListResponseDto> followings = followRepository.findFollowingsWithPage(fromMember, currentMember, pageable);
 
         return followings;
     }
