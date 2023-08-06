@@ -134,16 +134,6 @@ public class PostController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PatchMapping("/{postId}")
-    public ResponseEntity<PostUpdateRequestDto> updatePostPartially(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto) {
-        log.info(String.valueOf(postId));
-        PostUpdateRequestDto updatedPost = postService.updatePostPartially(postId, requestDto);
-        if (updatedPost == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(updatedPost);
-    }
-
     @PostMapping("/{postId}/unachieved")
     public ResponseEntity<UnAchievedPostUpdateResponseDto> unAchievedPostUpdate(@PathVariable Long postId, @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto) {
         Post updatedPost = postService.UnAchievedPostUpdateRequestDto(postId, unAchievedPostUpdateRequestDto);

@@ -65,38 +65,11 @@ public class PostService {
         }
     }
 
-    public PostUpdateRequestDto updatePostPartially(Long postId, PostUpdateRequestDto postUpdateRequestDto){
-        Post existingPost = postRepository.findById(postId).orElse(null);
-
-        if(existingPost == null) {
-            //예외처리
-            return null;
-        }else{
-            Optional.ofNullable(postUpdateRequestDto.getAchievedDate()).ifPresent(existingPost::setAchievedDate);
-            Optional.ofNullable(postUpdateRequestDto.getAchievementcontent()).ifPresent(existingPost::setAchievementContent);
-            Optional.ofNullable(postUpdateRequestDto.getAchievementimg()).ifPresent(existingPost::setAchievementImg);
-            Optional.ofNullable(postUpdateRequestDto.getAiimg()).ifPresent(existingPost::setAiImg);
-            Optional.ofNullable(postUpdateRequestDto.getCheercnt()).ifPresent(existingPost::setCheerCnt);
-            Optional.ofNullable(postUpdateRequestDto.getContent()).ifPresent(existingPost::setContent);
-            Optional.ofNullable(postUpdateRequestDto.getDeadline()).ifPresent(existingPost::setDeadline);
-            Optional.ofNullable(postUpdateRequestDto.getIsachieved()).ifPresent(existingPost::setIsAchieved);
-            Optional.ofNullable(postUpdateRequestDto.getIsdisplay()).ifPresent(existingPost::setIsDisplay);
-            existingPost.setModifiedDate(LocalDateTime.now());
-        }
-
-        PostUpdateRequestDto sadf = PostUpdateRequestDto.builder()
-                .aiimg("sadf")
-                .cheercnt(1L)
-                .build();
-        existingPost = postRepository.save(existingPost);
-        return convertToDto(existingPost);
-    }
     private PostUpdateRequestDto convertToDto(Post post){
         PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto();
         BeanUtils.copyProperties(post,postUpdateRequestDto);
         return postUpdateRequestDto;
     }
-
 
     public Slice<PostListResponseDto> findPublicPosts(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
         return postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
