@@ -16,14 +16,12 @@ public class SSEController {
 
     @GetMapping()
     public SseEmitter handleSSE() {
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter(600_000L);
         log.info("emitter created");
         // jwt에서 userId 정보를 받아와야함
         Long userId = 1L;
         sseService.addSseEmitter(userId, emitter);
 
-/*      emitter.onTimeout(() -> removeEmitter(userId));
-        emitter.onCompletion(() -> removeEmitter(userId));*/
 
         return emitter;
     }

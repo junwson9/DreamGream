@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Post {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long postId;
 
@@ -75,6 +75,7 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
+
     public void setDeadline(String deadLine) {
         this.deadLine = deadLine;
     }
@@ -121,13 +122,6 @@ public class Post {
     @OneToMany(mappedBy = "celebratePost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberPostCongrat> memberPostCongrats = new ArrayList<>();
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void updateMember(Member member){
-        this.member = member;
-    }
 
 //    public void removeMemberPostCelebrate(MemberPostCelebrate memberPostCelebrate) {
 //        memberPostCelebrates.remove(memberPostCelebrate);
