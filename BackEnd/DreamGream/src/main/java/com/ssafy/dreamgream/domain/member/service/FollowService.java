@@ -22,21 +22,29 @@ public class FollowService {
     private final TestMemberService testMemberService;
 
 
+    // 특정 회원을 팔로우한 회원 목록 + 현재 로그인한 회원의 팔로우 여부
     public List<FollowListResponseDto> getFollowers(Long memberId) {
         // TODO 존재하는 memberId인지 검증
         Member toMember = memberRepository.findById(memberId).orElseThrow();
 
-        List<FollowListResponseDto> followers = followRepository.findFollowers(toMember);
+        // TODO fromMember test가 아닌 진짜 currentMember로 교체
+        Member currentMember = testMemberService.getTestMember();
+
+        List<FollowListResponseDto> followers = followRepository.findFollowers(toMember, currentMember);
 
         return followers;
     }
 
 
+    // 특정 회원이 팔로우한 회원 목록 + 현재 로그인한 회원의 팔로우 여부
     public List<FollowListResponseDto> getFollowings(Long memberId) {
         // TODO 존재하는 memberId인지 검증
         Member fromMember = memberRepository.findById(memberId).orElseThrow();
 
-        List<FollowListResponseDto> followings = followRepository.findFollowings(fromMember);
+        // TODO fromMember test가 아닌 진짜 currentMember로 교체
+        Member currentMember = testMemberService.getTestMember();
+
+        List<FollowListResponseDto> followings = followRepository.findFollowings(fromMember, currentMember);
 
         return followings;
     }

@@ -16,18 +16,40 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     Long countByToMember(Member member);
     Long countByFromMember(Member member);
 
-    @Query("SELECT new com.ssafy.dreamgream.domain.member.dto.response.FollowMemberResponseDto(f.toMember.memberId, f.toMember.nickname, f.toMember.profileImg)"
-        + " FROM Follow f"
-        + " where f.fromMember = :fromMember")
-    List<FollowListResponseDto> findFollowings(@Param("fromMember") Member fromMember);
-
-    @Query("SELECT new com.ssafy.dreamgream.domain.member.dto.response.FollowMemberResponseDto(f.fromMember.memberId, f.fromMember.nickname, f.fromMember.profileImg)"
-        + " FROM Follow f"
-        + " where f.toMember = :toMember")
-    List<FollowListResponseDto> findFollowers(@Param("toMember") Member toMember);
-
     @Query("SELECT COUNT(*) FROM Follow f WHERE f.toMember.memberId=:toMemberId AND f.fromMember.memberId=:fromMemberId")
     int countByToMemberIdAndFromMemberId(@Param("toMemberId")Long toMemberId, @Param("fromMemberId")Long memberId);
 
     Optional<Follow> findByToMemberAndFromMember(Member toMember, Member fromMember);
+
+
+    @Query("SELECT new com.ssafy.dreamgream.domain.member.dto.response.FollowListResponseDto"
+        + "(m.memberId, m.nickname, m.profileImg, "
+        + "CASE WHEN EXISTS(SELECT 1 FROM Follow f WHERE f.fromMember = :currentMember AND f.toMember = m) THEN true ELSE false END) "
+        + "FROM Follow f "
+        + "INNER JOIN Member m ON f.fromMember = m "
+        + "WHERE f.toMember = :toMember")
+    List<FollowListResponseDto> findFollowers(@Param("toMember") Member toMember, @Param("currentMember") Member currentMember);
+
+    @Query("SELECT new com.ssafy.dreamgream.domain.member.dto.response.FollowListResponseDto"
+        + "(m.memberId, m.nickname, m.profileImg, "
+        + "CASE WHEN EXISTS(SELECT 1 FROM Follow f WHERE f.fromMember = :currentMember AND f.toMember = m) THEN true ELSE false END) "
+        + "FROM Follow f "
+        + "INNER JOIN Member m ON f.toMember = m "
+        + "WHERE f.fromMember = :fromMember")
+    List<FollowListResponseDto> findFollowings(@Param("fromMember") Member fromMember, @Param("currentMember") Member currentMember);
+
+
+
+    /* 비회원도 팔로잉/팔로워 조회 가능한 경우에 사용
+    @Query("SELECT new com.ssafy.dreamgream.domain.member.dto.response.FollowListResponseDto(f.fromMember.memberId, f.fromMember.nickname, f.fromMember.profileImg)"
+        + " FROM Follow f"
+        + " where f.toMember = :toMember")
+    List<FollowListResponseDto> findFollowers(@Param("toMember") Member toMember);
+
+    @Query("SELECT new com.ssafy.dreamgream.domain.member.dto.response.FollowListResponseDto(f.toMember.memberId, f.toMember.nickname, f.toMember.profileImg)"
+        + " FROM Follow f"
+        + " where f.fromMember = :fromMember")
+    List<FollowListResponseDto> findFollowings(@Param("fromMember") Member fromMember);
+     */
+
 }

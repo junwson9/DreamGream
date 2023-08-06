@@ -84,7 +84,6 @@ public class MemberController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-
     /**
      * 개인피드 회원정보 조회 (id, 닉네임, 프로필, 팔로잉/팔로워 수)
      */
@@ -97,6 +96,9 @@ public class MemberController {
     }
 
 
+    /**
+     * 키워드가 포함된 닉네임 검색
+     */
     @GetMapping
     public ResponseEntity<?> findByNickname(@RequestParam @NotBlank String nickname,
                                             @PageableDefault(size = 10, sort = "nickname") Pageable pageable) {
@@ -121,7 +123,7 @@ public class MemberController {
     }
 
     /**
-     * 특정 회원이 팔로우하는 목록 조회
+     * 특정 회원이 팔로우한 회원 목록 조회
      */
     @GetMapping("/{memberId}/followings")
     public ResponseEntity<?> getFollowings(@PathVariable Long memberId) {

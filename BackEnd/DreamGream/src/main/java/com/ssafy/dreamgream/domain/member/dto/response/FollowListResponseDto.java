@@ -15,4 +15,13 @@ public class FollowListResponseDto {
 
 	private String profileImg;
 
+	private Boolean isFollowing;
+
+	public FollowListResponseDto(Long memberId, String nickname, String profileImg) {
+		this.memberId = memberId;
+		this.nickname = nickname;
+		this.profileImg = profileImg;
+	}
+
+
 }
