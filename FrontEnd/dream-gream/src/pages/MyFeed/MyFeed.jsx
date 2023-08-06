@@ -1,47 +1,63 @@
 /* eslint-disable */
 
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import CategoryButtons from '../../components/Button/CategoryButtons2';
+import axios from 'axios';
+import TopBar from '../../components/Common/Topbar';
 
 function MyFeed() {
-  const [posts, setPosts_list] = useState([]);
-  const [category, setCategory] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const member = {
-    followers: 205,
-    followings: 210,
-    achived_score: 70,
-  };
-  // 테스트용
-
-  // const posts = [
-  //   { id: 1, category: '여행', content: '여행 게시물입니다.' },
-  //  { id: 2, category: '건강/운동', content: '건강/운동 게시물입니다.' },
-  //  { id: 3, category: '음식', content: '음식 게시물입니다.' },
-  //  { id: 4, category: '건강/운동', content: '건강/운동 게시물입니다.' },
-  //  { id: 5, category: '쇼핑', content: '쇼핑 게시물입니다.' },
-  //  { id: 6, category: '일', content: '일 게시물입니다.' },
-  // ];
-
-  const postsNums = posts.length;
+  const [post, setPost] = useState([]);
+  const [user, setUser] = useState('');
+  // const [category, setCategory] = useState('');
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // console.log(user.nickname);
+  const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    async function fetchData() {
       try {
-        const response = await fetch(
-          'http://localhost:8000/api/posts?members={member_id}',
+        const response = await axios.get(
+          'http://i9a609.p.ssafy.io:8000/api/posts/my',
+          {
+            headers: {
+              Authorization: `Bearer ${ACCESS_TOKEN}`,
+              'Content-Type': 'application/json',
+            },
+          },
         );
-        const data = await response.json();
-        console.log(data);
-        // 여기 data가 post_list일지도
-        setPosts(data.post_list);
+        const data = response.data.data;
+        setPost(data);
+        // console.log(data);
       } catch (error) {
-        console.error('Error getting posts: ', error);
+        console.error('Error while fetching data:', error);
       }
-    };
-    fetchPosts();
+    }
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          'http://i9a609.p.ssafy.io:8000/api/members/info',
+          {
+            headers: {
+              Authorization: `Bearer ${ACCESS_TOKEN}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+        // console.log(response);
+        const data = response.data.data.member;
+        setUser(data);
+        console.log(data);
+        // console.log(data);
+      } catch (error) {
+        console.error('Error while fetching data:', error);
+      }
+    }
+
+    fetchData();
   }, []);
 
   const handleCategoryChange = (newCategory) => {
@@ -54,42 +70,22 @@ function MyFeed() {
   };
 
   return (
-    <div>
-      <h1>nickname</h1>
-      <p>
-        달성률 : {member.achived_score} | 팔로워: {member.followers} | 팔로잉:{' '}
-        {member.followings} |
-      </p>
-      <h3>게시물수 : {postsNums}개</h3>
-      <button onClick={() => setIsModalOpen(true)}>
-        {category === '' ? '전체' : category} ▼
-      </button>
-
-      {/* 모달창 */}
-      <div style={{ display: isModalOpen ? 'block' : 'none' }}>
-        <CategoryButtons setCategory={handleCategoryChange} />
-        <button onClick={() => setIsModalOpen(false)}>닫기</button>
+    <div className="w-[360px] h-[800px] relative bg-white">
+      <div className="w-[360px] h-[60px] left-0 top-0 absolute">
+        <TopBar
+          title={user.nickname}
+          // title="ㅎㅇ"
+          showConfirmButton={false}
+          showCloseButton={false}
+        />
+        <div className="w-[26px] h-[26px] left-[20px] top-[18px] absolute" />
       </div>
-
-      {/* 필터링된 게시물 목록 렌더링 */}
-      <ul>
-        {posts
-          .filter((post) => {
-            if (category === '') {
-              return true;
-            }
-            return post.category.category_name === category;
-          })
-          .map((post) => (
-            <li key={post.post_id}>{post.content}</li>
-          ))}
-      </ul>
+      <div className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute" />
+      <div class="text-center text-neutral-700 text-xs font-bold leading-snug">
+        프로필 수정
+      </div>
     </div>
   );
 }
-
-MyFeed.propTypes = {
-  setCategory: PropTypes.func.isRequired,
-};
 
 export default MyFeed;
