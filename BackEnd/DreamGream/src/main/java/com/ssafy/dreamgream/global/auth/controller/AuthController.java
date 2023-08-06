@@ -6,6 +6,7 @@ import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
 import com.ssafy.dreamgream.global.auth.service.AuthService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
 import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
+import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collections;
 
 @RestController
 @Slf4j
