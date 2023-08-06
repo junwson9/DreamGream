@@ -31,7 +31,7 @@ axiosInstance.interceptors.response.use(
     if (error.response && error.response.status === 401 && refreshToken) {
       try {
 
-        const res = await axios.post('/auth/token', { X_Refresh_token: refreshToken });
+        const res = await axios.post('/auth/token', {}, { headers: { 'X-Refresh-Token': refreshToken } });
         const newAccessToken = res.data.access_token;
         store.dispatch({ type: 'SET_TOKEN', payload: { accessToken: newAccessToken } });
 
