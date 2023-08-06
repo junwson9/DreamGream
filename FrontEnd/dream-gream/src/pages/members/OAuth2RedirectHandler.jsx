@@ -1,13 +1,17 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../actions/authActions';
 
 function OAuth2RedirectHandler() {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  
   const searchParams = new URLSearchParams(location.search);
   const ACCESS_TOKEN = searchParams.get('access-token');
+  dispatch(setToken(ACCESS_TOKEN));
   const REFRESH_TOKEN = searchParams.get('refresh-token');
   const role = searchParams.get('role');
   const status = searchParams.get('status');
