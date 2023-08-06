@@ -22,25 +22,25 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private String uploadProfile(MultipartFile multipartFile, Long memberId) {
+    public String getImageUrl(String directory, MultipartFile multipartFile, Long memberId) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(multipartFile.getContentType());
         objectMetadata.setContentLength(multipartFile.getSize());
 
         String originalFilename = multipartFile.getOriginalFilename();
-        String imageKey = "profile/member_" + memberId + "/" + getUuidFileName(originalFilename);
+        String imageKey = directory + "/member_" + memberId + "/" + getUuidFileName(originalFilename);
 
-        String profileURL = null;
+        String url = null;
         try {
             amazonS3Client.putObject(bucket, imageKey, multipartFile.getInputStream(), objectMetadata);
-            profileURL = amazonS3Client.getUrl(bucket, imageKey).toString();
+            url = amazonS3Client.getUrl(bucket, imageKey).toString();
         } catch (Exception e) {
             log.error("프로필 이미지 업로드 실패");
             log.error(e.getMessage());
         }
         log.info("프로필 이미지 업로드 성공");
 
-        return profileURL;
+        return url;
     }
 
     private String getUuidFileName(String fileName) {
