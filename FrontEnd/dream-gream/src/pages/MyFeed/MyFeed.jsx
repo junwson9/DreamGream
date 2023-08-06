@@ -5,11 +5,11 @@ import axios from 'axios';
 import TopBar from '../../components/Common/Topbar';
 
 function MyFeed() {
-  const [post, setPost] = useState();
-  const [user, setUser] = useState();
+  const [post, setPost] = useState([]);
+  const [user, setUser] = useState('');
   // const [category, setCategory] = useState('');
   // const [isModalOpen, setIsModalOpen] = useState(false);
-
+  // console.log(user.nickname);
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
 
   useEffect(() => {
@@ -47,9 +47,11 @@ function MyFeed() {
             },
           },
         );
+        // console.log(response);
         const data = response.data.data.member;
         setUser(data);
         console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -72,10 +74,15 @@ function MyFeed() {
       <div className="w-[360px] h-[60px] left-0 top-0 absolute">
         <TopBar
           title={user.nickname}
+          // title="ㅎㅇ"
           showConfirmButton={false}
           showCloseButton={false}
         />
         <div className="w-[26px] h-[26px] left-[20px] top-[18px] absolute" />
+      </div>
+      <div className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute" />
+      <div class="text-center text-neutral-700 text-xs font-bold leading-snug">
+        프로필 수정
       </div>
     </div>
   );
