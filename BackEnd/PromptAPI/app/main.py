@@ -9,6 +9,6 @@ prompt_handler = PromptHandler()
 async def main():
     return 'main page'
 
-@app.post("/prompt")
+@app.post("/api/prompt")
 async def process_prompt(request: PromptRequest):
     return await prompt_handler.process_prompt(request)

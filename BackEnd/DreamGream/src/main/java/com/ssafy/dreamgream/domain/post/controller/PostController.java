@@ -1,6 +1,7 @@
 package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.member.entity.Member;
+import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.TestMemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.*;
@@ -51,8 +52,16 @@ public class PostController {
 
     @GetMapping("/test")
     public String Test() {
-        log.info("test request!");
-        return "test request";
+        log.info("test start");
+        PromptCreationProduceDto produceDto = PromptCreationProduceDto.builder()
+                .gender(Gender.MALE.toString())
+                .birthyear("1997")
+                .title("유럽으로 배낭여행 가기")
+                .categoryName("Travel")
+                .build();
+
+        String prompt = imageService.callPromptServer(produceDto);
+        return prompt;
     }
 
     @PostMapping("/image")

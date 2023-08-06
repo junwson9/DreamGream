@@ -6,13 +6,16 @@ spring:
       local:
         - db-local
         - rabbitmq-local
+        - prompt-local
       prod:
         - db-prod
         - rabbitmq-prod
+        - prompt-prod
     include:
       - oauth
       - db
       - rabbitmq
+      - prompt
 
 server:
   port: 8000
