@@ -2,6 +2,7 @@
 /* eslint-disable */
 const initialState = {
   token: null,
+  refreshToken: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -9,7 +10,8 @@ const authReducer = (state = initialState, action) => {
     case 'SET_TOKEN':
       return {
         ...state,
-        token: action.payload,
+        token: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
       };
     default:
       return state;
