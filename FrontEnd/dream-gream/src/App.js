@@ -9,6 +9,10 @@ import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
 import ShareImage from './components/Share/ShareImage';
+import Follow from './pages/MyFeed/Follow';
+import FindMember from './pages/members/FindMember';
+import FeedDetail from './pages/Feed/feedDetail';
+import ViewAbout from './pages/ViewMore/ViewAbout';
 
 function App() {
   return (
