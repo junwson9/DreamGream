@@ -8,6 +8,7 @@ import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
+import FeedDetail from './pages/Feed/feedDetail';
 
 function App() {
   return (

@@ -38,12 +38,7 @@ public class ImageService {
             producer.sendImageCreationRequest(sseId, "error");
         } else {
             String url = null;
-            try {
-                url = s3Uploader.uploadAIImage(imageBytes);
-            } catch (IOException e) {
-                log.error("s3 이미지 업로드 중 에러 발생");
-                throw new RuntimeException(e);
-            }
+            url = s3Uploader.uploadAIImage(imageBytes, sseId);
             producer.sendImageCreationRequest(sseId, url);
         }
     }
