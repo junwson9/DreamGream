@@ -10,6 +10,7 @@ import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.member.entity.Member;
+import com.ssafy.dreamgream.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -36,6 +37,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberService memberService;
     private final ModelMapper modelMapper;
+    private final S3Uploader s3Uploader;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
@@ -57,11 +59,13 @@ public class PostService {
             return null;
         }else{
             modelMapper.map(achievedPostUpdateRequestDto,toupdatepost);
-            if (achievedPostUpdateRequestDto.getImgUpdateFlag()==Boolean.TRUE && file.isEmpty()){
+            if (achievedPostUpdateRequestDto.getImgUpdateFlag() && file.isEmpty()) {
                 toupdatepost.setAchievementImg(null);
-            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag()==Boolean.TRUE && !file.isEmpty()) {
+            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == Boolean.TRUE && !file.isEmpty()) {
+                Member currentMember = memberService.getCurrentMember();
                 //여기에 받은 이미지 multipartfile => url 바꾸는 로직 들어가야할듯
-                toupdatepost.setAchievementImg("수정되라");
+                String imageUrl = s3Uploader.getImageUrl("post", file, currentMember.getMemberId());
+                toupdatepost.setAchievementImg(imageUrl);
             } else {
                 return null;
             }
