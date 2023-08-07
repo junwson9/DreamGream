@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint-disable */ // SelectSmall.js
+
 import React, { useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -12,25 +13,24 @@ const CustomSelect = ({ ...props }) => (
         borderColor: '#7887D4',
         backgroundColor: 'transparent',
       },
-      fontFamily: 'Noto Sans KR, sans-serif', // Replace 'YourCustomFont' with the actual name of your custom font
+      fontFamily: 'Noto Sans KR, sans-serif',
     }}
     MenuProps={{
       PaperProps: {
         style: {
-          maxHeight: 200, // 원하는 높이로 조정하세요
+          maxHeight: 200,
         },
       },
     }}
   />
 );
 
-export default function SelectLabels({ onSelect }) {
+function SelectSmall({ onSelect, selectedValue }) {
   const years = Array.from({ length: 100 }, (_, idx) =>
     (new Date().getFullYear() - idx).toString(),
   );
 
-  const [selectedYear, setSelectedYear] = useState('');
-  //   console.log(selectedYear);
+  const [selectedYear, setSelectedYear] = useState(selectedValue || '');
 
   const handleChange = (event) => {
     const selectedYear = event.target.value;
@@ -49,7 +49,8 @@ export default function SelectLabels({ onSelect }) {
         >
           <MenuItem disabled value="">
             <span className="text-base text-gray-400">
-              {selectedYear === '' ? '연도를 입력해주세요' : ''}
+              {/* {selectedValue} */}
+              {selectedValue === '' ? '연도를 입력해주세요' : selectedValue}
             </span>
           </MenuItem>
           {years.map((year) => (
@@ -62,3 +63,5 @@ export default function SelectLabels({ onSelect }) {
     </div>
   );
 }
+
+export default SelectSmall;

@@ -8,8 +8,6 @@ import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
-import FeedDetail from './pages/Feed/feedDetail';
-import Test111 from './components/Feed/ContentCard';
 
 function App() {
   return (
@@ -30,7 +28,6 @@ function App() {
         <Route path="/about" element={<viewAbout />} />
         <Route path="/updatepost" element={<updatePost />} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
-        <Route path="/test111" element={<Test111 />} />
       </Routes>
     </div>
   );

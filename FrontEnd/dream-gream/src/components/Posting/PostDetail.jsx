@@ -1,14 +1,16 @@
 import React, { useState,useRef,useEffect } from 'react';
 import PropTypes from 'prop-types'; 
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import ToggleButton from '../Button/ToggleButton';
-import Dropdown from './Dropdown';
+import Container from './Container';
+import {saveDetail} from '../../store/actions/postActions';
 
 function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
     const [detail, setDetail] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const textareaRef = useRef(null);
+    const dispatch = useDispatch();
     
     const onTogglePublic = () => {
       setIsPublic((prevIsPublic) => !prevIsPublic);
@@ -17,19 +19,9 @@ function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
         setDetail(e.target.value);
     };
 
-    const onPostDetail = async () => {
-        try {
-        // POST 요청은 body에 실어 보냄
-            await axios.post('http://i9a609.p.ssafy.io:8000/api/posts/test',
-            {
-                detail,
-                isPublic: isPublic ? '공개' : '비공개',
-            });
-            setDetail('');
+    const onPostDetail = () => {
+          dispatch(saveDetail({ content: detail, isPublic }));
             handleNextButtonClick();
-        } catch (e) {
-              console.error(e);
-            }
     };
 
     useEffect(() => {
@@ -81,11 +73,11 @@ function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
             <div className="w-[360px] h-14 mt-[18px] relative bg-white">
               <div className="left-[22px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">목표 시기</div>
               <div className="left-[290px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
-                <Dropdown/> 
+                <Container/>
               </div>
               <div className="w-[360px] h-px left-0 top-[1px] absolute border border-neutral-100" />
             </div>
-            <div className="w-96 h-14 relative bg-white">
+            <div className="w-[360px] h-14 relative bg-white">
               <div className="left-[22px] top-[18px] absolute text-center text-zinc-800 text-base font-normal">공개 설정</div>
               <div className="w-12 h-6 left-[294px] top-[16px] absolute">
 
@@ -93,7 +85,7 @@ function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
               isChecked={isPublic} 
               onToggle={onTogglePublic}/>
               </div>
-            <div className="w-96 h-px left-0 top-[1px] absolute border border-neutral-100" />
+            <div className="w-[360px] h-px left-0 top-[1px] absolute border border-neutral-100" />
             </div>
         </div>
     );

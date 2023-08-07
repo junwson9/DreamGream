@@ -1,13 +1,17 @@
 import React,{useState,useRef,useEffect} from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types'; 
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import CategoryButtons from '../Button/CategoryButtons';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
+import {saveSubject} from '../../store/actions/postActions';
+// import axiosInstance from '../../utils/axiosInterceptor';
 
 function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('기타');
     const textareaRef = useRef(null);
+    const dispatch = useDispatch();
  
 
     const onChange = (e) => {
@@ -16,6 +20,7 @@ function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
 
     const onPostSubject = async () => {
         try {
+            dispatch(saveSubject({ title, category }));
         // POST 요청은 body에 실어 보냄
             await axios.post('http://i9a609.p.ssafy.io:8000/api/posts/image',
             {

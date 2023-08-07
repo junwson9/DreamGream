@@ -20,9 +20,11 @@ function TopBar({
   const handleLeftIconClick = () => {
     navigate(-1);
   };
-  const handleConfirmClick = async () => {
+  const handleConfirmClick = async (event) => {
+    // console.log(onconfirm);
+
     if (onConfirm) {
-      await onConfirm(); // Trigger the onConfirm function (POST request)
+      await onConfirm(event); // Trigger the onConfirm function (POST request)
     }
     navigate(pathName); // Navigate to the specified pathName after the onConfirm function completes
   };
