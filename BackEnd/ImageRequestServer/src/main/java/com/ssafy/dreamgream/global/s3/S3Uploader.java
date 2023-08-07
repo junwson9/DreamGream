@@ -27,21 +27,29 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String uploadAIImage(byte[] imageBytes) throws IOException {
+    public String uploadAIImage(byte[] imageBytes, Long sseId){
         // metadata 설정
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(IMAGE_TYPE);
         objectMetadata.setContentLength(imageBytes.length);
         InputStream fileInputStream = new ByteArrayInputStream(imageBytes);
 
-        String imageKey = S3_BUCKET_DIRECTORY_NAME + "/" + UUID.randomUUID() + "_" + getDate() + ".png";
+        String imageKey = S3_BUCKET_DIRECTORY_NAME + "/member_" + sseId + "/" + UUID.randomUUID() + "_" + getDate() + ".png";
 
         // uploading image to s3 bucket
-        amazonS3Client.putObject(bucket, imageKey, fileInputStream, objectMetadata);
-        log.info("이미지 업로드 성공");
-        fileInputStream.close();
+        String url = null;
+        try {
+            log.info("이미지 업로드 시작");
+            amazonS3Client.putObject(bucket, imageKey, fileInputStream, objectMetadata);
+            url = amazonS3Client.getUrl(bucket, imageKey).toString();
+            log.info("이미지 업로드 성공");
+            fileInputStream.close();
+        } catch (Exception e) {
+            log.error("이미지 업로드 실패");
+            log.error(e.getMessage());
+        }
 
-        return amazonS3Client.getUrl(bucket, imageKey).toString();
+        return url;
     }
 
 

@@ -10,6 +10,7 @@ spring:
     include:
       - rabbitmq
 
+
 server:
   port: 8001
 
