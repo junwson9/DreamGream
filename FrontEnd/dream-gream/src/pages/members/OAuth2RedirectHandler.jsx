@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setToken } from '../actions/authActions';
+import { setToken } from '../../store/actions/authActions';
 
 function OAuth2RedirectHandler() {
   const location = useLocation();
