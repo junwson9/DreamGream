@@ -1,13 +1,16 @@
 body {
   margin: 0;
   background-color: #f2f2f2; /* Gray background color for the margin part */
-  overflow: hidden;
+  /* overflow: hidden; */
   overflow-x: hidden;
 }
 .App {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
   width: 360px;
   height: 800px;
-  margin: auto;
   background-color: white;
   display: flex;
   flex-direction: column;

@@ -8,9 +8,7 @@ import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
-import Follow from './pages/MyFeed/Follow';
-import FindMember from './pages/members/FindMember';
-import ViewAbout from './pages/ViewMore/ViewAbout';
+import ShareImage from './components/Share/ShareImage';
 
 function App() {
   return (
@@ -27,6 +25,7 @@ function App() {
         <Route path="/acheivefeed" element={<acheiveFeed />} />
         <Route path="/feedid" element={<FeedDetail />} />
         <Route path="/post" element={<Posting />} />
+        <Route path="/share" element={<ShareImage/>}/>
         <Route path="/myfeed" element={<MyFeed />} />
         <Route path="/about" element={<ViewAbout />} />
         <Route path="/updatepost" element={<updatePost />} />
