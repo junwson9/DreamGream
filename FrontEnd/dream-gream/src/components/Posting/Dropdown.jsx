@@ -1,4 +1,5 @@
 /* eslint-disable */
+//대문자로 가자
 import React from 'react';
 
 function DropDown({ value, setIsOpen, onChangePeriod, isOpen }) {

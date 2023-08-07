@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import OpenHooks from '../../hooks/OpenHooks';
 import { ReactComponent as ArrowIcon } from '../../assets/leftIcon.svg';
-import DropDown from './Dropdown';
+import DropDown from './DropDown';
 
 function Container({ selectedPeriod, onChangePeriod }) {
   const dropDownRef = useRef();
