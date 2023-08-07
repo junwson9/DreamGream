@@ -1,26 +1,21 @@
-import React, {useEffect} from 'react';
-import shareKakao from '../../utils/shareKakaoLink';
+import React from 'react'
+import PropTypes from 'prop-types';
 
-function Modal(){
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://developers.kakao.com/sdk/js/kakao.js'; // 카카오톡 SDK
-        script.async = true;
-      
-        document.body.appendChild(script);      
-        return () => {
-          document.body.removeChild(script); // return으로 제거해주기
-        };
-      }, []);
+function Modal({handleCloseModal}){
+
+return( 
+<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+  <div className="bg-white w-[320px] p-8 rounded-xl">
+    <p className="text-center mb-6">그림이 도착했어요!<br/>확인해볼까요?</p>
+    <div className="flex justify-center">
+      <button className="text-white bg-indigo-400 hover:bg-indigo-700 font-bold py-2 px-4 rounded" type="button" onClick={handleCloseModal}>그림보러가기</button>
+    </div>
+  </div>
+</div>
     
-    return (
-        <div>
-            <button type="submit" onClick={() => shareKakao(route, title)}>
-                <img className="w-12 h-12" src={`${process.env.PUBLIC_URL}/assets/KakaoLogo.png`} alt="Kakao Logo" />
-            </button>
-        </div>
-    )
-
-}
+)}
+Modal.propTypes = {
+    handleCloseModal: PropTypes.func.isRequired,
+};
 
 export default Modal;
