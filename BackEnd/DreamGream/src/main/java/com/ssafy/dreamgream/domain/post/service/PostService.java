@@ -9,10 +9,8 @@ import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.transaction.Transactional;
+import com.ssafy.dreamgream.domain.member.entity.Member;
+import com.ssafy.dreamgream.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -23,6 +21,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +36,10 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberService memberService;
     private final ModelMapper modelMapper;
-    private final RedisTemplate redisTemplate;
+    private final S3Uploader s3Uploader;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
 
     public Post UnAchievedPostUpdateRequestDto(Long postId, UnAchievedPostUpdateRequestDto unAchievedPostUpdateDto) {
         Post updatedpost = postRepository.findById(postId).orElse(null);
@@ -50,11 +58,13 @@ public class PostService {
             return null;
         }else{
             modelMapper.map(achievedPostUpdateRequestDto,toupdatepost);
-            if (achievedPostUpdateRequestDto.getImgUpdateFlag()==Boolean.TRUE && file.isEmpty()){
+            if (achievedPostUpdateRequestDto.getImgUpdateFlag() && file.isEmpty()) {
                 toupdatepost.setAchievementImg(null);
-            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag()==Boolean.TRUE && !file.isEmpty()) {
+            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == Boolean.TRUE && !file.isEmpty()) {
+                Member currentMember = memberService.getCurrentMember();
                 //여기에 받은 이미지 multipartfile => url 바꾸는 로직 들어가야할듯
-                toupdatepost.setAchievementImg("수정되라");
+                String imageUrl = s3Uploader.getImageUrl("post", file, currentMember.getMemberId());
+                toupdatepost.setAchievementImg(imageUrl);
             } else {
                 return null;
             }
@@ -148,6 +158,20 @@ public class PostService {
 
 
     public void deletePost(Long postId) {
+        String cheer_key = "cheer_post_" + String.valueOf(postId);
+        Set<String> cheer_members = redisTemplate.opsForSet().members(cheer_key);
+        for(String member : cheer_members){
+            String keyMember = "member_"+member;
+            redisTemplate.opsForSet().remove(cheer_key,member);
+            redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
+        }
+        String congrat_key = "congrat_post_" + String.valueOf(postId);
+        Set<String> congrat_members = redisTemplate.opsForSet().members(congrat_key);
+        for(String member : congrat_members){
+            String keyMember = "member_"+member;
+            redisTemplate.opsForSet().remove(congrat_key,member);
+            redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
+        }
         postRepository.deleteById(postId);
     }
 

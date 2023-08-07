@@ -75,52 +75,15 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-
-    public void setDeadline(String deadLine) {
-        this.deadLine = deadLine;
-    }
-
-    public void setIsDisplay(Boolean display) {
-        isDisplay = display;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setIsAchieved(Boolean achieved) {
-        isAchieved = achieved;
-    }
-
-    public void setAchievementContent(String achievementContent) {
-        this.achievementContent = achievementContent;
-    }
-
-    public void setAchievedDate(LocalDateTime achievedDate) {
-        this.achievedDate = achievedDate;
-    }
-
-    public void setCheerCnt(Long cheerCnt) {
-        this.cheerCnt = cheerCnt;
-    }
-
-    public void setAiImg(String aiImg) {
-        this.aiImg = aiImg;
-    }
-
     public void setAchievementImg(String achievementImg) {
         this.achievementImg = achievementImg;
-    }
-
-    public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
     }
 
     @OneToMany(mappedBy = "cheerPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberPostCheer> memberPostCheers = new ArrayList<>();
 
     @OneToMany(mappedBy = "celebratePost", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberPostCongrat> memberPostCongrats = new ArrayList<>();
+    private final List<MemberPostCongrat> memberPostCongrats = new ArrayList<>();
 
     public void updateCheerAndCelebrateCnt(Long cheerCnt, Long celebrateCnt) {
         this.cheerCnt = cheerCnt;
