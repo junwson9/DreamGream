@@ -37,6 +37,7 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 		List<PostListResponseDto> results = getPostsResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
+
 	}
 
 	@Override

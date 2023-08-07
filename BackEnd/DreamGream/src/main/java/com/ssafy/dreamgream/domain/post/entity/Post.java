@@ -89,6 +89,10 @@ public class Post {
     @OneToMany(mappedBy = "celebratePost", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<MemberPostCongrat> memberPostCongrats = new ArrayList<>();
 
+    public void updateCheerAndCelebrateCnt(Long cheerCnt, Long celebrateCnt) {
+        this.cheerCnt = cheerCnt;
+        this.celebrateCnt = celebrateCnt;
+    }
 
 //    public void removeMemberPostCelebrate(MemberPostCelebrate memberPostCelebrate) {
 //        memberPostCelebrates.remove(memberPostCelebrate);

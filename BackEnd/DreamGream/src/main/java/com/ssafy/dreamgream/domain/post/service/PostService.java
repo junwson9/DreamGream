@@ -1,5 +1,6 @@
 package com.ssafy.dreamgream.domain.post.service;
 
+import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.AchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
@@ -8,14 +9,15 @@ import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.member.entity.Member;
+import com.ssafy.dreamgream.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -31,6 +33,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberService memberService;
     private final ModelMapper modelMapper;
+    private final S3Uploader s3Uploader;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
@@ -52,11 +55,13 @@ public class PostService {
             return null;
         }else{
             modelMapper.map(achievedPostUpdateRequestDto,toupdatepost);
-            if (achievedPostUpdateRequestDto.getImgUpdateFlag()==Boolean.TRUE && file.isEmpty()){
+            if (achievedPostUpdateRequestDto.getImgUpdateFlag() && file.isEmpty()) {
                 toupdatepost.setAchievementImg(null);
-            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag()==Boolean.TRUE && !file.isEmpty()) {
+            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == Boolean.TRUE && !file.isEmpty()) {
+                Member currentMember = memberService.getCurrentMember();
                 //여기에 받은 이미지 multipartfile => url 바꾸는 로직 들어가야할듯
-                toupdatepost.setAchievementImg("수정되라");
+                String imageUrl = s3Uploader.getImageUrl("post", file, currentMember.getMemberId());
+                toupdatepost.setAchievementImg(imageUrl);
             } else {
                 return null;
             }
@@ -65,25 +70,66 @@ public class PostService {
         }
     }
 
-    public Slice<PostListResponseDto> findPublicPosts(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
-        return postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
+    private PostUpdateRequestDto convertToDto(Post post){
+        PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto();
+        BeanUtils.copyProperties(post,postUpdateRequestDto);
+        return postUpdateRequestDto;
     }
 
+
+    //== 리스트 조회, 게시글 조회 ==//
+
+    public Slice<PostListResponseDto> findPublicPosts(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+        Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
+
+        // Slice<PostListResponseDto>에서 postId 값 추출
+        List<PostListResponseDto> postList = results.getContent();
+
+        // redis에서 좋아요 개수 받아와 업데이트
+        for (PostListResponseDto post : postList) {
+            Long cheerCnt = getRedisSetCount("cheer_post_" + post.getPostId());
+            Long celebrateCnt= getRedisSetCount("congrat_post_" + post.getPostId());
+            post.updateCheerAndCelebrateCnt(cheerCnt, celebrateCnt);
+        }
+
+        return results;
+    }
 
     public Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId) {
         //TODO 존재하지 않는 memberId 예외 처리
 
         Map<String, List<PostListResponseDto>> resultMap = postRepository.findPublicPostsByMember(memberId);
-        return resultMap;
+        return getRedisCntMap(resultMap);
     }
-
 
     public Map<String, List<PostListResponseDto>> findMyPosts() {
         Long memberId = memberService.getCurrentMemberId();
         log.info("currentMemberId: {}", memberId);
 
         Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId);
+        return getRedisCntMap(resultMap);
+    }
+
+    // redis에서 좋아요 개수 받아와 resultMap 업데이트
+    private Map<String, List<PostListResponseDto>> getRedisCntMap(Map<String, List<PostListResponseDto>> resultMap) {
+        List<PostListResponseDto> postList = resultMap.get("post_list");
+        List<PostListResponseDto> achievedPostList = resultMap.get("achieved_post_list");
+        getRedisCheerAndCelebrateCount(postList);
+        getRedisCheerAndCelebrateCount(achievedPostList);
         return resultMap;
+    }
+    
+    private void getRedisCheerAndCelebrateCount(List<PostListResponseDto> postList) {
+        for (PostListResponseDto post : postList) {
+            Long cheerCnt = getRedisSetCount("cheer_post_" + post.getPostId());
+            Long celebrateCnt= getRedisSetCount("congrat_post_" + post.getPostId());
+            post.updateCheerAndCelebrateCnt(cheerCnt, celebrateCnt);
+        }
+    }
+
+    private Long getRedisSetCount(String key) {
+        Set<Object> values = redisTemplate.opsForSet().members(key);
+        return values != null ? values.size() : 0L;
     }
 
 
@@ -99,8 +145,13 @@ public class PostService {
             }
         }
 
+        Long cheerCnt = getRedisSetCount("cheer_post_" + postId);
+        Long celebrateCnt = getRedisSetCount("congrat_post_" + postId);
+        post.updateCheerAndCelebrateCnt(cheerCnt, celebrateCnt);
+
         return new PostResponseDto(post);
     }
+    //== 리스트 조회, 게시글 조회 끝 ==//
 
     public void deletePost(Long postId) {
         Member currentMember = memberService.getCurrentMember();
