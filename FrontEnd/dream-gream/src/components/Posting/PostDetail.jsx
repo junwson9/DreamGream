@@ -10,6 +10,7 @@ function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
     const [detail, setDetail] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const textareaRef = useRef(null);
+    const [selectedPeriod, setSelectedPeriod] = useState('언젠가');
     const dispatch = useDispatch();
     
     const onTogglePublic = () => {
@@ -20,7 +21,7 @@ function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
     };
 
     const onPostDetail = () => {
-          dispatch(saveDetail({ content: detail, isPublic }));
+          dispatch(saveDetail({ content: detail, isPublic,selectedPeriod }));
             handleNextButtonClick();
     };
 
@@ -73,7 +74,7 @@ function PostDetail({ handleCloseIconClick,handleNextButtonClick }) {
             <div className="w-[360px] h-14 mt-[18px] relative bg-white">
               <div className="left-[22px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">목표 시기</div>
               <div className="left-[290px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
-                <Container/>
+                <Container selectedPeriod={selectedPeriod} onChangePeriod={setSelectedPeriod}/>
               </div>
               <div className="w-[360px] h-px left-0 top-[1px] absolute border border-neutral-100" />
             </div>
