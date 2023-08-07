@@ -1,10 +1,11 @@
 import React,{useState,useRef,useEffect} from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types'; 
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import CategoryButtons from '../Button/CategoryButtons';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import {saveSubject} from '../../store/actions/postActions';
+// import axiosInstance from '../../utils/axiosInterceptor';
 
 function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
     const [title, setTitle] = useState('');
