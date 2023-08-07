@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ReactComponent as CheerUpIcon } from '../../assets/icons/CheerUpIcon.svg';
 import { ReactComponent as CelebrateIcon } from '../../assets/icons/CelebrateIcon.svg';
 
-function BestBucketList({ bestfeeddata }) {
+function BestBucketList({ bestBucketList }) {
   const navigate = useNavigate();
 
   const goFeedDetailPage = () => {
@@ -24,20 +24,20 @@ function BestBucketList({ bestfeeddata }) {
       </button>
       <div className="w-[135.39px] h-[37.55px] left-[5.93px] top-[4.27px] absolute text-white text-base font-bold leading-snug">
         스위스에서 스카이 다이빙하기
-        {/* {bestfeeddata.title} */}
+        {/* {bestBucketList.title} */}
       </div>
 
-      {/* {bestfeeddata.is_acheived ? ( */}
+      {/* {bestBucketList.is_acheived ? ( */}
       <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
         <CelebrateIcon className="mr-1" style={{ fill: 'white' }} />
         999
-        {/* {bestfeeddata.celeberate_cnt} */}
+        {/* {bestBucketList.celeberate_cnt} */}
       </div>
       {/* ) : ( */}
       <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
         <CheerUpIcon className="mr-1" style={{ fill: 'white' }} />
         999
-        {/* {bestfeeddata.cheer_cnt}  */}
+        {/* {bestBucketList.cheer_cnt}  */}
       </div>
       {/* )} */}
     </div>

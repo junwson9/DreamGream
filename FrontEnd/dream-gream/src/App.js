@@ -22,7 +22,7 @@ function App() {
         <Route path="/findmember" element={<findMember />} />
         <Route path="/cheerUpFeed" element={<CheerUpFeed />} />
         <Route path="/acheivefeed" element={<acheiveFeed />} />
-        <Route path="/feedid" element={<feedDetail />} />
+        <Route path="/feedid" element={<FeedDetail />} />
         <Route path="/post" element={<Posting />} />
         <Route path="/myfeed" element={<MyFeed />} />
         <Route path="/about" element={<viewAbout />} />
