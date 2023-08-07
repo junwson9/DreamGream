@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -34,6 +36,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberService memberService;
     private final ModelMapper modelMapper;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
 
     public Post UnAchievedPostUpdateRequestDto(Long postId, UnAchievedPostUpdateRequestDto unAchievedPostUpdateDto) {
         Post updatedpost = postRepository.findById(postId).orElse(null);
@@ -110,6 +115,20 @@ public class PostService {
 
 
     public void deletePost(Long postId) {
+        String cheer_key = "cheer_post_" + String.valueOf(postId);
+        Set<String> cheer_members = redisTemplate.opsForSet().members(cheer_key);
+        for(String member : cheer_members){
+            String keyMember = "member_"+member;
+            redisTemplate.opsForSet().remove(cheer_key,member);
+            redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
+        }
+        String congrat_key = "congrat_post_" + String.valueOf(postId);
+        Set<String> congrat_members = redisTemplate.opsForSet().members(congrat_key);
+        for(String member : congrat_members){
+            String keyMember = "member_"+member;
+            redisTemplate.opsForSet().remove(congrat_key,member);
+            redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
+        }
         postRepository.deleteById(postId);
     }
 
