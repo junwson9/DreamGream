@@ -49,7 +49,6 @@ public class S3Uploader {
             log.error(e.getMessage());
         }
 
-
         return url;
     }
 

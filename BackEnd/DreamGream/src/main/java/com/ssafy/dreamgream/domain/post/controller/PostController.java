@@ -70,8 +70,7 @@ public class PostController {
         log.info("category : {}", dto.getCategoryName());
 
         // 이미지 생성 프로세스 시작
-//        Member currentMember = memberService.getCurrentMember();
-        Member currentMember = testMemberService.getTestMember();
+        Member currentMember = memberService.getCurrentMember();
         PromptCreationProduceDto produceDto = PromptCreationProduceDto.builder()
                 .gender(currentMember.getGender().toString())
                 .birthyear(currentMember.getBirthyear().toString())
