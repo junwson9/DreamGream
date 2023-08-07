@@ -28,34 +28,34 @@ INSERT INTO post (ACHIEVED_DATE, ACHIEVEMENT_CONTENT, ACHIEVEMENT_IMG, AI_IMG, C
 INSERT INTO post (ACHIEVED_DATE, ACHIEVEMENT_CONTENT, ACHIEVEMENT_IMG, AI_IMG, CELEBRATE_CNT, CHEER_CNT, CONTENT, CREATED_DATE, IS_ACHIEVED, IS_DISPLAY, MODIFIED_DATE, TITLE, CATEGORY_ID, MEMBER_ID) VALUES ('2021-04-22', 'Happy Earth Day!', 'earth_day_pic.png', 'ai_pic_4.png', 100, 70, 'Let''s protect our planet and make our world a better place for future generations!', '2021-04-22 12:00:00', 0, 1, '2021-04-22 21:00:00', 'Make Every Day Earth Day', 4, 2);
 INSERT INTO post (ACHIEVED_DATE, ACHIEVEMENT_CONTENT, ACHIEVEMENT_IMG, AI_IMG, CELEBRATE_CNT, CHEER_CNT, CONTENT, CREATED_DATE, IS_ACHIEVED, IS_DISPLAY, MODIFIED_DATE, TITLE, CATEGORY_ID, MEMBER_ID) VALUES ('2021-05-05', 'Happy Childrens Day!', 'childrens_day_pic.png', 'ai_pic_5.png', 80, 50, 'Thank you for always being our source of laughter and joy. Happy Children''s Day!', '2021-05-05 07:00:00', 0, 0, '2021-05-05 18:00:00', 'Happy Children''s Day', 5, 2);
 
-/* 좋아요 */
-INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
-VALUES (2, 1);
-
-INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
-VALUES (3, 1);
-
-INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
-VALUES (5, 1);
-
-INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
-VALUES (1, 2);
-
-INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
-VALUES (4, 2);
-
-/* 응원해요 */
-INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
-VALUES (2, 1);
-
-INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
-VALUES (3, 1);
-
-INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
-VALUES (5, 1);
-
-INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
-VALUES (1, 2);
-
-INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
-VALUES (4, 2);
+-- /* 좋아요 */
+-- INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
+-- VALUES (2, 1);
+--
+-- INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
+-- VALUES (3, 1);
+--
+-- INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
+-- VALUES (5, 1);
+--
+-- INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
+-- VALUES (1, 2);
+--
+-- INSERT INTO MEMBER_POST_CELEBRATE (member_id, post_id)
+-- VALUES (4, 2);
+--
+-- /* 응원해요 */
+-- INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
+-- VALUES (2, 1);
+--
+-- INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
+-- VALUES (3, 1);
+--
+-- INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
+-- VALUES (5, 1);
+--
+-- INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
+-- VALUES (1, 2);
+--
+-- INSERT INTO MEMBER_POST_CHEER (member_id, post_id)
+-- VALUES (4, 2);
