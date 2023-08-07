@@ -44,7 +44,7 @@ function SignupGenderBirth() {
   };
   return (
     <>
-      <InputBox />
+      <InputBox showSearchIcon={false} />
       <form onSubmit={handleSubmit}>
         <label>
           성별:
