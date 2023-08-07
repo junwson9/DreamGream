@@ -51,6 +51,10 @@ public class PostResponseDto {
 
     private String profileImg;
 
+    // == 좋아요 여부 == //
+    private Boolean isCheered;
+
+    private Boolean isCelebrated;
 
     public PostResponseDto(Post post) {
         this.postId = post.getPostId();
@@ -73,5 +77,9 @@ public class PostResponseDto {
         this.celebrateCnt = post.getCelebrateCnt();
     }
 
+    public void updateIsCheeredAndIsCelebrated(Boolean isCheered, Boolean isCelebrated) {
+        this.isCheered = isCheered;
+        this.isCelebrated = isCelebrated;
+    }
 
 }

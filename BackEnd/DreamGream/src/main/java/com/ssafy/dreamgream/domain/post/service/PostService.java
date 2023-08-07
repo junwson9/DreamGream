@@ -8,23 +8,20 @@ import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
-import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.global.s3.S3Uploader;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -71,24 +68,55 @@ public class PostService {
             return toupdatepost;
         }
     }
-    
+
+
+
     //== 리스트 조회, 게시글 조회 ==//
 
-    public Slice<PostListResponseDto> findPublicPosts(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+    public Slice<PostListResponseDto> findAchievedPosts(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
         Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
 
         // Slice<PostListResponseDto>에서 postId 값 추출
         List<PostListResponseDto> postList = results.getContent();
 
-        // redis에서 좋아요 개수 받아와 업데이트
+        // postId에 대해 Redis에서 바로 조회
         for (PostListResponseDto post : postList) {
-            Long cheerCnt = getRedisSetCount("cheer_post_" + post.getPostId());
-            Long celebrateCnt= getRedisSetCount("congrat_post_" + post.getPostId());
-            post.updateCheerAndCelebrateCnt(cheerCnt, celebrateCnt);
+            String postId = "congrat_post_" + post.getPostId();
+            Long congratCnt = redisTemplate.opsForSet().size(postId);
+            post.updateCelebrateCnt(congratCnt);
+
+            // 로그인 상태면 축하 여부 업데이트
+            if (memberId != null) {
+                Boolean isCelebrated = redisTemplate.opsForSet().isMember(postId, memberId.toString());
+                post.updateIsCelebrated(isCelebrated);
+            }
         }
 
         return results;
     }
+
+
+    public Slice<PostListResponseDto> findNotAchievedPosts(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+        Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
+
+        // Slice<PostListResponseDto>에서 postId 값 추출
+        List<PostListResponseDto> postList = results.getContent();
+
+        // postId에 대해 Redis에서 바로 조회
+        for (PostListResponseDto post : postList) {
+            String postId = "cheer_post_" + post.getPostId();
+            Long cheerCnt = redisTemplate.opsForSet().size(postId);
+            post.updateCheerCnt(cheerCnt);
+
+            // 로그인 상태면 응원 여부 업데이트
+            if (memberId != null) {
+                Boolean isCheered = redisTemplate.opsForSet().isMember(postId, memberId.toString());
+                post.updateIsCheered(isCheered);
+            }
+        }
+        return results;
+    }
+
 
     public Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId) {
         //TODO 존재하지 않는 memberId 예외 처리
@@ -97,13 +125,13 @@ public class PostService {
         return getRedisCntMap(resultMap);
     }
 
+
     public Map<String, List<PostListResponseDto>> findMyPosts() {
         Long memberId = memberService.getCurrentMemberId();
-        log.info("currentMemberId: {}", memberId);
-
         Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId);
         return getRedisCntMap(resultMap);
     }
+
 
     // redis에서 좋아요 개수 받아와 resultMap 업데이트
     private Map<String, List<PostListResponseDto>> getRedisCntMap(Map<String, List<PostListResponseDto>> resultMap) {
@@ -113,7 +141,8 @@ public class PostService {
         getRedisCheerAndCelebrateCount(achievedPostList);
         return resultMap;
     }
-    
+
+
     private void getRedisCheerAndCelebrateCount(List<PostListResponseDto> postList) {
         for (PostListResponseDto post : postList) {
             Long cheerCnt = getRedisSetCount("cheer_post_" + post.getPostId());
@@ -122,29 +151,42 @@ public class PostService {
         }
     }
 
+
     private Long getRedisSetCount(String key) {
         Set<String> values = redisTemplate.opsForSet().members(key);
         return values != null ? values.size() : 0L;
     }
 
 
-    public PostResponseDto findPostById(Long postId) {
+    public PostResponseDto findPostById(Long memberId, Long postId) {
         // TODO 예외처리: postId 존재하지 않는 경우
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         if(!post.getIsDisplay()) {
-            if(!memberService.getCurrentMemberId().equals(post.getMember().getMemberId())) {
+            if(!memberId.equals(post.getMember().getMemberId())) {
                 // TODO 예외처리 : isDisplay = false 인데 작성자 본인이 아닌 경우
                 return null;
             }
         }
 
-        Long cheerCnt = getRedisSetCount("cheer_post_" + postId);
-        Long celebrateCnt = getRedisSetCount("congrat_post_" + postId);
+        // 좋아요 개수 업데이트 
+        String cheerPostId = "cheer_post_" + post.getPostId();
+        String congratPostId = "congrat_post_" + post.getPostId();
+        Long cheerCnt = getRedisSetCount(cheerPostId);
+        Long celebrateCnt = getRedisSetCount(congratPostId);
         post.updateCheerAndCelebrateCnt(cheerCnt, celebrateCnt);
 
-        return new PostResponseDto(post);
+        PostResponseDto postDto = new PostResponseDto(post);
+
+        // 로그인 상태면 좋아요 여부 업데이트
+        if (memberId != null) {
+            Boolean isCheered = redisTemplate.opsForSet().isMember(cheerPostId, memberId.toString());
+            Boolean isCelebrated = redisTemplate.opsForSet().isMember(congratPostId, memberId.toString());
+            postDto.updateIsCheeredAndIsCelebrated(isCheered, isCelebrated);
+        }
+
+        return postDto;
     }
 
 
@@ -153,6 +195,7 @@ public class PostService {
         return postList;
     }
     //== 리스트 조회, 게시글 조회 끝 ==//
+
 
     public void deletePost(Long postId) {
         Member currentMember = memberService.getCurrentMember();
