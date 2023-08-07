@@ -34,6 +34,9 @@ function App() {
         <Route path="/about" element={<ViewAbout />} />
         <Route path="/updatepost" element={<updatePost />} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
+        <Route path="/test111" element={<Test111 />} />
+        <Route path="/test222" element={<Test222 />} />
+        <Route path="/test333" element={<Test333 />} />
       </Routes>
     </div>
   );
