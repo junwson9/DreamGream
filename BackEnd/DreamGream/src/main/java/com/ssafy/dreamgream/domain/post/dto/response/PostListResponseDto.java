@@ -60,4 +60,8 @@ public class PostListResponseDto {
 		this.profileImg = profileImg;
 	}
 
+	public void updateCheerAndCelebrateCnt(Long cheerCnt, Long celebrateCnt) {
+		this.cheerCnt = cheerCnt;
+		this.celebrateCnt = celebrateCnt;
+	}
 }

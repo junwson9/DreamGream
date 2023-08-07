@@ -40,6 +40,10 @@ public class PostResponseDto {
 
     private Long categoryId;
 
+    private Long cheerCnt;
+
+    private Long celebrateCnt;
+
     // == Member 데이터 == //
     private Long memberId;
 
@@ -65,5 +69,9 @@ public class PostResponseDto {
         this.memberId = post.getMember().getMemberId();
         this.nickname = post.getMember().getNickname();
         this.profileImg = post.getMember().getProfileImg();
+        this.cheerCnt = post.getCheerCnt();
+        this.celebrateCnt = post.getCelebrateCnt();
     }
+
+
 }
