@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
@@ -21,13 +24,18 @@ function Member({ post }) {
     setMineModalOpen(true);
   };
 
-  // //url 이동 관련
-  // const navigate = useNavigate();
+  // url 이동 관련
+  const navigate = useNavigate();
 
-  // const goUserFeed = () => {
-  //   // ++url 수정 필요
-  //   navigate('/feedid');
-  // };
+  const goUserFeed = () => {
+    navigate('/posts/members/{member_id}');
+  };
+
+  // 날짜 데이터 시간 부분 자르기
+  const getDateOnly = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  };
 
   return (
     <div className="member-container w-[360px] h-[75px] relative">
@@ -37,21 +45,26 @@ function Member({ post }) {
             className="w-[39.67px] h-10 rounded-[999px]"
             src="https://via.placeholder.com/40x40"
             alt="프로필 이미지"
+            onClick={goUserFeed}
+            style={{ cursor: 'pointer' }}
           />
           <div className="w-[200px]">
-            <span className="text-black text-sm font-normal leading-tight">
+            <span
+              className="text-black text-sm font-normal leading-tight  "
+              onClick={goUserFeed}
+              style={{ cursor: 'pointer' }}
+            >
               {/* 자카타파하 */}
-              {/* ++props에서 넘겨주는건 post 데이터라 닉네임을 post테이블에 추가하던가.. 얘기해봐야함 */}
               {post.nickname}
               <br />
             </span>
             <span className="text-neutral-600 text-xs font-light leading-none">
               {/* 2023.07.20 */}
-              {post.createdDate}
+              {/* {getDateOnly(post.createdDate)} */}
             </span>
             <span className="text-indigo-500 text-xs font-medium leading-none">
-              {/* ++데드라인 데이터추가 필요 */}
-              {/* · 1년 이내 {post.deadline} */}
+              {/* ++데드라인 데이터추가 필요 */}· 1년 이내
+              {/* {post.deadline} */}
             </span>
             {/* ##자신의 비공개 게시물만 보이도록 하는건 백쪽에서 그렇게 넘겨줄듯? */}
             {post.isDisplay ? null : (
