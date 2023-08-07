@@ -106,12 +106,12 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<?> findByNickname(@RequestParam @NotBlank String nickname,
                                             @PageableDefault(size = 10, sort = "nickname") Pageable pageable) {
-        Page<Member> members = memberService.findByNickname(nickname, pageable);
+        List<FollowListResponseDto> members = memberService.findByNickname(nickname, pageable);
 
         ResponseDto responseDto = new ResponseDto(
                 success,
                 "닉네임으로 회원 목록을 조회합니다.",
-                Collections.singletonMap("member_list", members.getContent()));
+                Collections.singletonMap("member_list", members));
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -126,7 +126,7 @@ public class MemberController {
         List<FollowListResponseDto> followers = followService.getFollowers(memberId, pageable);
 
         ResponseDto responseDto = new ResponseDto(success, "팔로워 목록을 조회했습니다.",
-            Collections.singletonMap("followerList", followers));
+            Collections.singletonMap("follower_list", followers));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -138,7 +138,8 @@ public class MemberController {
                                             @PageableDefault(size = 10) Pageable pageable) {
         List<FollowListResponseDto> followings = followService.getFollowings(memberId, pageable);
 
-        ResponseDto responseDto = new ResponseDto(success, "팔로잉 목록을 조회했습니다.", Collections.singletonMap("followingList", followings));
+        ResponseDto responseDto = new ResponseDto(success, "팔로잉 목록을 조회했습니다.",
+            Collections.singletonMap("following_list", followings));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

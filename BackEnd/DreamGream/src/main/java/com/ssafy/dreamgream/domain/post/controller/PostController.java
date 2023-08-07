@@ -99,7 +99,7 @@ public class PostController {
         Slice<PostListResponseDto> postList = postService.findPublicPosts(categoryId, true, lastPostId, pageable);
 
         ResponseDto responseDto = new ResponseDto(success, "달성완료 피드를 조회했습니다.",
-            Collections.singletonMap("postList", postList));
+            Collections.singletonMap("post_list", postList));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -116,7 +116,7 @@ public class PostController {
         Slice<PostListResponseDto> postList = postService.findPublicPosts(categoryId, false, lastPostId, pageable);
 
         ResponseDto responseDto = new ResponseDto(success, "달성중 피드를 조회했습니다.",
-            Collections.singletonMap("postList", postList));
+            Collections.singletonMap("post_list", postList));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -127,7 +127,7 @@ public class PostController {
     public ResponseEntity<?> findBestAchievedPosts(@RequestParam(value = "category-id", required = false) Long categoryId) {
         List<PostListResponseDto> postList = postService.findBestPostsByAchievedStatus(categoryId, true);
         ResponseDto responseDto = new ResponseDto(success, "베스트를 조회했습니다.",
-            Collections.singletonMap("postList", postList));
+            Collections.singletonMap("post_list", postList));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -138,7 +138,7 @@ public class PostController {
     public ResponseEntity<?> findBestNotAchievedPosts(@RequestParam(value = "category-id", required = false) Long categoryId) {
         List<PostListResponseDto> postList = postService.findBestPostsByAchievedStatus(categoryId, false);
         ResponseDto responseDto = new ResponseDto(success, "베스트를 조회했습니다.",
-            Collections.singletonMap("postList", postList));
+            Collections.singletonMap("post_list", postList));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

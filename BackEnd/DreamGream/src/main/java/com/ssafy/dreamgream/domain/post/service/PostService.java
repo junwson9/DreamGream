@@ -3,6 +3,7 @@ package com.ssafy.dreamgream.domain.post.service;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.AchievedPostUpdateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
@@ -72,11 +73,6 @@ public class PostService {
         }
     }
 
-    private PostUpdateRequestDto convertToDto(Post post){
-        PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto();
-        BeanUtils.copyProperties(post,postUpdateRequestDto);
-        return postUpdateRequestDto;
-    }
 
 
     //== 리스트 조회, 게시글 조회 ==//

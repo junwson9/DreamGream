@@ -1,11 +1,13 @@
 package com.ssafy.dreamgream.domain.member.service;
 
+import com.ssafy.dreamgream.domain.member.dto.response.FollowListResponseDto;
 import com.ssafy.dreamgream.domain.member.dto.response.MemberResponseDto;
 import com.ssafy.dreamgream.domain.member.dto.response.MyInfoResponseDto;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -79,8 +81,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<Member> findByNickname(String nickname, Pageable pageable) {
-        Page<Member> members = memberRepository.findByNicknameContaining(nickname, pageable);
+    public List<FollowListResponseDto> findByNickname(String nickname, Pageable pageable) {
+        Member currentMember = getCurrentMember();
+
+        List<FollowListResponseDto> members = memberRepository.findByNicknameContaining(nickname, currentMember, pageable);
         return members;
     }
 
