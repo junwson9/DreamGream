@@ -55,12 +55,8 @@ function ScrapCheerUpBtns({ cheerCnt }) {
           <div className="justify-center items-center gap-px flex">
             <CheerUpIcon style={{ fill: '#7887D4' }} />
 
-            <span />
-            <span />
-
-            <div className="text-indigo-400 text-[13px] font-bold leading-[18.20px] w-[77px]">
-              응원해요 144
-              {cheerCnt}
+            <div className="text-indigo-400 text-[13px] font-bold leading-[18.20px] w-[77px] ">
+              응원해요 {cheerCnt}
             </div>
           </div>
         </button>
