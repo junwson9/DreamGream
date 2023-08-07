@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,6 +38,7 @@ public class PostService {
     private final MemberService memberService;
     private final ModelMapper modelMapper;
     private final S3Uploader s3Uploader;
+
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
@@ -131,7 +133,7 @@ public class PostService {
     }
 
     private Long getRedisSetCount(String key) {
-        Set<Object> values = redisTemplate.opsForSet().members(key);
+        Set<String> values = redisTemplate.opsForSet().members(key);
         return values != null ? values.size() : 0L;
     }
 
@@ -153,6 +155,12 @@ public class PostService {
         post.updateCheerAndCelebrateCnt(cheerCnt, celebrateCnt);
 
         return new PostResponseDto(post);
+    }
+
+
+    public List<PostListResponseDto> findBestPostsByAchievedStatus(Long categoryId, boolean isAchieved) {
+        List<PostListResponseDto> postList = postRepository.findBestPostsByAchievedStatus(categoryId, isAchieved);
+        return postList;
     }
     //== 리스트 조회, 게시글 조회 끝 ==//
 
@@ -203,5 +211,7 @@ public class PostService {
             // TODO: 예외처리 - 인증되지 않은 사용자인 경우
         }
     }
+
+
 
 }

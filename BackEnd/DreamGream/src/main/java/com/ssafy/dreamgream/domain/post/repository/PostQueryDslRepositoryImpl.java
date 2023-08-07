@@ -2,6 +2,7 @@ package com.ssafy.dreamgream.domain.post.repository;
 
 import static com.ssafy.dreamgream.domain.post.entity.QPost.post;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -37,8 +38,39 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 		List<PostListResponseDto> results = getPostsResults(expression, lastPostId, pageable);
 		return checkLastPage(pageable, results);
-
 	}
+
+
+	@Override
+	public List<PostListResponseDto> findBestPostsByAchievedStatus(Long categoryId, Boolean isAchieved) {
+
+		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
+
+		if (categoryId != null && categoryId != 0L) {
+			expression = expression.and(post.category.categoryId.eq(categoryId));
+		}
+
+		OrderSpecifier<?> orderSpecifier;
+
+		if (isAchieved) {
+			orderSpecifier = post.celebrateCnt.desc();
+		} else {
+			orderSpecifier = post.cheerCnt.desc();
+		}
+
+		return jpaQueryFactory
+			.select(Projections.constructor(PostListResponseDto.class,
+				post.postId, post.title, post.isDisplay, post.isAchieved,
+				post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
+				post.aiImg, post.achievementImg, post.category.categoryId,
+				post.member.memberId, post.member.nickname, post.member.profileImg))
+			.from(post)
+			.where(expression)
+			.orderBy(orderSpecifier)
+			.limit(8)
+			.fetch();
+	}
+
 
 	@Override
 	public Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId) {
@@ -51,6 +83,8 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 		BooleanExpression expression = post.member.memberId.eq(memberId);
 		return getPersonalPostsMap(expression);
 	}
+
+
 
 	private Map<String, List<PostListResponseDto>> getPersonalPostsMap(BooleanExpression expression) {
 		Map<String, List<PostListResponseDto>> resultMap = new HashMap<>();

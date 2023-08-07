@@ -15,4 +15,6 @@ public interface PostQueryDslRepository {
 
 	Map<String, List<PostListResponseDto>> findPostsByMember(Long memberId);
 
+	List<PostListResponseDto> findBestPostsByAchievedStatus(Long categoryId, Boolean isAchieved);
+
 }

@@ -120,6 +120,28 @@ public class PostController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    /**
+     * 카테고리별 Best - 달성완료 조회
+     */
+    @GetMapping("/best/achieved")
+    public ResponseEntity<?> findBestAchievedPosts(@RequestParam(value = "category-id", required = false) Long categoryId) {
+        List<PostListResponseDto> postList = postService.findBestPostsByAchievedStatus(categoryId, true);
+        ResponseDto responseDto = new ResponseDto(success, "베스트를 조회했습니다.",
+            Collections.singletonMap("postList", postList));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    /**
+     * 카테고리별 Best - 달성중 조회
+     */
+    @GetMapping("/best")
+    public ResponseEntity<?> findBestNotAchievedPosts(@RequestParam(value = "category-id", required = false) Long categoryId) {
+        List<PostListResponseDto> postList = postService.findBestPostsByAchievedStatus(categoryId, false);
+        ResponseDto responseDto = new ResponseDto(success, "베스트를 조회했습니다.",
+            Collections.singletonMap("postList", postList));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
 
     /**
      * 개인피드 - 타인피드 조회
