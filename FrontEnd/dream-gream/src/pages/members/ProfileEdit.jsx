@@ -126,6 +126,7 @@ function ProfileEdit() {
         <InputBox
           text={nickname}
           onInputChange={(event) => setNickname(event.target.value)}
+          showSearchIcon={false}
         />
       </div>
     </div>
