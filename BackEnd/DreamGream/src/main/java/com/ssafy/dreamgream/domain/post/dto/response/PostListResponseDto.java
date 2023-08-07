@@ -1,11 +1,13 @@
 package com.ssafy.dreamgream.domain.post.dto.response;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostListResponseDto {
 
 	private Long postId;
@@ -37,31 +39,31 @@ public class PostListResponseDto {
 
 	private String profileImg;
 
-	public PostListResponseDto() {
-	}
+	// == 좋아요 여부 == //
+	private Boolean isCheered;
 
-	public PostListResponseDto(Long postId, String title, Boolean isDisplay, Boolean isAchieved,
-							   LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt,
-		String aiImg, String achievementImg, Long categoryId,
-		Long memberId, String nickname, String profileImg) {
-		this.postId = postId;
-		this.title = title;
-		this.isDisplay = isDisplay;
-		this.isAchieved = isAchieved;
-		this.createdDate = createdDate;
-		this.achievedDate = achievedDate;
-		this.cheerCnt = cheerCnt;
-		this.celebrateCnt = celebrateCnt;
-		this.aiImg = aiImg;
-		this.achievementImg = achievementImg;
-		this.categoryId = categoryId;
-		this.memberId = memberId;
-		this.nickname = nickname;
-		this.profileImg = profileImg;
-	}
+	private Boolean isCelebrated;
+
 
 	public void updateCheerAndCelebrateCnt(Long cheerCnt, Long celebrateCnt) {
 		this.cheerCnt = cheerCnt;
 		this.celebrateCnt = celebrateCnt;
 	}
+
+	public void updateCheerCnt(Long cheerCnt) {
+		this.cheerCnt = cheerCnt;
+	}
+
+	public void updateCelebrateCnt(Long celebrateCnt) {
+		this.celebrateCnt = celebrateCnt;
+	}
+
+	public void updateIsCheered(Boolean isCheered) {
+		this.isCheered = isCheered;
+	}
+
+	public void updateIsCelebrated(Boolean isCelebrated) {
+		this.isCelebrated = isCelebrated;
+	}
+
 }
