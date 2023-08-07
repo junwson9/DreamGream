@@ -93,10 +93,16 @@ public class PostController {
      * @return postList
      */
     @GetMapping("/achieved")
-    public ResponseEntity<?> findAchievedPosts(@RequestParam(value = "category-id", required = false) Long categoryId,
-                                                  @RequestParam(value = "last-post-id", required = false) Long lastPostId,
-                                                  @PageableDefault(size = 10) Pageable pageable) {
-        Slice<PostListResponseDto> postList = postService.findPublicPosts(categoryId, true, lastPostId, pageable);
+    public ResponseEntity<?> findAchievedPosts(@RequestBody(required = false) LoginMemberRequestDto memberDto,
+                                                @RequestParam(value = "category-id", required = false) Long categoryId,
+                                                @RequestParam(value = "last-post-id", required = false) Long lastPostId,
+                                                @PageableDefault(size = 10) Pageable pageable) {
+        Long memberId = null;
+        if(memberDto != null) {
+            memberId = memberDto.getMemberId();
+        }
+
+        Slice<PostListResponseDto> postList = postService.findAchievedPosts(memberId, categoryId, true, lastPostId, pageable);
 
         ResponseDto responseDto = new ResponseDto(success, "달성완료 피드를 조회했습니다.",
             Collections.singletonMap("post_list", postList));
@@ -110,10 +116,16 @@ public class PostController {
      * @return postList 
      */
     @GetMapping
-    public ResponseEntity<?> findNotAchievedPosts(@RequestParam(value = "category-id", required = false) Long categoryId,
+    public ResponseEntity<?> findNotAchievedPosts(@RequestBody(required = false) LoginMemberRequestDto memberDto,
+                                                    @RequestParam(value = "category-id", required = false) Long categoryId,
                                                     @RequestParam(value = "last-post-id", required = false) Long lastPostId,
                                                     @PageableDefault(size = 10) Pageable pageable) {
-        Slice<PostListResponseDto> postList = postService.findPublicPosts(categoryId, false, lastPostId, pageable);
+        Long memberId = null;
+        if(memberDto != null) {
+            memberId = memberDto.getMemberId();
+        }
+
+        Slice<PostListResponseDto> postList = postService.findNotAchievedPosts(memberId, categoryId, false, lastPostId, pageable);
 
         ResponseDto responseDto = new ResponseDto(success, "달성중 피드를 조회했습니다.",
             Collections.singletonMap("post_list", postList));
@@ -194,7 +206,6 @@ public class PostController {
     }
 
 
-
     @DeleteMapping("/{post_id}")
     public String deletePost(@PathVariable("post_id") Long postId) {
         postService.deletePost(postId);
@@ -208,9 +219,19 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Post 스크랩이 완료되었습니다.");
     }
 
+
+    /**
+     * 게시글 상세 조회
+     */
     @GetMapping("/{postId}")
-    public ResponseEntity<?> findPostById(@PathVariable Long postId) {
-        PostResponseDto postResponseDto = postService.findPostById(postId);
+    public ResponseEntity<?> findPostById(@RequestBody(required = false) LoginMemberRequestDto memberDto,
+                                            @PathVariable Long postId) {
+        Long memberId = null;
+        if(memberDto != null) {
+            memberId = memberDto.getMemberId();
+        }
+
+        PostResponseDto postResponseDto = postService.findPostById(memberId, postId);
         ResponseDto responseDto = new ResponseDto(success, "게시글을 조회했습니다.", Collections.singletonMap("post", postResponseDto));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
