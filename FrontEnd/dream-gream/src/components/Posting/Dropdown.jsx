@@ -1,10 +1,10 @@
 /* eslint-disable */
 import React from 'react'
 
-function DropDown({ value, setIsOpen, setPeriod, isOpen }) {
+function DropDown({ value, setIsOpen, onChangePeriod, isOpen }) {
     const handleItemClick = () => {
       setIsOpen(false);
-      setPeriod(value);
+      onChangePeriod(value);
     };
   
     return (

@@ -9,6 +9,7 @@ const initialState = {
     detail: {
       content: '',
       isPublic: false,
+      selectedPeriod: '',
     },
   };
   
