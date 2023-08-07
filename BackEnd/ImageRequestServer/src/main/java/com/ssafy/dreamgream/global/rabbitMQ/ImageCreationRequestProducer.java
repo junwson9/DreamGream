@@ -1,6 +1,5 @@
 package com.ssafy.dreamgream.global.rabbitMQ;
 
-import com.ssafy.rabbitMQ.dto.ImageCreationRequestDto;
 import com.ssafy.rabbitMQ.dto.ImageCreationResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

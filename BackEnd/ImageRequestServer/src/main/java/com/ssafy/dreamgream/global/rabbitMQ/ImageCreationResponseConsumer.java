@@ -1,16 +1,11 @@
 package com.ssafy.dreamgream.global.rabbitMQ;
 
-import com.ssafy.dreamgream.global.rabbitMQ.dto.ColabResponseDto;
-import com.ssafy.dreamgream.global.s3.S3Uploader;
 import com.ssafy.rabbitMQ.dto.ImageCreationRequestDto;
-import com.ssafy.rabbitMQ.dto.ImageCreationResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Slf4j
 @Service
