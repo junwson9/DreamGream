@@ -16,6 +16,10 @@ spring:
       - db
       - rabbitmq
       - prompt
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 
 server:
   port: 8000
@@ -49,11 +53,16 @@ rabbitmq:
       name: image-creation-response-queue
       routing-key: image.creation.response
 
-aws:
-  S3:
-    access_key: AKIAWAXHFZI3ZEUQVOG3
-    bucket_name: dreamgream-image-bucket
-    region: ap-northeast-2
-    secret_key: Hj8gu3eE+KSnNV2baFrL3Ceeq2mgPLxwtXRSoWsY
 
-
+cloud:
+  aws:
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+    region:
+      static: ${S3_REGION}
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}

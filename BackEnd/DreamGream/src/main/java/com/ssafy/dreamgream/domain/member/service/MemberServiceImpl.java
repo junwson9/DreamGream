@@ -1,8 +1,10 @@
 package com.ssafy.dreamgream.domain.member.service;
 
 import com.ssafy.dreamgream.domain.member.dto.response.MemberResponseDto;
+import com.ssafy.dreamgream.domain.member.dto.response.MyInfoResponseDto;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
+import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final FollowRepository followRepository;
 
     @Override
     public Long getCurrentMemberId() throws AuthenticationException {
@@ -59,19 +62,20 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public MemberResponseDto updateInfo(String nickname, Gender gender, Integer birthyear) {
+    public MyInfoResponseDto updateInfo(String nickname, Gender gender, Integer birthyear) {
         Member member = getCurrentMember();
         member.updateInfo(nickname, gender, birthyear);
-        MemberResponseDto memberResponseDto = MemberResponseDto.builder()
-                .id(member.getMemberId())
+        MyInfoResponseDto myInfoResponseDto = MyInfoResponseDto.builder()
+                .memberId(member.getMemberId())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .gender(member.getGender())
                 .birthyear(member.getBirthyear())
                 .provider(member.getProvider())
                 .role(member.getRole())
+                .profileImg(member.getProfileImg())
                 .build();
-        return memberResponseDto;
+        return myInfoResponseDto;
     }
 
     @Override
@@ -80,5 +84,24 @@ public class MemberServiceImpl implements MemberService {
         return members;
     }
 
+    @Override
+    public MemberResponseDto getMemberInfo(Long memberId) {
+        // TODO 예외처리 존재하지 않는 member인 경우
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        // 회원의 팔로워, 팔로잉 수 가져오기
+        Long cntFollowers = followRepository.countByFromMember(member);
+        Long cntFollowings = followRepository.countByToMember(member);
+
+        MemberResponseDto memberResponseDto = MemberResponseDto.builder()
+            .memberId(memberId)
+            .nickname(member.getNickname())
+            .profileImg(member.getProfileImg())
+            .cntFollowers(cntFollowers)
+            .cntFollowings(cntFollowings)
+            .build();
+
+        return memberResponseDto;
+    }
 
 }
