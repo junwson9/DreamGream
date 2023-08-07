@@ -51,6 +51,7 @@ class PromptHandler:
                 "내용은 {title}이고, 카테고리는 {category_name}. "
                 "이걸 그림으로 그릴 수 있게 영어로 번역해서 특징을 자세하게 추출해서 작성해줘. "
                 "문장의 시작은 'a photo of'로 시작해."
+                "만약 title에 취업하기 라는 단어가 들어가면 회사와 관련된 그림을 그릴 수 있게 문장을 작성해줘"
             )
         )
     
@@ -59,5 +60,6 @@ class PromptHandler:
 
         # API 비동기 요청
         response = await self.chat_gpt3(prompt)
+        response['image_prompt'] = response['image_prompt'].lstrip('.\n')
 
         return response
