@@ -28,7 +28,6 @@ function App() {
         <Route path="/about" element={<viewAbout />} />
         <Route path="/updatepost" element={<updatePost />} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
-        <Route path="/exfeed" element={<ExFeed />} />
       </Routes>
     </div>
   );

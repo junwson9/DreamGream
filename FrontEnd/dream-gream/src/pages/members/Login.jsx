@@ -8,8 +8,8 @@ function LogIn() {
 
   return (
     <>
-      <div class="w-[360px] h-[800px] pt-[165px] pb-[295px] bg-blue-300 bg-opacity-40 flex-col justify-start items-center inline-flex">
-        <div class="mb-20">
+      <div className="w-[360px] h-[800px] pt-[165px] pb-[295px] bg-blue-300 bg-opacity-40 flex-col justify-start items-center inline-flex">
+        <div className="mb-20">
           <LogoBig1 />
         </div>
         <a href={kauthUrl}>

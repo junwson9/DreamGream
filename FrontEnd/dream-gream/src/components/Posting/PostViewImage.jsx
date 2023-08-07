@@ -5,11 +5,13 @@ import axios from 'axios';
 import Loading from './Loding';
 import SolidButton from '../Button/SolidButton';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
+import Modal from '../Modal/Modal';
 
 
 function PostViewImage({ handleCloseIconClick }) {
   const imageUrl = useSelector((state) => state.sse.sseData); // 이미지 URL을 Redux 상태에서 가져옴
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const subjectData = useSelector((state) => state.post.subject);
   const detailData = useSelector((state) => state.post.detail);
 
@@ -22,10 +24,13 @@ function PostViewImage({ handleCloseIconClick }) {
   }, [imageUrl]); // Listen for changes in imageUrl
 
   const handleImageLoad = () => {
-    setIsLoading(false); // 이미지 로딩이 끝났을 때 isLoading 상태를 false로 변경
+    setIsModalOpen(true);
+    setIsLoading(false);  // 이미지 로딩이 끝났을 때 isLoading 상태를 false로 변경
   };
 
-
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
 
   // 리덕스로부터 모든정보 가져오는 로직도 있어야함
@@ -65,10 +70,13 @@ function PostViewImage({ handleCloseIconClick }) {
         <img src={imageUrl.url} alt="Post" onLoad={handleImageLoad} />
         </div>
       )}
+      {isModalOpen && (
+        <Modal handleCloseModal={handleCloseModal}/>
+      )}
 
 
-{/* 
-          <div>
+
+          {/* <div>
             <div className="w-[360px] h-[800px] pb-12 bg-white flex-col justify-start items-center inline-flex">
               <div className="self-stretch flex-col justify-start items-center gap-11 inline-flex">
                 <div className="w-[360px] h-[60px] relative border-b">
