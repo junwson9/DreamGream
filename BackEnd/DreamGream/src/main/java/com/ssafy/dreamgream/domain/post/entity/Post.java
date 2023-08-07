@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "post_id")
     private Long postId;
 
@@ -78,6 +78,10 @@ public class Post {
     public void setAchievementImg(String achievementImg) {
         this.achievementImg = achievementImg;
     }
+    public void setCheerCnt(Long cheerCnt){
+        this.cheerCnt = cheerCnt;
+    }
+    public void setCelebrateCnt(Long celebrateCnt){ this.celebrateCnt = celebrateCnt; }
 
     @OneToMany(mappedBy = "cheerPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberPostCheer> memberPostCheers = new ArrayList<>();

@@ -1,9 +1,7 @@
 package com.ssafy.dreamgream.domain.post.service;
 
 import com.ssafy.dreamgream.domain.member.service.MemberService;
-import com.ssafy.dreamgream.domain.member.service.MemberServiceImpl;
 import com.ssafy.dreamgream.domain.post.dto.request.AchievedPostUpdateRequestDto;
-import com.ssafy.dreamgream.domain.post.dto.request.PostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
@@ -12,7 +10,6 @@ import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -22,10 +19,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -70,12 +65,6 @@ public class PostService {
         }
     }
 
-    private PostUpdateRequestDto convertToDto(Post post){
-        PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto();
-        BeanUtils.copyProperties(post,postUpdateRequestDto);
-        return postUpdateRequestDto;
-    }
-
     public Slice<PostListResponseDto> findPublicPosts(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
         return postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
     }
@@ -113,23 +102,30 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
-
     public void deletePost(Long postId) {
-        String cheer_key = "cheer_post_" + String.valueOf(postId);
-        Set<String> cheer_members = redisTemplate.opsForSet().members(cheer_key);
-        for(String member : cheer_members){
-            String keyMember = "member_"+member;
-            redisTemplate.opsForSet().remove(cheer_key,member);
-            redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
+        Member currentMember = memberService.getCurrentMember();
+        String memberId = String.valueOf(currentMember.getMemberId());
+        String postMemberId = String.valueOf(postRepository.findById(postId).get().getMember());
+        if(memberId != postMemberId){
+            // TODO: 수정 권한이 없을 경우 예외 처리
+        } else{
+            String cheer_key = "cheer_post_" + String.valueOf(postId);
+            Set<String> cheer_members = redisTemplate.opsForSet().members(cheer_key);
+            for(String member : cheer_members){
+                String keyMember = "member_"+member;
+                redisTemplate.opsForSet().remove(cheer_key,member);
+                redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
+            }
+            String congrat_key = "congrat_post_" + String.valueOf(postId);
+            Set<String> congrat_members = redisTemplate.opsForSet().members(congrat_key);
+            for(String member : congrat_members){
+                String keyMember = "member_"+member;
+                redisTemplate.opsForSet().remove(congrat_key,member);
+                redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
+            }
+            postRepository.deleteById(postId);
         }
-        String congrat_key = "congrat_post_" + String.valueOf(postId);
-        Set<String> congrat_members = redisTemplate.opsForSet().members(congrat_key);
-        for(String member : congrat_members){
-            String keyMember = "member_"+member;
-            redisTemplate.opsForSet().remove(congrat_key,member);
-            redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
-        }
-        postRepository.deleteById(postId);
+
     }
 
     @Transactional
