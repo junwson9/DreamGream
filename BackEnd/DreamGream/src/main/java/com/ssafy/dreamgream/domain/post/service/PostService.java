@@ -71,14 +71,7 @@ public class PostService {
             return toupdatepost;
         }
     }
-
-    private PostUpdateRequestDto convertToDto(Post post){
-        PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto();
-        BeanUtils.copyProperties(post,postUpdateRequestDto);
-        return postUpdateRequestDto;
-    }
-
-
+    
     //== 리스트 조회, 게시글 조회 ==//
 
     public Slice<PostListResponseDto> findPublicPosts(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
