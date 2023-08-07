@@ -14,11 +14,11 @@ public class SSEService {
 
     private final ConcurrentHashMap<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
 
-    public void addSseEmitter(Long sseId, SseEmitter emitter) {
-        emitter.onCompletion(() -> sseEmitters.remove(sseId));
-        emitter.onTimeout(() -> sseEmitters.remove(sseId));
-        sseEmitters.put(sseId, emitter);
+    public void addSseEmitter(Long memberId, SseEmitter emitter) {
+        emitter.onCompletion(() -> sseEmitters.remove(memberId));
+        emitter.onTimeout(() -> sseEmitters.remove(memberId));
 
+        sseEmitters.put(memberId, emitter);
     }
 
     public void sendImageResponse(Long sseId, ImageGenerateResponseDto dto) {
@@ -49,9 +49,7 @@ public class SSEService {
     }
 
     public boolean checkEmitter(Long sseId) {
-        if (!sseEmitters.containsKey(sseId)) {
 
-        }
         return sseEmitters.containsKey(sseId);
     }
 }
