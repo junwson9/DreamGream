@@ -11,8 +11,8 @@ useEffect(() => {
     return () => document.body.removeChild(script);
   }, []);
   return (
-    <button type="button" onClick={() => shareKakao('여기에 내가 공유할 페이지 url', 'dream-gream')}>
-  <img className="w-12 h-12" src={`${process.env.REACT_APP_PUBLIC_URL}/assets/KakaoLogo.png`} alt="Kakao Logo" />
+    <button type="button" className="w-12 h-12" onClick={() => shareKakao('여기에 내가 공유할 페이지 url', 'dream-gream')}>
+  <img className="w-12 h-12" src='/KakaoLogo.png' alt="Kakao Logo" />
 </button>
   )
 }
