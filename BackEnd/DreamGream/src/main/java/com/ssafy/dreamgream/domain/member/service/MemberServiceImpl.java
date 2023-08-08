@@ -8,6 +8,8 @@ import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import java.util.List;
+
+import com.ssafy.dreamgream.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -27,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
+    private final S3Uploader s3Uploader;
 
     @Override
     public Long getCurrentMemberId() throws AuthenticationException {
@@ -80,6 +84,37 @@ public class MemberServiceImpl implements MemberService {
         return myInfoResponseDto;
     }
 
+
+    @Override
+    @Transactional
+    public MyInfoResponseDto updateProfileImg(MultipartFile file) {
+        Long memberId = getCurrentMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(); // TODO 예외처리
+
+        if(!file.isEmpty()) {
+            String profileImg = s3Uploader.getImageUrl("profile", file, memberId);
+            member.updateProfileImg(profileImg);
+            log.info("프로필 이미지 변경");
+        } else {
+            member.updateProfileImg(null);
+            log.info("프로필 이미지 삭제");
+        }
+
+        MyInfoResponseDto myInfoResponseDto = MyInfoResponseDto.builder()
+                .memberId(member.getMemberId())
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .gender(member.getGender())
+                .birthyear(member.getBirthyear())
+                .provider(member.getProvider())
+                .role(member.getRole())
+                .profileImg(member.getProfileImg())
+                .build();
+
+        return myInfoResponseDto;
+    }
+
+
     @Override
     public List<FollowListResponseDto> findByNickname(String nickname, Pageable pageable) {
         Member currentMember = getCurrentMember();
@@ -107,5 +142,7 @@ public class MemberServiceImpl implements MemberService {
 
         return memberResponseDto;
     }
+
+
 
 }
