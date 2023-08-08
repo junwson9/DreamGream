@@ -2,6 +2,7 @@ import React from 'react'
 import { ReactComponent as RightEllipse } from '../../assets/Ellipse60.svg';
 import { ReactComponent as LeftEllipse } from '../../assets/Ellipse61.svg';
 import Logo from '../../assets/logo.png';
+import KakaoModal from '../Modal/KakaoModal';
 
 
 function ShareImage(){
@@ -10,9 +11,8 @@ function ShareImage(){
   <div>
 <img src={Logo} alt="" className='absolute w-[200px] h-[200px] left-[75px]'/>
 </div>
-  <div className="w-48 h-48 left-[80px] top-[200px] absolute">
-    <div className="w-48 h-48 left-[0.01px] top-0 absolute bg-zinc-300 rounded-lg" />
-    <div className="w-16 h-8 left-[68.76px] top-[83.75px] absolute text-center text-neutral-600 text-lg font-bold">이미지</div>
+  <div className="w-48 h-48 left-[80px] top-[200px] absolute rounded-lg">
+      <img src="https://ifh.cc/g/KyG9oQ.png/150x150" alt="" className="w-48 h-48 left-[0.01px] top-0 absolute bg-zinc-300 rounded-lg"/>
     <div className="w-48 h-48 left-0 top-0 absolute" />
   </div>
   <div className="left-[193px] top-[527px] absolute justify-center items-center gap-1.5 inline-flex">
@@ -37,9 +37,9 @@ function ShareImage(){
   <div className="w-64 h-px left-[55px] top-[570.05px] absolute border border-neutral-200" />
   <div className="w-64 h-px left-[55px] top-[625.05px] absolute border border-neutral-200" />
   <div className="w-64 h-px left-[55px] top-[680.05px] absolute border border-neutral-200" />
-  <div className="w-36 h-8 px-8 py-1.5 left-[102px] top-[717px] absolute bg-white rounded-lg border border-indigo-400 justify-center items-center gap-2.5 inline-flex">
-    
-    <button type="button" className="text-indigo-400 text-xs font-bold leading-tight">저장하기</button>
+  <div className="w-64 h-8 px-8 py-1.5 left-[50px] top-[717px] absolute justify-center items-center gap-8 inline-flex">
+    <button type="button" className="px-4 py-1.5 whitespace-nowrap text-indigo-400 text-xs font-bold leading-tight bg-white rounded-lg border border-indigo-400">저장하기</button>
+    <KakaoModal/>
   </div>
   <div className="w-11 left-[65px] top-[531px] absolute text-zinc-500 text-base font-normal leading-snug whitespace-nowrap">작성자</div>
   <div className="w-11 left-[65px] top-[587.05px] absolute text-zinc-500 text-base font-normal leading-snug whitespace-nowrap">작성일</div>
