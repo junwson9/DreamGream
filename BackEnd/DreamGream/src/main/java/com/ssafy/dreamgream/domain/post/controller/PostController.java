@@ -28,6 +28,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -175,46 +177,57 @@ public class PostController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PostMapping("/{post_id}/unachieved")
-    public ResponseEntity<UnAchievedPostUpdateResponseDto> unAchievedPostUpdate(@PathVariable("post_id") Long postId, @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto) {
-        Post updatedPost = postService.UnAchievedPostUpdateRequestDto(postId, unAchievedPostUpdateRequestDto);
+    /**
+     * 달성전 게시물 수정
+     */
+    @PostMapping("/{postId}/unachieved")
+    public ResponseEntity<UnAchievedPostUpdateResponseDto> unAchievedPostUpdate(@PathVariable("postId") Long postId,
+                                                                                @Validated @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto, Errors errors) {
+        Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
 
-        if (updatedPost == null) {
-            // postId에 해당하는 포스트가 없는 경우 404 Not Found 응답
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(errors.hasErrors()){
+            // TODO 예외처리 필요
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
         UnAchievedPostUpdateResponseDto responseDto = new UnAchievedPostUpdateResponseDto();
-        // 포스트 업데이트 성공 시 200 OK 응답과 업데이트된 포스트 객체를 ResponseDto로 변환하여 반환
         modelMapper.map(updatedPost, responseDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/{post_id}/achieved", consumes = "multipart/form-data")
-    public ResponseEntity<AchievedPostUpdateResponseDto> achievedPostUpdate (@PathVariable("post_id") Long postId,
-                                                                             @RequestPart AchievedPostUpdateRequestDto achievedPostUpdateRequestDto,
-                                                                             @RequestParam("file") MultipartFile file) {
-        Post updatedPost = postService.AchievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
-
-        if (updatedPost == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    /**
+     * 달성후 게시물 및 달성전=>달성후 수정
+     */
+    @PostMapping(value = "/{postId}/achieved", consumes = "multipart/form-data")
+    public ResponseEntity<AchievedPostUpdateResponseDto> achievedPostUpdate (@PathVariable("postId") Long postId,
+                                                                             @Validated @RequestPart AchievedPostUpdateRequestDto achievedPostUpdateRequestDto,
+                                                                             @RequestParam("file") MultipartFile file, Errors errors) {
+        if(errors.hasErrors()){
+            // TODO 예외처리 필요
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
+        Post updatedPost = postService.achievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
         AchievedPostUpdateResponseDto responseDto = modelMapper.map(updatedPost, AchievedPostUpdateResponseDto.class);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-
-    @DeleteMapping("/{post_id}")
-    public String deletePost(@PathVariable("post_id") Long postId) {
+    /**
+     * 게시물 삭제
+     */
+    @DeleteMapping("/{postId}")
+    public String deletePost(@PathVariable("postId") Long postId) {
         postService.deletePost(postId);
         return "Post with ID " + postId + " has been deleted successfully.";
     }
 
-    @PostMapping("/{post_id}/scrap")
-    public ResponseEntity<String> scrapPost(@PathVariable("post_id") Long postId) {
+    /**
+     * 게시물 스크랩
+     */
+    @PostMapping("/{postId}/scrap")
+    public ResponseEntity<Void> scrapPost(@PathVariable("postId") Long postId) {
         // postId를 이용하여 해당 Post를 스크랩하고 저장합니다.
         postService.saveScrappedPost(postId);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Post 스크랩이 완료되었습니다.");
+        return ResponseEntity.ok().build();
     }
 
 
