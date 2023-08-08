@@ -5,6 +5,7 @@ import CategoryButtons from '../../components/Button/CategoryButtons';
 import BestBucketList from '../../components/Feed/BestBucketList';
 import FeedAcheived from '../../components/Feed/FeedAcheived';
 import Navbar from '../../components/Common/Navbar';
+import { API_URL } from '../../config';
 
 export default function acheiveFeed() {
   const [acheivedfeeddata, setAcheivedFeedData] = useState([]);

@@ -5,10 +5,12 @@ const initialState = {
     subject: {
       title: '',
       category: '기타',
+      categoryID: null,
     },
     detail: {
       content: '',
       isPublic: false,
+      selectedPeriod: '',
     },
   };
   

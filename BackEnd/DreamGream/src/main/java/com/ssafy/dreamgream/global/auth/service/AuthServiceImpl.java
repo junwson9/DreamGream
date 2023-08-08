@@ -6,6 +6,8 @@ import com.ssafy.dreamgream.domain.member.enums.Role;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
+import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.exception.customException.InvalidRefreshTokenException;
 import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +40,7 @@ public class AuthServiceImpl implements AuthService {
 	public TokenResponseDto reissue(String accessToken, String refreshToken) {
 		// Refresh Token 검증
 		if (!jwtTokenProvider.validateToken(refreshToken)) {
-			log.info("유효하지 않은 refresh token");
-			/*
-			TODO: 예외처리
-			throw new BadRequestException("Refresh Token 정보가 유효하지 않습니다");
-			 */
+			throw new InvalidRefreshTokenException("refresh token 정보가 유효하지 않음", ErrorCode.INVALID_REFRESH_TOKEN);
 		}
 
 		// Redis 의 Refresh Token 값과 비교
@@ -51,10 +49,7 @@ public class AuthServiceImpl implements AuthService {
 		String redisRefreshToken = (String) redisTemplate.opsForValue().get("RT:" + memberId);
 		log.info("refresh token of redis: {}", redisRefreshToken);
 		if(!refreshToken.equals(redisRefreshToken)) {
-			/*
-			TODO: 예외처리
-			throw new BadRequestException("Refresh Token 정보가 일치하지 않습니다");
-			*/
+			throw new InvalidRefreshTokenException("refresh token 정보가 일치하지 않음", ErrorCode.INVALID_REFRESH_TOKEN);
 		}
 
 		// 새 토큰 생성 및 Redis 업데이트
@@ -70,7 +65,6 @@ public class AuthServiceImpl implements AuthService {
 	@Transactional
 	public TokenResponseDto updateRoleToUser(Gender gender, Integer birthyear) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		log.info("수정전 Authentication: {}", authentication);
 
 		UserDetails userDetails = (User) authentication.getPrincipal();
 		Member currentMember = memberService.getCurrentMember();
@@ -109,15 +103,13 @@ public class AuthServiceImpl implements AuthService {
 		Long memberId = memberService.getCurrentMemberId();
 		String key = "RT:" + memberId;
 		log.info("key: {}", key);
+
 		// Redis에 저장된 refresh token 삭제
 		if (redisTemplate.opsForValue().get(key) != null) {
 			redisTemplate.delete(key);
 			log.info("로그아웃하며 RT 삭제");
 		} else {
-			/*
-			TODO: 예외처리
-			throw new BadRequestException("Refresh Token 정보가 일치하지 않습니다");
-			*/
+			throw new InvalidRefreshTokenException("refresh token 정보가 일치하지 않음", ErrorCode.INVALID_REFRESH_TOKEN);
 		}
 
 		// Access Token 유효시간을 가져와서 BlackList 로 저장
@@ -135,4 +127,6 @@ public class AuthServiceImpl implements AuthService {
 			.set("RT:" + authentication.getName(), tokenResponseDto.getRefreshToken(),
 				tokenResponseDto.getRefreshTokenExpireIn() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
 	}
+
+
 }

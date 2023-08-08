@@ -33,13 +33,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		Provider provider = Provider.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 		OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(provider, oAuth2User.getAttributes());
-		log.debug("provider: " + provider);
 
 		// 회원가입 되어있는 계정인지 확인
 		Member savedMember = memberRepository.findByEmail(userInfo.getEmail());
 
 		if (savedMember != null) {
-			log.info("회원가입이 되어있는 계정입니다.");
+			log.info("회원가입이 되어있는 이메일입니다.: {}", userInfo.getEmail());
 		} else {
 			savedMember = createMember(userInfo, provider);
 		}
@@ -51,9 +50,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	}
 
 	private Member createMember(OAuth2UserInfo userInfo, Provider provider) {
+		// 닉네임이 25byte 초과하는 경우 닉네임 변경
+		String nickname = userInfo.getNickname();
+		if(nickname.length() > 25) {
+			nickname = nickname.substring(0, 25);
+		}
+		log.info("nickname: ", nickname);
+
 		Member member = new Member().builder()
 			.email(userInfo.getEmail())
-			.nickname(userInfo.getNickname())
+			.nickname(nickname)
 			.gender(null)
 			.birthyear(null)
 			.role(Role.ROLE_GUEST)
