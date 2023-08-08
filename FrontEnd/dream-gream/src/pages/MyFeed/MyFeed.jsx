@@ -7,6 +7,7 @@ import TwoTapButton from '../../components/Button/TwoTapButton';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as DownArrow } from '../../assets/DownArrow.svg';
 import CategoryButtons from './../../components/Button/CategoryButtons2';
+import Navbar from '../../components/Common/Navbar';
 
 function MyFeed() {
   const [post, setPost] = useState([]);

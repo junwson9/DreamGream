@@ -22,7 +22,7 @@ function Navbar() {
         }
       }, [location]);
   return (
-    <div className="w-[360px] h-16 relative">
+    <div className="fixed h-16 bottom-0 bg-white shadow">
     <div className="w-[360px] h-16 left-0 top-0 absolute bg-white shadow">
       <div className="h-16 left-0 top-0 absolute justify-start items-center inline-flex">
         <div className="w-[72px] h-16 relative">
