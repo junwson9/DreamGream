@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInterceptor';
 import Loading from './Loding';
@@ -38,18 +38,17 @@ function PostViewImage({ handleCloseIconClick }) {
   console.log(postData);
   const sendPostInfo = async () => {
     try {
-    // POST 요청은 body에 실어 보냄
-        await axiosInstance.post('http://i9a609.p.ssafy.io:8000/api/posts',
-        {
-          category_id : postData.subjectData.categoryID,
-          title: postData.subjectData.title,
-          content: postData.detailData.detail,
-          dead_line: postData.detailData.selectedPeriod,
-          is_display: postData.detailData.isPublic,
-          ai_img: postData.imageUrl.url,
-        });
-        navigate('/myfeed')
-        // 여기에서 내피드로? 물어보기 이건 라우터 옮기면된다
+      // POST 요청은 body에 실어 보냄
+      await axiosInstance.post(`${API_URL}/api/posts`, {
+        category_id: postData.subjectData.categoryID,
+        title: postData.subjectData.title,
+        content: postData.detailData.detail,
+        dead_line: postData.detailData.selectedPeriod,
+        is_display: postData.detailData.isPublic,
+        ai_img: postData.imageUrl.url,
+      });
+      navigate('/myfeed');
+      // 여기에서 내피드로? 물어보기 이건 라우터 옮기면된다
     } catch (e) {
       console.error(e);
     }
