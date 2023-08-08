@@ -38,11 +38,12 @@ function PostViewImage({ handleCloseIconClick }) {
   console.log(postData);
   const sendPostInfo = async () => {
     try {
+      console.log('게시물 보내!!!!');
       // POST 요청은 body에 실어 보냄
       await axiosInstance.post(`${API_URL}/api/posts`, {
         category_id: postData.subjectData.categoryID,
         title: postData.subjectData.title,
-        content: postData.detailData.detail,
+        content: postData.detailData.content,
         dead_line: postData.detailData.selectedPeriod,
         is_display: postData.detailData.isPublic,
         ai_img: postData.imageUrl.url,
