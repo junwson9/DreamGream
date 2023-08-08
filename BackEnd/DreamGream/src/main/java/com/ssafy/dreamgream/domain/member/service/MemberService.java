@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 
@@ -22,4 +23,6 @@ public interface MemberService {
 	List<FollowListResponseDto> findByNickname(String nickname, Pageable pageable);
 
 	MemberResponseDto getMemberInfo(Long memberId);
+
+	MyInfoResponseDto updateProfileImg(MultipartFile file);
 }
