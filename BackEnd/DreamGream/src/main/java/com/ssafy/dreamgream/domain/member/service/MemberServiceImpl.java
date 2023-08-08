@@ -14,7 +14,6 @@ import com.ssafy.dreamgream.global.exception.customException.MemberNotFoundExcep
 import com.ssafy.dreamgream.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,6 +54,7 @@ public class MemberServiceImpl implements MemberService {
 
         UserDetails userDetails = (UserDetails) principal;
         Long memberId = Long.valueOf(userDetails.getUsername());
+        log.info("currentMemberId: {}", memberId);
 
         return memberId;
     }
