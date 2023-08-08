@@ -84,7 +84,7 @@ function PostViewImage({ handleCloseIconClick }) {
                 {subjectData.title}
               </div>
               <div className="w-80 h-14 bg-indigo-400 rounded-lg justify-center items-center inline-flex">
-                <SolidButton name="피드 올리기" onClick={sendPostInfo} />
+                <SolidButton name="피드 올리기" onClick={() => sendPostInfo()} />
               </div>
             </div>
           </div>
