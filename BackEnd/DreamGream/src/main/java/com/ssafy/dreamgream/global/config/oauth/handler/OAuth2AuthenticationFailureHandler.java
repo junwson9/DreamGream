@@ -19,6 +19,7 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException, ServletException {
+		// TODO 예외처리
 		log.error("OAuth2 인증 실패:", exception.getMessage());
 
 		String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
