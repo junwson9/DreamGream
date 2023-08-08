@@ -5,14 +5,16 @@ import lombok.Getter;
 @Getter
 public class ErrorResponse {
 
+    private String success;
     private int status;
+    private String errorCode;
     private String message;
-    private String code;
 
     public ErrorResponse(ErrorCode errorCode){
+        this.success = "FAIL";
         this.status = errorCode.getStatus();
+        this.errorCode = errorCode.getErrorCode();
         this.message = errorCode.getMessage();
-        this.code = errorCode.getErrorCode();
     }
 
 }

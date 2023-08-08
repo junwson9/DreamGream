@@ -7,6 +7,7 @@ import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
+import com.ssafy.dreamgream.global.exception.customException.NotAuthorizedMemberException;
 import java.util.List;
 
 import com.ssafy.dreamgream.global.exception.ErrorCode;
@@ -14,7 +15,6 @@ import com.ssafy.dreamgream.global.exception.customException.MemberNotFoundExcep
 import com.ssafy.dreamgream.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,31 +40,27 @@ public class MemberServiceImpl implements MemberService {
         log.info("Authentication : {}", authentication.toString());
 
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
-            // 사용자가 인증되지 않았거나 익명 사용자인 경우
-            throw new IllegalAccessError("인증되지 않았거나 익명 사용자 입니다.");
-            /*
-            TODO 예외처리
-            throw new AccessDeniedException("User is not authenticated.");
-             */
+            throw new NotAuthorizedMemberException("인증되지 않았거나 익명 사용자 입니다.", ErrorCode.NOT_AUTHORIZED_MEMBER);
         }
 
         Object principal = authentication.getPrincipal();
         if (!(principal instanceof UserDetails)) {
-            // Principal이 UserDetails 타입이 아닌 경우
-            throw new IllegalArgumentException("Principal is not of type UserDetails.");
+            throw new NotAuthorizedMemberException("Principal is not of type UserDetails.", ErrorCode.NOT_AUTHORIZED_MEMBER);
         }
 
         UserDetails userDetails = (UserDetails) principal;
         Long memberId = Long.valueOf(userDetails.getUsername());
+        log.info("currentMemberId: {}", memberId);
 
         return memberId;
     }
 
+
     @Override
     public Member getCurrentMember() throws AuthenticationException {
         Long memberId = getCurrentMemberId();
-
-        Member currentMember = memberRepository.findById(memberId).orElseThrow(); // TODO: 예외처리
+        Member currentMember = memberRepository.findById(memberId)
+            .orElseThrow(() -> new MemberNotFoundException("MemberNotFoundException", ErrorCode.MEMBER_NOT_FOUND));
         return currentMember;
     }
 
@@ -91,11 +87,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public MyInfoResponseDto updateProfileImg(MultipartFile file) {
-        Long memberId = getCurrentMemberId();
-        Member member = memberRepository.findById(memberId).orElseThrow(); // TODO 예외처리
+
+        Member member = getCurrentMember();
 
         if(!file.isEmpty()) {
-            String profileImg = s3Uploader.getImageUrl("profile", file, memberId);
+            String profileImg = s3Uploader.getImageUrl("profile", file, member.getMemberId());
             member.updateProfileImg(profileImg);
             log.info("프로필 이미지 변경");
         } else {
@@ -126,9 +122,10 @@ public class MemberServiceImpl implements MemberService {
         return members;
     }
 
+
     @Override
     public MemberResponseDto getMemberInfo(Long memberId) {
-        // TODO 예외처리 존재하지 않는 member인 경우
+        // 존재하지 않는 member인 경우
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("MemberNotFoundException", ErrorCode.MEMBER_NOT_FOUND));
 
@@ -146,7 +143,6 @@ public class MemberServiceImpl implements MemberService {
 
         return memberResponseDto;
     }
-
 
 
 }

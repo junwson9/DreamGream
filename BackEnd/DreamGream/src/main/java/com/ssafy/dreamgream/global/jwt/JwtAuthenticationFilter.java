@@ -1,5 +1,8 @@
 package com.ssafy.dreamgream.global.jwt;
 
+import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.exception.customException.ExpiredTokenException;
+import com.ssafy.dreamgream.global.exception.customException.InvalidTokenException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -8,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -46,12 +48,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					SecurityContextHolder.getContext().setAuthentication(authentication);
 				}
 			}
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			response.setStatus(403);
-			/*
-			TODO 예외처리 필요
-			 */
+		} catch (InvalidTokenException e) {
+			throw new InvalidTokenException("유효하지 않은 토큰", ErrorCode.INVALID_TOKEN);
+		} catch (ExpiredTokenException e) {
+			throw new ExpiredTokenException("만료된 토큰", ErrorCode.EXPIRED_TOKEN);
 		}
 
 		// 다음 필터로 request, response 전달

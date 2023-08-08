@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
 	private static final String success = "SUCCESS";
-	private static final String fail = "FAIL";
 
 	private final AuthService authService;
 	private final JwtTokenProvider jwtTokenProvider;
