@@ -23,7 +23,8 @@ public class SSEController {
         SseEmitter emitter = new SseEmitter(600_000L);
         log.info("emitter created");
         // jwt에서 userId 정보를 받아와야함
-        Long memberId = memberService.getCurrentMember().getMemberId();
+        Long memberId = memberService.getCurrentMemberId();
+
         sseService.addSseEmitter(memberId, emitter);
 
 

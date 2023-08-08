@@ -35,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Long getCurrentMemberId() throws AuthenticationException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Authentication : {}", authentication.toString());
 
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
             // 사용자가 인증되지 않았거나 익명 사용자인 경우
