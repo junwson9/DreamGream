@@ -3,6 +3,7 @@ package com.ssafy.dreamgream.domain.post.service;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.AchievedPostUpdateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.PostRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
@@ -34,6 +35,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberService memberService;
+    private final CategoryService categoryService;
     private final ModelMapper modelMapper;
     private final S3Uploader s3Uploader;
 
@@ -41,17 +43,34 @@ public class PostService {
     private RedisTemplate<String, String> redisTemplate;
 
     @Transactional
+    public void savePost(PostRequestDto postRequestDto) {
+        Member currentMember = memberService.getCurrentMember();
+
+        Post post = Post.builder()
+                .member(currentMember)
+                .category(categoryService.getCategory(postRequestDto.getCategoryId()))
+                .title(postRequestDto.getTitle())
+                .content(postRequestDto.getContent())
+                .aiImg(postRequestDto.getAiImg())
+                .isAchieved(false)
+                .build();
+
+        postRepository.save(post);
+    }
+
+    @Transactional
     public Post unAchievedPostUpdate(Long postId, UnAchievedPostUpdateRequestDto unAchievedPostUpdateDto) {
         Long memberId = memberService.getCurrentMemberId();
         //TODO post가 존재하는 지 확인.
         Post post = postRepository.findById(postId).orElseThrow();
         Long postMemberId = post.getMember().getMemberId();
-        if(memberId!=postMemberId){
+        if (memberId != postMemberId) {
             //TODO 수정 권한 예외처리
             return null;
-        } else{
+        } else {
             modelMapper.map(unAchievedPostUpdateDto, post);
             postRepository.save(post);
+            log.info(post.toString());
             return post;
         }
     }
@@ -62,7 +81,7 @@ public class PostService {
         //TODO post가 존재하는 지 확인.
         Post post = postRepository.findById(postId).orElseThrow();
         Long postMemberId = post.getMember().getMemberId();
-        if (memberId!=postMemberId){
+        if (memberId != postMemberId) {
             //TODO 수정 권한 예외처리
             return null;
         } else {
