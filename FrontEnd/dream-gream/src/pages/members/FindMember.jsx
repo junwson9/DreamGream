@@ -61,7 +61,7 @@ function FindMember() {
               </div>
             ))
           ) : (
-            // memberList가 없거나 길이가 0인 경우 "검색결과가 없습니다." 메시지를 표시합니다.
+            // 길이가 0인 경우 검색결과가 없습니다.
             <div
               className={`${
                 noResult ? 'block' : 'hidden' // hidden 클래스 추가
