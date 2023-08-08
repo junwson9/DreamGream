@@ -37,7 +37,7 @@ function SignupGenderBirth() {
     event.preventDefault();
     // console.log(gender);
     // console.log(birthYear);
-    // console.log(ACCESS_TOKEN);
+    console.log(ACCESS_TOKEN);
     try {
       const response = await axios.put(
         `${API_URL}/api/auth/role`,
@@ -52,10 +52,10 @@ function SignupGenderBirth() {
           },
         },
       );
-      console.log(response.data.data.token.accessToken);
-      const access_token = response.data.data.token.accessToken;
+      console.log("새롭게 받은 토큰 : " + response.data.data.token.access_token);
+      const access_token = response.data.data.token.access_token;
       localStorage.setItem('ACCESS_TOKEN', access_token);
-      const refresh_token = response.data.data.token.refreshToken;
+      const refresh_token = response.data.data.token.refresh_token;
       localStorage.setItem('REFRESH_TOKEN', refresh_token);
 
       // ACCESS_TOKEN = tokenResponse.token.access_token;
