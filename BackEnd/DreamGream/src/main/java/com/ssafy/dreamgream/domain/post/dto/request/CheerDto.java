@@ -10,10 +10,10 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class CheerDto {
-    @JsonProperty("postId")
+    @JsonProperty("post_id")
     private String postId;
 
-    @JsonProperty("memberId")
+    @JsonProperty("member_id")
     private String memberId;
 
 }

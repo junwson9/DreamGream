@@ -66,7 +66,7 @@ public class ScheduleService {
             if (post == null){
                 log.info("not exist");
             } else {
-                post.setCheerCnt(cnt);
+                post.setCelebrateCnt(cnt);
                 postRepository.save(post);
             }
             int postId = Integer.parseInt(post_number);
