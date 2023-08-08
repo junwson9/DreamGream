@@ -69,8 +69,8 @@ function MyFeed() {
         );
         // console.log(response);
         const data = response.data.data.member;
-        setUser(data);
-        console.log(data);
+        // member id 로컬스토리지에 저장
+        localStorage.setItem("member_id", data.member_id);
         // console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
