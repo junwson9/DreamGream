@@ -1,5 +1,6 @@
 package com.ssafy.dreamgream.domain.post.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UnAchievedPostUpdateRequestDto {
     private String content;
-    private String deadline;
-    private Boolean isdisplay;
+    @JsonProperty("dead_line")
+    private String deadLine;
+    @JsonProperty("is_display")
+    private Boolean isDisplay;
 }
