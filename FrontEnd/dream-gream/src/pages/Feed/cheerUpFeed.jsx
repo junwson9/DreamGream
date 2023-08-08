@@ -9,6 +9,7 @@ import Navbar from '../../components/Common/Navbar';
 import Member from '../../components/Feed/Member';
 import ScrapCheerUpBtns from '../../components/Button/ScrapCheerUpBtns';
 import ToTopButton from '../../components/Button/ToTopButton';
+import { API_URL } from '../../config';
 
 function CheerUpFeed() {
   const [postList, setPostList] = useState([]);
@@ -22,7 +23,7 @@ function CheerUpFeed() {
 
   useEffect(() => {
     axios
-      .get('http://i9a609.p.ssafy.io:8800/api/posts')
+      .get(`${API_URL}/api/posts`)
       .then((response) => {
         setPostList(response.data.data.postList.content);
         console.log(response);
@@ -31,7 +32,7 @@ function CheerUpFeed() {
       .catch((error) => console.log(error));
 
     axios
-      .get('http://i9a609.p.ssafy.io:8000/api/posts/best')
+      .get(`${API_URL}/api/posts/best`)
       .then((response) => {
         setBestBucketList(response);
         console.log(response);

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import CategoryButtons from '../Button/CategoryButtons';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
-import {saveSubject} from '../../store/actions/postActions';
+import { saveSubject } from '../../store/actions/postActions';
 import axiosInstance from '../../utils/axiosInterceptor';
+import { API_URL } from '../../config';
 
 function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
     const [title, setTitle] = useState('');
