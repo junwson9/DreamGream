@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -28,6 +30,8 @@ public class UnAchievedPostUpdateRequestDto {
     private Boolean isDisplay;
 
     @NotNull(message = "카테고리는 필수 값입니다.")
+    @Min(value = 1, message = "카테고리 ID는 최소 1 이상이어야 합니다.")
+    @Max(value = 9, message = "카테고리 ID는 최대 9 이하여야 합니다.")
     @JsonProperty("category_id")
     private String categoryId;
 }

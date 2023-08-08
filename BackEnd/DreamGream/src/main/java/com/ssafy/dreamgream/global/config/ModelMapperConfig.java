@@ -1,5 +1,4 @@
 package com.ssafy.dreamgream.global.config;
-import com.ssafy.dreamgream.domain.post.dto.response.UnAchievedPostUpdateResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
