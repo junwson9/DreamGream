@@ -9,6 +9,7 @@ import axiosInstance from '../../utils/axiosInterceptor';
 function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('기타');
+    const [categoryID, setCategoryID] = useState(null);
     const textareaRef = useRef(null);
     const dispatch = useDispatch();
  
@@ -19,7 +20,7 @@ function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
 
     const onPostSubject = async () => {
         try {
-            dispatch(saveSubject({ title, category }));
+            dispatch(saveSubject({ title, category,categoryID }));
         // POST 요청은 body에 실어 보냄
             await axiosInstance.post('http://i9a609.p.ssafy.io:8000/api/posts/image',
             {
@@ -70,7 +71,7 @@ function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
                 <div className="w-[360px] h-px border-b border-neutral-200 mt-[13px]" />
                 <div className="text-zinc-800 text-left font-medium leading-snug mt-[30px] pl-[21px]">카테고리를 선택해주세요.</div>
             <div className='pl-[21px] mt-[30px]'>
-            <CategoryButtons setCategory={setCategory}/>
+            <CategoryButtons setCategory={setCategory} setCategoryID={setCategoryID}/>
             </div>
             <div className="ml-[21px] mt-[48px] w-80 flex relative">
             <textarea ref={textareaRef} className = "focus:outline-0 resize-none w-full border-b border-gray-200  mb-7" maxLength="50" placeholder="꿈을 입력하세요." onChange={onChange} value={title} style={{ overflowY: 'hidden' }}/>

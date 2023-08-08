@@ -5,6 +5,7 @@ const initialState = {
     subject: {
       title: '',
       category: '기타',
+      categoryID: null,
     },
     detail: {
       content: '',
