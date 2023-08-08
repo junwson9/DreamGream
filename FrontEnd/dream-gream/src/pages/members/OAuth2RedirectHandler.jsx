@@ -12,7 +12,6 @@ function OAuth2RedirectHandler() {
   const searchParams = new URLSearchParams(location.search);
   const ACCESS_TOKEN = searchParams.get('access-token');
   const REFRESH_TOKEN = searchParams.get('refresh-token');
-  dispatch(setToken(ACCESS_TOKEN,REFRESH_TOKEN));
   const role = searchParams.get('role');
   const status = searchParams.get('status');
   localStorage.setItem(role, role);
@@ -22,6 +21,7 @@ function OAuth2RedirectHandler() {
     if (ACCESS_TOKEN) {
       localStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);
       localStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
+      dispatch(setToken(ACCESS_TOKEN,REFRESH_TOKEN));
       navigate('/SiginupGenderBirth');
       if (role == 'ROLE_USER') {
         navigate('/myfeed');

@@ -1,11 +1,10 @@
 import React,{useState,useRef,useEffect} from 'react';
 import PropTypes from 'prop-types'; 
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 import CategoryButtons from '../Button/CategoryButtons';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import {saveSubject} from '../../store/actions/postActions';
-// import axiosInstance from '../../utils/axiosInterceptor';
+import axiosInstance from '../../utils/axiosInterceptor';
 
 function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
     const [title, setTitle] = useState('');
@@ -22,7 +21,7 @@ function PostSubject({ handleCloseIconClick,handleNextButtonClick }) {
         try {
             dispatch(saveSubject({ title, category }));
         // POST 요청은 body에 실어 보냄
-            await axios.post('http://i9a609.p.ssafy.io:8000/api/posts/image',
+            await axiosInstance.post('http://i9a609.p.ssafy.io:8000/api/posts/image',
             {
                 title,
                 category_name: category,

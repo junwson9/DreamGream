@@ -25,15 +25,15 @@ function App() {
         <Route path="/follow" element={<Follow />} />
         <Route path="/following" element={<followingUser />} />
         <Route path="/findmember" element={<FindMember />} />
-        <Route path="/cheerUpFeed" element={<CheerUpFeed />} />
-        <Route path="/acheivefeed" element={<acheiveFeed />} />
-        <Route path="/feedid" element={<FeedDetail />} />
         <Route path="/post" element={<Posting />} />
         <Route path="/share" element={<ShareImage/>}/>
         <Route path="/myfeed" element={<MyFeed />} />
         <Route path="/about" element={<ViewAbout />} />
-        <Route path="/updatepost" element={<updatePost />} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
+        <Route path="/updatepost" element={<updatePost />} />
+        <Route path="/cheerUpFeed" element={<CheerUpFeed />} />
+        <Route path="/acheivefeed" element={<acheiveFeed />} />
+        <Route path="/feedid" element={<FeedDetail />} />
       </Routes>
     </div>
   );
