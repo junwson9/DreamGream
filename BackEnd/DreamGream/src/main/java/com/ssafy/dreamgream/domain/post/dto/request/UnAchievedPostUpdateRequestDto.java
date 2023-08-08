@@ -1,6 +1,7 @@
 package com.ssafy.dreamgream.domain.post.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ssafy.dreamgream.domain.post.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,5 +34,5 @@ public class UnAchievedPostUpdateRequestDto {
     @Min(value = 1, message = "카테고리 ID는 최소 1 이상이어야 합니다.")
     @Max(value = 9, message = "카테고리 ID는 최대 9 이하여야 합니다.")
     @JsonProperty("category_id")
-    private String categoryId;
+    private Long categoryId;
 }
