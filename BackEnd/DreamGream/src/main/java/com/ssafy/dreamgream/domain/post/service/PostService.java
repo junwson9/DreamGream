@@ -43,6 +43,8 @@ public class PostService {
             return null;
         } else {
             modelMapper.map(unAchievedPostUpdateDto, updatedpost);
+            log.info(unAchievedPostUpdateDto.getContent());
+            log.info(updatedpost.getContent());
             postRepository.save(updatedpost);
             return updatedpost;
         }
