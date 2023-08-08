@@ -8,6 +8,7 @@ import TopBar from '../../components/Common/Topbar.jsx';
 import TwoSolidButton from '../../components/Button/TwoSolidButton.jsx';
 import DropdownList from '../../components/Button/DropDownList.jsx';
 import SelectSmall from '../../components/Button/SelectDropDown.jsx';
+import { API_URL } from '../../config.js';
 
 function SignupGenderBirth() {
   const [gender, setGender] = useState('');
@@ -39,7 +40,7 @@ function SignupGenderBirth() {
     // console.log(ACCESS_TOKEN);
     try {
       const response = await axios.put(
-        'http://i9a609.p.ssafy.io:8000/api/auth/role',
+        `${API_URL}/api/auth/role`,
         {
           gender: gender,
           birthyear: birthYear,

@@ -7,6 +7,7 @@ import Loading from './Loding';
 import SolidButton from '../Button/SolidButton';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import Modal from '../Modal/Modal';
+import { API_URL } from '../../config';
 
 function PostViewImage({ handleCloseIconClick }) {
   const imageUrl = useSelector((state) => state.sse.sseData); // 이미지 URL을 Redux 상태에서 가져옴
