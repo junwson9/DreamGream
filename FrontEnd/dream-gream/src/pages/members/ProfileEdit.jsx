@@ -26,15 +26,12 @@ function ProfileEdit() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          'http://i9a609.p.ssafy.io:8800/api/members/info',
-          {
-            headers: {
-              Authorization: `Bearer ${ACCESS_TOKEN}`,
-              'Content-Type': 'application/json',
-            },
+        const response = await axios.get(`${API_URL}/api/members/info`, {
+          headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            'Content-Type': 'application/json',
           },
-        );
+        });
         const user = response.data.data.member;
         console.log(user);
         setNickname(user.nickname);
