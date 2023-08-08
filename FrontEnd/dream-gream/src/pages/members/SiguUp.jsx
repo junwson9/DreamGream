@@ -24,12 +24,14 @@ function SignupGenderBirth() {
   const navigateToMyFeed = () => {
     Navigate('/myfeed');
   };
-  const handleGenderSelection = (selectedGender) => {
-    // Check the selected gender and set 'MALE' or 'FEMALE' accordingly
-    const genderValue = selectedGender === 'left' ? 'MALE' : 'FEMALE';
-    setGender(genderValue);
+  const handleGenderSelection = (isLeftSelected) => {
+    if (isLeftSelected) {
+      setGender('MALE');
+    } else {
+      setGender('FEMALE');
+    }
   };
-  // console.log(gender);
+  console.log(gender);
   const handleSubmit = async (event) => {
     event.preventDefault();
     // console.log(gender);
