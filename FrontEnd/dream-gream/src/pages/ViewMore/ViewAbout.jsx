@@ -17,7 +17,7 @@ function ViewAbout() {
       const access_token = localStorage.getItem('ACCESS_TOKEN');
       const refresh_token = localStorage.getItem('REFRESH_TOKEN');
       console.log(refresh_token);
-      await axios.post(`${API_URL}/auth/logout`, {
+      await axios.post(`${API_URL}/api/auth/logout`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
           'X-Refresh-Token': `${refresh_token}`,
