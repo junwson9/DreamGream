@@ -4,9 +4,20 @@ import OpenHooks from '../../hooks/OpenHooks';
 import { ReactComponent as ArrowIcon } from '../../assets/leftIcon.svg';
 import DropDown from './Dropdown';
 
-function Container({ selectedPeriod, onChangePeriod }) {
+function ContainerForCategory() {
   const dropDownRef = useRef();
-  const periodList = ['언젠가', '1년후', '5년후', '10년후', '20년후'];
+  const [Category, setCategory] = useState('전체');
+  const CategoryList = [
+    '여행',
+    '건강/운동',
+    '배움',
+    '문화/엔터',
+    '사랑',
+    '음식',
+    '쇼핑',
+    '일',
+    '기타',
+  ];
 
   const [isOpen, setIsOpen] = OpenHooks(dropDownRef, false);
   const arrowIconStyle = {
@@ -23,7 +34,7 @@ function Container({ selectedPeriod, onChangePeriod }) {
           type="button"
           className="flex items-center"
         >
-          {selectedPeriod}
+          {Category}
           <ArrowIcon style={arrowIconStyle} />
         </button>
       </div>
@@ -46,15 +57,12 @@ function Container({ selectedPeriod, onChangePeriod }) {
             }}
           >
             <ul style={{ padding: 0, margin: 0, width: 'max-content' }}>
-              {periodList.map((value, index) => (
+              {CategoryList.map((value, index) => (
                 <DropDown
                   key={index}
                   value={value}
                   setIsOpen={setIsOpen}
-                  onChangePeriod={() => {
-                    onChangePeriod(value);
-                    setIsOpen(false);
-                  }}
+                  setCategory={setCategory}
                   isOpen={isOpen}
                   style={{ width: 'max-content' }}
                 />
@@ -67,4 +75,4 @@ function Container({ selectedPeriod, onChangePeriod }) {
   );
 }
 
-export default Container;
+export default ContainerForCategory;
