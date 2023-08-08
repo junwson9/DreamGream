@@ -3,7 +3,7 @@ import Container from '../Posting/Container';
 import ToggleButton from '../Button/ToggleButton';
 import ContainerForCategory from '../Posting/ContainerForCategory';
 
-function EditImg() {
+function EditInfo() {
   const [isPublic, setIsPublic] = useState(false);
 
   const onTogglePublic = () => {
@@ -76,4 +76,4 @@ function EditImg() {
   );
 }
 
-export default EditImg;
+export default EditInfo;

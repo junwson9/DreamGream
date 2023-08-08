@@ -77,7 +77,7 @@ function CheerUpFeed() {
       <br />
       <br />
       <br />
-      <div
+      {/* <div
         className="ToTopButtonDiv"
         style={{
           position: 'fixed',
@@ -86,7 +86,7 @@ function CheerUpFeed() {
         }}
       >
         <ToTopButton />
-      </div>
+      </div> */}
       <div
         className="NavDiv"
         style={{
@@ -95,7 +95,7 @@ function CheerUpFeed() {
           width: '100%',
         }}
       >
-        <Navbar />
+        {/* <Navbar /> */}
       </div>
     </div>
   );

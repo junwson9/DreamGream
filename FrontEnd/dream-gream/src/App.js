@@ -13,6 +13,10 @@ import Follow from './pages/MyFeed/Follow';
 import FindMember from './pages/members/FindMember';
 import FeedDetail from './pages/Feed/feedDetail';
 import ViewAbout from './pages/ViewMore/ViewAbout';
+import UpdatePost from './pages/Feed/editFeed';
+import Test222 from './components/Edit/TopbarForEdit';
+import Test333 from './components/Common/Topbar2';
+import Test444 from './components/Common/Topbar';
 
 function App() {
   return (
@@ -29,14 +33,14 @@ function App() {
         <Route path="/acheivefeed" element={<acheiveFeed />} />
         <Route path="/feedid" element={<FeedDetail />} />
         <Route path="/post" element={<Posting />} />
-        <Route path="/share" element={<ShareImage/>}/>
+        <Route path="/share" element={<ShareImage />} />
         <Route path="/myfeed" element={<MyFeed />} />
         <Route path="/about" element={<ViewAbout />} />
-        <Route path="/updatepost" element={<updatePost />} />
+        <Route path="/updatepost" element={<UpdatePost />} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
-        <Route path="/test111" element={<Test111 />} />
         <Route path="/test222" element={<Test222 />} />
         <Route path="/test333" element={<Test333 />} />
+        <Route path="/test444" element={<Test444 />} />
       </Routes>
     </div>
   );
