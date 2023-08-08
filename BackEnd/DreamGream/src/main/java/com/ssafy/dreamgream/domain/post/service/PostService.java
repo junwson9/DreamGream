@@ -11,6 +11,7 @@ import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.global.s3.S3Uploader;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -254,7 +255,7 @@ public class PostService {
                 .achievedDate(existingPost.getAchievedDate())
                 .aiImg(existingPost.getAiImg())
                 .achievementImg(existingPost.getAchievementImg())
-                .modifiedDate(existingPost.getModifiedDate())
+                .modifiedDate(LocalDateTime.now())
                 .category(existingPost.getCategory())
                 .member(currentMember)
                 .build();

@@ -5,10 +5,8 @@ import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.TestMemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.*;
-import com.ssafy.dreamgream.domain.post.dto.response.AchievedPostUpdateResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
-import com.ssafy.dreamgream.domain.post.dto.response.UnAchievedPostUpdateResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.post.service.PostService;
@@ -181,34 +179,34 @@ public class PostController {
      * 달성전 게시물 수정
      */
     @PostMapping("/{postId}/unachieved")
-    public ResponseEntity<UnAchievedPostUpdateResponseDto> unAchievedPostUpdate(@PathVariable("postId") Long postId,
+    public ResponseEntity<PostResponseDto> unAchievedPostUpdate(@PathVariable("postId") Long postId,
                                                                                 @Validated @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto, Errors errors) {
-        Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
 
         if(errors.hasErrors()){
             // TODO 예외처리 필요
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else{
+            Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
+            PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }
-
-        UnAchievedPostUpdateResponseDto responseDto = new UnAchievedPostUpdateResponseDto();
-        modelMapper.map(updatedPost, responseDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
      * 달성후 게시물 및 달성전=>달성후 수정
      */
     @PostMapping(value = "/{postId}/achieved", consumes = "multipart/form-data")
-    public ResponseEntity<AchievedPostUpdateResponseDto> achievedPostUpdate (@PathVariable("postId") Long postId,
+    public ResponseEntity<PostResponseDto> achievedPostUpdate (@PathVariable("postId") Long postId,
                                                                              @Validated @RequestPart AchievedPostUpdateRequestDto achievedPostUpdateRequestDto,
                                                                              @RequestParam("file") MultipartFile file, Errors errors) {
         if(errors.hasErrors()){
             // TODO 예외처리 필요
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            Post updatedPost = postService.achievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
+            PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }
-        Post updatedPost = postService.achievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
-        AchievedPostUpdateResponseDto responseDto = modelMapper.map(updatedPost, AchievedPostUpdateResponseDto.class);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
@@ -224,10 +222,10 @@ public class PostController {
      * 게시물 스크랩
      */
     @PostMapping("/{postId}/scrap")
-    public ResponseEntity<Void> scrapPost(@PathVariable("postId") Long postId) {
+    public ResponseEntity<Long> scrapPost(@PathVariable("postId") Long postId) {
         // postId를 이용하여 해당 Post를 스크랩하고 저장합니다.
         postService.saveScrappedPost(postId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(postId);
     }
 
 

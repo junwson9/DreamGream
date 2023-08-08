@@ -38,7 +38,6 @@ public class AchievedPostUpdateRequestDto {
     private String achievementContent;
 
     @NotNull(message = "달성시기는 필수 값입니다.")
-    @PastOrPresent(message = "달성시기는 미래 시점이어야 합니다.") // 미래 시점이라는 조건이 없어야함! 고객이 버킷리스트를 달성한 다음에 달성완료 처리를 하는 거니까
     @JsonProperty("achieved_date")
     private LocalDateTime achievedDate;
 
