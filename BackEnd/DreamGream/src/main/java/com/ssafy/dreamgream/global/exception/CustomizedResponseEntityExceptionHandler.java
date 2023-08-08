@@ -1,14 +1,21 @@
 package com.ssafy.dreamgream.global.exception;
 
 import com.amazonaws.services.kms.model.NotFoundException;
-import com.ssafy.dreamgream.global.exception.customException.*;
+import com.ssafy.dreamgream.global.exception.customException.BadRequestException;
+import com.ssafy.dreamgream.global.exception.customException.ExpiredTokenException;
+import com.ssafy.dreamgream.global.exception.customException.InvalidInputValueException;
+import com.ssafy.dreamgream.global.exception.customException.InvalidRefreshTokenException;
+import com.ssafy.dreamgream.global.exception.customException.InvalidTokenException;
+import com.ssafy.dreamgream.global.exception.customException.MemberNotFoundException;
+import com.ssafy.dreamgream.global.exception.customException.NotAuthorizedMemberException;
+import com.ssafy.dreamgream.global.exception.customException.NotAuthorizedToPostException;
+import com.ssafy.dreamgream.global.exception.customException.OAuth2FailedException;
+import com.ssafy.dreamgream.global.exception.customException.PostNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
@@ -32,8 +39,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     }
 
 
-    @ExceptionHandler(HttpClientErrorException.BadRequest.class)
-    public final ResponseEntity<ErrorResponse> handleBadRequestException(HttpClientErrorException.BadRequest ex) {
+    @ExceptionHandler(BadRequestException.class)
+    public final ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException ex) {
         log.error("handleBadRequestException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.BAD_REQUEST);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -72,6 +79,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     }
 
 
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidRefreshTokenException(InvalidRefreshTokenException ex){
+        log.error("handleInvalidRefreshTokenException", ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+
+
     @ExceptionHandler(OAuth2FailedException.class)
     public ResponseEntity<ErrorResponse> handleOAuth2FailedException(OAuth2FailedException ex){
         log.error("handleOAuth2FailedException", ex);
@@ -81,7 +96,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 
     @ExceptionHandler(MemberNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleMemberNotFoundException(MemberNotFoundException ex){
+    public ResponseEntity<?> handleMemberNotFoundException(MemberNotFoundException ex){
         log.error("handleMemberNotFoundException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
