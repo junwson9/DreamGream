@@ -18,7 +18,7 @@ public class ScheduleController {
     @PostMapping("/startscheduler")
     public ResponseEntity<String> startScheduler() {
         scheduleService.scheduleCheer();
-        scheduleService.scheduleCongrat();
+        scheduleService.scheduleCelebrate();
         return new ResponseEntity<>("Scheduler started.", HttpStatus.OK);
     }
 }

@@ -1,9 +1,9 @@
 package com.ssafy.dreamgream.domain.post.service;
 import com.ssafy.dreamgream.domain.post.entity.MemberPostCheer;
-import com.ssafy.dreamgream.domain.post.entity.MemberPostCongrat;
+import com.ssafy.dreamgream.domain.post.entity.MemberPostCelebrate;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.MemberPostCheerRepository;
-import com.ssafy.dreamgream.domain.post.repository.MemberPostCongratRepository;
+import com.ssafy.dreamgream.domain.post.repository.MemberPostCelebrateRepository;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class ScheduleService {
     private MemberPostCheerRepository memberPostCheerRepository;
 
     @Autowired
-    private MemberPostCongratRepository memberPostCongratRepository;
+    private MemberPostCelebrateRepository memberPostCelebrateRepository;
 
 
 
@@ -56,8 +56,8 @@ public class ScheduleService {
     }
 
     @Scheduled(cron = "0 0 6 * * ?")
-    public void scheduleCongrat() {
-        Set<String> keys = redisTemplate.keys("congrat_post_*");
+    public void scheduleCelebrate() {
+        Set<String> keys = redisTemplate.keys("celebrate_post_*");
         for (String key : keys) {
             Long cnt = redisTemplate.opsForSet().size(key);
             Set<String> members = redisTemplate.opsForSet().members(key);
@@ -71,10 +71,10 @@ public class ScheduleService {
             }
             int postId = Integer.parseInt(post_number);
             for (String member : members) {
-                MemberPostCongrat memberPostCongrat = new MemberPostCongrat();
+                MemberPostCelebrate memberPostCelebrate = new MemberPostCelebrate();
                 int memberId = Integer.parseInt(member);
-                memberPostCongrat.setCongrat((long) postId, Long.valueOf(memberId));
-                memberPostCongratRepository.save(memberPostCongrat);
+                memberPostCelebrate.setCelebrate((long) postId, Long.valueOf(memberId));
+                memberPostCelebrateRepository.save(memberPostCelebrate);
             }
         }
     }

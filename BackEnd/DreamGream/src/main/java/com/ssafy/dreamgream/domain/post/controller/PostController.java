@@ -23,7 +23,6 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
@@ -176,8 +175,8 @@ public class PostController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PostMapping("/{postId}/unachieved")
-    public ResponseEntity<UnAchievedPostUpdateResponseDto> unAchievedPostUpdate(@PathVariable Long postId, @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto) {
+    @PostMapping("/{post_id}/unachieved")
+    public ResponseEntity<UnAchievedPostUpdateResponseDto> unAchievedPostUpdate(@PathVariable("post_id") Long postId, @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto) {
         Post updatedPost = postService.UnAchievedPostUpdateRequestDto(postId, unAchievedPostUpdateRequestDto);
 
         if (updatedPost == null) {
@@ -190,8 +189,8 @@ public class PostController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/{postId}/achieved", consumes = "multipart/form-data")
-    public ResponseEntity<AchievedPostUpdateResponseDto> achievedPostUpdate (@PathVariable Long postId,
+    @PostMapping(value = "/{post_id}/achieved", consumes = "multipart/form-data")
+    public ResponseEntity<AchievedPostUpdateResponseDto> achievedPostUpdate (@PathVariable("post_id") Long postId,
                                                                              @RequestPart AchievedPostUpdateRequestDto achievedPostUpdateRequestDto,
                                                                              @RequestParam("file") MultipartFile file) {
         Post updatedPost = postService.AchievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
@@ -211,8 +210,8 @@ public class PostController {
         return "Post with ID " + postId + " has been deleted successfully.";
     }
 
-    @PostMapping("/{postId}/scrap")
-    public ResponseEntity<String> scrapPost(@PathVariable("postId") Long postId) {
+    @PostMapping("/{post_id}/scrap")
+    public ResponseEntity<String> scrapPost(@PathVariable("post_id") Long postId) {
         // postId를 이용하여 해당 Post를 스크랩하고 저장합니다.
         postService.saveScrappedPost(postId);
         return ResponseEntity.status(HttpStatus.CREATED).body("Post 스크랩이 완료되었습니다.");
