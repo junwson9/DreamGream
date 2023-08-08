@@ -63,6 +63,10 @@ public class PostController {
         return prompt;
     }
 
+    /**
+     * AI 이미지 생성 요청
+     * @param dto
+     */
     @PostMapping("/image")
     public void generateImage(@RequestBody ImageGenerateRequestDto dto){
         log.info("title : {}", dto.getTitle());
@@ -84,6 +88,22 @@ public class PostController {
         }
     }
 
+    @PostMapping()
+    public ResponseEntity<?> createPost(@RequestBody PostRequestDto dto) {
+
+        log.info("dto : {} ",dto.toString());
+        ResponseDto responseDto = null;
+        try {
+            postService.savePost(dto);
+            log.info("게시글 등록 성공");
+            responseDto = new ResponseDto(success, "게시물 등록 성공");
+        } catch (Exception e) {
+            log.error("게시글 등록 실패");
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     /**
      * 전체피드 - 달성완료 조회
@@ -187,6 +207,7 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else{
             Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
+            log.info(updatedPost.toString());
             PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }
