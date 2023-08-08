@@ -78,6 +78,9 @@ public class Post {
     public void setAchievementImg(String achievementImg) {
         this.achievementImg = achievementImg;
     }
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
     public void setCheerCnt(Long cheerCnt){
         this.cheerCnt = cheerCnt;
     }
