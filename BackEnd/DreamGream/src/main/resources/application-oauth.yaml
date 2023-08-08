@@ -32,6 +32,16 @@ auth:
 spring:
   config:
     activate:
+      on-profile: "auth-dev"
+
+auth:
+  redirect:
+    url: "http://localhost:3000/oauth2/redirect"
+
+---
+spring:
+  config:
+    activate:
       on-profile: "auth-prod"
 
 auth:

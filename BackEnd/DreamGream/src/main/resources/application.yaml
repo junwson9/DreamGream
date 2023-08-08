@@ -13,6 +13,11 @@ spring:
         - rabbitmq-prod
         - prompt-prod
         - auth-prod
+      dev:
+        - db-dev
+        - rabbitmq-prod
+        - prompt-prod
+        - auth-dev
     include:
       - oauth
       - db
