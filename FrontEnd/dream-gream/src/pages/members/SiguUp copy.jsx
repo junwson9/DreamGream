@@ -17,7 +17,7 @@ function SignupGenderBirth() {
     event.preventDefault();
     try {
       const response = await axios.put(
-        'http://localhost:8000/api/auth/role',
+        'http://localhost:8800/api/auth/role',
         {
           gender: gender,
           birthyear: birthYear,
@@ -30,7 +30,7 @@ function SignupGenderBirth() {
         },
       );
       const tokenResponse = await axios.get(
-        "'http://localhost:8000/api/auth/token",
+        "'http://localhost:8800/api/auth/token",
       );
       ACCESS_TOKEN = tokenResponse.token.access_token;
       REFRESH_TOKEN = tokenResponse.token.refresh_token;

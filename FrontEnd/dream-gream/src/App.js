@@ -9,10 +9,11 @@ import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
 import ShareImage from './components/Share/ShareImage';
-import Follower from './pages/MyFeed/Follow';
+import Follower from './pages/MyFeed/Follower';
 import FindMember from './pages/members/FindMember';
 import FeedDetail from './pages/Feed/feedDetail';
 import ViewAbout from './pages/ViewMore/ViewAbout';
+import Following from './pages/MyFeed/Following';
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
         <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
         <Route path="/profileedit" element={<ProfileEdit />} />
         <Route path="/follower/:memberId" element={<Follower />} />
-        <Route path="/following/:memberId" element={<followingUser />} />
+        <Route path="/following/:memberId" element={<Following />} />
         <Route path="/findmember" element={<FindMember />} />
         <Route path="/post" element={<Posting />} />
         <Route path="/share" element={<ShareImage />} />

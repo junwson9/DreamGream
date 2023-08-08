@@ -7,6 +7,7 @@ import TwoTapButton from '../../components/Button/TwoTapButton';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as DownArrow } from '../../assets/DownArrow.svg';
 import CategoryButtons from './../../components/Button/CategoryButtons2';
+import axiosInstance from '../../utils/axiosInterceptor';
 
 function MyFeed() {
   const [post, setPost] = useState([]);
@@ -41,7 +42,7 @@ function MyFeed() {
     async function fetchData() {
       try {
         const response = await axios.get(
-          'http://i9a609.p.ssafy.io:8000/api/posts/my', // 개인 피드 조회
+          'http://i9a609.p.ssafy.io:8800/api/posts/my', // 개인 피드 조회
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -63,14 +64,8 @@ function MyFeed() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          'http://i9a609.p.ssafy.io:8000/api/members/info', // 멤버 id 조회 해야댐
-          {
-            headers: {
-              Authorization: `Bearer ${ACCESS_TOKEN}`,
-              'Content-Type': 'application/json',
-            },
-          },
+        const response = await axiosInstance.get(
+          'http://i9a609.p.ssafy.io:8800/api/members/info', // 멤버 id 조회 해야댐
         );
         // console.log(response);
         const data = response.data.data.member;

@@ -26,7 +26,7 @@ function ProfileEdit() {
     async function fetchData() {
       try {
         const response = await axios.get(
-          'http://i9a609.p.ssafy.io:8000/api/members/info',
+          'http://i9a609.p.ssafy.io:8800/api/members/info',
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -50,7 +50,7 @@ function ProfileEdit() {
     event.preventDefault();
     try {
       const response = await axios.put(
-        'http://i9a609.p.ssafy.io:8000/api/members/info',
+        'http://i9a609.p.ssafy.io:8800/api/members/info',
         {
           nickname: nickname,
           gender: gender,

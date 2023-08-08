@@ -39,7 +39,7 @@ function SignupGenderBirth() {
     // console.log(ACCESS_TOKEN);
     try {
       const response = await axios.put(
-        'http://i9a609.p.ssafy.io:8000/api/auth/role',
+        'http://i9a609.p.ssafy.io:8800/api/auth/role',
         {
           gender: gender,
           birthyear: birthYear,

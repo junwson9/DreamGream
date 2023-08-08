@@ -14,7 +14,7 @@ function FindMember() {
   const handleSaveClick = (value) => {
     setNickname(value);
     const queryParams = new URLSearchParams({ nickname: value }); // 넘어온 값 사용
-    const url = `http://i9a609.p.ssafy.io:8000/api/members?${queryParams}`;
+    const url = `http://i9a609.p.ssafy.io:8800/api/members?${queryParams}`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
