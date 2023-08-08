@@ -38,36 +38,35 @@ public class PostService {
 
 
     public Post UnAchievedPostUpdateRequestDto(Long postId, UnAchievedPostUpdateRequestDto unAchievedPostUpdateDto) {
-        Post updatedpost = postRepository.findById(postId).orElse(null);
-        if (updatedpost == null) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
             return null;
         } else {
-            modelMapper.map(unAchievedPostUpdateDto, updatedpost);
+            modelMapper.map(unAchievedPostUpdateDto, post);
             log.info(unAchievedPostUpdateDto.getContent());
-            log.info(updatedpost.getContent());
-            postRepository.save(updatedpost);
-            return updatedpost;
+            log.info(post.getContent());
+            postRepository.save(post);
+            return post;
         }
     }
 
     public Post AchievedPostUpdate(Long postId, AchievedPostUpdateRequestDto achievedPostUpdateRequestDto, MultipartFile file){
-        Post toupdatepost = postRepository.findById(postId).orElse(null);
-        if(toupdatepost == null){
+        Post post = postRepository.findById(postId).orElse(null);
+        if(post == null){
             return null;
         }else{
-            modelMapper.map(achievedPostUpdateRequestDto,toupdatepost);
+            modelMapper.map(achievedPostUpdateRequestDto,post);
             if (achievedPostUpdateRequestDto.getImgUpdateFlag() && file.isEmpty()) {
-                toupdatepost.setAchievementImg(null);
-            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == Boolean.TRUE && !file.isEmpty()) {
+                post.setAchievementImg(null);
+            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == true && !file.isEmpty()) {
                 Member currentMember = memberService.getCurrentMember();
-                //여기에 받은 이미지 multipartfile => url 바꾸는 로직 들어가야할듯
                 String imageUrl = s3Uploader.getImageUrl("post", file, currentMember.getMemberId());
-                toupdatepost.setAchievementImg(imageUrl);
+                post.setAchievementImg(imageUrl);
             } else {
                 return null;
             }
-            postRepository.save(toupdatepost);
-            return toupdatepost;
+            postRepository.save(post);
+            return post;
         }
     }
 
@@ -83,9 +82,9 @@ public class PostService {
 
         // postId에 대해 Redis에서 바로 조회
         for (PostListResponseDto post : postList) {
-            String postId = "congrat_post_" + post.getPostId();
-            Long congratCnt = redisTemplate.opsForSet().size(postId);
-            post.updateCelebrateCnt(congratCnt);
+            String postId = "celebrate_post_" + post.getPostId();
+            Long celebrateCnt = redisTemplate.opsForSet().size(postId);
+            post.updateCelebrateCnt(celebrateCnt);
 
             // 로그인 상태면 축하 여부 업데이트
             if (memberId != null) {
@@ -148,7 +147,7 @@ public class PostService {
     private void getRedisCheerAndCelebrateCount(List<PostListResponseDto> postList) {
         for (PostListResponseDto post : postList) {
             Long cheerCnt = getRedisSetCount("cheer_post_" + post.getPostId());
-            Long celebrateCnt= getRedisSetCount("congrat_post_" + post.getPostId());
+            Long celebrateCnt= getRedisSetCount("celebrate_post_" + post.getPostId());
             post.updateCheerAndCelebrateCnt(cheerCnt, celebrateCnt);
         }
     }
@@ -174,9 +173,9 @@ public class PostService {
 
         // 좋아요 개수 업데이트 
         String cheerPostId = "cheer_post_" + post.getPostId();
-        String congratPostId = "congrat_post_" + post.getPostId();
+        String celebratePostId = "celebrate_post_" + post.getPostId();
         Long cheerCnt = getRedisSetCount(cheerPostId);
-        Long celebrateCnt = getRedisSetCount(congratPostId);
+        Long celebrateCnt = getRedisSetCount(celebratePostId);
         post.updateCheerAndCelebrateCnt(cheerCnt, celebrateCnt);
 
         PostResponseDto postDto = new PostResponseDto(post);
@@ -184,7 +183,7 @@ public class PostService {
         // 로그인 상태면 좋아요 여부 업데이트
         if (memberId != null) {
             Boolean isCheered = redisTemplate.opsForSet().isMember(cheerPostId, memberId.toString());
-            Boolean isCelebrated = redisTemplate.opsForSet().isMember(congratPostId, memberId.toString());
+            Boolean isCelebrated = redisTemplate.opsForSet().isMember(celebratePostId, memberId.toString());
             postDto.updateIsCheeredAndIsCelebrated(isCheered, isCelebrated);
         }
 
@@ -202,8 +201,11 @@ public class PostService {
     public void deletePost(Long postId) {
         Member currentMember = memberService.getCurrentMember();
         String memberId = String.valueOf(currentMember.getMemberId());
-        String postMemberId = String.valueOf(postRepository.findById(postId).get().getMember());
-        if(memberId != postMemberId){
+        log.info(memberId);
+        String postMemberId = String.valueOf(postRepository.findById(postId).get().getMember().getMemberId());
+        log.info(postMemberId);
+        if(!memberId.equals(postMemberId)){
+            log.info("여기니");
             // TODO: 수정 권한이 없을 경우 예외 처리
         } else{
             String cheer_key = "cheer_post_" + String.valueOf(postId);
@@ -213,11 +215,11 @@ public class PostService {
                 redisTemplate.opsForSet().remove(cheer_key,member);
                 redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
             }
-            String congrat_key = "congrat_post_" + String.valueOf(postId);
-            Set<String> congrat_members = redisTemplate.opsForSet().members(congrat_key);
-            for(String member : congrat_members){
+            String celebrate_key = "celebrate_post_" + String.valueOf(postId);
+            Set<String> celebrate_members = redisTemplate.opsForSet().members(celebrate_key);
+            for(String member : celebrate_members){
                 String keyMember = "member_"+member;
-                redisTemplate.opsForSet().remove(congrat_key,member);
+                redisTemplate.opsForSet().remove(celebrate_key,member);
                 redisTemplate.opsForSet().remove(keyMember,String.valueOf(postId));
             }
             postRepository.deleteById(postId);

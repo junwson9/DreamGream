@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class MemberPostCongrat {
+public class MemberPostCelebrate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "celebrate_id")
@@ -22,7 +22,7 @@ public class MemberPostCongrat {
     @JoinColumn(name = "post_id", insertable = false, updatable = false)
     private Post celebratePost;
 
-    public void setCongrat(Long postId, Long memberId){
+    public void setCelebrate(Long postId, Long memberId){
         this.postId = postId;
         this.memberId = memberId;
     }

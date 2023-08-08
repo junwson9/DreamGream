@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/posts/cheering")
+@RequestMapping("/api/posts/cheers")
 public class CheerController {
 
     @Autowired
