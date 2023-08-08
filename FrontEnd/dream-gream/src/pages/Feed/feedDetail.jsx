@@ -9,6 +9,7 @@ import ScrapCheerUpBtns from '../../components/Button/ScrapCheerUpBtns';
 import Navbar from '../../components/Common/Navbar';
 import Member from '../../components/Feed/Member';
 import ContentCard from '../../components/Feed/ContentCard';
+import { API_URL } from '../../config';
 
 function FeedDetail() {
   const [post, setPost] = useState([]);
@@ -17,7 +18,7 @@ function FeedDetail() {
 
   useEffect(() => {
     axios
-      .get(`http://i9a609.p.ssafy.io:8000/api/posts/${postId}`)
+      .get(`${API_URL}/api/posts/${postId}`)
       .then((response) => {
         setPost(response.data.data.postList.content);
         console.log(response);

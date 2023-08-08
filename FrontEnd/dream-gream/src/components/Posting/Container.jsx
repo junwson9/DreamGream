@@ -2,11 +2,10 @@
 import React, { useRef, useState } from 'react';
 import OpenHooks from '../../hooks/OpenHooks';
 import { ReactComponent as ArrowIcon } from '../../assets/leftIcon.svg';
-import DropDown from './DropDown';
+import DropDown from './Dropdown';
 
-function Container() {
+function Container({ selectedPeriod, onChangePeriod }) {
   const dropDownRef = useRef();
-  const [Period, setPeriod] = useState('언젠가');
   const periodList = ['언젠가', '1년후', '5년후', '10년후', '20년후'];
 
   const [isOpen, setIsOpen] = OpenHooks(dropDownRef, false);
@@ -19,13 +18,25 @@ function Container() {
   return (
     <div style={{ position: 'relative' }}>
       <div ref={dropDownRef} className="whitespace-nowrap flex">
-        <button onClick={() => setIsOpen(!isOpen)} type="button" className="flex items-center">
-          {Period}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          type="button"
+          className="flex items-center"
+        >
+          {selectedPeriod}
           <ArrowIcon style={arrowIconStyle} />
         </button>
       </div>
       {isOpen && (
-        <div style={{ position: 'absolute', bottom: '100%', left: 0,  transform: 'translateX(-30%)',zIndex: 1 }}>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: 0,
+            transform: 'translateX(-30%)',
+            zIndex: 1,
+          }}
+        >
           <div
             style={{
               background: '#fff',
@@ -40,9 +51,12 @@ function Container() {
                   key={index}
                   value={value}
                   setIsOpen={setIsOpen}
-                  setPeriod={setPeriod}
+                  onChangePeriod={() => {
+                    onChangePeriod(value);
+                    setIsOpen(false);
+                  }}
                   isOpen={isOpen}
-                  style={{width: 'max-content' }}
+                  style={{ width: 'max-content' }}
                 />
               ))}
             </ul>
