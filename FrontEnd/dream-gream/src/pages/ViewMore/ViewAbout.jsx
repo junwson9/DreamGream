@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../../components/Common/Topbar2';
 import { ReactComponent as LogoSecond } from '../../assets/LogoSecond.svg';
