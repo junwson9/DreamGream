@@ -7,6 +7,9 @@ import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import java.util.List;
 import javax.transaction.Transactional;
+
+import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.exception.customException.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -55,7 +58,8 @@ public class FollowService {
     @Transactional
     public void follow(Long toMemberId) {
         // TODO 예외처리 toMember가 존재하는지 확인
-        Member toMember = memberRepository.findById(toMemberId).orElseThrow();
+        Member toMember = memberRepository.findById(toMemberId)
+                .orElseThrow(() -> new MemberNotFoundException("MemberNotFoundException", ErrorCode.MEMBER_NOT_FOUND));
 
         // TODO fromMember test가 아닌 진짜 currentMember로 교체
         Member fromMember = testMemberService.getTestMember();

@@ -9,6 +9,8 @@ import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import java.util.List;
 
+import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.exception.customException.MemberNotFoundException;
 import com.ssafy.dreamgream.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -126,7 +128,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberResponseDto getMemberInfo(Long memberId) {
         // TODO 예외처리 존재하지 않는 member인 경우
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("MemberNotFoundException", ErrorCode.MEMBER_NOT_FOUND));
 
         // 회원의 팔로워, 팔로잉 수 가져오기
         Long cntFollowers = followRepository.countByFromMember(member);
