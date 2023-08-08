@@ -181,7 +181,6 @@ public class PostController {
     @PostMapping("/{postId}/unachieved")
     public ResponseEntity<PostResponseDto> unAchievedPostUpdate(@PathVariable("postId") Long postId,
                                                                                 @Validated @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto, Errors errors) {
-
         if(errors.hasErrors()){
             // TODO 예외처리 필요
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
