@@ -2,9 +2,10 @@
 import React from 'react';
 import { ReactComponent as LogoBig1 } from '../../assets/LogoBig1.svg';
 import { ReactComponent as KakaoLogin } from '../../assets/KakaoLogin.svg';
+import { API_URL } from '../../config';
 
 function LogIn() {
-  const kauthUrl = 'http://i9a609.p.ssafy.io:8000/oauth2/authorize/kakao';
+  const kauthUrl = `${API_URL}/oauth2/authorize/kakao`;
 
   return (
     <>

@@ -32,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		try {
 			// Request Header에서 JWT 추출
+			log.info(request.toString());
 			String accessToken = jwtTokenProvider.resolveAccessToken((HttpServletRequest) request);
 			log.info("accessToken: {}", accessToken);
 

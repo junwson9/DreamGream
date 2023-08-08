@@ -8,11 +8,11 @@ function OAuth2RedirectHandler() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const searchParams = new URLSearchParams(location.search);
   const ACCESS_TOKEN = searchParams.get('access-token');
   const REFRESH_TOKEN = searchParams.get('refresh-token');
-  dispatch(setToken(ACCESS_TOKEN,REFRESH_TOKEN));
+  dispatch(setToken(ACCESS_TOKEN, REFRESH_TOKEN));
   const role = searchParams.get('role');
   const status = searchParams.get('status');
   localStorage.setItem(role, role);
@@ -22,8 +22,9 @@ function OAuth2RedirectHandler() {
     if (ACCESS_TOKEN) {
       localStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);
       localStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
-      navigate('/SiginupGenderBirth');
-      if (role == 'ROLE_USER') {
+      if (role == 'ROLE_GUEST') {
+        navigate('/SiginupGenderBirth');
+      } else {
         navigate('/myfeed');
       }
     } else {
