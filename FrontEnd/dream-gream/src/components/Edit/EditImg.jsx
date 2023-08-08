@@ -5,7 +5,7 @@
 import React, { useState, useRef } from 'react';
 
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
-import { ReactComponent as AddImgIcon } from '../../assets/icons/addImgIcon.svg';
+import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
 function EditImg() {
   const [mainImg, setMainImg] = useState('');
@@ -30,46 +30,48 @@ function EditImg() {
   };
 
   return (
-    <div className="addImg w-[147px] h-[147px] relative">
-      <div
-        className="w-[147px] h-[147px] left-0 top-0 absolute rounded-[13px] border border-zinc-800"
-        style={{
-          borderStyle: 'dotted',
-          borderColor: '#c4c4c4',
-          borderWidth: '3px',
-        }}
-      />
-      <input
-        ref={fileInputRef}
-        type="file"
-        id="image"
-        accept="image/*"
-        className="hidden"
-        style={{
-          borderStyle: 'dotted',
-          borderColor: '#c4c4c4',
-          borderWidth: '3px',
-        }}
-        onChange={setPreviewImg}
-      />
-      {mainImg ? (
-        <>
-          <img
-            className="w-[147px] h-[147px] left-0 top-0 absolute rounded-[13px]"
-            src={mainImg}
-            alt="썸네일"
-          />
-          <ClearBtn
-            className="absolute right-2 top-2 cursor-pointer"
-            onClick={clearImg}
-          />
-        </>
-      ) : (
-        <AddImgIcon
-          className="w-[70px] h-[70px] left-[37px] top-[39px] absolute cursor-pointer"
-          onClick={addImg}
+    <div>
+      <div className="addImg w-[147px] h-[147px] relative">
+        <div
+          className="w-[147px] h-[147px] left-0 top-0 absolute rounded-[13px] border border-zinc-800"
+          style={{
+            borderStyle: 'dotted',
+            borderColor: '#c4c4c4',
+            borderWidth: '3px',
+          }}
         />
-      )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          id="image"
+          accept="image/*"
+          className="hidden"
+          style={{
+            borderStyle: 'dotted',
+            borderColor: '#c4c4c4',
+            borderWidth: '3px',
+          }}
+          onChange={setPreviewImg}
+        />
+        {mainImg ? (
+          <>
+            <img
+              className="w-[147px] h-[147px] left-0 top-0 absolute rounded-[13px]"
+              src={mainImg}
+              alt="썸네일"
+            />
+            <ClearBtn
+              className="absolute right-2 top-2 cursor-pointer"
+              onClick={clearImg}
+            />
+          </>
+        ) : (
+          <AddImgIcon
+            className="w-[70px] h-[70px] left-[37px] top-[39px] absolute cursor-pointer Z-[999]"
+            onClick={addImg}
+          />
+        )}
+      </div>
     </div>
   );
 }
