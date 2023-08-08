@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ReactComponent as DownArrow } from '../../assets/DownArrow.svg';
 import CategoryButtons from './../../components/Button/CategoryButtons2';
 import axiosInstance from '../../utils/axiosInterceptor';
-
+import { API_URL } from '../../config';
 function MyFeed() {
   const [post, setPost] = useState([]);
   const [user, setUser] = useState('');
@@ -37,12 +37,12 @@ function MyFeed() {
   };
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
   // console.log(category);
-  console.log(user);
+  // console.log(user);
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          'http://i9a609.p.ssafy.io:8800/api/posts/my', // 개인 피드 조회
+          `${API_URL}/api/posts/my`, // 개인 피드 조회
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -65,7 +65,7 @@ function MyFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          'http://i9a609.p.ssafy.io:8800/api/members/info', // 멤버 id 조회 해야댐
+          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
         );
         // console.log(response);
         const data = response.data.data.member;

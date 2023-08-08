@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import PostSubject from '../../components/Posting/PostSubject';
 import PostDetail from '../../components/Posting/PostDetail';
 import PostViewImage from '../../components/Posting/PostViewImage';
+import { API_URL } from '../../config';
 
 function Posting() {
   const [activeComponent, setActiveComponent] = useState('PostSubject');
@@ -13,7 +14,7 @@ function Posting() {
   let eventSource = null;
 
   const setupSSE = () => {
-    eventSource = new EventSource('http://i9a609.p.ssafy.io:8800/sse'); // Replace the URL with your SSE endpoint
+    eventSource = new EventSource(`${API_URL}/sse`); // Replace the URL with your SSE endpoint
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);

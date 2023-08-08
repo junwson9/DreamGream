@@ -9,8 +9,10 @@ import MemberItem from '../../components/Member/MemberItem';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import axiosInstance from '../../utils/axiosInterceptor';
+import { API_URL } from '../../config';
 
 function Following() {
+  console.log(API_URL);
   const [member, setMember] = useState([]);
   const [page, setPage] = useState('0');
   const [followingList, setFollowingList] = useState([
@@ -77,12 +79,11 @@ function Following() {
   ]);
   const { memberId } = useParams();
   console.log(followingList);
-  console.log(config.api);
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `http://i9a609.p.ssafy.io:8800/api/members/${memberId}/followings`,
+          `${API_URL}/api/members/${memberId}/followings`,
         );
         const memberData = response.data.data.member;
         // console.log(memberData);
@@ -101,7 +102,7 @@ function Following() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `http://i9a609.p.ssafy.io:8800/api/members/${memberId}/followings`,
+          `${API_URL}/api/members/${memberId}/followings`,
         );
         console.log(response);
         const followerList = response.data.data.followerList;

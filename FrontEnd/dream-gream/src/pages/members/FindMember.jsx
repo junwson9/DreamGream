@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import TopBar from '../../components/Common/Topbar';
 import InputBox from '../../components/InputBox/InputBox';
 import MemberItem from '../../components/Member/MemberItem';
-
+import { API_URL } from '../../config';
 // isFollowed 처리만 해주고 프로필이나 이름 누르면 navigate되게끔
 
 function FindMember() {
@@ -14,7 +14,7 @@ function FindMember() {
   const handleSaveClick = (value) => {
     setNickname(value);
     const queryParams = new URLSearchParams({ nickname: value }); // 넘어온 값 사용
-    const url = `http://i9a609.p.ssafy.io:8800/api/members?${queryParams}`;
+    const url = `${API_URL}/api/members?${queryParams}`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {

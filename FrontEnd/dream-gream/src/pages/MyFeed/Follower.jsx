@@ -9,6 +9,7 @@ import MemberItem from '../../components/Member/MemberItem';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import axiosInstance from '../../utils/axiosInterceptor';
+import { API_URL } from '../../config';
 
 function Follower() {
   const [member, setMember] = useState([]);
@@ -81,9 +82,7 @@ function Follower() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          `http://i9a609.p.ssafy.io:8800/api/members/${memberId}`,
-        );
+        const response = await axios.get(`${API_URL}/api/members/${memberId}`);
         const memberData = response.data.data.member;
         console.log(memberData);
         // console.log(memberData.cnt_followers);
@@ -100,7 +99,7 @@ function Follower() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `http://i9a609.p.ssafy.io:8800/api/members/${memberId}/followers`,
+          `${API_URL}/api/members/${memberId}/followers`,
         );
         console.log(response);
         const followerList = response.data.data.followerList;

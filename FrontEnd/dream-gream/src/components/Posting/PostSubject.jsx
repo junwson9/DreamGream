@@ -5,6 +5,7 @@ import CategoryButtons from '../Button/CategoryButtons';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import { saveSubject } from '../../store/actions/postActions';
 import axiosInstance from '../../utils/axiosInterceptor';
+import { API_URL } from '../../config';
 
 function PostSubject({ handleCloseIconClick, handleNextButtonClick }) {
   const [title, setTitle] = useState('');
@@ -20,13 +21,10 @@ function PostSubject({ handleCloseIconClick, handleNextButtonClick }) {
     try {
       dispatch(saveSubject({ title, category }));
       // POST 요청은 body에 실어 보냄
-      await axiosInstance.post(
-        'http://i9a609.p.ssafy.io:8800/api/posts/image',
-        {
-          title,
-          category_name: category,
-        },
-      );
+      await axiosInstance.post(`${API_URL}/api/posts/image`, {
+        title,
+        category_name: category,
+      });
       setTitle('');
       handleNextButtonClick();
     } catch (e) {

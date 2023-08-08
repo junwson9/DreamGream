@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import InputBox from '../../components/InputBox/InputBox.jsx';
+import { API_URL } from '../../config.js';
 
 function SignupGenderBirth() {
   const [gender, setGender] = useState('');
@@ -17,7 +18,7 @@ function SignupGenderBirth() {
     event.preventDefault();
     try {
       const response = await axios.put(
-        'http://localhost:8800/api/auth/role',
+        `${API_URL}/api/auth/role`,
         {
           gender: gender,
           birthyear: birthYear,
@@ -29,9 +30,7 @@ function SignupGenderBirth() {
           },
         },
       );
-      const tokenResponse = await axios.get(
-        "'http://localhost:8800/api/auth/token",
-      );
+      const tokenResponse = await axios.get(`${API_URL}/api/auth/token`);
       ACCESS_TOKEN = tokenResponse.token.access_token;
       REFRESH_TOKEN = tokenResponse.token.refresh_token;
       localStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);

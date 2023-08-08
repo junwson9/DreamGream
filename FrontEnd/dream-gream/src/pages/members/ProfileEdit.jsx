@@ -7,6 +7,7 @@ import InputBox from '../../components/InputBox/InputBox2';
 import TopBar from '../../components/Common/Topbar';
 import TwoSolidButton from '../../components/Button/TwoSolidButton';
 import SelectSmall from '../../components/Button/SelectDropDown';
+import { API_URL } from '../../config';
 
 function ProfileEdit() {
   const [nickname, setNickname] = useState('');
@@ -50,7 +51,7 @@ function ProfileEdit() {
     event.preventDefault();
     try {
       const response = await axios.put(
-        'http://i9a609.p.ssafy.io:8800/api/members/info',
+        `${API_URL}/api/members/info`,
         {
           nickname: nickname,
           gender: gender,

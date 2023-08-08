@@ -6,6 +6,7 @@ import Loading from './Loding';
 import SolidButton from '../Button/SolidButton';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import Modal from '../Modal/Modal';
+import { API_URL } from '../../config';
 
 function PostViewImage({ handleCloseIconClick }) {
   const imageUrl = useSelector((state) => state.sse.sseData); // 이미지 URL을 Redux 상태에서 가져옴
@@ -36,7 +37,7 @@ function PostViewImage({ handleCloseIconClick }) {
   const sendPostInfo = async () => {
     try {
       // POST 요청은 body에 실어 보냄
-      await axios.post('http://i9a609.p.ssafy.io:8800/api/posts/image', {
+      await axios.post(`${API_URL}/api/posts/image`, {
         // 여기에 모든정보 보내기, 보내는 이름 서버와 맞춰야함
       });
       // 여기에서 내피드로? 물어보기 이건 라우터 옮기면된다
