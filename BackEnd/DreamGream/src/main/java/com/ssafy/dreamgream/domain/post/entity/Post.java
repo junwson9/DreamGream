@@ -86,6 +86,9 @@ public class Post {
         this.cheerCnt = cheerCnt;
     }
     public void setCelebrateCnt(Long celebrateCnt){ this.celebrateCnt = celebrateCnt; }
+    public void setCategory(Category category){
+        this.category = category;
+    }
 
     public void updateCheerAndCelebrateCnt(Long cheerCnt, Long celebrateCnt) {
         this.cheerCnt = cheerCnt;

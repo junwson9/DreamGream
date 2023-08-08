@@ -9,6 +9,7 @@ import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Category;
 import com.ssafy.dreamgream.domain.post.entity.Post;
+import com.ssafy.dreamgream.domain.post.repository.CategoryRepository;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.global.s3.S3Uploader;
 
@@ -34,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final CategoryRepository categoryRepository;
     private final MemberService memberService;
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
@@ -64,11 +66,15 @@ public class PostService {
         //TODO post가 존재하는 지 확인.
         Post post = postRepository.findById(postId).orElseThrow();
         Long postMemberId = post.getMember().getMemberId();
+
         if (memberId != postMemberId) {
             //TODO 수정 권한 예외처리
             return null;
         } else {
             modelMapper.map(unAchievedPostUpdateDto, post);
+            Category category = categoryRepository.findById(unAchievedPostUpdateDto.getCategoryId())
+                    .orElseThrow();
+            post.setCategory(category);
             postRepository.save(post);
             log.info(post.toString());
             return post;
@@ -86,6 +92,9 @@ public class PostService {
             return null;
         } else {
             modelMapper.map(achievedPostUpdateRequestDto, post);
+            Category category = categoryRepository.findById(achievedPostUpdateRequestDto.getCategoryId())
+                    .orElseThrow();
+            post.setCategory(category);
             if (achievedPostUpdateRequestDto.getImgUpdateFlag() && file.isEmpty()) {
                 // 기존의 사진 파일 지우고 새로운 사진을 올리지 않았을 경우
                 post.setAchievementImg(null);
