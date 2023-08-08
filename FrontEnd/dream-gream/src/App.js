@@ -14,7 +14,7 @@ import FindMember from './pages/members/FindMember';
 import FeedDetail from './pages/Feed/feedDetail';
 import ViewAbout from './pages/ViewMore/ViewAbout';
 import UpdatePost from './pages/Feed/editFeed';
-import Test222 from './components/Edit/TopbarForEdit';
+import Test222 from './components/Edit/EditInfoForAcheive';
 import Test333 from './components/Common/Topbar2';
 import Test444 from './components/Common/Topbar';
 

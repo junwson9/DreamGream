@@ -22,7 +22,7 @@ function CheerUpFeed() {
 
   useEffect(() => {
     axios
-      .get('http://i9a609.p.ssafy.io:8000/api/posts')
+      .get('http://i9a609.p.ssafy.io:8800/api/posts')
       .then((response) => {
         setPostList(response.data.data.postList.content);
         console.log(response);

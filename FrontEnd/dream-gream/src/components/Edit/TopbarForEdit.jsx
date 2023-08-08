@@ -11,12 +11,10 @@ function TopbarForEdit({ pathName, onConfirm }) {
     navigate(-1);
   };
   const handleConfirmClick = async (event) => {
-    // console.log(onconfirm);
-
     if (onConfirm) {
-      await onConfirm(event); // Trigger the onConfirm function (POST request)
+      await onConfirm(event);
     }
-    navigate(pathName); // Navigate to the specified pathName after the onConfirm function completes
+    navigate(pathName);
   };
 
   return (
@@ -27,6 +25,7 @@ function TopbarForEdit({ pathName, onConfirm }) {
         style={{ cursor: 'pointer' }}
       />
 
+      {/* ++나중에 달성하기 버튼으로 들어왔을 때 props로 받아와서 타이틀만 '달성 완료' */}
       <div className="text-zinc-800 text-[22px] font-bold leading-[30.80px]">
         수정하기
       </div>
