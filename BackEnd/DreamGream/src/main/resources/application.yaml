@@ -7,10 +7,12 @@ spring:
         - db-local
         - rabbitmq-local
         - prompt-local
+        - auth-local
       prod:
         - db-prod
         - rabbitmq-prod
         - prompt-prod
+        - auth-prod
     include:
       - oauth
       - db

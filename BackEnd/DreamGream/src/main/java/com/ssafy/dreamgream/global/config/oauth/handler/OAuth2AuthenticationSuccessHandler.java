@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthService authService;
 
+	@Value("${auth.redirect.url}")
+	String redirectUrl;
+
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws IOException {
@@ -33,7 +37,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		TokenResponseDto tokenResponseDto = jwtTokenProvider.createTokenDto(oAuth2User.getId(), oAuth2User.getRole());
 		authService.saveRefreshTokenRedis(authentication, tokenResponseDto);
 
-		String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
+		String targetUrl = UriComponentsBuilder.fromUriString(redirectUrl)
 			.queryParam("access-token", tokenResponseDto.getAccessToken())
 			.queryParam("refresh-token", tokenResponseDto.getRefreshToken())
 			.queryParam("role", oAuth2User.getRole())
