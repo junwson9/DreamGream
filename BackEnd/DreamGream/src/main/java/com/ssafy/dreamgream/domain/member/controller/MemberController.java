@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Collections;
@@ -87,6 +88,20 @@ public class MemberController {
             Collections.singletonMap("member", myInfoResponseDto));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+
+    /**
+     * 회원 프로필 이미지 수정
+     */
+    @PostMapping(value = "/info/image", consumes = "multipart/form-data")
+    public ResponseEntity<?> updateProfileImg(@RequestParam("file") MultipartFile file) {
+
+        MyInfoResponseDto myInfoResponseDto = memberService.updateProfileImg(file);
+        ResponseDto responseDto = new ResponseDto(success, "프로필 이미지를 변경했습니다.",
+                Collections.singletonMap("member", myInfoResponseDto));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
 
     /**
      * 개인피드 회원정보 조회 (id, 닉네임, 프로필, 팔로잉/팔로워 수)

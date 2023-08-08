@@ -77,4 +77,8 @@ public class Member {
         this.birthyear = birthyear;
     }
 
+    public void updateProfileImg(String profileImg) {
+        this.profileImg = profileImg;
+    }
+
 }
