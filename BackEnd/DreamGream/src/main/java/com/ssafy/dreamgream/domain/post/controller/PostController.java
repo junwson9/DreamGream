@@ -11,6 +11,8 @@ import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
+import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.exception.customException.InvalidInputValueException;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
 import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationProduceDto;
 import com.ssafy.dreamgream.global.sse.SSEService;
@@ -201,16 +203,14 @@ public class PostController {
     @PostMapping("/{postId}/unachieved")
     public ResponseEntity<PostResponseDto> unAchievedPostUpdate(@PathVariable("postId") Long postId,
                                                                                 @Validated @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto, Errors errors) {
-
-        if(errors.hasErrors()){
-            // TODO 예외처리 필요
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else{
-            Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
-            log.info(updatedPost.toString());
-            PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        if(errors.hasErrors()) {
+            throw new InvalidInputValueException("InvalidInputValueException", ErrorCode.INVALID_INPUT_VALUE);
         }
+
+        Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
+        log.info(updatedPost.toString());
+        PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
@@ -220,14 +220,12 @@ public class PostController {
     public ResponseEntity<PostResponseDto> achievedPostUpdate (@PathVariable("postId") Long postId,
                                                                              @Validated @RequestPart AchievedPostUpdateRequestDto achievedPostUpdateRequestDto,
                                                                              @RequestParam("file") MultipartFile file, Errors errors) {
-        if(errors.hasErrors()){
-            // TODO 예외처리 필요
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            Post updatedPost = postService.achievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
-            PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        if(errors.hasErrors()) {
+            throw new InvalidInputValueException("InvalidInputValueException", ErrorCode.INVALID_INPUT_VALUE);
         }
+        Post updatedPost = postService.achievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
+        PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
