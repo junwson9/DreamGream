@@ -14,7 +14,7 @@ import FindMember from './pages/members/FindMember';
 import FeedDetail from './pages/Feed/feedDetail';
 import ViewAbout from './pages/ViewMore/ViewAbout';
 import Navbar from './components/Common/Navbar';
-import Test from './components/Button/ScrapCheerUpBtns';
+import LoginError from './pages/members/LoginError';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -110,7 +110,7 @@ function App() {
             </>
           }
         />
-        <Route path="/test111" element={<Test />} />
+        <Route path="/LoginError" element={<LoginError />} />
       </Routes>
     </div>)}
     </div>
