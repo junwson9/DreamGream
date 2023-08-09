@@ -8,18 +8,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function FeedForExplore({ post }) {
-  // url 이동 관련
   const navigate = useNavigate();
+  const { postId } = post;
 
   const goFeedDetail = () => {
-    navigate('/posts/{post_id}');
+    navigate(`/posts/${postId}`);
   };
 
   return (
     <div className="w-[360px] h-[460px] relative">
       <img
         className="w-[360px] h-[360px] left-0 top-[-1px] absolute"
-        src="https://via.placeholder.com/360x360"
+        src={post.ai_img}
         alt="전체 피드 이미지"
         onClick={goFeedDetail}
         style={{ cursor: 'pointer' }}
@@ -29,7 +29,6 @@ function FeedForExplore({ post }) {
         onClick={goFeedDetail}
         style={{ cursor: 'pointer' }}
       >
-        주제입니다
         {post.title}
       </div>
     </div>

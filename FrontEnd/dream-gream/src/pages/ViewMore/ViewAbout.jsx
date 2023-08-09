@@ -1,13 +1,34 @@
+/* eslint-disable */
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../../components/Common/Topbar2';
 import { ReactComponent as LogoSecond } from '../../assets/LogoSecond.svg';
+import axios from 'axios';
+import { API_URL } from '../../config';
+import axiosInstance from '../../utils/axiosInterceptor';
 
 function ViewAbout() {
   // accesstoken을 확인 -> 없어? 그러면 없는 기준으로 화면 띄워
   // 있어 -> 있으면 회원정보 조회하고 profileimg 닉네임 같은거 추가
-  const navigate = useNavigate();
+  const access_token = localStorage.getItem('ACCESS_TOKEN');
 
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      const access_token = localStorage.getItem('ACCESS_TOKEN');
+      const refresh_token = localStorage.getItem('REFRESH_TOKEN');
+      console.log(refresh_token);
+      console.log(access_token);
+      await axiosInstance.post(`${API_URL}/api/auth/logout`, {});
+      // 로그아웃하고 로그인 페이지로 이동시키기 or 메인피드로 이동시키기
+      console.log('로그아웃 성공');
+      navigate('/login');
+    } catch (error) {
+      console.log('ㅎㅇ' + access_token);
+      console.error('Error logging out:', error);
+    }
+  };
   return (
     <div className="w-[360px] h-[800px] relative bg-white block">
       <div className="top-[10px] left-[5px] absolute">
@@ -56,7 +77,9 @@ function ViewAbout() {
         오픈소스 라이브러리
       </div>
       <div className="left-[28px] top-[533px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
-        로그아웃
+        <div type="button" onClick={handleLogout}>
+          로그아웃
+        </div>
       </div>
       <div className="left-[28px] top-[471px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
         친구 찾기

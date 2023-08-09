@@ -1,9 +1,10 @@
 // axiosInstance.js
 /* eslint-disable */
 import axios from 'axios';
+import { API_URL } from '../config';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://i9a609.p.ssafy.io:8000',
+  baseURL: `${API_URL}`,
 });
 
 // Request Interceptor
