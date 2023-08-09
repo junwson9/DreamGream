@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInterceptor';
 import Loading from './Loding';
 import SolidButton from '../Button/SolidButton';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import Modal from '../Modal/Modal';
+import { API_URL } from '../../config';
 
 function PostViewImage({ handleCloseIconClick }) {
   const imageUrl = useSelector((state) => state.sse.sseData); // 이미지 URL을 Redux 상태에서 가져옴
@@ -37,18 +38,19 @@ function PostViewImage({ handleCloseIconClick }) {
   console.log(postData);
   const sendPostInfo = async () => {
     try {
-    // POST 요청은 body에 실어 보냄
-        await axiosInstance.post('http://i9a609.p.ssafy.io:8000/api/posts',
-        {
-          category_id : postData.subjectData.categoryID,
-          title: postData.subjectData.title,
-          content: postData.detailData.detail,
-          dead_line: postData.detailData.selectedPeriod,
-          is_display: postData.detailData.isPublic,
-          ai_img: postData.imageUrl.url,
-        });
-        navigate('/myfeed')
-        // 여기에서 내피드로? 물어보기 이건 라우터 옮기면된다
+      console.log('게시물 보내!!!!');
+      // POST 요청은 body에 실어 보냄
+      await axiosInstance.post(`${API_URL}/api/posts`, {
+        category_id: postData.subjectData.categoryID,
+        title: postData.subjectData.title,
+        content: postData.detailData.content,
+        dead_line: postData.detailData.selectedPeriod,
+        is_display: postData.detailData.isPublic,
+        ai_img: postData.imageUrl.url,
+      });
+      console.log('게시물 전송완료!')
+      navigate('/myfeed');
+      // 여기에서 내피드로? 물어보기 이건 라우터 옮기면된다
     } catch (e) {
       console.error(e);
     }
@@ -83,7 +85,7 @@ function PostViewImage({ handleCloseIconClick }) {
                 {subjectData.title}
               </div>
               <div className="w-80 h-14 bg-indigo-400 rounded-lg justify-center items-center inline-flex">
-                <SolidButton name="피드 올리기" onClick={sendPostInfo} />
+                <SolidButton name="피드 올리기" onClick={() => sendPostInfo()} />
               </div>
             </div>
           </div>

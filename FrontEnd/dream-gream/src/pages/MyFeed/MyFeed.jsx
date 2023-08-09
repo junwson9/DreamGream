@@ -7,8 +7,8 @@ import TwoTapButton from '../../components/Button/TwoTapButton';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as DownArrow } from '../../assets/DownArrow.svg';
 import CategoryButtons from './../../components/Button/CategoryButtons2';
-import Navbar from '../../components/Common/Navbar';
-
+import axiosInstance from '../../utils/axiosInterceptor';
+import { API_URL } from '../../config';
 function MyFeed() {
   const [post, setPost] = useState([]);
   const [user, setUser] = useState('');
@@ -37,12 +37,12 @@ function MyFeed() {
   };
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
   // console.log(category);
-  console.log(user);
+  // console.log(user);
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          'http://i9a609.p.ssafy.io:8000/api/posts/my', // 개인 피드 조회
+          `${API_URL}/api/posts/my`, // 개인 피드 조회
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -64,19 +64,13 @@ function MyFeed() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          'http://i9a609.p.ssafy.io:8000/api/members/info', // 멤버 id 조회 해야댐
-          {
-            headers: {
-              Authorization: `Bearer ${ACCESS_TOKEN}`,
-              'Content-Type': 'application/json',
-            },
-          },
+        const response = await axiosInstance.get(
+          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
         );
         // console.log(response);
         const data = response.data.data.member;
-        setUser(data);
-        console.log(data);
+        // member id 로컬스토리지에 저장
+        localStorage.setItem("member_id", data.member_id);
         // console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);

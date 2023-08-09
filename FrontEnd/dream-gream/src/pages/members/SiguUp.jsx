@@ -8,6 +8,7 @@ import TopBar from '../../components/Common/Topbar.jsx';
 import TwoSolidButton from '../../components/Button/TwoSolidButton.jsx';
 import DropdownList from '../../components/Button/DropDownList.jsx';
 import SelectSmall from '../../components/Button/SelectDropDown.jsx';
+import { API_URL } from '../../config.js';
 
 function SignupGenderBirth() {
   const [gender, setGender] = useState('');
@@ -36,10 +37,10 @@ function SignupGenderBirth() {
     event.preventDefault();
     // console.log(gender);
     // console.log(birthYear);
-    // console.log(ACCESS_TOKEN);
+    console.log(ACCESS_TOKEN);
     try {
       const response = await axios.put(
-        'http://i9a609.p.ssafy.io:8000/api/auth/role',
+        `${API_URL}/api/auth/role`,
         {
           gender: gender,
           birthyear: birthYear,
@@ -51,10 +52,10 @@ function SignupGenderBirth() {
           },
         },
       );
-      console.log(response.data.data.token.accessToken);
-      const access_token = response.data.data.token.accessToken;
+      console.log("새롭게 받은 토큰 : " + response.data.data.token.access_token);
+      const access_token = response.data.data.token.access_token;
       localStorage.setItem('ACCESS_TOKEN', access_token);
-      const refresh_token = response.data.data.token.refreshToken;
+      const refresh_token = response.data.data.token.refresh_token;
       localStorage.setItem('REFRESH_TOKEN', refresh_token);
 
       // ACCESS_TOKEN = tokenResponse.token.access_token;
