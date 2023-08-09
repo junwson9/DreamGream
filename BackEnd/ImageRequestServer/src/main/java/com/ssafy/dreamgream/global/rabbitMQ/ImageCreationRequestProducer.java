@@ -22,6 +22,8 @@ public class ImageCreationRequestProducer {
 
     public void sendImageCreationRequest(Long sseId, String url) {
         log.info("이미지 생성 완료");
+        log.info("요청한 사람의 SSE ID : {}", sseId);
+        log.info("생성된 url : {}", url);
         ImageCreationResponseDto dto = ImageCreationResponseDto.builder()
                 .sseId(sseId)
                 .url(url)
