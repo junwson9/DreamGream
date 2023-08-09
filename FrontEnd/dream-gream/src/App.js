@@ -8,7 +8,7 @@ import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
-import ShareImage from './components/Share/ShareImage';
+import ShareImage from './pages/Share/ShareImage';
 import Follower from './pages/MyFeed/Follower';
 import FindMember from './pages/members/FindMember';
 import FeedDetail from './pages/Feed/feedDetail';
