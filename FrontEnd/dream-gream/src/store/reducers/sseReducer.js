@@ -14,6 +14,12 @@ const initialState = {
         };
       default:
         return state;
+      
+        case 'CLEAR_IMAGE_URL':
+          return {
+            ...state,
+            sseData: null,
+          }
     }
   };
   
