@@ -25,7 +25,7 @@ public class CheerController {
                 .body("Cheer added successfully for Post ID: " + cheerDto.getPostId() + " and Member ID: " + cheerDto.getMemberId());
     }
 
-    @DeleteMapping("/remove")
+    @PostMapping("/remove")
     public ResponseEntity<String> removeCheer(@RequestBody CheerDto cheerDto) {
         cheerService.removeCheer(cheerDto.getPostId(), cheerDto.getMemberId());
         return ResponseEntity.status(HttpStatus.CREATED)

@@ -25,7 +25,7 @@ public class CelebrateController {
                 .body("Celebrate added successfully for Post ID: " + celebrateDto.getPostId() + " and User ID: " + celebrateDto.getMemberId());
     }
 
-    @DeleteMapping("/remove")
+    @PostMapping("/remove")
     public ResponseEntity<String> removeCelebrate(@RequestBody CelebrateDto celebrateDto) {
         celebrateService.removeCelebrate(celebrateDto.getPostId(), celebrateDto.getMemberId());
         return ResponseEntity.status(HttpStatus.CREATED)
