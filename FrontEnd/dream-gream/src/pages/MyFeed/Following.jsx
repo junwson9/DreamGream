@@ -42,9 +42,10 @@ function Following() {
           `${API_URL}/api/members/${memberId}/followings`,
         );
         console.log(response);
-        const followingList = response.data.data.followerList;
+        const followingList = response.data.data.following_list;
         console.log(followingList);
         setFollowingList(followingList); // 여기 살려야댐
+        console.log(followingList);
         // console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
@@ -68,18 +69,20 @@ function Following() {
         memberId={memberId}
         leftActive={false}
       />
-      <div className="top-[125px] absolute">
-        {followingList && followingList.length > 0 && (
-          <div className="top-[125px] absolute">
-            {followingList.map((following) => (
-              <MemberItem
-                key={following.member_id}
-                toMemberId={following.member_id}
-                nickname={following.nickname}
-                profileImg={following.profile_img}
-                isFollowed={following.is_followed}
-              />
-            ))}
+      <div className="top-[125px] w-[360px] absolute">
+        {followingList && followingList.length > 0 ? (
+          followingList.map((following) => (
+            <MemberItem
+              key={following.member_id}
+              toMemberId={following.member_id}
+              nickname={following.nickname}
+              profileImg={following.profile_img}
+              isFollowed={following.is_followed}
+            />
+          ))
+        ) : (
+          <div className="absolute top-[180px] left-[65px] text-center text-neutral-700 text-base font-medium leading-snug">
+            아직 팔로잉한 사람이 없습니다.
           </div>
         )}
       </div>

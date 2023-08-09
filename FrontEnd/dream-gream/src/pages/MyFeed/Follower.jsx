@@ -67,8 +67,8 @@ function Follower() {
         memberId={memberId}
         leftActive={true}
       />
-      <div className="top-[125px] absolute">
-        {followerList &&
+      <div className="top-[125px] w-[360px] absolute">
+        {followerList && followerList.length > 0 ? (
           followerList.map((follower) => (
             <MemberItem
               key={follower.member_id}
@@ -77,7 +77,12 @@ function Follower() {
               profileImg={follower.profile_img}
               isFollowed={follower.is_followed}
             />
-          ))}
+          ))
+        ) : (
+          <div className="absolute top-[180px] left-[65px] text-center text-neutral-700 text-base font-medium leading-snug">
+            아직 팔로잉한 사람이 없습니다.
+          </div>
+        )}
       </div>
     </div>
   );
