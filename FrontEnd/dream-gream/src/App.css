@@ -34,5 +34,5 @@ body {
 }
 
 .splash {
-  animation: fadeOut 2s ease-in-out forwards;
+  animation: fadeOut 3s ease-in-out forwards;
 }
