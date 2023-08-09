@@ -61,6 +61,15 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/follow/:memberId"
+              element={
+                <>
+                  <Following />
+                  <Navbar className="Navbar" />
+                </>
+              }
+            />
             <Route path="/findmember" element={<FindMember />} />
             <Route path="/post" element={<Posting />} />
             <Route path="/share" element={<ShareImage />} />
