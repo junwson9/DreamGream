@@ -2,7 +2,7 @@
 import React, {useEffect} from 'react';
 import { shareKakao } from '../../utils/shareKakaoLink';
 
-function KakaoModal(){
+function KakaoShare(){
 useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
@@ -16,4 +16,4 @@ useEffect(() => {
 </button>
   )
 }
-export default KakaoModal;
+export default KakaoShare;

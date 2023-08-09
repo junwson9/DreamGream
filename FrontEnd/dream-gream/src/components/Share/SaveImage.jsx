@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
-import KakaoModal from '../Modal/KakaoModal';
+import KakaoShare from '../ShareButton/KakaoShare';
 
 function Card(){
   const cardRef = useRef();
@@ -20,7 +20,7 @@ function Card(){
         다운로드 버튼
       </button>
     </li>
-      <KakaoModal/>
+      <KakaoShare/>
     </div>
   );
 };
