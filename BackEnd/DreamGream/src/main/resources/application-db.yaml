@@ -36,6 +36,34 @@ spring:
     init:
       mode: always
 
+--- # local mysql 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-local-mysql"
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/dreamgream?characterEncoding=UTF-8&serverTimezone=UTC
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        format_sql: true
+  sql:
+    init:
+      mode: always
+
 --- # dev 설정
 spring:
   config:
@@ -54,12 +82,15 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
         format_sql: true
+  sql:
+    init:
+      mode: always
 
 --- # prod 설정
 spring:
