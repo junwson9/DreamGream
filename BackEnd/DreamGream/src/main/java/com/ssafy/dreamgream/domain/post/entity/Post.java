@@ -39,10 +39,10 @@ public class Post {
 	@Column(name = "dead_line")
 	private String deadLine;
 
-	@Column(name = "is_display")
+	@Column(name = "is_display", columnDefinition = "TINYINT(1)")
 	private Boolean isDisplay;
 
-	@Column(name = "is_achieved")
+	@Column(name = "is_achieved", columnDefinition = "TINYINT(1)")
 	private Boolean isAchieved;
 
 	@Column(name = "achievement_content")

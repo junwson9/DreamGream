@@ -4,7 +4,7 @@ spring:
       - local
     group:
       local:
-        - db-local
+        - db-local-mysql
         - rabbitmq-local
         - prompt-local
         - auth-local
