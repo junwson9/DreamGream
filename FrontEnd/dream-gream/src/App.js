@@ -8,7 +8,12 @@ import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
+import ShareImage from './components/Share/ShareImage';
+import Follower from './pages/MyFeed/Follower';
+import FindMember from './pages/members/FindMember';
 import FeedDetail from './pages/Feed/feedDetail';
+import ViewAbout from './pages/ViewMore/ViewAbout';
+import Navbar from './components/Common/Navbar';
 
 function App() {
   return (
@@ -18,18 +23,15 @@ function App() {
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
         <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
         <Route path="/profileedit" element={<ProfileEdit />} />
-        <Route path="/follow" element={<followUser />} />
-        <Route path="/following" element={<followingUser />} />
-        <Route path="/findmember" element={<findMember />} />
-        <Route path="/cheerUpFeed" element={<CheerUpFeed />} />
-        <Route path="/acheivefeed" element={<acheiveFeed />} />
-        <Route path="/feedid" element={<FeedDetail />} />
+        <Route path="/follower/:memberId" element={<><Follower /><Navbar className="Navbar"/></>} />
+        <Route path="/following/:memberId" element={<><followingUser /><Navbar className="Navbar"/></>} />
+        <Route path="/findmember" element={<FindMember />} />
         <Route path="/post" element={<Posting />} />
         <Route path="/share" element={<ShareImage />} />
         <Route path="/myfeed" element={<><MyFeed /><Navbar className="Navbar"/></>} />
         <Route path="/about" element={<><ViewAbout /><Navbar className="Navbar"/></>} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
-        <Route path="/updatepost/:postId" element={<updatePost />} />
+        <Route path="/updatepost" element={<updatePost />} />
         <Route path="/cheerUpFeed" element={<><CheerUpFeed /><Navbar className="Navbar"/></>} />
         <Route path="/acheivefeed" element={<><acheiveFeed /><Navbar className="Navbar"/></>} />
         <Route path="/feedid" element={<><FeedDetail /><Navbar className="Navbar"/></>} />

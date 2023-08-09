@@ -11,6 +11,8 @@ import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
+import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.exception.customException.InvalidInputValueException;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
 import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationProduceDto;
 import com.ssafy.dreamgream.global.sse.SSEService;
@@ -63,6 +65,10 @@ public class PostController {
         return prompt;
     }
 
+    /**
+     * AI 이미지 생성 요청
+     * @param dto
+     */
     @PostMapping("/image")
     public void generateImage(@RequestBody ImageGenerateRequestDto dto){
         log.info("title : {}", dto.getTitle());
@@ -84,6 +90,22 @@ public class PostController {
         }
     }
 
+    @PostMapping()
+    public ResponseEntity<?> createPost(@RequestBody PostRequestDto dto) {
+
+        log.info("dto : {} ",dto.toString());
+        ResponseDto responseDto = null;
+        try {
+            postService.savePost(dto);
+            log.info("게시글 등록 성공");
+            responseDto = new ResponseDto(success, "게시물 등록 성공");
+        } catch (Exception e) {
+            log.error("게시글 등록 실패");
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     /**
      * 전체피드 - 달성완료 조회
@@ -189,6 +211,11 @@ public class PostController {
             PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }
+
+        Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
+        log.info(updatedPost.toString());
+        PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
@@ -198,14 +225,12 @@ public class PostController {
     public ResponseEntity<PostResponseDto> achievedPostUpdate (@PathVariable("postId") Long postId,
                                                                              @Validated @RequestPart AchievedPostUpdateRequestDto achievedPostUpdateRequestDto,
                                                                              @RequestParam("file") MultipartFile file, Errors errors) {
-        if(errors.hasErrors()){
-            // TODO 예외처리 필요
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            Post updatedPost = postService.achievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
-            PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        if(errors.hasErrors()) {
+            throw new InvalidInputValueException("InvalidInputValueException", ErrorCode.INVALID_INPUT_VALUE);
         }
+        Post updatedPost = postService.achievedPostUpdate(postId, achievedPostUpdateRequestDto, file);
+        PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**

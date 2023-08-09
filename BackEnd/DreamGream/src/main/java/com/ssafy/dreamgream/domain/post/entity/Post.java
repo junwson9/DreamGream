@@ -3,6 +3,7 @@ package com.ssafy.dreamgream.domain.post.entity;
 import com.ssafy.dreamgream.domain.member.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 

@@ -2,6 +2,9 @@ package com.ssafy.dreamgream.global.jwt;
 
 import com.ssafy.dreamgream.domain.member.enums.Role;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
+import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.exception.customException.ExpiredTokenException;
+import com.ssafy.dreamgream.global.exception.customException.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -24,6 +27,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
 @Component
 @Slf4j
@@ -120,15 +124,14 @@ public class JwtTokenProvider {
 			Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
 			return true;
 		} catch (SecurityException | MalformedJwtException e) {
-			log.error("유효하지 않은 토큰입니다", e);
+			throw new InvalidTokenException("유효하지 않은 토큰", ErrorCode.INVALID_TOKEN);
 		} catch (ExpiredJwtException e) {
-			log.error("만료된 토큰입니다.", e);
+			throw new ExpiredTokenException("만료된 토큰", ErrorCode.EXPIRED_TOKEN);
 		} catch (UnsupportedJwtException e) {
-			log.error("지원하지 않는 토큰입니다.", e);
+			throw new InvalidTokenException("지원하지 않는 토큰", ErrorCode.INVALID_TOKEN);
 		} catch (IllegalArgumentException e) {
-			log.error("토큰이 잘못되었습니다", e);
+			throw new InvalidTokenException("잘못된 토큰", ErrorCode.INVALID_TOKEN);
 		}
-		return false;
 	}
 
 	public Authentication getAuthentication(String accessToken) {
@@ -140,7 +143,7 @@ public class JwtTokenProvider {
 				new String[]{claims.get(AUTHORITIES_KEY).toString()})
 			.map(SimpleGrantedAuthority::new)
 			.collect(Collectors.toList());
-		log.debug("claims subject := [{}]", claims.getSubject());
+		log.debug("claims subject:= [{}]", claims.getSubject());
 
 		// UserDetails 객체를 만들어 Authentication 리턴
 		UserDetails principal = new User(claims.getSubject(), "", authorities);

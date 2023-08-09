@@ -11,29 +11,21 @@ import java.util.Map;
 @ToString
 public class ResponseDto {
 
-    private String status;
+    private String success;
     private String message;
-    private String errorCode;
     private Map<String, ?> data;
 
     public ResponseDto() {
     }
 
-    public ResponseDto(String status, String message, String errorCode, Map<String, Object> data) {
-        this.status = status;
-        this.message = message;
-        this.errorCode = errorCode;
-        this.data = data;
-    }
-
-    public ResponseDto(String status, String message, Map<String, ?> data) {
-        this.status = status;
+    public ResponseDto(String success, String message, Map<String, ?> data) {
+        this.success = success;
         this.message = message;
         this.data = data;
     }
 
-    public ResponseDto(String status, String message) {
-        this.status = status;
+    public ResponseDto(String success, String message) {
+        this.success = success;
         this.message = message;
     }
 

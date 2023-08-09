@@ -9,14 +9,14 @@ import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.service.FollowService;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
-import java.util.HashMap;
-import java.util.Map;
+import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.exception.customException.InvalidInputValueException;
+import java.util.Collections;
+import java.util.List;
+import javax.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +24,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.NotBlank;
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -38,7 +42,6 @@ import java.util.List;
 public class MemberController {
 
     private static final String success = "SUCCESS";
-    private static final String fail = "FAIL";
 
     private final MemberService memberService;
 
@@ -73,15 +76,15 @@ public class MemberController {
      */
     @PutMapping("/info")
     public ResponseEntity<?> updateInfo(@RequestBody @Validated UpdateInfoRequestDto requestDto, Errors errors) {
+
+        if(errors.hasErrors()) {
+            throw new InvalidInputValueException("InvalidInputValueException", ErrorCode.INVALID_INPUT_VALUE);
+        }
+
         String nickname = requestDto.getNickname();
         Gender gender = requestDto.getGender();
         Integer birthyear = requestDto.getBirthyear();
         log.info("nickname: {}, gender: {}, birthyear: {}", nickname, gender, birthyear);
-        if(errors.hasErrors()) {
-            // TODO 예외처리 필요
-            return new ResponseEntity<>("회원정보를 변경할 수 없습니다.", HttpStatus.BAD_REQUEST);
-
-        }
 
         MyInfoResponseDto myInfoResponseDto = memberService.updateInfo(nickname, gender, birthyear);
         ResponseDto responseDto = new ResponseDto(success, "회원 정보를 수정했습니다.",
