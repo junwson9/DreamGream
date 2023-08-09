@@ -1,13 +1,18 @@
-import React, { useRef } from 'react'
+/* eslint-disable */
+import React, { useState,useRef,useEffect } from 'react'
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
 import { ReactComponent as RightEllipse } from '../../assets/Ellipse60.svg';
 import { ReactComponent as LeftEllipse } from '../../assets/Ellipse61.svg';
 import Logo from '../../assets/logo.png';
 import KakaoShare from '../ShareButton/KakaoShare';
+import axiosInstance from '../../utils/axiosInterceptor';
+import { API_URL } from '../../config';
 
 
 function ShareImage(){
+  const memberId = localStorage.getItem('member_id')
+  const [userData, setUserData] = useState(null);
 //   const MmShare = (imageURL) => {
 //     const WEBHOOK_URL = 'https://meeting.ssafy.com/hooks/q1x16pxcp3d1jm8sy11bsx8oue'; // Replace with your Mattermost webhook URL
 //     const CHANNEL = 'tsmjakyjnpgnu8wg6fdr8wea7h'; // Replace with the target channel name
@@ -45,6 +50,19 @@ function ShareImage(){
 //         console.error('Error sending image:', error);
 //       });
 //   };
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await axiosInstance.get(`${API_URL}/api/members/${memberId}`);
+        const fetchedUserData = response.data;
+        setUserData(fetchedUserData); 
+      } 
+      catch (e) {
+        console.error(e);
+      }
+    };
+    getUser()
+  }, [memberId]);
   const pageRef = useRef();
 
   const onSaveButtonClick = () => {
@@ -64,10 +82,10 @@ function ShareImage(){
       <img src="https://ifh.cc/g/KyG9oQ.png/150x150" alt="" className="w-48 h-48 left-[0.01px] top-0 absolute bg-zinc-300 rounded-lg"/>
     <div className="w-48 h-48 left-0 top-0 absolute" />
   </div>
-  <div className="left-[193px] top-[527px] absolute justify-center items-center gap-1.5 inline-flex">
-    프사
-    <div className="w-16 text-zinc-800 text-base font-normal leading-snug">최홍준</div>
-  </div>
+  {userData && (<div className="left-[193px] top-[527px] absolute justify-center items-center gap-1.5 inline-flex">
+  <img style={{width: 30, height: 30, borderRadius: 9999}} src={userData.profile_img} />
+    <div className="w-16 text-zinc-800 text-base font-normal leading-snug">{userData.nickname}</div>
+  </div>)}
   <div className="w-[360px] h-3.5 left-0 top-0 absolute bg-[#7887D4] border border-[#7887D4]" />
   <div className="w-[360px] h-3.5 left-0 top-[786px] absolute bg-[#7887D4] border border-[#7887D4]" />
   <div>
