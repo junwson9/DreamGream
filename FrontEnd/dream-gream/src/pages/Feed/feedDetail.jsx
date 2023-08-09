@@ -1,6 +1,8 @@
+/* eslint-disable camelcase */
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import axiosInstance from '../../utils/axiosInterceptor';
 // import './Main.scss';
 import Topbar from '../../components/Common/Topbar';
 import FeedForDetail from '../../components/Feed/FeedForDetail';
@@ -12,20 +14,21 @@ import ContentCard from '../../components/Feed/ContentCard';
 import { API_URL } from '../../config';
 
 function FeedDetail() {
-  const [post, setPost] = useState([]);
-  const navigate = useNavigate();
-  const { postId } = useParams();
+  const [post, setPost] = useState({});
+  const { post_id } = useParams();
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/posts/${postId}`)
+      .get(`${API_URL}/api/posts/${post_id}`)
       .then((response) => {
-        setPost(response.data.data.postList.content);
+        setPost(response.data.data.post);
         console.log(response);
-        console.log('데이터 조회에 성공');
+        console.log('게시물 상세 조회');
       })
       .catch((error) => console.log(error));
-  }, []);
+    console.log('상세조회 실패');
+    console.log(post_id);
+  }, [post_id]);
 
   return (
     <>
