@@ -1,0 +1,76 @@
+spring:
+  profiles:
+    active:
+      - local
+    group:
+      local:
+        - db-local
+        - rabbitmq-local
+        - prompt-local
+        - auth-local
+      prod:
+        - db-prod
+        - rabbitmq-prod
+        - prompt-prod
+        - auth-prod
+      dev:
+        - db-dev
+        - rabbitmq-prod
+        - prompt-prod
+        - auth-dev
+    include:
+      - oauth
+      - db
+      - rabbitmq
+      - prompt
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+
+server:
+  port: 8000
+
+logging:
+  level:
+    org:
+      springframework: info
+      hibernate:
+        type:
+          descriptor:
+            sql: trace #query의 ?에 어떤 값이 들어가는 지 표기
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+
+jwt:
+  secret: test123test1234test123test1234test123test1234test123test1234
+  access_time: 300000000 #5분
+  refresh_time: 1800000 #7일
+
+rabbitmq:
+  exchange:
+    name: image-creation-exchange
+    type: direct
+
+  queue:
+    request:
+      name: image-creation-request-queue
+      routing-key: image.creation.request
+    response:
+      name: image-creation-response-queue
+      routing-key: image.creation.response
+
+
+cloud:
+  aws:
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+    region:
+      static: ${S3_REGION}
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}

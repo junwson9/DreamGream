@@ -37,6 +37,7 @@ function PostViewImage({ handleCloseIconClick }) {
 
   console.log(postData);
   const sendPostInfo = async () => {
+    console.log('게시물 보내!!!!');
     try {
       console.log('게시물 보내!!!!');
       // POST 요청은 body에 실어 보냄

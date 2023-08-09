@@ -1,10 +1,19 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ModalForShare from './ModalForShare';
 
-function ModalForMine({ setMineModalOpen, setShareModalOpen }) {
+
+function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
+  const navigate = useNavigate();
+
   const closeMineModal = () => {
     console.log('내모달 닫는다');
+    setMineModalOpen(false);
+  };
+  
+  const handleUpdateClick = () =>{
+    navigate(`/updatepost/${post.postId}`);
     setMineModalOpen(false);
   };
 
@@ -37,6 +46,7 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen }) {
         <button
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white border-b border-zinc-300 justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
+          onClick={handleUpdateClick}
         >
           <div className="text-center text-black text-sm">수정하기</div>
         </button>

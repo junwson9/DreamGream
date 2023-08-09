@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: "rabbitmq-local"
+  # RabbitMQ 연결 정보
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "rabbitmq-prod"
+  # RabbitMQ 연결 정보
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: ssafya609
