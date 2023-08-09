@@ -1,6 +1,6 @@
-package com.ssafy.dreamgream.global.exception.customException;
+package com.ssafy.dreamgream.global.common.exception.customException;
 
-import com.ssafy.dreamgream.global.exception.ErrorCode;
+import com.ssafy.dreamgream.global.common.exception.ErrorCode;
 import lombok.Getter;
 
 @Getter

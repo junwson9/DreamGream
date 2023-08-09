@@ -2,17 +2,21 @@ package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.CheerDto;
 import com.ssafy.dreamgream.domain.post.service.CheerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/posts/cheers")
 public class CheerController {
 
-    @Autowired
-    private CheerService cheerService;
+    private final CheerService cheerService;
 
     @PostMapping("/add")
     public ResponseEntity<String> addCheer(@RequestBody CheerDto cheerDto) {

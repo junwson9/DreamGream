@@ -1,7 +1,7 @@
 package com.ssafy.dreamgream.global.config.oauth.handler;
 
-import com.ssafy.dreamgream.global.exception.ErrorCode;
-import com.ssafy.dreamgream.global.exception.customException.OAuth2FailedException;
+import com.ssafy.dreamgream.global.common.exception.ErrorCode;
+import com.ssafy.dreamgream.global.common.exception.customException.OAuth2FailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

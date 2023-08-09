@@ -1,8 +1,8 @@
-package com.ssafy.dreamgream.global.jwt;
+package com.ssafy.dreamgream.global.config.jwt;
 
-import com.ssafy.dreamgream.global.exception.ErrorCode;
-import com.ssafy.dreamgream.global.exception.customException.ExpiredTokenException;
-import com.ssafy.dreamgream.global.exception.customException.InvalidTokenException;
+import com.ssafy.dreamgream.global.common.exception.ErrorCode;
+import com.ssafy.dreamgream.global.common.exception.customException.ExpiredTokenException;
+import com.ssafy.dreamgream.global.common.exception.customException.InvalidTokenException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

@@ -1,4 +1,4 @@
-package com.ssafy.dreamgream.domain.post.dto.request;
+package com.ssafy.dreamgream.domain.post.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

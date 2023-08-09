@@ -3,7 +3,7 @@ package com.ssafy.dreamgream.global.config.oauth.handler;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
 import com.ssafy.dreamgream.global.auth.service.AuthService;
 import com.ssafy.dreamgream.global.config.oauth.CustomOAuth2User;
-import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
+import com.ssafy.dreamgream.global.config.jwt.JwtTokenProvider;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

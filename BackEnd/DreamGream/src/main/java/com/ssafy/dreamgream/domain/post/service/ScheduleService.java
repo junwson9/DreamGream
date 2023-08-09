@@ -1,18 +1,17 @@
 package com.ssafy.dreamgream.domain.post.service;
-import com.ssafy.dreamgream.domain.post.entity.MemberPostCheer;
+
 import com.ssafy.dreamgream.domain.post.entity.MemberPostCelebrate;
+import com.ssafy.dreamgream.domain.post.entity.MemberPostCheer;
 import com.ssafy.dreamgream.domain.post.entity.Post;
-import com.ssafy.dreamgream.domain.post.repository.MemberPostCheerRepository;
 import com.ssafy.dreamgream.domain.post.repository.MemberPostCelebrateRepository;
+import com.ssafy.dreamgream.domain.post.repository.MemberPostCheerRepository;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -20,14 +19,9 @@ import java.util.Set;
 public class ScheduleService {
 
     private final PostRepository postRepository;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
-    @Autowired
-    private MemberPostCheerRepository memberPostCheerRepository;
-
-    @Autowired
-    private MemberPostCelebrateRepository memberPostCelebrateRepository;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final MemberPostCheerRepository memberPostCheerRepository;
+    private final MemberPostCelebrateRepository memberPostCelebrateRepository;
 
 
 

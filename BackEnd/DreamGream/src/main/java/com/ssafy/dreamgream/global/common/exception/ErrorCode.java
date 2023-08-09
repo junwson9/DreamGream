@@ -1,4 +1,4 @@
-package com.ssafy.dreamgream.global.exception;
+package com.ssafy.dreamgream.global.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
