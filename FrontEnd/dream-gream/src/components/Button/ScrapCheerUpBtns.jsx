@@ -9,6 +9,7 @@ import axiosInstance from '../../utils/axiosInterceptor';
 // npm i -S react-toastify
 import 'react-toastify/dist/ReactToastify.css';
 import { ReactComponent as CheerUpIcon } from '../../assets/icons/CheerUpIcon.svg';
+import { API_URL } from '../../config';
 
 function ScrapCheerUpBtns({ post }) {
   const [isCheered, setIsCheered] = useState(post.is_cheered);
@@ -16,14 +17,12 @@ function ScrapCheerUpBtns({ post }) {
   const handleCheerClick = () => {
     const requestData = {
       post_id: post.post_id,
-      member_id: post.member_id,
+      member_id: parseInt(localStorage.getItem('member_id'), 10),
     };
-    if (!post.is_cheered) {
+
+    if (!isCheered) {
       axiosInstance
-        .post(
-          'http://i9a609.p.ssafy.io:8800/api//posts/cheering/add',
-          requestData,
-        )
+        .post(`${API_URL}/api/posts/cheers/add`, requestData)
         .then((response) => {
           console.log('응원하기 완료', response);
 
@@ -39,22 +38,19 @@ function ScrapCheerUpBtns({ post }) {
         });
     } else {
       axiosInstance
-        .delete(
-          'http://i9a609.p.ssafy.io:8800/api//posts/cheering/add',
-          requestData,
-        )
+        .post(`${API_URL}/api/posts/cheers/remove`, requestData)
         .then((response) => {
-          console.log('응원하기 완료', response);
-
-          toast.success('응원이 완료되었습니다', {
+          console.log('응원취소 완료', response);
+          toast.success('응원하기가 취소되었습니다', {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
           });
-
-          setIsCheered(true);
+          setIsCheered(false);
         })
         .catch((error) => {
-          console.error('응원하기 에러', error);
+          console.error('응원취소 에러', error);
+          console.log(isCheered);
+          console.log(requestData);
         });
     }
   };
