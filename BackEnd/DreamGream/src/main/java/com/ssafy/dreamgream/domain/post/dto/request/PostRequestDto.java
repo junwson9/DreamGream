@@ -34,9 +34,9 @@ public class PostRequestDto {
 
     @JsonProperty("dead_line")
     @NotNull(message = "기한은 필수 값입니다.")
-    boolean deadline;
+    String deadline;
 
     @JsonProperty("is_display")
     @NotNull(message = "공개범위는 필수 값입니다.")
-    String isDisplay;
+    boolean isDisplay;
 }
