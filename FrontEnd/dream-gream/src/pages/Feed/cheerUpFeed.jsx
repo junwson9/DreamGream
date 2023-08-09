@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactPaginate from 'react-paginate';
 import Topbar from '../../components/Common/Topbar';
 import CategoryButtons from '../../components/Button/CategoryButtons';
 import BestBucketList from '../../components/Feed/BestBucketList';
 import FeedForExplore from '../../components/Feed/FeedForExplore';
-import Navbar from '../../components/Common/Navbar';
 import Member from '../../components/Feed/Member';
 import ScrapCheerUpBtns from '../../components/Button/ScrapCheerUpBtns';
 import ToTopButton from '../../components/Button/ToTopButton';
@@ -17,15 +17,11 @@ function CheerUpFeed() {
 
   const navigate = useNavigate();
 
-  const handlePostClick = (postId) => {
-    navigate(`/posts/${postId}`);
-  };
-
   useEffect(() => {
     axios
       .get(`${API_URL}/api/posts`)
       .then((response) => {
-        setPostList(response.data.data.postList.content);
+        setPostList(response.data.data.post_list.content);
         console.log(response);
         console.log('데이터 조회에 성공');
       })
@@ -34,12 +30,13 @@ function CheerUpFeed() {
     axios
       .get(`${API_URL}/api/posts/best`)
       .then((response) => {
-        setBestBucketList(response);
+        setBestBucketList(response.data.data.post_list);
         console.log(response);
         console.log('버킷리스트');
       })
       .catch((error) => console.log(error));
   }, []);
+
   return (
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
       <Topbar />
@@ -50,7 +47,10 @@ function CheerUpFeed() {
         <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
           BEST 버킷리스트
         </div>
-        <BestBucketList bestBucketList={bestBucketList} />
+        {bestBucketList.map((bestBucketItem) => (
+          <BestBucketList bestBucketItem={bestBucketItem} />
+        ))}
+        {/* npm i react-paginate 필요 */}
       </div>
       <br />
       <hr />
@@ -58,11 +58,8 @@ function CheerUpFeed() {
         {postList.map((post) => (
           <div className="article" key={post.postId}>
             <Member post={post} />
-            <FeedForExplore
-              post={post}
-              onClick={() => handlePostClick(post.id)}
-            />
-            <ScrapCheerUpBtns cheerCnt={post.cheerCnt} />
+            <FeedForExplore post={post} />
+            <ScrapCheerUpBtns post={post} />
             <br />
             <br />
             <hr />
