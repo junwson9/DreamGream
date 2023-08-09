@@ -23,6 +23,8 @@ public class PostListResponseDto {
 
 	private LocalDateTime createdDate;
 
+	private LocalDateTime modifiedDate;
+
 	private LocalDateTime achievedDate;
 
 	private Long cheerCnt;
@@ -69,13 +71,14 @@ public class PostListResponseDto {
 		this.isCelebrated = isCelebrated;
 	}
 
-	public PostListResponseDto(Long postId, String title, String deadLine, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg) {
+	public PostListResponseDto(Long postId, String title, String deadLine, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime modifiedDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg) {
 		this.postId = postId;
 		this.title = title;
 		this.deadLine = deadLine;
 		this.isDisplay = isDisplay;
 		this.isAchieved = isAchieved;
 		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
 		this.achievedDate = achievedDate;
 		this.cheerCnt = cheerCnt;
 		this.celebrateCnt = celebrateCnt;
@@ -87,13 +90,14 @@ public class PostListResponseDto {
 		this.profileImg = profileImg;
 	}
 
-	public PostListResponseDto(Long postId, String title, String deadLine, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg, Boolean isCheered, Boolean isCelebrated) {
+	public PostListResponseDto(Long postId, String title, String deadLine, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime modifiedDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg, Boolean isCheered, Boolean isCelebrated) {
 		this.postId = postId;
 		this.title = title;
 		this.deadLine = deadLine;
 		this.isDisplay = isDisplay;
 		this.isAchieved = isAchieved;
 		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
 		this.achievedDate = achievedDate;
 		this.cheerCnt = cheerCnt;
 		this.celebrateCnt = celebrateCnt;

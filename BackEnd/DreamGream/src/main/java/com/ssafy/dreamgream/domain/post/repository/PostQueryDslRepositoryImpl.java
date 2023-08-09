@@ -5,14 +5,14 @@ import static com.ssafy.dreamgream.domain.post.entity.QPost.post;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
-
+import com.ssafy.dreamgream.domain.post.entity.Post;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +27,9 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
+	// 전체피드 조회
 	@Override
-	public Slice<PostListResponseDto> findPublicPostsByAchievedStatus(Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+	public Slice<PostListResponseDto> findPublicPostsByAchievedStatus(Long categoryId, Boolean isAchieved, Post lastPost, Pageable pageable) {
 
 		BooleanExpression expression = post.isAchieved.eq(isAchieved).and(post.isDisplay.eq(true));
 
@@ -36,11 +37,26 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 			expression = expression.and(post.category.categoryId.eq(categoryId));
 		}
 
-		List<PostListResponseDto> results = getPostsResults(expression, lastPostId, pageable);
+		OrderSpecifier<?> orderSpecifier;
+
+		if (isAchieved) {
+			orderSpecifier = post.modifiedDate.desc();
+			if(lastPost != null) {
+				expression = expression.and(post.modifiedDate.before(lastPost.getModifiedDate()));
+			}
+		} else {
+			orderSpecifier = post.postId.desc();
+			if(lastPost != null) {
+				expression = expression.and(post.postId.lt(lastPost.getPostId()));
+			}
+		}
+
+		List<PostListResponseDto> results = getPostsResults(expression, orderSpecifier, pageable);
 		return checkLastPage(pageable, results);
 	}
 
 
+	// 베스트 게시글 조회
 	@Override
 	public List<PostListResponseDto> findBestPostsByAchievedStatus(Long categoryId, Boolean isAchieved) {
 
@@ -61,7 +77,7 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 		return jpaQueryFactory
 			.select(Projections.constructor(PostListResponseDto.class,
 				post.postId, post.title, post.deadLine, post.isDisplay, post.isAchieved,
-				post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
+				post.createdDate, post.modifiedDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
 				post.aiImg, post.achievementImg, post.category.categoryId,
 				post.member.memberId, post.member.nickname, post.member.profileImg))
 			.from(post)
@@ -89,15 +105,11 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	private Map<String, List<PostListResponseDto>> getPersonalPostsMap(BooleanExpression expression) {
 		Map<String, List<PostListResponseDto>> resultMap = new HashMap<>();
 
-		List<PostListResponseDto> postListResults = getNotPageablePostsResults(expression);
+		OrderSpecifier<?> orderSpecifierAchieved = post.modifiedDate.desc();
+		OrderSpecifier<?> orderSpecifierNotAchieved = post.postId.desc();
 
-		List<PostListResponseDto> achievedPostList = postListResults.stream()
-				.filter(post -> post.getIsAchieved())
-				.collect(Collectors.toList());
-
-		List<PostListResponseDto> postList = postListResults.stream()
-				.filter(post -> !post.getIsAchieved())
-				.collect(Collectors.toList());
+		List<PostListResponseDto> achievedPostList = getNotPageablePostsResults(expression, orderSpecifierAchieved);
+		List<PostListResponseDto> postList = getNotPageablePostsResults(expression, orderSpecifierNotAchieved);
 
 		resultMap.put("achieved_post_list", achievedPostList);
 		resultMap.put("post_list", postList);
@@ -107,38 +119,37 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 
 
 	// 전체피드 expression 조건에 맞는 게시글 목록을 조회해오는 메서드
-	private List<PostListResponseDto> getPostsResults(BooleanExpression expression, Long lastPostId, Pageable pageable) {
+	private List<PostListResponseDto> getPostsResults(BooleanExpression expression, OrderSpecifier<?> orderSpecifier, Pageable pageable) {
 		return jpaQueryFactory
 				.select(Projections.constructor(PostListResponseDto.class,
 						post.postId, post.title, post.deadLine, post.isDisplay, post.isAchieved,
-						post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
+						post.createdDate, post.modifiedDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
 						post.aiImg, post.achievementImg, post.category.categoryId,
 						post.member.memberId, post.member.nickname, post.member.profileImg
 						))
 				.from(post)
 				.where(
-						ltPostId(lastPostId),
 						expression
 				)
-				.orderBy(post.postId.desc())
+				.orderBy(orderSpecifier)
 				.limit(pageable.getPageSize()+1)
 				.fetch();
 	}
 
 
 	// 개인피드 expression 조건에 맞는 게시글 목록을 조회해오는 메서드
-	private List<PostListResponseDto> getNotPageablePostsResults(BooleanExpression expression) {
+	private List<PostListResponseDto> getNotPageablePostsResults(BooleanExpression expression, OrderSpecifier<?> orderSpecifier) {
 		return jpaQueryFactory
 				.select(Projections.constructor(PostListResponseDto.class,
 						post.postId, post.title, post.deadLine, post.isDisplay, post.isAchieved,
-						post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
+						post.createdDate, post.modifiedDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
 						post.aiImg, post.achievementImg, post.category.categoryId,
 						post.member.memberId, post.member.nickname, post.member.profileImg))
 				.from(post)
 				.where(
 						expression
 				)
-				.orderBy(post.postId.desc())
+				.orderBy(orderSpecifier)
 				.fetch();
 	}
 
@@ -146,6 +157,10 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	// 첫 페이지인 경우 lastPostId == null 처리하기 위한 메서드
 	private BooleanExpression ltPostId(Long lastPostId) {
 		return lastPostId == null ? null : post.postId.lt(lastPostId);
+	}
+
+	private BooleanExpression beforeDate(LocalDateTime lastDate) {
+		return lastDate == null ? Expressions.asBoolean(true) : post.modifiedDate.before(lastDate);
 	}
 
 

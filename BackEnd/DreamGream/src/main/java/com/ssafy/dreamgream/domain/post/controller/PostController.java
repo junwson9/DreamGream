@@ -6,7 +6,6 @@ import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.TestMemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.AchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
-import com.ssafy.dreamgream.domain.post.dto.request.LoginMemberRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.PostRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
@@ -121,16 +120,12 @@ public class PostController {
      * @return postList
      */
     @GetMapping("/achieved")
-    public ResponseEntity<?> findAchievedPosts(@RequestBody(required = false) LoginMemberRequestDto memberDto,
+    public ResponseEntity<?> findAchievedPosts(@RequestParam(value = "login-flag") Boolean loginFlag,
                                                 @RequestParam(value = "category-id", required = false) Long categoryId,
                                                 @RequestParam(value = "last-post-id", required = false) Long lastPostId,
                                                 @PageableDefault(size = 10) Pageable pageable) {
-        Long memberId = null;
-        if(memberDto != null) {
-            memberId = memberDto.getMemberId();
-        }
 
-        Slice<PostListResponseDto> postList = postService.findAchievedPosts(memberId, categoryId, true, lastPostId, pageable);
+        Slice<PostListResponseDto> postList = postService.findAchievedPosts(loginFlag, categoryId, true, lastPostId, pageable);
 
         ResponseDto responseDto = new ResponseDto(success, "달성완료 피드를 조회했습니다.",
             Collections.singletonMap("post_list", postList));
@@ -144,16 +139,12 @@ public class PostController {
      * @return postList 
      */
     @GetMapping
-    public ResponseEntity<?> findNotAchievedPosts(@RequestBody(required = false) LoginMemberRequestDto memberDto,
+    public ResponseEntity<?> findNotAchievedPosts(@RequestParam(value = "login-flag") Boolean loginFlag,
                                                     @RequestParam(value = "category-id", required = false) Long categoryId,
                                                     @RequestParam(value = "last-post-id", required = false) Long lastPostId,
                                                     @PageableDefault(size = 10) Pageable pageable) {
-        Long memberId = null;
-        if(memberDto != null) {
-            memberId = memberDto.getMemberId();
-        }
 
-        Slice<PostListResponseDto> postList = postService.findNotAchievedPosts(memberId, categoryId, false, lastPostId, pageable);
+        Slice<PostListResponseDto> postList = postService.findNotAchievedPosts(loginFlag, categoryId, false, lastPostId, pageable);
 
         ResponseDto responseDto = new ResponseDto(success, "달성중 피드를 조회했습니다.",
             Collections.singletonMap("post_list", postList));
@@ -259,14 +250,10 @@ public class PostController {
      * 게시글 상세 조회
      */
     @GetMapping("/{postId}")
-    public ResponseEntity<?> findPostById(@RequestBody(required = false) LoginMemberRequestDto memberDto,
+    public ResponseEntity<?> findPostById(@RequestParam(value = "login-flag") Boolean loginFlag,
                                             @PathVariable Long postId) {
-        Long memberId = null;
-        if(memberDto != null) {
-            memberId = memberDto.getMemberId();
-        }
 
-        PostResponseDto postResponseDto = postService.findPostById(memberId, postId);
+        PostResponseDto postResponseDto = postService.findPostById(loginFlag, postId);
         ResponseDto responseDto = new ResponseDto(success, "게시글을 조회했습니다.", Collections.singletonMap("post", postResponseDto));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
