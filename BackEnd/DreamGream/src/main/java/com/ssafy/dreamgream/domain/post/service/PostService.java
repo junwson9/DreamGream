@@ -56,6 +56,7 @@ public class PostService {
                 .content(postRequestDto.getContent())
                 .aiImg(postRequestDto.getAiImg())
                 .isAchieved(false)
+                .isDisplay(postRequestDto.isDisplay())
                 .build();
 
         postRepository.save(post);
@@ -285,11 +286,11 @@ public class PostService {
                 .content(existingPost.getContent())
                 .deadLine(existingPost.getDeadLine())
                 .isDisplay(existingPost.getIsDisplay())
-                .isAchieved(existingPost.getIsAchieved())
-                .achievementContent(existingPost.getAchievementContent())
-                .achievedDate(existingPost.getAchievedDate())
+                .isAchieved(false)
+                .achievementContent(null)
+                .achievedDate(null)
                 .aiImg(existingPost.getAiImg())
-                .achievementImg(existingPost.getAchievementImg())
+                .achievementImg(null)
                 .modifiedDate(LocalDateTime.now())
                 .category(existingPost.getCategory())
                 .member(currentMember)
