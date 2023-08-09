@@ -19,7 +19,7 @@ function FeedForExplore({ post }) {
     <div className="w-[360px] h-[460px] relative">
       <img
         className="w-[360px] h-[360px] left-0 top-[-1px] absolute"
-        src={post.aiImg}
+        src={post.ai_img}
         alt="전체 피드 이미지"
         onClick={goFeedDetail}
         style={{ cursor: 'pointer' }}
