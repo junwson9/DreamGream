@@ -203,15 +203,9 @@ public class PostController {
     @PostMapping("/{postId}/unachieved")
     public ResponseEntity<PostResponseDto> unAchievedPostUpdate(@PathVariable("postId") Long postId,
                                                                                 @Validated @RequestBody UnAchievedPostUpdateRequestDto unAchievedPostUpdateRequestDto, Errors errors) {
-        if(errors.hasErrors()){
-            // TODO 예외처리 필요
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else{
-            Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
-            PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        if(errors.hasErrors()) {
+            throw new InvalidInputValueException("InvalidInputValueException", ErrorCode.INVALID_INPUT_VALUE);
         }
-
         Post updatedPost = postService.unAchievedPostUpdate(postId, unAchievedPostUpdateRequestDto);
         log.info(updatedPost.toString());
         PostResponseDto responseDto = modelMapper.map(updatedPost,PostResponseDto.class);

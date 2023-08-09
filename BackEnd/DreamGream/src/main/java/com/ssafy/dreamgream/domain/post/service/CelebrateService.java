@@ -29,7 +29,7 @@ public class CelebrateService {
         Member member = memberService.getCurrentMember();
 
         String keyPost = "celebrate_post_" + postId;
-        String keyMember = "member_" + member.getMemberId();
+        String keyMember = "celebrate_member_" + member.getMemberId();
         redisTemplate.opsForSet().add(keyPost, String.valueOf(member.getMemberId()));
         redisTemplate.opsForSet().add(keyMember, String.valueOf(postId));
     }
@@ -41,7 +41,7 @@ public class CelebrateService {
         Member member = memberService.getCurrentMember();
 
         String keyPost = "celebrate_post_" + postId;
-        String keyMember = "member_" + member.getMemberId();
+        String keyMember = "celebrate_member_" + member.getMemberId();
         redisTemplate.opsForSet().remove(keyPost, String.valueOf(member.getMemberId()));
         redisTemplate.opsForSet().remove(keyMember, String.valueOf(postId));
     }
