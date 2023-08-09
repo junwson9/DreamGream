@@ -130,8 +130,8 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new MemberNotFoundException("MemberNotFoundException", ErrorCode.MEMBER_NOT_FOUND));
 
         // 회원의 팔로워, 팔로잉 수 가져오기
-        Long cntFollowers = followRepository.countByFromMember(member);
-        Long cntFollowings = followRepository.countByToMember(member);
+        Long cntFollowers = followRepository.countByToMember(member);
+        Long cntFollowings = followRepository.countByFromMember(member);
 
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
             .memberId(memberId)

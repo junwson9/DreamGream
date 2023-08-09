@@ -118,8 +118,18 @@ public class PostService {
 
     //== 리스트 조회, 게시글 조회 ==//
 
-    public Slice<PostListResponseDto> findAchievedPosts(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
-        Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
+    public Slice<PostListResponseDto> findAchievedPosts(Boolean loginFlag, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+        log.info("달성완료 피드 조회 시작");
+
+        Post lastPost = null;
+
+        if(lastPostId != null) {
+            log.info("lasPostId가 있음");
+            lastPost = postRepository.findById(lastPostId)
+                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
+        }
+
+        Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPost, pageable);
 
         // Slice<PostListResponseDto>에서 postId 값 추출
         List<PostListResponseDto> postList = results.getContent();
@@ -131,22 +141,32 @@ public class PostService {
             post.updateCelebrateCnt(celebrateCnt);
 
             // 로그인 상태면 축하 여부 업데이트
-            if (memberId != null) {
+            if(loginFlag) {
+                Long memberId = memberService.getCurrentMemberId();
                 Boolean isCelebrated = redisTemplate.opsForSet().isMember(postId, memberId.toString());
                 post.updateIsCelebrated(isCelebrated);
             }
         }
-
         return results;
     }
 
 
-    public Slice<PostListResponseDto> findNotAchievedPosts(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+    public Slice<PostListResponseDto> findNotAchievedPosts(Boolean loginFlag, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
         log.info("달성중 피드 조회 시작");
-        Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
+
+        Post lastPost = null;
+
+        if(lastPostId != null) {
+            log.info("lasPostId가 있음");
+            lastPost = postRepository.findById(lastPostId)
+                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
+        }
+
+        Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPost, pageable);
 
         // Slice<PostListResponseDto>에서 postId 값 추출
         List<PostListResponseDto> postList = results.getContent();
+
         // postId에 대해 Redis에서 바로 조회
         for (PostListResponseDto post : postList) {
             String postId = "cheer_post_" + post.getPostId();
@@ -154,9 +174,10 @@ public class PostService {
             post.updateCheerCnt(cheerCnt);
 
             // 로그인 상태면 응원 여부 업데이트
-            if (memberId != null) {
-                Boolean isCheered = redisTemplate.opsForSet().isMember(postId, memberId.toString());
-                post.updateIsCheered(isCheered);
+            if(loginFlag) {
+                Long memberId = memberService.getCurrentMemberId();
+                Boolean isCelebrated = redisTemplate.opsForSet().isMember(postId, memberId.toString());
+                post.updateIsCelebrated(isCelebrated);
             }
         }
         return results;
@@ -205,13 +226,19 @@ public class PostService {
     }
 
 
-    public PostResponseDto findPostById(Long memberId, Long postId) {
+    public PostResponseDto findPostById(Boolean loginFlag, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
 
+        // 로그인 상태인 경우 memberId 가져오기
+        Long memberId = null;
+        if(loginFlag) {
+            memberId = memberService.getCurrentMemberId();
+        }
+
         // isDisplay = false 인데 작성자 본인이 아닌 경우
         if (!post.getIsDisplay()) {
-            if (!memberId.equals(post.getMember().getMemberId())) {
+            if (memberId == null || !memberId.equals(post.getMember().getMemberId())) {
                 throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
             }
         }
