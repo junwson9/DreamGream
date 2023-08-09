@@ -3,31 +3,15 @@ import PropTypes from 'prop-types';
 
 function CategoryButtons({ setCategory, setCategoryID }) {
   const categorys = {
-    Travel: {id: 1,
-            category: '여행'
-            },
-    Health: {id: 2,
-            category:'건강/운동'
-            },
-    Learning: {id: 3,
-              category: '배움'
-            },
-    Culture: {id: 4,
-              category: '문화/엔터'
-            },
-    Love: {id: 5,
-          category: '사랑'
-            },
-    Food: {id: 6,
-          category:'음식'
-            },
-    Shopping: {id: 7,
-              category: '쇼핑'
-            },
-    Work: {id: 8, 
-          category: '일'},
-    etc: {id: 9, 
-          category: '기타'},
+    Travel: { id: 1, category: '여행' },
+    Health: { id: 2, category: '건강/운동' },
+    Learning: { id: 3, category: '배움' },
+    Culture: { id: 4, category: '문화/엔터' },
+    Love: { id: 5, category: '사랑' },
+    Food: { id: 6, category: '음식' },
+    Shopping: { id: 7, category: '쇼핑' },
+    Work: { id: 8, category: '일' },
+    etc: { id: 9, category: '기타' },
   };
 
   const [selectedCategory, setSelectedCategory] = useState('etc');
@@ -63,7 +47,7 @@ function CategoryButtons({ setCategory, setCategoryID }) {
 
 CategoryButtons.propTypes = {
   setCategory: PropTypes.func.isRequired,
-  setCategoryID:  PropTypes.func.isRequired,
+  setCategoryID: PropTypes.func.isRequired,
 };
 
 export default CategoryButtons;
