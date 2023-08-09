@@ -5,14 +5,14 @@ import { React, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import axiosInstance from '../../utils/axiosInterceptor';
-// npm 설치 필요
-// npm i -S react-toastify
+
 import 'react-toastify/dist/ReactToastify.css';
 import { ReactComponent as CheerUpIcon } from '../../assets/icons/CheerUpIcon.svg';
 import { API_URL } from '../../config';
 
 function ScrapCheerUpBtns({ post }) {
   const [isCheered, setIsCheered] = useState(post.is_cheered);
+  const [cheerCount, setCheerCount] = useState(post.cheer_cnt);
 
   const handleCheerClick = () => {
     const requestData = {
@@ -32,6 +32,7 @@ function ScrapCheerUpBtns({ post }) {
           });
 
           setIsCheered(true);
+          setCheerCount(cheerCount + 1);
         })
         .catch((error) => {
           console.error('응원하기 에러', error);
@@ -46,6 +47,7 @@ function ScrapCheerUpBtns({ post }) {
             autoClose: 2000,
           });
           setIsCheered(false);
+          setCheerCount(cheerCount - 1);
         })
         .catch((error) => {
           console.error('응원취소 에러', error);
@@ -57,7 +59,6 @@ function ScrapCheerUpBtns({ post }) {
 
   const scrap = () => {
     const scrapData = {};
-    // ++ post요청과 토스트 메시지 잘 되는지 확인 필요
     axiosInstance
       .post(`${API_URL}/api/posts/${post.post_id}/scrap`, scrapData)
       .then((response) => {
@@ -101,7 +102,7 @@ function ScrapCheerUpBtns({ post }) {
               }`}
             >
               응원해요
-              {post.cheerCnt}
+              {cheerCount}
             </div>
           </div>
         </button>

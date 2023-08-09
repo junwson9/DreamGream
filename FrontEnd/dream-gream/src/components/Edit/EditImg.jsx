@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/alt-text */
@@ -7,8 +8,8 @@ import React, { useState, useRef } from 'react';
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
 import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
-function EditImg() {
-  const [mainImg, setMainImg] = useState('');
+function EditImg({ image, onImageUpdate }) {
+  const [mainImg, setMainImg] = useState(image);
   const fileInputRef = useRef(null);
 
   const setPreviewImg = (event) => {
@@ -19,6 +20,8 @@ function EditImg() {
     };
 
     reader.readAsDataURL(event.target.files[0]);
+
+    onImageUpdate(event);
   };
 
   const addImg = () => {

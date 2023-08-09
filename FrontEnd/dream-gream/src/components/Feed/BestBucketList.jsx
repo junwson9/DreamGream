@@ -11,21 +11,21 @@ import { ReactComponent as CelebrateIcon } from '../../assets/icons/CelebrateIco
 function BestBucketList({ bestBucketItem }) {
   const navigate = useNavigate();
 
-  const goFeedDetailPage = () => {
+  const goFeedDetail = () => {
     // ++url 수정 필요
-    navigate('/feedid');
+    navigate(`/feed/${bestBucketItem.post_id}`);
   };
 
   return (
     <div className="w-[148.24px] h-32 relative">
       <div
         className="w-[148.24px] h-32 left-0 top-0 absolute bg-black bg-opacity-40 rounded-lg"
-        onClick={goFeedDetailPage}
+        onClick={goFeedDetail}
         style={{ cursor: 'pointer' }}
       >
         <img
           className="w-[148.24px] h-32 left-0 top-0 absolute rounded-lg"
-          onClick={goFeedDetailPage}
+          onClick={goFeedDetail}
           style={{ cursor: 'pointer' }}
           src={bestBucketItem.ai_img}
           alt="베스트버킷 이미지"
@@ -37,12 +37,12 @@ function BestBucketList({ bestBucketItem }) {
         {bestBucketItem.is_acheived ? (
           <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
             <CelebrateIcon className="mr-1" style={{ fill: 'white' }} />
-            {bestBucketItem.celeberateCnt}
+            {bestBucketItem.celeberate_cnt}
           </div>
         ) : (
           <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
             <CheerUpIcon className="mr-1" style={{ fill: 'white' }} />
-            {bestBucketItem.cheerCnt}
+            {bestBucketItem.cheer_cnt}
           </div>
         )}
       </div>

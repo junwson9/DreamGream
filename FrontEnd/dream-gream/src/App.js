@@ -8,6 +8,7 @@ import SignupGenderBirth from './pages/members/SiguUp';
 import MyFeed from './pages/MyFeed/MyFeed';
 import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
+import AchieveFeed from './pages/Feed/achieveFeed';
 import ShareImage from './pages/Share/ShareImage';
 import Follower from './pages/MyFeed/Follower';
 import FindMember from './pages/members/FindMember';
@@ -15,6 +16,7 @@ import FeedDetail from './pages/Feed/feedDetail';
 import ViewAbout from './pages/ViewMore/ViewAbout';
 import Navbar from './components/Common/Navbar';
 import LoginError from './pages/members/LoginError';
+import UpdatePost from './pages/Feed/editFeed';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -81,8 +83,8 @@ function App() {
                 </>
               }
             />
-            <Route path="/acheivementupdate" element={<acheivementUpdate />} />
-            <Route path="/updatepost" element={<updatePost />} />
+            <Route path="/achievementupdate" element={<achievementUpdate />} />
+            <Route path="/updatepost/:post_id" element={<UpdatePost />} />
             <Route
               path="/cheerUpFeed"
               element={
@@ -93,10 +95,10 @@ function App() {
               }
             />
             <Route
-              path="/acheivefeed"
+              path="/achievefeed"
               element={
                 <>
-                  <acheiveFeed />
+                  <AchieveFeed />
                   <Navbar className="Navbar" />
                 </>
               }
