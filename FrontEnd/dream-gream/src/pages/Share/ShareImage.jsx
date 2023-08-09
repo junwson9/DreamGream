@@ -9,47 +9,9 @@ import KakaoShare from '../../components/ShareButton/KakaoShare';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 
-
 function ShareImage(){
   const memberId = localStorage.getItem('member_id')
   const [userData, setUserData] = useState(null);
-//   const MmShare = (imageURL) => {
-//     const WEBHOOK_URL = 'https://meeting.ssafy.com/hooks/q1x16pxcp3d1jm8sy11bsx8oue'; // Replace with your Mattermost webhook URL
-//     const CHANNEL = 'tsmjakyjnpgnu8wg6fdr8wea7h'; // Replace with the target channel name
-  
-//     const POST_DATA = {
-//       channel: CHANNEL,
-//       username: 'test',
-//       text: 'Here is the image:',
-//       attachments: [
-//         {
-//           fallback: 'Image',
-//           image_url: 	
-//           'https://via.placeholder.com/300',
-//         },
-//       ],
-//     };
-  
-//     fetch(WEBHOOK_URL, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(POST_DATA),
-//     })
-//       .then((response) => {
-//         if (!response.ok) {
-//           throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//       })
-//       .then((data) => {
-//         console.log('Image sent successfully:', data);
-//       })
-//       .catch((error) => {
-//         console.error('Error sending image:', error);
-//       });
-//   };
   useEffect(() => {
     const getUser = async () => {
       try {
