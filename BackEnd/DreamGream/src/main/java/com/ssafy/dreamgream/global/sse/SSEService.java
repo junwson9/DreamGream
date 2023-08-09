@@ -40,6 +40,7 @@ public class SSEService {
         } else {
             // Handle case when SSEEmitter is not found for the given SSE ID
             // This might happen if the SSE connection is closed or expired
+            log.info("sseid로 emitter를 찾지 못했습니다");
         }
     }
 

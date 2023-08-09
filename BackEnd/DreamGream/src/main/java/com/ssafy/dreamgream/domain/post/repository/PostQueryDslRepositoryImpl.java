@@ -113,7 +113,8 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 						post.postId, post.title, post.deadLine, post.isDisplay, post.isAchieved,
 						post.createdDate, post.achievedDate, post.cheerCnt, post.celebrateCnt,
 						post.aiImg, post.achievementImg, post.category.categoryId,
-						post.member.memberId, post.member.nickname, post.member.profileImg))
+						post.member.memberId, post.member.nickname, post.member.profileImg
+						))
 				.from(post)
 				.where(
 						ltPostId(lastPostId),
