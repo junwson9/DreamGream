@@ -30,6 +30,7 @@ function Posting() {
 
     eventSource.onerror = (error) => {
       console.error('Error occurred in SSE connection:', error);
+      navigate(-1);
       eventSource.close();
     };
   };

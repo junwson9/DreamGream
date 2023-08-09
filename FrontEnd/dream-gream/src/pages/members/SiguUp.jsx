@@ -25,12 +25,8 @@ function SignupGenderBirth() {
   const navigateToMyFeed = () => {
     Navigate('/myfeed');
   };
-  const handleGenderSelection = (isLeftSelected) => {
-    if (isLeftSelected) {
-      setGender('MALE');
-    } else {
-      setGender('FEMALE');
-    }
+  const handleGenderSelection = (selectedGender) => {
+    setGender(selectedGender);
   };
   console.log(gender);
   const handleSubmit = async (event) => {
@@ -52,7 +48,9 @@ function SignupGenderBirth() {
           },
         },
       );
-      console.log("새롭게 받은 토큰 : " + response.data.data.token.access_token);
+      console.log(
+        '새롭게 받은 토큰 : ' + response.data.data.token.access_token,
+      );
       const access_token = response.data.data.token.access_token;
       localStorage.setItem('ACCESS_TOKEN', access_token);
       const refresh_token = response.data.data.token.refresh_token;

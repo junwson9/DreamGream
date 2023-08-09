@@ -11,7 +11,7 @@ function KakaoShare(){
     const getUser = async () => {
       try {
         const response = await axiosInstance.get(`${API_URL}/api/members/${memberId}`);
-        const fetchedUserData = response.data;
+        const fetchedUserData = response.data.data.member.nickname;
         setUserData(fetchedUserData); 
       } 
       catch (e) {
@@ -26,7 +26,7 @@ function KakaoShare(){
     return () => document.body.removeChild(script);
   }, [memberId]);
   return (
-    <button type="button" className="w-12 h-12" onClick={() => shareKakao('배포될 url/share', 'dream-gream',userData.nickname)}>
+    <button type="button" className="w-12 h-12" onClick={() => shareKakao('배포될 url/share', 'dream-gream',userData)}>
   <img className="w-12 h-12" src='/KakaoLogo.png' alt="Kakao Logo" />
 </button>
   )

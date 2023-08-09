@@ -1,5 +1,5 @@
 import React from 'react';
-import { RingLoader, SpinnerComponent, PersistGate } from 'react-spinners';
+import { RingLoader } from 'react-spinners';
 import SimpleSlider from '../Carousel/SimpleSlider';
 
 function Loading() {
