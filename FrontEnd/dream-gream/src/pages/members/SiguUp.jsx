@@ -52,7 +52,9 @@ function SignupGenderBirth() {
           },
         },
       );
-      console.log("새롭게 받은 토큰 : " + response.data.data.token.access_token);
+      console.log(
+        '새롭게 받은 토큰 : ' + response.data.data.token.access_token,
+      );
       const access_token = response.data.data.token.access_token;
       localStorage.setItem('ACCESS_TOKEN', access_token);
       const refresh_token = response.data.data.token.refresh_token;
