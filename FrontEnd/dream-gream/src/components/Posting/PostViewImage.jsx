@@ -48,6 +48,7 @@ function PostViewImage({ handleCloseIconClick }) {
         is_display: postData.detailData.isPublic,
         ai_img: postData.imageUrl.url,
       });
+      console.log('게시물 전송완료!')
       navigate('/myfeed');
       // 여기에서 내피드로? 물어보기 이건 라우터 옮기면된다
     } catch (e) {

@@ -1,6 +1,6 @@
 import './App.css';
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route,Navigate } from 'react-router-dom';
 import LogIn from './pages/members/Login';
 import OAuth2RedirectHandler from './pages/members/OAuth2RedirectHandler';
 import ProfileEdit from './pages/members/ProfileEdit';
@@ -16,9 +16,22 @@ import ViewAbout from './pages/ViewMore/ViewAbout';
 import Navbar from './components/Common/Navbar';
 
 function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSplash(false);
+    }, 2000); // 스플래시 스크린을 보여주는 시간 (밀리초 단위)
+  }, []);
+
   return (
     <div className="App">
+      {showSplash ? (
+      <img  src="/splashscreen.png" alt=""/>
+      ) : (
+        <div>
       <Routes>
+        <Route path="/" element={<Navigate to="/cheerUpFeed" />} />
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
         <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
@@ -36,6 +49,7 @@ function App() {
         <Route path="/acheivefeed" element={<><acheiveFeed /><Navbar className="Navbar"/></>} />
         <Route path="/feedid" element={<><FeedDetail /><Navbar className="Navbar"/></>} />
       </Routes>
+    </div>)}
     </div>
   );
 }
