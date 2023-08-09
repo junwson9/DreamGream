@@ -7,11 +7,11 @@ import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
-import com.ssafy.dreamgream.global.exception.customException.NotAuthorizedMemberException;
+import com.ssafy.dreamgream.global.common.exception.customException.NotAuthorizedMemberException;
 import java.util.List;
 
-import com.ssafy.dreamgream.global.exception.ErrorCode;
-import com.ssafy.dreamgream.global.exception.customException.MemberNotFoundException;
+import com.ssafy.dreamgream.global.common.exception.ErrorCode;
+import com.ssafy.dreamgream.global.common.exception.customException.MemberNotFoundException;
 import com.ssafy.dreamgream.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

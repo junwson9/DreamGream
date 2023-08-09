@@ -1,18 +1,21 @@
 package com.ssafy.dreamgream.domain.post.dto.response;
 
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
+@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class PostListResponseDto {
 
 	private Long postId;
 
 	private String title;
+
+	private String deadLine;
 
 	private Boolean isDisplay;
 
@@ -34,7 +37,7 @@ public class PostListResponseDto {
 
 	// == Member 데이터 == //
 	private Long memberId;
-	
+
 	private String nickname;
 
 	private String profileImg;
@@ -66,4 +69,41 @@ public class PostListResponseDto {
 		this.isCelebrated = isCelebrated;
 	}
 
+	public PostListResponseDto(Long postId, String title, String deadLine, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg) {
+		this.postId = postId;
+		this.title = title;
+		this.deadLine = deadLine;
+		this.isDisplay = isDisplay;
+		this.isAchieved = isAchieved;
+		this.createdDate = createdDate;
+		this.achievedDate = achievedDate;
+		this.cheerCnt = cheerCnt;
+		this.celebrateCnt = celebrateCnt;
+		this.aiImg = aiImg;
+		this.achievementImg = achievementImg;
+		this.categoryId = categoryId;
+		this.memberId = memberId;
+		this.nickname = nickname;
+		this.profileImg = profileImg;
+	}
+
+	public PostListResponseDto(Long postId, String title, String deadLine, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg, Boolean isCheered, Boolean isCelebrated) {
+		this.postId = postId;
+		this.title = title;
+		this.deadLine = deadLine;
+		this.isDisplay = isDisplay;
+		this.isAchieved = isAchieved;
+		this.createdDate = createdDate;
+		this.achievedDate = achievedDate;
+		this.cheerCnt = cheerCnt;
+		this.celebrateCnt = celebrateCnt;
+		this.aiImg = aiImg;
+		this.achievementImg = achievementImg;
+		this.categoryId = categoryId;
+		this.memberId = memberId;
+		this.nickname = nickname;
+		this.profileImg = profileImg;
+		this.isCheered = isCheered;
+		this.isCelebrated = isCelebrated;
+	}
 }

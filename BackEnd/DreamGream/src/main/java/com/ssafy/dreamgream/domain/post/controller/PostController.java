@@ -4,23 +4,25 @@ import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.member.service.TestMemberService;
-import com.ssafy.dreamgream.domain.post.dto.request.*;
+import com.ssafy.dreamgream.domain.post.dto.request.AchievedPostUpdateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.LoginMemberRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.PostRequestDto;
+import com.ssafy.dreamgream.domain.post.dto.request.UnAchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostListResponseDto;
 import com.ssafy.dreamgream.domain.post.dto.response.PostResponseDto;
 import com.ssafy.dreamgream.domain.post.entity.Post;
-import com.ssafy.dreamgream.domain.post.repository.PostRepository;
 import com.ssafy.dreamgream.domain.post.service.PostService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
-import com.ssafy.dreamgream.global.exception.ErrorCode;
-import com.ssafy.dreamgream.global.exception.customException.InvalidInputValueException;
+import com.ssafy.dreamgream.global.common.exception.ErrorCode;
+import com.ssafy.dreamgream.global.common.exception.customException.InvalidInputValueException;
 import com.ssafy.dreamgream.global.rabbitMQ.ImageService;
 import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationProduceDto;
 import com.ssafy.dreamgream.global.sse.SSEService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
@@ -30,24 +32,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/posts")
 public class PostController {
 
     private static final String success = "SUCCESS";
-    private static final String fail = "FAIL";
 
     private final ImageService imageService;
     private final SSEService sseService;
     private final PostService postService;
     private final MemberService memberService;
     private final TestMemberService testMemberService;
-    private final PostRepository postRepository;
 
     private final ModelMapper modelMapper;
 

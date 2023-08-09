@@ -2,17 +2,21 @@ package com.ssafy.dreamgream.domain.post.controller;
 
 import com.ssafy.dreamgream.domain.post.dto.request.CelebrateDto;
 import com.ssafy.dreamgream.domain.post.service.CelebrateService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/posts/celebrates")
 public class CelebrateController {
 
-    @Autowired
-    private CelebrateService celebrateService;
+    private final CelebrateService celebrateService;
 
     @PostMapping("/add")
     public ResponseEntity<String> addCelebrate(@RequestBody CelebrateDto celebrateDto) {

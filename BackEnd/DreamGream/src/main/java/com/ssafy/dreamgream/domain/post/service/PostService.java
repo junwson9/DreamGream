@@ -1,6 +1,7 @@
 package com.ssafy.dreamgream.domain.post.service;
 
 import com.ssafy.dreamgream.domain.member.entity.Member;
+import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
 import com.ssafy.dreamgream.domain.member.service.MemberService;
 import com.ssafy.dreamgream.domain.post.dto.request.AchievedPostUpdateRequestDto;
 import com.ssafy.dreamgream.domain.post.dto.request.PostRequestDto;
@@ -11,18 +12,19 @@ import com.ssafy.dreamgream.domain.post.entity.Category;
 import com.ssafy.dreamgream.domain.post.entity.Post;
 import com.ssafy.dreamgream.domain.post.repository.CategoryRepository;
 import com.ssafy.dreamgream.domain.post.repository.PostRepository;
+import com.ssafy.dreamgream.global.common.exception.ErrorCode;
+import com.ssafy.dreamgream.global.common.exception.customException.MemberNotFoundException;
+import com.ssafy.dreamgream.global.common.exception.customException.NotAuthorizedToPostException;
+import com.ssafy.dreamgream.global.common.exception.customException.PostNotFoundException;
 import com.ssafy.dreamgream.global.s3.S3Uploader;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.transaction.Transactional;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -36,13 +38,12 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
+    private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
     private final S3Uploader s3Uploader;
-
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional
     public void savePost(PostRequestDto postRequestDto) {
@@ -63,13 +64,14 @@ public class PostService {
     @Transactional
     public Post unAchievedPostUpdate(Long postId, UnAchievedPostUpdateRequestDto unAchievedPostUpdateDto) {
         Long memberId = memberService.getCurrentMemberId();
-        //TODO post가 존재하는 지 확인.
-        Post post = postRepository.findById(postId).orElseThrow();
+
+        // post가 존재하는 지 확인.
+        Post post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         Long postMemberId = post.getMember().getMemberId();
 
         if (memberId != postMemberId) {
-            //TODO 수정 권한 예외처리
-            return null;
+            throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
         } else {
             modelMapper.map(unAchievedPostUpdateDto, post);
             Category category = categoryRepository.findById(unAchievedPostUpdateDto.getCategoryId())
@@ -84,12 +86,14 @@ public class PostService {
     @Transactional
     public Post achievedPostUpdate(Long postId, AchievedPostUpdateRequestDto achievedPostUpdateRequestDto, MultipartFile file) {
         Long memberId = memberService.getCurrentMemberId();
-        //TODO post가 존재하는 지 확인.
-        Post post = postRepository.findById(postId).orElseThrow();
+
+        // post가 존재하는 지 확인.
+        Post post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         Long postMemberId = post.getMember().getMemberId();
+
         if (memberId != postMemberId) {
-            //TODO 수정 권한 예외처리
-            return null;
+            throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
         } else {
             modelMapper.map(achievedPostUpdateRequestDto, post);
             Category category = categoryRepository.findById(achievedPostUpdateRequestDto.getCategoryId())
@@ -159,7 +163,9 @@ public class PostService {
 
 
     public Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId) {
-        //TODO 존재하지 않는 memberId 예외 처리
+        // 존재하지 않는 memberId 예외 처리
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원", ErrorCode.MEMBER_NOT_FOUND));
 
         Map<String, List<PostListResponseDto>> resultMap = postRepository.findPublicPostsByMember(memberId);
         return getRedisCntMap(resultMap);
@@ -199,14 +205,13 @@ public class PostService {
 
 
     public PostResponseDto findPostById(Long memberId, Long postId) {
-        // TODO 예외처리: postId 존재하지 않는 경우
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
 
+        // isDisplay = false 인데 작성자 본인이 아닌 경우
         if (!post.getIsDisplay()) {
             if (!memberId.equals(post.getMember().getMemberId())) {
-                // TODO 예외처리 : isDisplay = false 인데 작성자 본인이 아닌 경우
-                return null;
+                throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
             }
         }
 
@@ -241,37 +246,39 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId) {
         Long memberId = memberService.getCurrentMemberId();
-        //TODO post가 존재하는 지 확인.
-        Post post = postRepository.findById(postId).orElseThrow();
+
+        // post가 존재하는 지 확인.
+        Post post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         Long postMemberId = post.getMember().getMemberId();
+
         if (memberId != postMemberId) {
-            log.info("여기니");
-            // TODO: 수정 권한이 없을 경우 예외 처리
-        } else {
-            String cheer_key = "cheer_post_" + String.valueOf(postId);
-            Set<String> cheer_members = redisTemplate.opsForSet().members(cheer_key);
-            for (String member : cheer_members) {
-                String keyMember = "member_" + member;
-                redisTemplate.opsForSet().remove(cheer_key, member);
-                redisTemplate.opsForSet().remove(keyMember, String.valueOf(postId));
-            }
-            String celebrate_key = "celebrate_post_" + String.valueOf(postId);
-            Set<String> celebrate_members = redisTemplate.opsForSet().members(celebrate_key);
-            for (String member : celebrate_members) {
-                String keyMember = "member_" + member;
-                redisTemplate.opsForSet().remove(celebrate_key, member);
-                redisTemplate.opsForSet().remove(keyMember, String.valueOf(postId));
-            }
-            postRepository.deleteById(postId);
+            throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
         }
 
+        String keyCheer = "cheer_post_" + String.valueOf(postId);
+        Set<String> cheer_members = redisTemplate.opsForSet().members(keyCheer);
+        for (String member : cheer_members) {
+            String keyMember = "cheer_member_" + member;
+            redisTemplate.opsForSet().remove(keyCheer, member);
+            redisTemplate.opsForSet().remove(keyMember, String.valueOf(postId));
+        }
+        String keyCelebrate = "celebrate_post_" + String.valueOf(postId);
+        Set<String> celebrate_members = redisTemplate.opsForSet().members(keyCelebrate);
+        for (String member : celebrate_members) {
+            String keyMember = "celebrate_member_" + member;
+            redisTemplate.opsForSet().remove(keyCelebrate, member);
+            redisTemplate.opsForSet().remove(keyMember, String.valueOf(postId));
+        }
+        postRepository.deleteById(postId);
     }
 
     @Transactional
     public void saveScrappedPost(Long postId) {
         Member currentMember = memberService.getCurrentMember();
 
-        Post existingPost = postRepository.findById(postId).orElseThrow();
+        Post existingPost = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
 
         Post scrapPost = Post.builder()
                 .title(existingPost.getTitle())
