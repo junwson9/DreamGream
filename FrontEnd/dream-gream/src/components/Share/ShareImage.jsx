@@ -7,7 +7,6 @@ import Logo from '../../assets/logo.png';
 import KakaoShare from '../ShareButton/KakaoShare';
 
 
-
 function ShareImage(){
 //   const MmShare = (imageURL) => {
 //     const WEBHOOK_URL = 'https://meeting.ssafy.com/hooks/q1x16pxcp3d1jm8sy11bsx8oue'; // Replace with your Mattermost webhook URL
@@ -56,7 +55,8 @@ function ShareImage(){
     });
   };
   return(
-<div className="w-[360px] h-[800px] relative bg-white">
+    <div className="w-[360px] h-[800px] relative bg-white">
+<div ref={pageRef} className="w-[360px] h-[800px] relative bg-white">
   <div>
 <img src={Logo} alt="" className='absolute w-[200px] h-[200px] left-[75px]'/>
 </div>
@@ -86,16 +86,16 @@ function ShareImage(){
   <div className="w-64 h-px left-[55px] top-[570.05px] absolute border border-neutral-200" />
   <div className="w-64 h-px left-[55px] top-[625.05px] absolute border border-neutral-200" />
   <div className="w-64 h-px left-[55px] top-[680.05px] absolute border border-neutral-200" />
-  <div className="w-64 h-8 px-8 py-1.5 left-[50px] top-[717px] absolute justify-center items-center gap-8 inline-flex">
-    <button type="button" className="px-4 py-1.5 whitespace-nowrap text-indigo-400 text-xs font-bold leading-tight bg-white rounded-lg border border-indigo-400" onClick={onSaveButtonClick}>저장하기</button>
-    <KakaoShare/>
-    {/* <button type='button' onClick={MmShare}>엠엠으로 가랏</button> */}
-  </div>
   <div className="w-11 left-[65px] top-[531px] absolute text-zinc-500 text-base font-normal leading-snug whitespace-nowrap">작성자</div>
   <div className="w-11 left-[65px] top-[587.05px] absolute text-zinc-500 text-base font-normal leading-snug whitespace-nowrap">작성일</div>
   <div className="left-[193px] top-[587.05px] absolute text-zinc-800 text-base font-normal leading-snug whitespace-nowrap">2023.07.27</div>
   <div className="left-[193px] top-[641px] absolute text-zinc-800 text-base font-normal leading-snug whitespace-nowrap">10년 후</div>
   <div className="left-[65px] top-[641px] absolute text-zinc-500 text-base font-normal leading-snug whitespace-nowrap">목표 시기</div>
+</div>
+  <div className="w-64 h-8 px-8 py-1.5 left-[50px] top-[717px] absolute justify-center items-center gap-8 inline-flex">
+    <button type="button" className="px-4 py-1.5 whitespace-nowrap text-indigo-400 text-xs font-bold leading-tight bg-white rounded-lg border border-indigo-400" onClick={onSaveButtonClick}>저장하기</button>
+    <KakaoShare/>
+  </div>
 </div>
   );
 };
