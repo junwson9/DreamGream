@@ -1,31 +1,34 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function TwoSolidButton({ leftLabel, rightLabel, onClick }) {
+function TwoSolidButton({ leftLabel, rightLabel, onClick, value }) {
   const [isLeftSelected, setIsLeftSelected] = useState(null);
-  const [isRightSelected, setIsRightSelected] = useState(null);
+  useEffect(() => {
+    if (value === null) {
+      setIsLeftSelected(null);
+    } else {
+      setIsLeftSelected(value === 'MALE');
+    }
+  }, [value]);
 
   const handleLeftButtonClick = () => {
     setIsLeftSelected(true);
-    setIsRightSelected(false);
-    onClick('MALE');
+    onClick(leftLabel);
   };
 
   const handleRightButtonClick = () => {
-    setIsRightSelected(true);
     setIsLeftSelected(false);
-    onClick('FEMALE');
+    onClick(rightLabel);
   };
-  console.log('왼쪽' + isLeftSelected);
-  console.log('오른쪽' + isRightSelected);
+
   const buttonStyleBase =
     'w-40 h-[50px] left-0 top-0 absolute rounded-lg border text-base leading-snug cursor-pointer';
   const leftButtonStyle = isLeftSelected
     ? 'bg-[#7887D4] border-indigo-400 text-white'
     : 'bg-white border-stone-300 text-stone-300';
-  const rightButtonStyle = isRightSelected
-    ? 'bg-[#7887D4] border-indigo-400 text-white'
-    : 'bg-white border-stone-300 text-stone-300';
+  const rightButtonStyle = isLeftSelected
+    ? 'bg-white border-stone-300 text-stone-300'
+    : 'bg-[#7887D4] border-indigo-400 text-white';
 
   return (
     <div className="w-80 h-[50px] relative">

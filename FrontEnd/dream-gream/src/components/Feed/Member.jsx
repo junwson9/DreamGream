@@ -11,6 +11,9 @@ import ModalForShare from './ModalForShare';
 import ModalForMine from './ModalForMine';
 
 function Member({ post }) {
+  const defaultProfileImage =
+    'https://grayround.com/common/img/default_profile.png';
+
   // 모달창 노출 여부 state
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [mineModalOpen, setMineModalOpen] = useState(false);
@@ -32,10 +35,10 @@ function Member({ post }) {
   };
 
   // 날짜 데이터 시간 부분 자르기
-  const getDateOnly = (dateString) => {
-    const date = new Date(dateString);
-    return date.toISOString().split('T')[0];
-  };
+  function extractTimePart(dateTimeString) {
+    const parts = dateTimeString.split('T');
+    return parts[0];
+  }
 
   return (
     <div className="member-container w-[360px] h-[75px] relative">
@@ -43,7 +46,7 @@ function Member({ post }) {
         <div className="h-10 justify-start items-center gap-[7px] inline-flex">
           <img
             className="w-[39.67px] h-10 rounded-[999px]"
-            src="https://via.placeholder.com/40x40"
+            src={post.profile_img || defaultProfileImage}
             alt="프로필 이미지"
             onClick={goUserFeed}
             style={{ cursor: 'pointer' }}
@@ -58,7 +61,7 @@ function Member({ post }) {
               <br />
             </span>
             <span className="text-neutral-600 text-xs font-light leading-none">
-              {getDateOnly(post.created_date)}
+              {post.created_date && extractTimePart(post.created_date)}
             </span>
             <span className="text-indigo-500 text-xs font-medium leading-none">
               {/* ++데드라인 데이터추가 필요· 1년 이내 */}
@@ -67,7 +70,7 @@ function Member({ post }) {
             {/* ##자신의 비공개 게시물만 보이도록 하는건 백쪽에서 그렇게 넘겨줄듯? */}
             {post.isDisplay ? null : (
               <span className="text-indigo-500 text-xs font-medium leading-none">
-                · 비공개
+                {/* · 비공개 */}
               </span>
             )}
           </div>

@@ -9,10 +9,9 @@ import { useNavigate } from 'react-router-dom';
 
 function FeedForExplore({ post }) {
   const navigate = useNavigate();
-  const { postId } = post;
 
   const goFeedDetail = () => {
-    navigate(`/posts/${postId}`);
+    navigate(`/feed/${post.post_id}`);
   };
 
   return (

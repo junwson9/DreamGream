@@ -15,8 +15,8 @@ function OAuth2RedirectHandler() {
   dispatch(setToken(ACCESS_TOKEN, REFRESH_TOKEN));
   const role = searchParams.get('role');
   const status = searchParams.get('status');
-  localStorage.setItem(role, role);
-  localStorage.setItem(status, status);
+  // localStorage.setItem(role, role);
+  // localStorage.setItem(status, status);
   console.log(role);
   useEffect(() => {
     if (ACCESS_TOKEN) {

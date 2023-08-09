@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInterceptor';
@@ -9,6 +9,7 @@ import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import Modal from '../Modal/Modal';
 import { API_URL } from '../../config';
 
+
 function PostViewImage({ handleCloseIconClick }) {
   const imageUrl = useSelector((state) => state.sse.sseData); // 이미지 URL을 Redux 상태에서 가져옴
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +17,7 @@ function PostViewImage({ handleCloseIconClick }) {
   const subjectData = useSelector((state) => state.post.subject);
   const detailData = useSelector((state) => state.post.detail);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleImageLoad = () => {
     setIsModalOpen(true);
@@ -50,6 +52,7 @@ function PostViewImage({ handleCloseIconClick }) {
         ai_img: postData.imageUrl.url,
       });
       console.log('게시물 전송완료!')
+      dispatch({ type: 'CLEAR_IMAGE_URL' });
       navigate('/myfeed');
       // 여기에서 내피드로? 물어보기 이건 라우터 옮기면된다
     } catch (e) {
