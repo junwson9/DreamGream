@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver';
 import { ReactComponent as RightEllipse } from '../../assets/Ellipse60.svg';
 import { ReactComponent as LeftEllipse } from '../../assets/Ellipse61.svg';
 import Logo from '../../assets/logo.png';
-import KakaoShare from '../ShareButton/KakaoShare';
+import KakaoShare from '../../components/ShareButton/KakaoShare';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 
