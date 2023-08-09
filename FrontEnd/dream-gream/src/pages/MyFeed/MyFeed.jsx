@@ -137,8 +137,10 @@ function MyFeed() {
               lineHeight: '18.20px',
             }}
           >
-            {(achieveList.length / (achieveList.length + postList.length)) *
-              100}
+            {Math.floor(
+              (achieveList.length / (achieveList.length + postList.length)) *
+                100,
+            )}
             %
             <br />
           </span>

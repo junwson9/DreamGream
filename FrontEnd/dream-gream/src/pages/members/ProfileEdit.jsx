@@ -1,11 +1,10 @@
 /* eslint-disable */
 
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import InputBox from '../../components/InputBox/InputBox2';
 import TopBar from '../../components/Common/Topbar';
-import TwoSolidButton from '../../components/Button/TwoSolidButton';
+import TwoSolidButton from '../../components/Button/TwoSolidButtonProfile';
 import SelectSmall from '../../components/Button/SelectDropDown';
 import { API_URL } from '../../config';
 
@@ -13,16 +12,46 @@ function ProfileEdit() {
   const [nickname, setNickname] = useState('');
   const [gender, setGender] = useState('');
   const [birthYear, setBirthYear] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+  const fileInputRef = useRef(null);
 
   const handleYearSelection = (year) => {
     setBirthYear(year);
   };
-  console.log(gender, birthYear);
-  const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+
+  const handleImageSelect = (event) => {
+    const imageFile = event.target.files[0];
+    setSelectedImage(imageFile);
+  };
+
+  const imageSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('image', selectedImage);
+
+      const response = await axios.put(
+        `${API_URL}/api/members/info`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log('Data successfully submitted:', response.data);
+    } catch (error) {
+      console.error('Error while submitting data:', error);
+    }
+  };
+
   const handleGenderSelection = (selectedGender) => {
     const genderValue = selectedGender === '남성' ? 'MALE' : 'FEMALE';
     setGender(genderValue);
   };
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -33,7 +62,6 @@ function ProfileEdit() {
           },
         });
         const user = response.data.data.member;
-        console.log(user);
         setNickname(user.nickname);
         setGender(user.gender);
         setBirthYear(user.birthyear);
@@ -44,6 +72,7 @@ function ProfileEdit() {
 
     fetchData();
   }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -67,10 +96,24 @@ function ProfileEdit() {
     }
   };
 
+  const handleImageUpload = () => {
+    fileInputRef.current.click();
+  };
+
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
       <div className="top-[260px] left-[127px] w-[107px] h-[29px] relative">
-        <div className="w-[107px] h-[29px] left-0 top-0 absolute bg-neutral-200 rounded-lg">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageSelect}
+          style={{ display: 'none' }}
+          ref={fileInputRef}
+        />
+        <div
+          className="w-[107px] h-[29px] left-0 top-0 absolute bg-neutral-200 rounded-lg"
+          onClick={handleImageUpload}
+        >
           <div className="left-[9px] top-[5px] absolute text-center text-zinc-800 text-[13px] font-bold leading-snug">
             프로필 사진 수정
           </div>
@@ -120,7 +163,7 @@ function ProfileEdit() {
         />
         <div className="w-[26px] h-[26px] left-[20px] top-[18px] absolute" />
       </div>
-      <div class="w-[320px] h-[60px] top-[420px] left-[20px] absolute">
+      <div className="w-[320px] h-[60px] top-[420px] left-[20px] absolute">
         <InputBox
           text={nickname}
           onInputChange={(event) => setNickname(event.target.value)}
@@ -128,7 +171,7 @@ function ProfileEdit() {
         />
       </div>
     </div>
-    // 확인시 어디로 보내고 어떻게 해야할지
   );
 }
+
 export default ProfileEdit;
