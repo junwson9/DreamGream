@@ -235,6 +235,7 @@ function MyFeed() {
               title={post.title}
               aiImg={post.ai_img}
               cheerCount={post.cheer_cnt}
+              postId={post.post_id}
             />
           ))}
           <br />
