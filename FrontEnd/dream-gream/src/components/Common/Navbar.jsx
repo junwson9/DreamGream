@@ -13,7 +13,7 @@ function Navbar() {
     const path = location.pathname;
     if (path === '/cheerupfeed') {
       setActiveImage('feed');
-    } else if (path === '/acheivefeed') {
+    } else if (path === '/achievefeed') {
       setActiveImage('temple');
     } else if (path === '/myfeed') {
       setActiveImage('my');
@@ -43,7 +43,7 @@ function Navbar() {
             </Link>
           </div>
           <div className="w-[72px] h-16 relative">
-            <Link to="/acheivefeed">
+            <Link to="/achievefeed">
               <button
                 type="button"
                 className="w-[26px] h-[26px] left-[23px] top-[19px] absolute"
