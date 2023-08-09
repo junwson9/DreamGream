@@ -14,68 +14,7 @@ import { API_URL } from '../../config';
 function Follower() {
   const [member, setMember] = useState([]);
   const [page, setPage] = useState('0');
-  const [followerList, setFollowerList] = useState([
-    {
-      member_id: 1,
-      nickname: '변경했지롱',
-      profile_img: null,
-      is_followed: true,
-    },
-    {
-      member_id: 2,
-      nickname: '하이티비',
-      profile_img: null,
-      is_followed: false,
-    },
-    {
-      member_id: 3,
-      nickname: '머',
-      profile_img: null,
-      is_followed: true,
-    },
-    {
-      member_id: 4,
-      nickname: '머',
-      profile_img: null,
-      is_followed: true,
-    },
-    {
-      member_id: 5,
-      nickname: '머',
-      profile_img: null,
-      is_followed: true,
-    },
-    {
-      member_id: 6,
-      nickname: '머',
-      profile_img: null,
-      is_followed: true,
-    },
-    {
-      member_id: 7,
-      nickname: '머',
-      profile_img: null,
-      is_followed: true,
-    },
-    {
-      member_id: 8,
-      nickname: '머',
-      profile_img: null,
-      is_followed: true,
-    },
-    {
-      member_id: 9,
-      nickname: '머',
-      profile_img: null,
-      is_followed: true,
-    },
-    {
-      member_id: 10,
-      nickname: '머',
-      profile_img: null,
-      is_followed: true,
-    },
-  ]);
+  const [followerList, setFollowerList] = useState([]);
   const { memberId } = useParams();
   // console.log(followerList);
 
@@ -93,7 +32,7 @@ function Follower() {
     }
 
     fetchData();
-  }, []);
+  }, [memberId]);
 
   useEffect(() => {
     async function fetchData() {
@@ -103,9 +42,9 @@ function Follower() {
         );
         console.log(response);
         const followerList = response.data.data.followerList;
-        // console.log(followerList);
-        // setFollowerList(followerList); // 여기 살려야댐
-        // console.log(data);
+        console.log(followerList);
+        setFollowerList(followerList); // 여기 살려야댐
+        console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -129,15 +68,16 @@ function Follower() {
         leftActive={true}
       />
       <div className="top-[125px] absolute">
-        {followerList.map((follower) => (
-          <MemberItem
-            key={follower.member_id}
-            // memberId={follower.member_id}
-            nickname={follower.nickname}
-            profileImg={follower.profile_img}
-            isFollowed={follower.is_followed}
-          />
-        ))}
+        {followerList &&
+          followerList.map((follower) => (
+            <MemberItem
+              key={follower.member_id}
+              memberId={follower.member_id}
+              nickname={follower.nickname}
+              profileImg={follower.profile_img}
+              isFollowed={follower.is_followed}
+            />
+          ))}
       </div>
     </div>
   );

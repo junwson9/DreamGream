@@ -19,11 +19,11 @@ function MyFeed() {
   const Navigate = useNavigate();
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const handleFollowersClick = () => {
-    Navigate(`/follow?memberId=${user.memberId}&type=followers`);
+    Navigate(`/follower/${user.member_id}`);
   };
 
   const handleFollowingsClick = () => {
-    Navigate(`/follow?memberId=${user.memberId}&type=followings`);
+    Navigate(`/following/${user.member_id}`);
   };
   const categorys = {
     Travel: '여행',
@@ -235,6 +235,7 @@ function MyFeed() {
               title={post.title}
               aiImg={post.ai_img}
               cheerCount={post.cheer_cnt}
+              postId={post.post_id}
             />
           ))}
           <br />
