@@ -27,6 +27,8 @@ function FeedDetail() {
       .catch((error) => console.log(error));
   }, []);
 
+
+  
   return (
     <>
       <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>

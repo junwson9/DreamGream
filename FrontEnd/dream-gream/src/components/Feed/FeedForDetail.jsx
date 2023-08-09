@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 
 function FeedForDetail({ post }) {
   const [showFirstImage, setShowFirstImage] = useState(true);
+  const [mineModalOpen, setMineModalOpen] = useState(false); // 모달 열림 상태를 저장할 state
+  const [shareModalOpen, setShareModalOpen] = useState(false); // 모달 열림 상태를 저장할 state
 
   const handleImageToggle = () => {
     setShowFirstImage((prev) => !prev);
