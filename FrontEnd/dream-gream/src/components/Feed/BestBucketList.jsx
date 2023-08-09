@@ -27,7 +27,7 @@ function BestBucketList({ bestBucketItem }) {
           className="w-[148.24px] h-32 left-0 top-0 absolute rounded-lg"
           onClick={goFeedDetailPage}
           style={{ cursor: 'pointer' }}
-          src={bestBucketItem.aiImg}
+          src={bestBucketItem.ai_img}
           alt="베스트버킷 이미지"
         />
         <div className="w-[135.39px] h-[37.55px] left-[5.93px] top-[4.27px] absolute text-white text-base font-bold leading-snug">
