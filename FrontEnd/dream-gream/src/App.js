@@ -18,6 +18,7 @@ import Test from './components/Button/ScrapCheerUpBtns';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
+  
 
   useEffect(() => {
     setTimeout(() => {
@@ -28,7 +29,11 @@ function App() {
   return (
     <div className="App">
       {showSplash ? (
-      <img  src="/splashscreen.png" alt=""/>
+      <div className={`splash ${showSplash ? 'animate-splash' : ''}`}>
+      <img  src="/splashscreen.png"
+            alt=""
+            />
+      </div>
       ) : (
         <div>
       <Routes>
