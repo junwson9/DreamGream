@@ -85,7 +85,7 @@ function CheerUpFeed() {
       >
         <ToTopButton />
       </div> */}
-      <div
+      {/* <div
         className="NavDiv"
         style={{
           position: 'fixed',
@@ -93,8 +93,8 @@ function CheerUpFeed() {
           width: '100%',
         }}
       >
-        {/* <Navbar /> */}
-      </div>
+        <Navbar />
+      </div> */}
     </div>
   );
 }
