@@ -54,16 +54,14 @@ function Member({ post }) {
               onClick={goUserFeed}
               style={{ cursor: 'pointer' }}
             >
-              {/* 자카타파하 */}
               {post.nickname}
               <br />
             </span>
             <span className="text-neutral-600 text-xs font-light leading-none">
-              {/* 2023.07.20 */}
-              {/* {getDateOnly(post.createdDate)} */}
+              {getDateOnly(post.created_date)}
             </span>
             <span className="text-indigo-500 text-xs font-medium leading-none">
-              {/* ++데드라인 데이터추가 필요 */}· 1년 이내
+              {/* ++데드라인 데이터추가 필요· 1년 이내 */}
               {/* {post.deadline} */}
             </span>
             {/* ##자신의 비공개 게시물만 보이도록 하는건 백쪽에서 그렇게 넘겨줄듯? */}
