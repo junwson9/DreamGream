@@ -25,10 +25,14 @@ function App() {
         <Route path="/acheivefeed" element={<acheiveFeed />} />
         <Route path="/feedid" element={<FeedDetail />} />
         <Route path="/post" element={<Posting />} />
-        <Route path="/myfeed" element={<MyFeed />} />
-        <Route path="/about" element={<viewAbout />} />
-        <Route path="/updatepost" element={<updatePost />} />
+        <Route path="/share" element={<ShareImage />} />
+        <Route path="/myfeed" element={<><MyFeed /><Navbar className="Navbar"/></>} />
+        <Route path="/about" element={<><ViewAbout /><Navbar className="Navbar"/></>} />
         <Route path="/acheivementupdate" element={<acheivementUpdate />} />
+        <Route path="/updatepost/:postId" element={<updatePost />} />
+        <Route path="/cheerUpFeed" element={<><CheerUpFeed /><Navbar className="Navbar"/></>} />
+        <Route path="/acheivefeed" element={<><acheiveFeed /><Navbar className="Navbar"/></>} />
+        <Route path="/feedid" element={<><FeedDetail /><Navbar className="Navbar"/></>} />
       </Routes>
     </div>
   );
