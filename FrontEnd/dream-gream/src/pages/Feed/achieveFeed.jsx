@@ -7,11 +7,11 @@ import CategoryButtons from '../../components/Button/CategoryButtons';
 import BestBucketList from '../../components/Feed/BestBucketList';
 import FeedForExplore from '../../components/Feed/FeedForExplore';
 import Member from '../../components/Feed/Member';
-import ScrapCheerUpBtns from '../../components/Button/ScrapCheerUpBtns';
+import ScrapCelebrateBtns from '../../components/Button/ScrapCelebrateBtns';
 import ToTopButton from '../../components/Button/ToTopButton';
 import { API_URL } from '../../config';
 
-function CheerUpFeed() {
+function AchieveFeed() {
   const [postList, setPostList] = useState([]);
   const [bestBucketList, setBestBucketList] = useState([]);
 
@@ -19,20 +19,20 @@ function CheerUpFeed() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/posts`)
+      .get(`${API_URL}/api/posts/achieved`)
       .then((response) => {
         setPostList(response.data.data.post_list.content);
         console.log(response);
-        console.log('달성전 피드 조회에 성공');
+        console.log('달성후 전체 게시글 조회에 성공');
       })
       .catch((error) => console.log(error));
 
     axios
-      .get(`${API_URL}/api/posts/best`)
+      .get(`${API_URL}/api/posts/best/achieved`)
       .then((response) => {
         setBestBucketList(response.data.data.post_list);
         console.log(response);
-        console.log('달성전 베스트 버킷리스트 조회에 성공');
+        console.log('달성후 베스트 조회에 성공');
       })
       .catch((error) => console.log(error));
   }, []);
@@ -58,7 +58,7 @@ function CheerUpFeed() {
           <div className="article" key={post.postId}>
             <Member post={post} />
             <FeedForExplore post={post} />
-            <ScrapCheerUpBtns post={post} />
+            <ScrapCelebrateBtns post={post} />
             <br />
             <br />
             <hr />
@@ -74,28 +74,8 @@ function CheerUpFeed() {
       <br />
       <br />
       <br />
-      {/* <div
-        className="ToTopButtonDiv"
-        style={{
-          position: 'fixed',
-          top: 675,
-          transform: 'translateX(calc(100% + 260px))',
-        }}
-      >
-        <ToTopButton />
-      </div> */}
-      {/* <div
-        className="NavDiv"
-        style={{
-          position: 'fixed',
-          top: 736,
-          width: '100%',
-        }}
-      >
-        <Navbar />
-      </div> */}
     </div>
   );
 }
 
-export default CheerUpFeed;
+export default AchieveFeed;

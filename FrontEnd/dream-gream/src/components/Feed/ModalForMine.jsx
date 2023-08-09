@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ModalForShare from './ModalForShare';
 
-
 function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
   const navigate = useNavigate();
 
@@ -11,9 +10,9 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
     console.log('내모달 닫는다');
     setMineModalOpen(false);
   };
-  
-  const handleUpdateClick = () =>{
-    navigate(`/updatepost/${post.postId}`);
+
+  const handleUpdateClick = () => {
+    navigate(`/updatepost/${post.post_id}`);
     setMineModalOpen(false);
   };
 
