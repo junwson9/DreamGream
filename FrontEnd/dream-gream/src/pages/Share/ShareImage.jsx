@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState,useRef,useEffect } from 'react'
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
@@ -8,15 +7,25 @@ import Logo from '../../assets/logo.png';
 import KakaoShare from '../../components/ShareButton/KakaoShare';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
+import { ReactComponent as DefaultProfile } from '../../assets/default_profile.svg';
 
 function ShareImage(){
   const memberId = localStorage.getItem('member_id')
   const [userData, setUserData] = useState(null);
+  
+  const pageRef = useRef();
+  const onSaveButtonClick = () => {
+      const page = pageRef.current;
+      domtoimage.toBlob(page).then(blob => {
+        saveAs(blob, 'page.png');
+      });
+    };
+
   useEffect(() => {
     const getUser = async () => {
       try {
         const response = await axiosInstance.get(`${API_URL}/api/members/${memberId}`);
-        const fetchedUserData = response.data;
+        const fetchedUserData = response.data.data.member;
         setUserData(fetchedUserData); 
       } 
       catch (e) {
@@ -25,15 +34,7 @@ function ShareImage(){
     };
     getUser()
   }, [memberId]);
-  const pageRef = useRef();
 
-  const onSaveButtonClick = () => {
-    const page = pageRef.current;
-
-    domtoimage.toBlob(page).then(blob => {
-      saveAs(blob, 'page.png');
-    });
-  };
   return(
     <div className="w-[360px] h-[800px] relative bg-white">
 <div ref={pageRef} className="w-[360px] h-[800px] relative bg-white">
@@ -45,7 +46,7 @@ function ShareImage(){
     <div className="w-48 h-48 left-0 top-0 absolute" />
   </div>
   {userData && (<div className="left-[193px] top-[527px] absolute justify-center items-center gap-1.5 inline-flex">
-  <img style={{width: 30, height: 30, borderRadius: 9999}} src={userData.profile_img} />
+  {userData.profile_img ?(<img style={{width: 30, height: 30, borderRadius: 9999}} src={userData.profile_img} alt=""/>) : (<DefaultProfile className="w-[30px] h-[30px]"/>)}
     <div className="w-16 text-zinc-800 text-base font-normal leading-snug">{userData.nickname}</div>
   </div>)}
   <div className="w-[360px] h-3.5 left-0 top-0 absolute bg-[#7887D4] border border-[#7887D4]" />
