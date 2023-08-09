@@ -72,7 +72,7 @@ function Follower() {
           followerList.map((follower) => (
             <MemberItem
               key={follower.member_id}
-              memberId={follower.member_id}
+              toMemberId={follower.member_id}
               nickname={follower.nickname}
               profileImg={follower.profile_img}
               isFollowed={follower.is_followed}

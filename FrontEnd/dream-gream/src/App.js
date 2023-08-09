@@ -10,6 +10,7 @@ import Posting from './pages/Posting/Posting';
 import CheerUpFeed from './pages/Feed/cheerUpFeed';
 import ShareImage from './pages/Share/ShareImage';
 import Follower from './pages/MyFeed/Follower';
+import Following from './pages/MyFeed/Following';
 import FindMember from './pages/members/FindMember';
 import FeedDetail from './pages/Feed/feedDetail';
 import ViewAbout from './pages/ViewMore/ViewAbout';
@@ -55,7 +56,7 @@ function App() {
               path="/following/:memberId"
               element={
                 <>
-                  <followingUser />
+                  <Following />
                   <Navbar className="Navbar" />
                 </>
               }
