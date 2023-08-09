@@ -15,29 +15,29 @@ function FeedForDetail({ post }) {
   return (
     <div className="w-[360px] h-[448px] relative">
       <div className="w-[315px] left-[25px] top-[376px] absolute text-zinc-800 text-[17px] font-medium leading-normal">
-        기타 배워서 1곡 완벽하게 연주하기 기타 배워서 1곡 완벽하게 연주하기 기타
-        배워서 1곡 완벽하게 연주하
+        {post.title}
       </div>
       <div
         className="w-[360px] h-[360px] left-0 top-0 absolute "
-        onClick={handleImageToggle}
+        onClick={post.is_achieved ? handleImageToggle : null}
       >
         {showFirstImage ? (
           <img
             className="w-[360px] h-[360px] left-0 top-0 absolute"
-            src="../../assets/images/bf.jpg"
+            src={post.ai_img}
             alt="1번 이미지"
           />
         ) : (
-          post.is_acheived && (
+          // 2번 이미지 없는 경우 1번 이미지만 보이도록
+          post.is_achieved && (
             <img
               className="w-[360px] h-[360px] left-0 top-0 absolute"
-              src="../../assets/images/aft.jpg"
+              src={post.achievement_img}
               alt="2번 이미지"
             />
           )
         )}
-        {post.is_acheived && (
+        {post.is_achieved && (
           <img
             className="w-[135px] h-[135px] left-[225px] top-[1px] absolute"
             src="https://via.placeholder.com/135x135"
@@ -45,7 +45,7 @@ function FeedForDetail({ post }) {
           />
         )}
       </div>
-      {post.is_acheived && (
+      {post.is_achieved && (
         <div className="bar w-[140px] h-1.5 left-[110px] top-[345px] absolute">
           <div
             className={`leftbar w-[70px] h-1.5 left-[0px] top-[-0px] absolute ${
