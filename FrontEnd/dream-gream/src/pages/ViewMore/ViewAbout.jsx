@@ -11,23 +11,21 @@ import axiosInstance from '../../utils/axiosInterceptor';
 function ViewAbout() {
   // accesstoken을 확인 -> 없어? 그러면 없는 기준으로 화면 띄워
   // 있어 -> 있으면 회원정보 조회하고 profileimg 닉네임 같은거 추가
+  const access_token = localStorage.getItem('ACCESS_TOKEN');
+
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
       const access_token = localStorage.getItem('ACCESS_TOKEN');
       const refresh_token = localStorage.getItem('REFRESH_TOKEN');
       console.log(refresh_token);
-      await axios.post(`${API_URL}/api/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          'X-Refresh-Token': `${refresh_token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      console.log(access_token);
+      await axiosInstance.post(`${API_URL}/api/auth/logout`, {});
       // 로그아웃하고 로그인 페이지로 이동시키기 or 메인피드로 이동시키기
       console.log('로그아웃 성공');
       navigate('/login');
     } catch (error) {
+      console.log('ㅎㅇ' + access_token);
       console.error('Error logging out:', error);
     }
   };

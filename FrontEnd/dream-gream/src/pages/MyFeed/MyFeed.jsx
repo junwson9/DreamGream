@@ -9,6 +9,8 @@ import { ReactComponent as DownArrow } from '../../assets/DownArrow.svg';
 import CategoryButtons from './../../components/Button/CategoryButtons2';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
+import MyFeedCard from '../../components/Feed/MyFeedCard';
+
 function MyFeed() {
   const [post, setPost] = useState([]);
   const [user, setUser] = useState('');
@@ -41,18 +43,12 @@ function MyFeed() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          `${API_URL}/api/posts/my`, // 개인 피드 조회
-          {
-            headers: {
-              Authorization: `Bearer ${ACCESS_TOKEN}`,
-              'Content-Type': 'application/json',
-            },
-          },
+        const response = await axiosInstance.get(
+          `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
         );
         const data = response.data.data;
         setPost(data);
-        // console.log(data);
+        console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -70,7 +66,9 @@ function MyFeed() {
         // console.log(response);
         const data = response.data.data.member;
         // member id 로컬스토리지에 저장
-        localStorage.setItem("member_id", data.member_id);
+        localStorage.setItem('member_id', data.member_id);
+        console.log(data);
+        setUser(data);
         // console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
@@ -218,9 +216,18 @@ function MyFeed() {
       <div className="top-[187px] absolute">
         <TwoTapButton leftLabel="달성중" rightLabel="달성완료" />
       </div>
+
       <div className="w-[347px] left-[11px] top-[208px] h-8 relative">
         <div className="left-[4px] top-[8px] absolute text-zinc-800 text-[13px] font-normal leading-[18.20px]">
           999개
+        </div>
+        <div className="top-[35px] left-[5px] absolute z-[1]">
+          <MyFeedCard />
+          <MyFeedCard />
+          <MyFeedCard />
+          <MyFeedCard />
+          <MyFeedCard />
+          <MyFeedCard />
         </div>
         <div
           className="left-[263px] top-[8px] absolute text-zinc-800 text-[13px] font-normal leading-[18.20px]"
@@ -239,7 +246,7 @@ function MyFeed() {
         </div>
         {isOverlayOpen && (
           <div
-            className="flex items-center justify-center w-full h-full fixed top-0 left-0 bg-gray-500 bg-opacity-50"
+            className="flex items-center justify-center w-full h-full fixed top-0 left-0 bg-gray-500 bg-opacity-50 z-[1]"
             onClick={() => setIsOverlayOpen(false)}
           >
             <div className="bg-white p-3 rounded-lg">
