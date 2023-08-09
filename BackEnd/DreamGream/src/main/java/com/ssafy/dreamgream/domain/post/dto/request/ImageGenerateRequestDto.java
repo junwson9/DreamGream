@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ImageGenerateRequestDto {
 
-    @NotNull(message = "버킷리스트는은 필수 값입니다.")
+    @NotNull(message = "버킷리스트는 필수 값입니다.")
     String title;
 
     @NotNull(message = "카테고리는 필수 값입니다.")

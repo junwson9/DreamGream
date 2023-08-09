@@ -15,6 +15,8 @@ public class PostListResponseDto {
 
 	private String title;
 
+	private String deadLine;
+
 	private Boolean isDisplay;
 
 	private Boolean isAchieved;
@@ -35,7 +37,7 @@ public class PostListResponseDto {
 
 	// == Member 데이터 == //
 	private Long memberId;
-	
+
 	private String nickname;
 
 	private String profileImg;
@@ -67,9 +69,10 @@ public class PostListResponseDto {
 		this.isCelebrated = isCelebrated;
 	}
 
-	public PostListResponseDto(Long postId, String title, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg) {
+	public PostListResponseDto(Long postId, String title, String deadLine, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg) {
 		this.postId = postId;
 		this.title = title;
+		this.deadLine = deadLine;
 		this.isDisplay = isDisplay;
 		this.isAchieved = isAchieved;
 		this.createdDate = createdDate;
@@ -84,9 +87,10 @@ public class PostListResponseDto {
 		this.profileImg = profileImg;
 	}
 
-	public PostListResponseDto(Long postId, String title, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg, Boolean isCheered, Boolean isCelebrated) {
+	public PostListResponseDto(Long postId, String title, String deadLine, Boolean isDisplay, Boolean isAchieved, LocalDateTime createdDate, LocalDateTime achievedDate, Long cheerCnt, Long celebrateCnt, String aiImg, String achievementImg, Long categoryId, Long memberId, String nickname, String profileImg, Boolean isCheered, Boolean isCelebrated) {
 		this.postId = postId;
 		this.title = title;
+		this.deadLine = deadLine;
 		this.isDisplay = isDisplay;
 		this.isAchieved = isAchieved;
 		this.createdDate = createdDate;

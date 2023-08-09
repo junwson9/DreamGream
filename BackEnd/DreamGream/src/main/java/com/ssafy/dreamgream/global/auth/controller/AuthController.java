@@ -5,7 +5,7 @@ import com.ssafy.dreamgream.global.auth.dto.request.UpdateRoleToUserRequestDto;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
 import com.ssafy.dreamgream.global.auth.service.AuthService;
 import com.ssafy.dreamgream.global.common.dto.response.ResponseDto;
-import com.ssafy.dreamgream.global.jwt.JwtTokenProvider;
+import com.ssafy.dreamgream.global.config.jwt.JwtTokenProvider;
 import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

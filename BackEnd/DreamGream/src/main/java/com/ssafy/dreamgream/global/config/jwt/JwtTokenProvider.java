@@ -1,10 +1,10 @@
-package com.ssafy.dreamgream.global.jwt;
+package com.ssafy.dreamgream.global.config.jwt;
 
 import com.ssafy.dreamgream.domain.member.enums.Role;
 import com.ssafy.dreamgream.global.auth.dto.response.TokenResponseDto;
-import com.ssafy.dreamgream.global.exception.ErrorCode;
-import com.ssafy.dreamgream.global.exception.customException.ExpiredTokenException;
-import com.ssafy.dreamgream.global.exception.customException.InvalidTokenException;
+import com.ssafy.dreamgream.global.common.exception.ErrorCode;
+import com.ssafy.dreamgream.global.common.exception.customException.ExpiredTokenException;
+import com.ssafy.dreamgream.global.common.exception.customException.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -27,7 +27,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
 @Component
 @Slf4j

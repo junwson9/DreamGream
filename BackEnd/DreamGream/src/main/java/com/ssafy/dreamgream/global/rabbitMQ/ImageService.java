@@ -1,6 +1,6 @@
 package com.ssafy.dreamgream.global.rabbitMQ;
 
-import com.ssafy.dreamgream.domain.post.dto.request.ImageGenerateResponseDto;
+import com.ssafy.dreamgream.domain.post.dto.response.ImageGenerateResponseDto;
 import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationConsumeDto;
 import com.ssafy.dreamgream.global.rabbitMQ.dto.PromptCreationProduceDto;
 import com.ssafy.dreamgream.global.sse.SSEService;
