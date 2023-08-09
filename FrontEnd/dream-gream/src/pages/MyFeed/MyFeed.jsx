@@ -9,19 +9,20 @@ import { ReactComponent as DownArrow } from '../../assets/DownArrow.svg';
 import CategoryButtons from './../../components/Button/CategoryButtons2';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
+import MyFeedCard from '../../components/Feed/MyFeedCard';
+
 function MyFeed() {
-  const [post, setPost] = useState([]);
+  const [postList, setPostList] = useState([]);
+  const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
   const [category, setCategory] = useState('');
   const Navigate = useNavigate();
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const handleFollowersClick = () => {
-    // 팔로우 페이지로 이동하며, user.memberId를 쿼리 매개변수로 전달
     Navigate(`/follow?memberId=${user.memberId}&type=followers`);
   };
 
   const handleFollowingsClick = () => {
-    // 팔로우 페이지로 이동하며, user.memberId를 쿼리 매개변수로 전달
     Navigate(`/follow?memberId=${user.memberId}&type=followings`);
   };
   const categorys = {
@@ -36,23 +37,19 @@ function MyFeed() {
     etc: '기타',
   };
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
-  // console.log(category);
-  // console.log(user);
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          `${API_URL}/api/posts/my`, // 개인 피드 조회
-          {
-            headers: {
-              Authorization: `Bearer ${ACCESS_TOKEN}`,
-              'Content-Type': 'application/json',
-            },
-          },
+        const response = await axiosInstance.get(
+          `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
         );
-        const data = response.data.data;
-        setPost(data);
-        // console.log(data);
+        // console.log(response);
+        const post_list = response.data.data.post_list;
+        const achieved_list = response.data.data.achieved_post_list;
+        // 달성전, 달성후 따로 저장
+        setPostList(post_list);
+        setAchievedList(achieved_list);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -60,7 +57,7 @@ function MyFeed() {
 
     fetchData();
   }, []);
-
+  // console.log(postList);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -70,7 +67,9 @@ function MyFeed() {
         // console.log(response);
         const data = response.data.data.member;
         // member id 로컬스토리지에 저장
-        localStorage.setItem("member_id", data.member_id);
+        localStorage.setItem('member_id', data.member_id);
+        // console.log(data);
+        setUser(data);
         // console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
@@ -79,30 +78,28 @@ function MyFeed() {
 
     fetchData();
   }, []);
-  // useEffect(() => {
-  //   // console.log(user.memberId);
-  //   async function fetchData() {
-  //     try {
-  //       const response = await axios.get(
-  //         `http://i9a609.p.ssafy.io:8000/api/members/{user.memberId}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${ACCESS_TOKEN}`,
-  //             'Content-Type': 'application/json',
-  //           },
-  //         },
-  //       );
-  //       // console.log(response);
-  //       const data = response.data.data.member;
-  //       setUser(data);
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.error('Error while fetching data:', error);
-  //     }
-  //   }
 
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    // console.log(user.memberId);
+    async function fetchData() {
+      try {
+        const member_id = localStorage.getItem('member_id');
+        console.log(member_id);
+        const response = await axiosInstance.get(
+          `${API_URL}/api/members/${member_id}`,
+        );
+        // console.log(response);
+        const data = response.data.data.member;
+        setUser(data);
+        // console.log(data);
+      } catch (error) {
+        console.error('Error while fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+  console.log(user);
   const handleCategoryChange = (newCategory) => {
     if (category === newCategory) {
       setCategory(''); // 같은 카테고리면 전체 보기로 변경
@@ -116,7 +113,6 @@ function MyFeed() {
       <div className="w-[360px] h-[60px] left-0 top-0 absolute">
         <TopBar
           title={user.nickname}
-          // title="ㅎㅇ"
           showConfirmButton={false}
           showCloseButton={false}
         />
@@ -141,7 +137,9 @@ function MyFeed() {
               lineHeight: '18.20px',
             }}
           >
-            70%
+            {(achieveList.length / (achieveList.length + postList.length)) *
+              100}
+            %
             <br />
           </span>
           <span
@@ -216,11 +214,31 @@ function MyFeed() {
         </div>
       </div>
       <div className="top-[187px] absolute">
-        <TwoTapButton leftLabel="달성중" rightLabel="달성완료" />
+        <TwoTapButton
+          leftLabel="달성중"
+          rightLabel="달성완료"
+          leftValue={postList.length}
+          rightValue={achieveList.length}
+        />
       </div>
+
       <div className="w-[347px] left-[11px] top-[208px] h-8 relative">
-        <div className="left-[4px] top-[8px] absolute text-zinc-800 text-[13px] font-normal leading-[18.20px]">
-          999개
+        <div className="left-[6px] top-[8px] absolute text-zinc-800 text-[13px] font-normal leading-[18.20px]">
+          {postList.length}
+        </div>
+        <div className="top-[35px] left-[5px] absolute">
+          {postList.map((post, index) => (
+            <MyFeedCard
+              key={index}
+              title={post.title}
+              aiImg={post.ai_img}
+              cheerCount={post.cheer_cnt}
+            />
+          ))}
+          <br />
+          <br />
+          <br />
+          <br />
         </div>
         <div
           className="left-[263px] top-[8px] absolute text-zinc-800 text-[13px] font-normal leading-[18.20px]"
@@ -239,7 +257,7 @@ function MyFeed() {
         </div>
         {isOverlayOpen && (
           <div
-            className="flex items-center justify-center w-full h-full fixed top-0 left-0 bg-gray-500 bg-opacity-50"
+            className="flex items-center justify-center w-full h-full fixed top-0 left-0 bg-gray-500 bg-opacity-50 z-[1]"
             onClick={() => setIsOverlayOpen(false)}
           >
             <div className="bg-white p-3 rounded-lg">
