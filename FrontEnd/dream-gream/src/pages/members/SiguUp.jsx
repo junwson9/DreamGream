@@ -25,12 +25,8 @@ function SignupGenderBirth() {
   const navigateToMyFeed = () => {
     Navigate('/myfeed');
   };
-  const handleGenderSelection = (isLeftSelected) => {
-    if (isLeftSelected) {
-      setGender('MALE');
-    } else {
-      setGender('FEMALE');
-    }
+  const handleGenderSelection = (selectedGender) => {
+    setGender(selectedGender);
   };
   console.log(gender);
   const handleSubmit = async (event) => {

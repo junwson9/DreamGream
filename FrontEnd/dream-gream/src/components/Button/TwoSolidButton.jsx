@@ -16,7 +16,8 @@ function TwoSolidButton({ leftLabel, rightLabel, onClick }) {
     setIsLeftSelected(false);
     onClick('FEMALE');
   };
-
+  console.log('왼쪽' + isLeftSelected);
+  console.log('오른쪽' + isRightSelected);
   const buttonStyleBase =
     'w-40 h-[50px] left-0 top-0 absolute rounded-lg border text-base leading-snug cursor-pointer';
   const leftButtonStyle = isLeftSelected

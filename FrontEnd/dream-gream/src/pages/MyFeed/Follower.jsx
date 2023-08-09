@@ -93,7 +93,7 @@ function Follower() {
     }
 
     fetchData();
-  }, []);
+  }, [memberId]);
 
   useEffect(() => {
     async function fetchData() {
@@ -103,9 +103,9 @@ function Follower() {
         );
         console.log(response);
         const followerList = response.data.data.followerList;
-        // console.log(followerList);
-        // setFollowerList(followerList); // 여기 살려야댐
-        // console.log(data);
+        console.log(followerList);
+        setFollowerList(followerList); // 여기 살려야댐
+        console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -132,7 +132,7 @@ function Follower() {
         {followerList.map((follower) => (
           <MemberItem
             key={follower.member_id}
-            // memberId={follower.member_id}
+            memberId={follower.member_id}
             nickname={follower.nickname}
             profileImg={follower.profile_img}
             isFollowed={follower.is_followed}
