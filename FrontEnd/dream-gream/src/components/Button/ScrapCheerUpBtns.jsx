@@ -55,36 +55,29 @@ function ScrapCheerUpBtns({ post }) {
     }
   };
 
-  // const scrap = () => {
-  //   const postData = {
-  //     title: props.title,
-  //     content: props.content,
-  //     deadline: props.deadline,
-  //     is_acheived: false,
-  //     ai_img: props.ai_img,
-  //     category_id: props.category_id,
-  //   };
-  //   // ++ post요청과 토스트 메시지 잘 되는지 확인 필요
-  //   axios
-  //     .post('/posts', postData)
-  //     .then((response) => {
-  //       console.log('스크랩 완료', response);
-  //       toast.success('내 버킷리스트에 등록이 완료되었습니다', {
-  //         position: toast.POSITION.TOP_CENTER,
-  //         autoClose: 2000,
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.log('스크랩 에러 발생', error);
-  //     });
-  // };
+  const scrap = () => {
+    const scrapData = {};
+    // ++ post요청과 토스트 메시지 잘 되는지 확인 필요
+    axiosInstance
+      .post(`${API_URL}/api/posts/${post.post_id}/scrap`, scrapData)
+      .then((response) => {
+        console.log('스크랩 완료', response);
+        toast.success('내 버킷리스트에 등록이 완료되었습니다', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+        });
+      })
+      .catch((error) => {
+        console.log('스크랩 에러 발생', error);
+      });
+  };
 
   return (
     <div className="flex justify-center items-center">
       <div className="w-[317px] h-8 justify-center items-start  inline-flex">
         <button
           type="button"
-          // onClick={scrap}
+          onClick={scrap}
           className="w-[152px] h-8 px-[34px] py-1.5 bg-white rounded-[10px] border border-indigo-400 justify-center items-center inline-flex mr-4"
         >
           <div className="text-indigo-400 text-[13px] font-bold leading-[18.20px]">
