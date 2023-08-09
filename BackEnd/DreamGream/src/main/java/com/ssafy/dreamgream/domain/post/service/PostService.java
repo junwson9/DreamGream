@@ -128,11 +128,11 @@ public class PostService {
 
 
     public Slice<PostListResponseDto> findNotAchievedPosts(Long memberId, Long categoryId, Boolean isAchieved, Long lastPostId, Pageable pageable) {
+        log.info("달성중 피드 조회 시작");
         Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPostId, pageable);
 
         // Slice<PostListResponseDto>에서 postId 값 추출
         List<PostListResponseDto> postList = results.getContent();
-
         // postId에 대해 Redis에서 바로 조회
         for (PostListResponseDto post : postList) {
             String postId = "cheer_post_" + post.getPostId();

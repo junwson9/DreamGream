@@ -19,6 +19,7 @@ public class ImageCreationResponseConsumer {
         Long sseId = responseDto.getSseId();
         String url = responseDto.getUrl();
         log.info("consumer received");
+        log.info("sse id : {}", sseId);
         log.info("url : {}", url);
 
         imageService.processImageResponse(sseId, url);
