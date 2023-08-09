@@ -2,13 +2,21 @@
 
 import React from 'react';
 import { ReactComponent as CheerUpIcon } from '../../assets/icons/SmallCheerUpIcon.svg';
+import { useNavigate } from 'react-router-dom';
 
-function MyFeedCard({ title, aiImg, cheerCount }) {
+function MyFeedCard({ title, aiImg, cheerCount, postId }) {
   const image = {
     backgroundImage: `url(${aiImg})`, // aiImg를 배경 이미지로 설정
   };
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    navigate(`/feed/${postId}`);
+  };
   return (
-    <div className="w-40 h-[221px] flex-col justify-start items-start gap-[3px] inline-flex z-[5] mr-2 mb-2">
+    <div
+      className="w-40 h-[221px] flex-col justify-start items-start gap-[3px] inline-flex z-[5] mr-2 mb-2"
+      onClick={handleCardClick}
+    >
       <div
         className="w-40 h-40 bg-zinc-300 rounded-[10px] shadow-md"
         style={{ ...image, backgroundSize: 'cover' }}
