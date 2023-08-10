@@ -87,7 +87,7 @@ function Member({ post }) {
           <MoreVert />
         </button>
       </div>
-      {/* 로그인한 유저 본인게시물이냐에 따라 shareModal을 바로 렌더링하는건 고민해봐야할듯 */}
+      {/* ++로그인한 유저 본인게시물이냐에 따라 shareModal을 바로 렌더링하는건 고민해봐야할듯 */}
       {shareModalOpen && (
         <ModalForShare setShareModalOpen={setShareModalOpen} />
       )}

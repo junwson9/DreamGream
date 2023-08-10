@@ -48,6 +48,7 @@ function TopbarForEdit({ post }) {
 
       <div
         className="left-[307px] top-[19px] absolute text-right text-zinc-800 text-lg font-bold leading-[25.20px] cursor-pointer"
+        //++{post.is_achieved 가 true이면 다른 api 주소로 보내야함}
         onClick={handleUpdateClick}
         style={{ cursor: 'pointer' }}
       >

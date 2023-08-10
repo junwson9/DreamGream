@@ -29,18 +29,20 @@ function EditFeed() {
       .catch((error) => console.log(error));
   }, []);
 
+  // 게시글 내용 수정
   const handleContentChange = (event) => {
     const newContent = event.target.innerHTML;
     setPost((prevPost) => ({ ...prevPost, content: newContent }));
   };
 
+  // 이미지 수정
   const handleImageUpdate = (event) => {
     const formData = new FormData();
     formData.append('image', event.target.files[0]);
     formData.append('img_update_flag', 'true');
 
     axiosInstance
-      .post(`${API_URL}/api/posts/${post_id}/unachieved`, formData)
+      .post(`${API_URL}/api/posts/${post_id}/achieved`, formData)
       .then((response) => {
         setIsImgUpdated(true);
         console.log(response);
@@ -57,10 +59,11 @@ function EditFeed() {
       <hr />
 
       <div className="flex space-x-4 absolute top-[85px] left-1/2 transform translate-x-[-50%]">
-        <EditImg image={post.ai_img} onImageUpdate={handleImageUpdate} />
+        <EditImg post={post} isAiImg onageUpdate={handleImageUpdate} />
         {post.is_achieved && (
           <EditImg
-            image={post.achievement_img}
+            post={post}
+            isAiImg={false}
             onImageUpdate={handleImageUpdate}
           />
         )}
