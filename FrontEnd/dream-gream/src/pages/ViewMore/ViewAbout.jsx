@@ -29,6 +29,16 @@ function ViewAbout() {
       console.error('Error logging out:', error);
     }
   };
+
+  const handleFindMember = () => {
+    const access_token = localStorage.getItem('ACCESS_TOKEN');
+    if (access_token) {
+      navigate('/findmember');
+    } else {
+      navigate('loginerror');
+    }
+  };
+
   return (
     <div className="w-[360px] h-[800px] relative bg-white block">
       <div className="top-[10px] left-[5px] absolute">
@@ -82,7 +92,9 @@ function ViewAbout() {
         </div>
       </div>
       <div className="left-[28px] top-[471px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
-        친구 찾기
+        <div type="button" onClick={handleFindMember}>
+          친구 찾기
+        </div>
       </div>
     </div>
   );

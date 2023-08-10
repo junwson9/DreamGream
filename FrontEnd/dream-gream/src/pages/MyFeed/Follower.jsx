@@ -79,8 +79,8 @@ function Follower() {
             />
           ))
         ) : (
-          <div className="absolute top-[180px] left-[65px] text-center text-neutral-700 text-base font-medium leading-snug">
-            아직 팔로잉한 사람이 없습니다.
+          <div className="absolute top-[180px] left-[100px] text-center text-neutral-700 text-base font-medium leading-snug">
+            아직 팔로워가 없습니다.
           </div>
         )}
       </div>
