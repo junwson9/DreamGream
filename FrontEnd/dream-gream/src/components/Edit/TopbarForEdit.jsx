@@ -30,6 +30,7 @@ function TopbarForEdit({ post }) {
       })
       .catch((error) => {
         console.error('수정실패:', error);
+        console.log(requestBody);
       });
   };
 
