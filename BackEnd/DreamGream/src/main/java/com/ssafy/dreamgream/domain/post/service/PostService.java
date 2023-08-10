@@ -194,14 +194,14 @@ public class PostService {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원", ErrorCode.MEMBER_NOT_FOUND));
 
-        Map<String, List<PostListResponseDto>> resultMap = postRepository.findPublicPostsByMember(memberId);
+        Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId, true);
         return getRedisCntMap(resultMap);
     }
 
 
     public Map<String, List<PostListResponseDto>> findMyPosts() {
         Long memberId = memberService.getCurrentMemberId();
-        Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId);
+        Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId, false);
         return getRedisCntMap(resultMap);
     }
 
