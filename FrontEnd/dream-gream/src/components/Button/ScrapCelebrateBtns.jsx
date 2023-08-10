@@ -97,11 +97,6 @@ function ScrapCelebrateBtns({ post }) {
         .then((response) => {
           console.log('축하하기 완료', response);
 
-          toast.success('축하가 완료되었습니다', {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-          });
-
           setIsCelebrated(true);
           setCelebrateCount(celebrateCount + 1);
         })
@@ -113,10 +108,7 @@ function ScrapCelebrateBtns({ post }) {
         .post(`${API_URL}/api/posts/celebrates/remove`, requestData)
         .then((response) => {
           console.log('축하취소 완료', response);
-          toast.success('축하하기가 취소되었습니다', {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-          });
+
           setIsCelebrated(false);
           setCelebrateCount(celebrateCount - 1);
         })
@@ -129,7 +121,9 @@ function ScrapCelebrateBtns({ post }) {
   };
 
   const scrap = () => {
-    const scrapData = {};
+    const scrapData = {
+      post_id: post.post_id,
+    };
     axiosInstance
       .post(`${API_URL}/api/posts/${post.post_id}/scrap`, scrapData)
       .then((response) => {

@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/no-array-index-key */
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import axios from 'axios';
-import ReactPaginate from 'react-paginate';
 import Topbar from '../../components/Common/Topbar';
 import CategoryButtons from '../../components/Button/CategoryButtons';
 import BestBucketList from '../../components/Feed/BestBucketList';
 import FeedForExplore from '../../components/Feed/FeedForExplore';
 import Member from '../../components/Feed/Member';
 import ScrapCheerUpBtns from '../../components/Button/ScrapCheerUpBtns';
-import ToTopButton from '../../components/Button/ToTopButton';
 import { API_URL } from '../../config';
+
+import 'swiper/swiper.min.css';
+import 'swiper/swiper-bundle.min.css';
+import './cheerUpFeed.css';
 
 function CheerUpFeed() {
   const [postList, setPostList] = useState([]);
   const [bestBucketList, setBestBucketList] = useState([]);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -44,12 +49,42 @@ function CheerUpFeed() {
         <CategoryButtons />
 
         <br />
-        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-          BEST 버킷리스트
+
+        <div className="w-[360px] h-[200px] relative bg-white">
+          <div className="left-[26px] top-[8px] absolute text-zinc-800 text-lg font-bold leading-[25.20px]">
+            BEST 버킷리스트
+          </div>
+          {/* <div className="w-[308.12px] h-32 left-[26px] top-[47px] absolute"> */}
+          <Swiper
+            slidesPerView={1}
+            // spaceBetween={30}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Pagination]}
+            className="mySwiper"
+          >
+            {bestBucketList.map((bestBucketItem, index) => {
+              const isEvenIndex = index % 2 === 0;
+              const otherIndex = isEvenIndex ? index + 1 : index - 1;
+              const otherBestBucketItem = bestBucketList[otherIndex];
+
+              return (
+                <SwiperSlide key={index}>
+                  <BestBucketList
+                    className="A"
+                    bestBucketItem={bestBucketItem}
+                  />
+                  <BestBucketList
+                    className="B"
+                    bestBucketItem={otherBestBucketItem}
+                  />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+          {/* </div> */}
         </div>
-        {bestBucketList.map((bestBucketItem) => (
-          <BestBucketList bestBucketItem={bestBucketItem} />
-        ))}
       </div>
       <br />
       <hr />
@@ -74,26 +109,6 @@ function CheerUpFeed() {
       <br />
       <br />
       <br />
-      {/* <div
-        className="ToTopButtonDiv"
-        style={{
-          position: 'fixed',
-          top: 675,
-          transform: 'translateX(calc(100% + 260px))',
-        }}
-      >
-        <ToTopButton />
-      </div> */}
-      {/* <div
-        className="NavDiv"
-        style={{
-          position: 'fixed',
-          top: 736,
-          width: '100%',
-        }}
-      >
-        <Navbar />
-      </div> */}
     </div>
   );
 }
