@@ -47,10 +47,22 @@ function MyFeed() {
     if (!category) {
       return data; // 카테고리가 선택되지 않았으면 모든 데이터를 반환
     } else {
-      return data.filter((post) => post.category_id === category); // 선택한 카테고리와 일치하는 데이터만 반환
+      const categoryId = categorysValue[category];
+      return data.filter((post) => post.category_id === categoryId); // 선택한 카테고리와 일치하는 데이터만 반환
     }
   };
 
+  const categorysValue = {
+    Travel: 1,
+    Health: 2,
+    Learning: 3,
+    Culture: 4,
+    Love: 5,
+    Food: 6,
+    Shopping: 7,
+    Work: 8,
+    etc: 9,
+  };
   const categorys = {
     Travel: '여행',
     Health: '건강/운동',
@@ -70,12 +82,13 @@ function MyFeed() {
         const response = await axiosInstance.get(
           `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
         );
+        const postData = response.data.data;
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
         setPostList(post_list);
         setAchievedList(achieved_list);
-        console.log(postList);
+        console.log(postData);
         console.log(achieveList);
       } catch (error) {
         console.error('Error while fetching data:', error);
@@ -123,6 +136,7 @@ function MyFeed() {
     fetchData();
   }, []);
   const handleCategoryChange = (newCategory) => {
+    console.log(category);
     if (category === newCategory) {
       setCategory(''); // 같은 카테고리면 전체 보기로 변경
     } else {
@@ -130,12 +144,13 @@ function MyFeed() {
     }
     setIsOverlayOpen(false);
   };
+  console.log(category);
+
   const achievedPercent = Math.floor(
     (achieveList.length / (achieveList.length + postList.length)) * 100,
   );
   const achievedPercentBar = (achievedPercent * Number(232)) / Number(100);
-  console.log(achievedPercentBar);
-  console.log(typeof achievedPercentBar);
+
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
       <div className="w-[360px] h-[60px] left-0 top-0 absolute">
