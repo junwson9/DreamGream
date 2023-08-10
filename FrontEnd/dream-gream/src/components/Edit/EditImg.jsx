@@ -8,8 +8,10 @@ import React, { useState, useRef } from 'react';
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
 import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
-function EditImg({ image, onImageUpdate }) {
-  const [mainImg, setMainImg] = useState(image);
+function EditImg({ post, isAiImg, onImageUpdate }) {
+  const initialMainImg = isAiImg ? post.ai_image : post.achievement_image;
+  const [mainImg, setMainImg] = useState(initialMainImg);
+
   const fileInputRef = useRef(null);
 
   const setPreviewImg = (event) => {
@@ -63,10 +65,12 @@ function EditImg({ image, onImageUpdate }) {
               src={mainImg}
               alt="썸네일"
             />
-            <ClearBtn
-              className="absolute right-2 top-2 cursor-pointer"
-              onClick={clearImg}
-            />
+            {isAiImg ? null : (
+              <ClearBtn
+                className="absolute right-2 top-2 cursor-pointer"
+                onClick={clearImg}
+              />
+            )}
           </>
         ) : (
           <AddImgIcon
