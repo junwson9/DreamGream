@@ -4,6 +4,7 @@ import TopBar from '../../components/Common/Topbar';
 import InputBox from '../../components/InputBox/InputBox';
 import MemberItem from '../../components/Member/MemberItem';
 import { API_URL } from '../../config';
+import axiosInstance from '../../utils/axiosInterceptor';
 // isFollowed 처리만 해주고 프로필이나 이름 누르면 navigate되게끔
 
 function FindMember() {
@@ -11,27 +12,29 @@ function FindMember() {
   const [noResult, setNoResult] = useState(false);
   const [memberList, setMemberList] = useState([]); // 빈 배열로 초기화
   // console.log(memberList);
-  const handleSaveClick = (value) => {
+  const handleSaveClick = async (value) => {
     setNickname(value);
-    const queryParams = new URLSearchParams({ nickname: value }); // 넘어온 값 사용
-    const url = `${API_URL}/api/members?${queryParams}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Response from server:', data);
-        const receivedMemberList = data.data.member_list;
-        setMemberList(receivedMemberList);
+    console.log(nickname);
 
-        // 검색 결과가 없을 때 noResult 상태를 설정
-        if (!receivedMemberList || receivedMemberList.length === 0) {
-          setNoResult(true);
-        } else {
-          setNoResult(false);
-        }
-      })
-      .catch((error) => {
-        console.error('Error occurred:', error);
-      });
+    const queryParams = new URLSearchParams({ nickname: nickname }); // 넘어온 값 사용
+    const url = `${API_URL}/api/members?${queryParams}`;
+
+    try {
+      const response = await axiosInstance.get(url);
+      console.log('Response from server:', response.data);
+      const receivedMemberList = response.data.data.member_list;
+      setMemberList(receivedMemberList);
+      console.log(receivedMemberList);
+
+      // 검색 결과가 없을 때 noResult 상태를 설정
+      if (!receivedMemberList || receivedMemberList.length === 0) {
+        setNoResult(true);
+      } else {
+        setNoResult(false);
+      }
+    } catch (error) {
+      console.error('Error occurred:', error);
+    }
   };
 
   return (
@@ -55,7 +58,9 @@ function FindMember() {
               <div key={member.id}>
                 <MemberItem
                   nickname={member.nickname}
-                  profileImg={member.profileImg}
+                  profileImg={member.profile_img}
+                  toMemberId={member.member_id}
+                  isFollowed={member.is_followed}
                 />
                 {/* 추가적인 정보를 띄우고 싶으면 여기에 추가 */}
               </div>
