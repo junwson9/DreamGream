@@ -15,12 +15,14 @@ function MyFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState({
-    cnt_followers: 0,
-    cnt_followings: 0,
+    cnt_followers: 'null',
+    cnt_followings: 'null',
   });
+
   const [category, setCategory] = useState('');
-  const Navigate = useNavigate();
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const Navigate = useNavigate();
+
   const handleFollowersClick = () => {
     Navigate(`/follower/${user.member_id}`);
   };
@@ -47,7 +49,6 @@ function MyFeed() {
         const response = await axiosInstance.get(
           `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
         );
-        // console.log(response);
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
@@ -60,20 +61,17 @@ function MyFeed() {
 
     fetchData();
   }, []);
-  // console.log(postList);
+
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
           `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
         );
-        // console.log(response);
-        const data = response.data.data.member;
+        const memberData = response.data.data.member;
         // member id 로컬스토리지에 저장
-        localStorage.setItem('member_id', data.member_id);
-        // console.log(data);
-        setUser(data);
-        // console.log(data);
+        localStorage.setItem('member_id', memberData.member_id);
+        setUser(memberData);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -83,18 +81,15 @@ function MyFeed() {
   }, []);
 
   useEffect(() => {
-    // console.log(user.memberId);
     async function fetchData() {
       try {
         const member_id = localStorage.getItem('member_id');
-        console.log(member_id);
         const response = await axiosInstance.get(
           `${API_URL}/api/members/${member_id}`,
         );
-        // console.log(response);
         const data = response.data.data.member;
+
         setUser(data);
-        // console.log(data);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
