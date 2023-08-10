@@ -88,28 +88,24 @@ public class PostQueryDslRepositoryImpl implements PostQueryDslRepository {
 	}
 
 
+	// 개인피드를 조회해오는 메서드
 	@Override
-	public Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId) {
-		BooleanExpression expression = post.member.memberId.eq(memberId).and(post.isDisplay.eq(true));
-		return getPersonalPostsMap(expression);
-	}
-
-	@Override
-	public Map<String, List<PostListResponseDto>> findPostsByMember(Long memberId) {
+	public Map<String, List<PostListResponseDto>> findPostsByMember(Long memberId, Boolean onlyPublic) {
 		BooleanExpression expression = post.member.memberId.eq(memberId);
-		return getPersonalPostsMap(expression);
-	}
+		if (onlyPublic) {
+			expression = expression.and(post.isDisplay.eq(true));
+		}
 
-
-
-	private Map<String, List<PostListResponseDto>> getPersonalPostsMap(BooleanExpression expression) {
 		Map<String, List<PostListResponseDto>> resultMap = new HashMap<>();
+
+		BooleanExpression expressionAchieved = expression.and(post.isAchieved.eq(true));
+		BooleanExpression expressionNotAchieved = expression.and(post.isAchieved.eq(false));
 
 		OrderSpecifier<?> orderSpecifierAchieved = post.modifiedDate.desc();
 		OrderSpecifier<?> orderSpecifierNotAchieved = post.postId.desc();
 
-		List<PostListResponseDto> achievedPostList = getNotPageablePostsResults(expression, orderSpecifierAchieved);
-		List<PostListResponseDto> postList = getNotPageablePostsResults(expression, orderSpecifierNotAchieved);
+		List<PostListResponseDto> achievedPostList = getNotPageablePostsResults(expressionAchieved, orderSpecifierAchieved);
+		List<PostListResponseDto> postList = getNotPageablePostsResults(expressionNotAchieved, orderSpecifierNotAchieved);
 
 		resultMap.put("achieved_post_list", achievedPostList);
 		resultMap.put("post_list", postList);
