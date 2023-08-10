@@ -107,6 +107,10 @@ public class PostService {
                 // 기존의 사진 파일 지우고 새로운 사진을 올릴 경우, S3 거쳐서 이미지 url 저장
                 String imageUrl = s3Uploader.getImageUrl("post", file, memberId);
                 post.setAchievementImg(imageUrl);
+            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == false && !file.isEmpty()){
+                // 달성전 => 달성후 피드 수정
+                String imageUrl = s3Uploader.getImageUrl("post", file, memberId);
+                post.setAchievementImg(imageUrl);
             } else {
                 // 사진관련 변경사항 없을 경우
             }
