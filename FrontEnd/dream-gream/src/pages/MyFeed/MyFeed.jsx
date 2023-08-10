@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TopBar from '../../components/Common/Topbar';
-import TwoTapButton from '../../components/Button/TwoTapButton';
+import TwoTapButton from '../../components/Button/TwoTapButtonMyfeed';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as DownArrow } from '../../assets/DownArrow.svg';
 import CategoryButtons from './../../components/Button/CategoryButtons2';
@@ -18,7 +18,10 @@ function MyFeed() {
     cnt_followers: 'null',
     cnt_followings: 'null',
   });
-
+  const [activeTab, setActiveTab] = useState('inProgress');
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
   const [category, setCategory] = useState('');
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const Navigate = useNavigate();
@@ -219,6 +222,9 @@ function MyFeed() {
           rightLabel="달성완료"
           leftValue={postList.length}
           rightValue={achieveList.length}
+          leftActive={activeTab === 'inProgress'} // 달성중 탭이 선택된 경우
+          onLeftTap={() => handleTabChange('inProgress')} // 달성중 탭 클릭 시 처리
+          onRightTap={() => handleTabChange('achieved')} // 달성완료 탭 클릭 시 처리
         />
       </div>
 
@@ -227,15 +233,26 @@ function MyFeed() {
           {postList.length}
         </div>
         <div className="top-[35px] left-[5px] absolute">
-          {postList.map((post, index) => (
-            <MyFeedCard
-              key={index}
-              title={post.title}
-              aiImg={post.ai_img}
-              cheerCount={post.cheer_cnt}
-              postId={post.post_id}
-            />
-          ))}
+          {activeTab === 'inProgress' // 달성중 탭이 선택된 경우
+            ? postList.map((post, index) => (
+                <MyFeedCard
+                  key={index}
+                  title={post.title}
+                  aiImg={post.ai_img}
+                  cheerCount={post.cheer_cnt}
+                  postId={post.post_id}
+                />
+              ))
+            : // 달성완료 탭이 선택된 경우
+              achieveList.map((post, index) => (
+                <MyFeedCard
+                  key={index}
+                  title={post.title}
+                  aiImg={post.ai_img}
+                  cheerCount={post.cheer_cnt}
+                  postId={post.post_id}
+                />
+              ))}
           <br />
           <br />
           <br />
