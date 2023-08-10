@@ -92,7 +92,9 @@ function MyFeed() {
         const memberData = response.data.data.member;
         // member id 로컬스토리지에 저장
         localStorage.setItem('member_id', memberData.member_id);
-        setUser(memberData);
+        // console.log(memberData);
+        // console.log(memberData.cnt_followings);
+        // setUser(memberData);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -108,9 +110,9 @@ function MyFeed() {
         const response = await axiosInstance.get(
           `${API_URL}/api/members/${member_id}`,
         );
-        const data = response.data.data.member;
+        const memberData = response.data.data.member;
 
-        setUser(data);
+        setUser(memberData);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
