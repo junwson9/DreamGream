@@ -1,6 +1,6 @@
-/* eslint-disable */
-import { API_URL } from '../config';
-import axiosInstance from './axiosInterceptor';
+// /* eslint-disable */
+// import { API_URL } from '../config';
+// import axiosInstance from './axiosInterceptor';
 
 export const UseInfiniteScroll = async (lastPostID, size) => {
     let res

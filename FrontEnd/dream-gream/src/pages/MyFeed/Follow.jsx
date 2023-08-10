@@ -20,6 +20,39 @@ function Follow() {
   const [isFollower, setIsFollower] = useState(true); // 초기 상태를 팔로워로 설정
   const { memberId } = useParams();
 
+  const fetchData = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${API_URL}/api/members/${memberId}`,
+      );
+      const memberData = response.data.data.member;
+      setMember(memberData);
+
+      const followResponse = await axiosInstance.get(
+        `${API_URL}/api/members/${memberId}${
+          isFollower ? '/followers' : '/followings'
+        }`,
+      );
+      const fetchedList =
+        followResponse.data.data[isFollower ? 'followerList' : 'followingList'];
+      if (isFollower) {
+        setFollowerList(fetchedList);
+        setFollowingList([]);
+      } else {
+        setFollowerList([]);
+        setFollowingList(fetchedList);
+      }
+      console.log(followerList);
+      console.log(followingList);
+    } catch (error) {
+      console.error('Error while fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // 초기 렌더링 시 fetchData 호출
+  }, [memberId, isFollower]);
+
   const handleFollowStatusChange = async (memberId) => {
     try {
       // 팔로우 상태 변경 로직 구현
@@ -42,39 +75,15 @@ function Follow() {
     }
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axiosInstance.get(
-          `${API_URL}/api/members/${memberId}`,
-        );
-        const memberData = response.data.data.member;
-        setMember(memberData);
-
-        const followResponse = await axiosInstance.get(
-          `${API_URL}/api/members/${memberId}${
-            isFollower ? '/followers' : '/followings'
-          }`,
-        );
-        const list =
-          followResponse.data.data[
-            isFollower ? 'followerList' : 'followingList'
-          ];
-
-        if (isFollower) {
-          setFollowerList(list);
-          setFollowingList([]);
-        } else {
-          setFollowerList([]);
-          setFollowingList(list);
-        }
-      } catch (error) {
-        console.error('Error while fetching data:', error);
-      }
-    }
-
+  const handleRightTap = () => {
+    setIsFollower(true);
     fetchData();
-  }, [memberId, isFollower]);
+  };
+
+  const handleLeftTap = () => {
+    setIsFollower(false);
+    fetchData();
+  };
 
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
@@ -90,14 +99,8 @@ function Follow() {
         leftLabel={`팔로잉 ${member.cnt_followings}`}
         memberId={memberId}
         leftActive={!isFollower}
-        onRightTap={() => {
-          setIsFollower(true); // 오른쪽 탭 클릭 시 팔로워로 변경
-          fetchData(); // 팔로워 목록 갱신을 위해 API 호출
-        }}
-        onLeftTap={() => {
-          setIsFollower(false); // 왼쪽 탭 클릭 시 팔로잉으로 변경
-          fetchData(); // 팔로잉 목록 갱신을 위해 API 호출
-        }}
+        onRightTap={handleRightTap}
+        onLeftTap={handleLeftTap}
       />
       <div className="top-[125px] w-[360px] absolute">
         {list && list.length > 0 ? (
@@ -115,9 +118,11 @@ function Follow() {
           ))
         ) : (
           <div className="absolute top-[180px] left-[65px] text-center text-neutral-700 text-base font-medium leading-snug">
-            {isFollower
-              ? '아직 팔로워가 없습니다.'
-              : '아직 팔로잉한 사람이 없습니다.'}
+            <div style={{ textAlign: 'center' }}>
+              {isFollower
+                ? '아직 팔로워인 사람이 없습니다.'
+                : '아직 팔로잉한 사람이 없습니다.'}
+            </div>
           </div>
         )}
       </div>
