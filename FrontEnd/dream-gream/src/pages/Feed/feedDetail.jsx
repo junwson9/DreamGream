@@ -30,12 +30,10 @@ function FeedDetail() {
     console.log(post_id);
   }, [post_id]);
 
-
-  
   return (
     <>
       <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
-        <Topbar />
+        <Topbar showCloseButton={false} />
         <div className="main">
           <Member post={post} />
           <FeedForDetail post={post} />
