@@ -70,7 +70,7 @@ function MyFeed() {
         );
         const memberData = response.data.data.member;
         // member id 로컬스토리지에 저장
-        localStorage.setItem('member_id', data.memberData);
+        localStorage.setItem('member_id', memberData.member_id);
         setUser(memberData);
       } catch (error) {
         console.error('Error while fetching data:', error);
