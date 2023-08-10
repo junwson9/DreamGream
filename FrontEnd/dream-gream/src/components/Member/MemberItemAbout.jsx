@@ -29,7 +29,7 @@ function MemberItem({ toMemberId, nickname, profileImg }) {
       />
       <div className="w-[177px] left-[110px] top-[25px] absolute text-neutral-700 text-xl font-medium leading-snug">
         {nickname}
-        <div className="absolute top-[26px] left-[10px]">
+        <div className="absolute top-[0px] left-[200px]">
           <RightArrowIcon />
         </div>
       </div>
