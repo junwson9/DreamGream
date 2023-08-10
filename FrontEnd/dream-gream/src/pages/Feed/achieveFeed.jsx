@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect,Fragment } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -14,38 +15,39 @@ import { API_URL } from '../../config';
 
 function AchieveFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
-  const {ref,inView} = useInView()
-  const fetchInfiniteScrollData = (pageParam) => 
-     UseInfiniteScroll(pageParam, 10) // Use your custom hook here
-  ;
+  const {ref,inView} = useInView();
+  const fetchInfiniteScrollData = (pageParam) => UseInfiniteScroll(pageParam, 10);
+
   const { data: postInfoList, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ['infinitePostList'],
     ({pageParam = 999999 }) => fetchInfiniteScrollData(pageParam),
     {
       getNextPageParam: (lastPage) => !lastPage.isLast ? lastPage.nextLastPostId : undefined
     }
-  );
+    );
   
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/api/posts/best/achieved`)
-      .then((response) => {
-        setBestBucketList(response.data.data.post_list);
-        console.log(response);
-        console.log('달성후 베스트 조회에 성공');
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${API_URL}/api/posts/best/achieved`)
+  //     .then((response) => {
+  //       setBestBucketList(response.data.data.post_list);
+  //       console.log(response);
+  //       console.log('달성후 베스트 조회에 성공');
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, []);
   useEffect(() => {
     if (inView) 
     {fetchNextPage();
+    console.log(postInfoList)
   }
   }, [inView]);
+
 
   return (
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
       <Topbar />
-      <div className="header">
+      {/* <div className="header">
         <CategoryButtons />
 
         <br />
@@ -53,18 +55,18 @@ function AchieveFeed() {
           BEST 버킷리스트
         </div>
         {bestBucketList.map((bestBucketItem) => (
-          <BestBucketList bestBucketItem={bestBucketItem} />
+          <BestBucketList key={bestBucketItem.id} bestBucketItem={bestBucketItem} />
         ))}
-      </div>
+      </div> */}
       <br />
       <hr />
       <div className="main">
-      {postInfoList?.pages.map((page) => (
-          <Fragment key={page.postId}>
-            <div className="article" key={page.postId}>
-              <Member post={page} />
-              <FeedForExplore post={page} />
-              <ScrapCelebrateBtns post={page} />
+      {postInfoList?.pages[0].postList.map((post) => (
+          <Fragment key={post.postId}>
+            <div className="article">
+              <Member post={post} />
+              <FeedForExplore post={post} />
+              <ScrapCelebrateBtns post={post} />
             <br />
             <br />
             <hr />
