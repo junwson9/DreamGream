@@ -15,7 +15,7 @@ function Posting() {
 
   const setupSSE = () => {
     const member_id = localStorage.getItem("member_id");
-    eventSource = new EventSource(`${API_URL}/sse/${member_id}`); // Replace the URL with your SSE endpoint
+    eventSource = new EventSource(`${API_URL}/api/sse/${member_id}`); // Replace the URL with your SSE endpoint
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);

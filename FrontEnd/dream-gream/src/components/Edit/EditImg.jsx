@@ -3,26 +3,28 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/alt-text */
 // EditCheerImg.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
 import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
 function EditImg({ post, isAiImg, onImageUpdate }) {
-  const initialMainImg = isAiImg ? post.ai_image : post.achievement_image;
-  const [mainImg, setMainImg] = useState(initialMainImg);
+  const [mainImg, setMainImg] = useState('');
+  console.log(`mainImg=${mainImg}`);
 
   const fileInputRef = useRef(null);
 
+  useEffect(() => {
+    const initialMainImg = isAiImg ? post.ai_img : post.achievement_img;
+    setMainImg(initialMainImg);
+  });
+
   const setPreviewImg = (event) => {
     const reader = new FileReader();
-
     reader.onload = function (e) {
       setMainImg(e.target.result);
     };
-
     reader.readAsDataURL(event.target.files[0]);
-
     onImageUpdate(event);
   };
 
