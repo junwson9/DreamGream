@@ -33,6 +33,24 @@ function MyFeed() {
   const handleFollowingsClick = () => {
     Navigate(`/following/${user.member_id}`);
   };
+
+  const getFeedData = () => {
+    if (activeTab === 'inProgress') {
+      return postList;
+    } else {
+      return achieveList;
+    }
+  };
+
+  // 카테고리에 따라 렌더링할 데이터를 선택하는 함수
+  const getFilteredData = (data) => {
+    if (!category) {
+      return data; // 카테고리가 선택되지 않았으면 모든 데이터를 반환
+    } else {
+      return data.filter((post) => post.category_id === category); // 선택한 카테고리와 일치하는 데이터만 반환
+    }
+  };
+
   const categorys = {
     Travel: '여행',
     Health: '건강/운동',
@@ -233,7 +251,17 @@ function MyFeed() {
           {postList.length}
         </div>
         <div className="top-[35px] left-[5px] absolute">
-          {activeTab === 'inProgress' // 달성중 탭이 선택된 경우
+          {getFilteredData(getFeedData()).map((post, index) => (
+            <MyFeedCard
+              key={index}
+              title={post.title}
+              aiImg={post.ai_img}
+              cheerCount={post.cheer_cnt}
+              postId={post.post_id}
+            />
+          ))}
+
+          {/* {activeTab === 'inProgress' // 달성중 탭이 선택된 경우
             ? postList.map((post, index) => (
                 <MyFeedCard
                   key={index}
@@ -252,7 +280,7 @@ function MyFeed() {
                   cheerCount={post.cheer_cnt}
                   postId={post.post_id}
                 />
-              ))}
+              ))} */}
           <br />
           <br />
           <br />
