@@ -52,7 +52,7 @@ function CheerUpFeed() {
 
   return (
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
-      <Topbar />
+      <Topbar showCloseButton={false} />
       <div className="header">
         <CategoryButtons />
 

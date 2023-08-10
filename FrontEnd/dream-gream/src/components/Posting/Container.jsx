@@ -6,7 +6,7 @@ import DropDown from './Dropdown';
 
 function Container({ selectedPeriod, onChangePeriod }) {
   const dropDownRef = useRef();
-  const periodList = ['언젠가', '1년후', '5년후', '10년후', '20년후'];
+  const periodList = ['언젠가', '1년이내', '5년이내', '10년이내', '20년이내'];
 
   const [isOpen, setIsOpen] = OpenHooks(dropDownRef, false);
   const arrowIconStyle = {
