@@ -11,7 +11,9 @@ import { ReactComponent as CheerUpIcon } from '../../assets/icons/CheerUpIcon.sv
 import { API_URL } from '../../config';
 
 function ScrapCheerUpBtns({ post }) {
-  const [isCheered, setIsCheered] = useState(post.is_cheered);
+  const [isCheered, setIsCheered] = useState(
+    post.is_cheered === null ? false : post.is_celebrateed,
+  );
   const [cheerCount, setCheerCount] = useState(post.cheer_cnt);
 
   const handleCheerClick = () => {

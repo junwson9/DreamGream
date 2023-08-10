@@ -18,6 +18,7 @@ import ViewAbout from './pages/ViewMore/ViewAbout';
 import Navbar from './components/Common/Navbar';
 import LoginError from './pages/members/LoginError';
 import UpdatePost from './pages/Feed/editFeed';
+import Follow from './pages/MyFeed/Follow';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -67,7 +68,7 @@ function App() {
               path="/follow/:memberId"
               element={
                 <>
-                  <Following />
+                  <Follow />
                   <Navbar className="Navbar" />
                 </>
               }
