@@ -90,7 +90,6 @@ function ScrapCelebrateBtns({ post }) {
   const handleCelebrateClick = () => {
     const requestData = {
       post_id: post.post_id,
-      member_id: parseInt(localStorage.getItem('member_id'), 10),
     };
 
     if (!isCelebrated) {

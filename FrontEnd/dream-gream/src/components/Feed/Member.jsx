@@ -11,6 +11,8 @@ import ModalForShare from './ModalForShare';
 import ModalForMine from './ModalForMine';
 
 function Member({ post }) {
+  const loggedInUser = parseInt(localStorage.getItem('member_id'), 10);
+
   const defaultProfileImage =
     'https://grayround.com/common/img/default_profile.png';
 
@@ -81,7 +83,7 @@ function Member({ post }) {
         <button
           type="button"
           onClick={
-            post.memberId === 'logInUser' ? showShareModal : showMineModal
+            loggedInUser === post.member_id ? showMineModal : showShareModal
           }
         >
           <MoreVert />

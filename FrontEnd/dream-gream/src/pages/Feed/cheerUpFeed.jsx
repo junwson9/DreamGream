@@ -6,6 +6,7 @@ import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import axios from 'axios';
+import axiosInstance from '../../utils/axiosInterceptor';
 import Topbar from '../../components/Common/Topbar';
 import CategoryButtons from '../../components/Button/CategoryButtons';
 import BestBucketList from '../../components/Feed/BestBucketList';
@@ -23,8 +24,15 @@ function CheerUpFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${API_URL}/api/posts`)
+    const accessToken = localStorage.getItem('ACCESS_TOKEN');
+    const loginFlag = accessToken !== null;
+
+    axiosInstance
+      .get(`${API_URL}/api/posts`, {
+        params: {
+          'login-flag': loginFlag,
+        },
+      })
       .then((response) => {
         setPostList(response.data.data.post_list.content);
         console.log(response);
