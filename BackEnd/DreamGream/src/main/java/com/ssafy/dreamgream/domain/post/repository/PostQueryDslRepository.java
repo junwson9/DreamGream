@@ -11,9 +11,9 @@ public interface PostQueryDslRepository {
 
 	Slice<PostListResponseDto> findPublicPostsByAchievedStatus(Long categoryId, Boolean isAchieved, Post lastPost, Pageable pageable);
 
-	Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId);
+//	Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId);
 
-	Map<String, List<PostListResponseDto>> findPostsByMember(Long memberId);
+	Map<String, List<PostListResponseDto>> findPostsByMember(Long memberId, Boolean onlyPublic);
 
 	List<PostListResponseDto> findBestPostsByAchievedStatus(Long categoryId, Boolean isAchieved);
 
