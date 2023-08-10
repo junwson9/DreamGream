@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import TopBar from '../../components/Common/Topbar2';
-// import FollowItem from '../../components/Follow/FollowItem';
-import TwoTapButton from '../../components/Button/TwoTapButtonFollow';
+import FollowItem from '../../components/Follow/FollowItem';
+import TwoTapButton from '../../components/Button/TwoTapButtonFollowAdd';
 import FollowList from '../../components/Follow/FollowList';
 import MemberItem from '../../components/Member/MemberItem';
 import { useParams } from 'react-router-dom';
@@ -15,6 +15,8 @@ function Follow() {
   const [member, setMember] = useState([]);
   const [page, setPage] = useState('0');
   const [list, setList] = useState([]);
+  const [followerList, setFollowerList] = useState([]);
+  const [followingList, setFollowingList] = useState([]);
   const [isFollower, setIsFollower] = useState(true); // 초기 상태를 팔로워로 설정
   const { memberId } = useParams();
 
@@ -44,15 +46,28 @@ function Follow() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
+          `${API_URL}/api/members/${memberId}`,
+        );
+        const memberData = response.data.data.member;
+        setMember(memberData);
+
+        const followResponse = await axiosInstance.get(
           `${API_URL}/api/members/${memberId}${
             isFollower ? '/followers' : '/followings'
           }`,
         );
-        const memberData = response.data.data.member;
         const list =
-          response.data.data[isFollower ? 'followerList' : 'followingList'];
-        setMember(memberData);
-        setList(list);
+          followResponse.data.data[
+            isFollower ? 'followerList' : 'followingList'
+          ];
+
+        if (isFollower) {
+          setFollowerList(list);
+          setFollowingList([]);
+        } else {
+          setFollowerList([]);
+          setFollowingList(list);
+        }
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -75,8 +90,14 @@ function Follow() {
         leftLabel={`팔로잉 ${member.cnt_followings}`}
         memberId={memberId}
         leftActive={!isFollower}
-        onRightTap={() => setIsFollower(true)} // 오른쪽 탭이 눌리면 팔로워로 변경
-        onLeftTap={() => setIsFollower(false)} // 왼쪽 탭이 눌리면 팔로잉으로 변경
+        onRightTap={() => {
+          setIsFollower(true); // 오른쪽 탭 클릭 시 팔로워로 변경
+          fetchData(); // 팔로워 목록 갱신을 위해 API 호출
+        }}
+        onLeftTap={() => {
+          setIsFollower(false); // 왼쪽 탭 클릭 시 팔로잉으로 변경
+          fetchData(); // 팔로잉 목록 갱신을 위해 API 호출
+        }}
       />
       <div className="top-[125px] w-[360px] absolute">
         {list && list.length > 0 ? (

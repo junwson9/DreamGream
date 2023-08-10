@@ -9,6 +9,8 @@ import { API_URL } from '../../config';
 import axiosInstance from '../../utils/axiosInterceptor';
 import MemberItem from '../../components/Member/MemberItemAbout';
 
+// import 'swiper/swiper.css';
+
 function ViewAbout() {
   // accesstoken을 확인 -> 없어? 그러면 없는 기준으로 화면 띄워
   // 있어 -> 있으면 회원정보 조회하고 profileimg 닉네임 같은거 추가
@@ -40,17 +42,12 @@ function ViewAbout() {
 
   const handleLogout = async () => {
     try {
-      const access_token = localStorage.getItem('ACCESS_TOKEN');
-      const refresh_token = localStorage.getItem('REFRESH_TOKEN');
-      console.log(refresh_token);
-      console.log(access_token);
       await axiosInstance.post(`${API_URL}/api/auth/logout`, {});
       // 로그아웃하고 로그인 페이지로 이동시키기 or 메인피드로 이동시키기
       console.log('로그아웃 성공');
       localStorage.removeItem('ACCESS_TOKEN');
       navigate('/login');
     } catch (error) {
-      console.log('ㅎㅇ' + access_token);
       console.error('Error logging out:', error);
     }
   };
