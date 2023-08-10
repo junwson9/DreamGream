@@ -12,7 +12,6 @@ function BestBucketList({ bestBucketItem }) {
   const navigate = useNavigate();
 
   const goFeedDetail = () => {
-    // ++url 수정 필요
     navigate(`/feed/${bestBucketItem.post_id}`);
   };
 
