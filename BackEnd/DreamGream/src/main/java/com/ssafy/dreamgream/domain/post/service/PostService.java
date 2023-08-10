@@ -25,6 +25,7 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -267,6 +268,7 @@ public class PostService {
     }
 
 
+    @Cacheable(value = "BEST", key = "(#isAchieved == true ? 'achieved' : 'notAchieved') + '_' + (#categoryId == null ? 'all' : #categoryId)")
     public List<PostListResponseDto> findBestPostsByAchievedStatus(Long categoryId, boolean isAchieved) {
         List<PostListResponseDto> postList = postRepository.findBestPostsByAchievedStatus(categoryId, isAchieved);
         return postList;
