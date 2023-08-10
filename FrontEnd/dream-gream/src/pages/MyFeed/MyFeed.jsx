@@ -14,14 +14,13 @@ import MyFeedCard from '../../components/Feed/MyFeedCard';
 function MyFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
-  const [user, setUser] = useState({
-    cnt_followers: 'null',
-    cnt_followings: 'null',
-  });
+  const [user, setUser] = useState('');
+  const [memberId, setMemberId] = useState('');
   const [activeTab, setActiveTab] = useState('inProgress');
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
+  const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState('');
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const Navigate = useNavigate();
@@ -63,6 +62,7 @@ function MyFeed() {
     Work: 8,
     etc: 9,
   };
+
   const categorys = {
     Travel: '여행',
     Health: '건강/운동',
@@ -80,6 +80,24 @@ function MyFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
+          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
+        );
+        const memberIdData = response.data.data.member;
+        // member id 로컬스토리지에 저장
+        localStorage.setItem('member_id', memberIdData.member_id);
+        setMemberId(memberIdData.member_id);
+      } catch (error) {
+        console.error('Error while fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axiosInstance.get(
           `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
         );
         const postData = response.data.data;
@@ -92,6 +110,7 @@ function MyFeed() {
         console.log(achieveList);
       } catch (error) {
         console.error('Error while fetching data:', error);
+        Navigate('/loginerror');
       }
     }
 
@@ -102,39 +121,22 @@ function MyFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
-        );
-        const memberData = response.data.data.member;
-        // member id 로컬스토리지에 저장
-        localStorage.setItem('member_id', memberData.member_id);
-        // console.log(memberData);
-        // console.log(memberData.cnt_followings);
-        // setUser(memberData);
-      } catch (error) {
-        console.error('Error while fetching data:', error);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const member_id = localStorage.getItem('member_id');
-        const response = await axiosInstance.get(
-          `${API_URL}/api/members/${member_id}`,
+          `${API_URL}/api/members/${memberId}`,
         );
         const memberData = response.data.data.member;
 
         setUser(memberData);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
     }
 
-    fetchData();
-  }, []);
+    if (memberId) {
+      fetchData();
+    }
+  }, [memberId]);
+
   const handleCategoryChange = (newCategory) => {
     console.log(category);
     if (category === newCategory) {
