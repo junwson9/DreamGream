@@ -19,7 +19,7 @@ public class CelebrateService {
     private final MemberService memberService;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void addCelebrate(Long postId, Long memberId) {
+    public void addCelebrate(Long postId) {
         Post post = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
 
@@ -31,7 +31,7 @@ public class CelebrateService {
         redisTemplate.opsForSet().add(keyMember, String.valueOf(postId));
     }
 
-    public void removeCelebrate(Long postId, Long memberId) {
+    public void removeCelebrate(Long postId) {
         Post post = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
 
