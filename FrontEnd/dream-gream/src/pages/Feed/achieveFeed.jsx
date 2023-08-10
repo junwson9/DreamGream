@@ -88,4 +88,42 @@ function AchieveFeed() {
   );
 }
 
-export default AchieveFeed;
+//         <br />
+//         <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
+//           BEST 버킷리스트
+//         </div>
+//         {bestBucketList.map((bestBucketItem) => (
+//           <BestBucketList bestBucketItem={bestBucketItem} />
+//         ))}
+//       </div>
+//       <br />
+//       <hr />
+//       <div className="main">
+//         {postInfoList?.pages.map((page) => (
+//           <Fragment key={page.postId}>
+//             <div className="article" key={page.postId}>
+//               <Member post={page} />
+//               <FeedForExplore post={page} />
+//               <ScrapCelebrateBtns post={page} />
+//               <br />
+//               <br />
+//               <hr />
+//             </div>
+//           </Fragment>
+//         ))}
+//         {isFetchingNextPage ? <div>로딩중</div> : <div ref={ref} />}
+//       </div>
+//       <div className="w-[360px] h-[66px] pl-[79px] pr-[81px] pt-[21px] pb-[11px] bg-white bg-opacity-0 flex-col justify-end items-center gap-0.5 inline-flex">
+//         <div className="text-center text-neutral-400 text-[11px] font-normal">
+//           Copyright ⓒ SSAFY. All rights reserved.
+//         </div>
+//       </div>
+//       <br />
+//       <br />
+//       <br />
+//       <br />
+//     </div>
+//   );
+// }
+
+// export default AchieveFeed;

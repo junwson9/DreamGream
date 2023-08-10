@@ -42,7 +42,7 @@ function EditFeed() {
     formData.append('img_update_flag', 'true');
 
     axiosInstance
-      .post(`${API_URL}/api/posts/${post_id}/achieved`, formData)
+      .post(`${API_URL}/api/posts/${post_id}/unachieved`, formData)
       .then((response) => {
         setIsImgUpdated(true);
         console.log(response);
