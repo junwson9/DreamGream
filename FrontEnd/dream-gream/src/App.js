@@ -11,6 +11,7 @@ import CheerUpFeed from './pages/Feed/cheerUpFeed';
 import AchieveFeed from './pages/Feed/achieveFeed';
 import ShareImage from './pages/Share/ShareImage';
 import Follower from './pages/MyFeed/Follower';
+import Following from './pages/MyFeed/Following';
 import FindMember from './pages/members/FindMember';
 import FeedDetail from './pages/Feed/feedDetail';
 import ViewAbout from './pages/ViewMore/ViewAbout';
@@ -57,7 +58,16 @@ function App() {
               path="/following/:memberId"
               element={
                 <>
-                  <followingUser />
+                  <Following />
+                  <Navbar className="Navbar" />
+                </>
+              }
+            />
+            <Route
+              path="/follow/:memberId"
+              element={
+                <>
+                  <Following />
                   <Navbar className="Navbar" />
                 </>
               }

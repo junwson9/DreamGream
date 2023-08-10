@@ -14,7 +14,10 @@ import MyFeedCard from '../../components/Feed/MyFeedCard';
 function MyFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState({
+    cnt_followers: 0,
+    cnt_followings: 0,
+  });
   const [category, setCategory] = useState('');
   const Navigate = useNavigate();
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
@@ -165,7 +168,7 @@ function MyFeed() {
             }}
           >
             <a style={{ cursor: 'pointer' }} onClick={handleFollowingsClick}>
-              {user.cnt_followers}
+              {user.cnt_followings}
               <br />
             </a>
           </span>
@@ -190,7 +193,7 @@ function MyFeed() {
             }}
           >
             <a style={{ cursor: 'pointer' }} onClick={handleFollowersClick}>
-              {user.cnt_followings}
+              {user.cnt_followers}
               <br />
             </a>
           </span>
