@@ -2,6 +2,8 @@ package com.ssafy.dreamgream.global.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.ssafy.dreamgream.global.common.exception.ErrorCode;
+import com.ssafy.dreamgream.global.common.exception.customException.InvalidInputValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,11 +25,27 @@ public class S3Uploader {
     private String bucket;
 
     public String getImageUrl(String directory, MultipartFile multipartFile, Long memberId) {
+        String[] allowedExtensions = {"jpg", "jpeg", "png"};
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(multipartFile.getContentType());
         objectMetadata.setContentLength(multipartFile.getSize());
 
         String originalFilename = multipartFile.getOriginalFilename();
+
+        String type = getFileType(originalFilename);
+        boolean isAllowedExtension = false;
+
+        for (String allowedExtension : allowedExtensions) {
+            if (allowedExtension.equalsIgnoreCase(type)) {
+                isAllowedExtension = true;
+                break;
+            }
+        }
+
+        if (!isAllowedExtension) {
+            throw new InvalidInputValueException("허용되지 않은 확장자입니다.", ErrorCode.INVALID_INPUT_VALUE);
+        }
+
         String imageKey = directory + "/member_" + memberId + "/" + getUuidFileName(originalFilename);
 
         String url = null;
@@ -48,6 +66,13 @@ public class S3Uploader {
         String url = fileName.substring(fileName.indexOf(".") + 1);
 
         return UUID.randomUUID() + "_" + getDate() + url;
+    }
+
+    private String getFileType(String fileName){
+
+        String type = fileName.substring(fileName.lastIndexOf(".")+1);
+
+        return type;
     }
 
     private String getDate() {
