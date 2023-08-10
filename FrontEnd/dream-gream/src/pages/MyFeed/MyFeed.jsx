@@ -27,11 +27,11 @@ function MyFeed() {
   const Navigate = useNavigate();
 
   const handleFollowersClick = () => {
-    Navigate(`/follower/${user.member_id}`);
+    Navigate(`/follow/${user.member_id}`);
   };
 
   const handleFollowingsClick = () => {
-    Navigate(`/following/${user.member_id}`);
+    Navigate(`/follow/${user.member_id}`);
   };
 
   const getFeedData = () => {
@@ -75,6 +75,8 @@ function MyFeed() {
         // 달성전, 달성후 따로 저장
         setPostList(post_list);
         setAchievedList(achieved_list);
+        console.log(postList);
+        console.log(achieveList);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -120,7 +122,6 @@ function MyFeed() {
 
     fetchData();
   }, []);
-  console.log(user);
   const handleCategoryChange = (newCategory) => {
     if (category === newCategory) {
       setCategory(''); // 같은 카테고리면 전체 보기로 변경
@@ -129,6 +130,12 @@ function MyFeed() {
     }
     setIsOverlayOpen(false);
   };
+  const achievedPercent = Math.floor(
+    (achieveList.length / (achieveList.length + postList.length)) * 100,
+  );
+  const achievedPercentBar = (achievedPercent * Number(232)) / Number(100);
+  console.log(achievedPercentBar);
+  console.log(typeof achievedPercentBar);
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
       <div className="w-[360px] h-[60px] left-0 top-0 absolute">
@@ -141,9 +148,17 @@ function MyFeed() {
       </div>
       <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg">
         <div className="left-[109px] top-[-3px] absolute text-center"></div>
-        <div className="w-[154.63px] h-[17px] left-0 top-0 absolute bg-indigo-400 rounded-lg">
-          <div className="left-[77px] top-[-3px] absolute text-center"></div>
-        </div>
+        <div
+          style={{
+            width: `${achievedPercentBar}px`,
+            height: '17px',
+            left: '0',
+            top: '0',
+            position: 'absolute',
+            background: '#6366F1',
+            borderRadius: '0.375rem',
+          }}
+        />
       </div>
       <div
         className="w-[222px] h-10 justify-start items-start gap-[5px] inline-flex"
@@ -158,10 +173,7 @@ function MyFeed() {
               lineHeight: '18.20px',
             }}
           >
-            {Math.floor(
-              (achieveList.length / (achieveList.length + postList.length)) *
-                100,
-            )}
+            {achievedPercent}
             %
             <br />
           </span>
