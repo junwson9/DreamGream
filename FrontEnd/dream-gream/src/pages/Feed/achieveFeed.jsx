@@ -54,7 +54,6 @@ function AchieveFeed() {
     }
   }, [inView]);
 
-
   return (
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
       <Topbar />
@@ -100,7 +99,7 @@ function AchieveFeed() {
     </div>
   );
 }
-
+export default AchieveFeed;
 //         <br />
 //         <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
 //           BEST 버킷리스트
