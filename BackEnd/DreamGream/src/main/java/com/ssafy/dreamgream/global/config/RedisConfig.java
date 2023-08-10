@@ -1,7 +1,9 @@
 package com.ssafy.dreamgream.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -14,6 +16,9 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.time.Duration;
+
+@EnableCaching
 @Configuration
 @RequiredArgsConstructor
 @EnableRedisRepositories
@@ -40,12 +45,14 @@ public class RedisConfig {
 	}
 
 	// 레디스 캐시
-	public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
+	@Bean
+	public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
 		RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
 			.serializeKeysWith(RedisSerializationContext
 				.SerializationPair.fromSerializer(new StringRedisSerializer()))
 			.serializeValuesWith(RedisSerializationContext
-				.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+				.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper))) // json 직렬화
+				.entryTtl(Duration.ofHours(1)); // TTL 1시간으로 설정
 
 		return RedisCacheManager
 			.RedisCacheManagerBuilder
