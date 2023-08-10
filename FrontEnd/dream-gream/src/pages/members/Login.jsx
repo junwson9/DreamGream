@@ -9,7 +9,10 @@ function LogIn() {
 
   return (
     <>
-      <div className="w-[360px] h-[800px] pt-[165px] pb-[295px] bg-blue-300 bg-opacity-40 flex-col justify-start items-center inline-flex">
+      <div
+        className="w-[360px] pt-[165px] pb-[295px] bg-blue-300 bg-opacity-40 flex flex-col justify-start items-center"
+        style={{ minHeight: '100vh' }} // min-height 설정
+      >
         <div className="mb-20">
           <LogoBig1 />
         </div>

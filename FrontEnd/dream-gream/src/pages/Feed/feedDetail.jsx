@@ -36,7 +36,7 @@ function FeedDetail() {
   return (
     <>
       <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
-        <Topbar />
+        <Topbar showCloseButton={false} />
         <div className="main">
           <Member post={post} />
           <FeedForDetail post={post} />
