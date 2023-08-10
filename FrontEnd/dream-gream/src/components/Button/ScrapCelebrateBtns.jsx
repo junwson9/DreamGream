@@ -82,7 +82,9 @@ import { ReactComponent as CelebrateIcon } from '../../assets/icons/CelebrateIco
 import { API_URL } from '../../config';
 
 function ScrapCelebrateBtns({ post }) {
-  const [isCelebrated, setIsCelebrated] = useState(post.is_celebrateed);
+  const [isCelebrated, setIsCelebrated] = useState(
+    post.is_celebrateed === null ? false : post.is_celebrateed,
+  );
   const [celebrateCount, setCelebrateCount] = useState(post.celebrate_cnt);
 
   const handleCelebrateClick = () => {
