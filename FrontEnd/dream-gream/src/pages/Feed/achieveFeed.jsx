@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect,Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
@@ -15,17 +15,23 @@ import { API_URL } from '../../config';
 
 function AchieveFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
-  const {ref,inView} = useInView();
-  const fetchInfiniteScrollData = (pageParam) => UseInfiniteScroll(pageParam, 10);
+  const { ref, inView } = useInView();
+  const fetchInfiniteScrollData = (pageParam) =>
+    UseInfiniteScroll(pageParam, 10);
 
-  const { data: postInfoList, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const {
+    data: postInfoList,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
     ['infinitePostList'],
-    ({pageParam = 999999 }) => fetchInfiniteScrollData(pageParam),
+    ({ pageParam = 999999 }) => fetchInfiniteScrollData(pageParam),
     {
-      getNextPageParam: (lastPage) => !lastPage.isLast ? lastPage.nextLastPostId : undefined
-    }
-    );
-  
+      getNextPageParam: (lastPage) =>
+        !lastPage.isLast ? lastPage.nextLastPostId : undefined,
+    },
+  );
+
   // useEffect(() => {
   //   axios
   //     .get(`${API_URL}/api/posts/best/achieved`)
@@ -37,12 +43,11 @@ function AchieveFeed() {
   //     .catch((error) => console.log(error));
   // }, []);
   useEffect(() => {
-    if (inView) 
-    {fetchNextPage();
-    console.log(postInfoList)
-  }
+    if (inView) {
+      fetchNextPage();
+      console.log(postInfoList);
+    }
   }, [inView]);
-
 
   return (
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
@@ -61,16 +66,16 @@ function AchieveFeed() {
       <br />
       <hr />
       <div className="main">
-      {postInfoList?.pages[0].postList.map((post) => (
+        {postInfoList?.pages[0].postList.map((post) => (
           <Fragment key={post.postId}>
             <div className="article">
               <Member post={post} />
               <FeedForExplore post={post} />
               <ScrapCelebrateBtns post={post} />
-            <br />
-            <br />
-            <hr />
-          </div>
+              <br />
+              <br />
+              <hr />
+            </div>
           </Fragment>
         ))}
         {isFetchingNextPage ? <div>로딩중</div> : <div ref={ref} />}
@@ -87,7 +92,7 @@ function AchieveFeed() {
     </div>
   );
 }
-
+export default AchieveFeed;
 //         <br />
 //         <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
 //           BEST 버킷리스트

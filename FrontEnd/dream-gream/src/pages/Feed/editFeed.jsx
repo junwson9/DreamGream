@@ -14,14 +14,24 @@ import EditInfoForAcheive from '../../components/Edit/EditInfoForAcheive';
 import { API_URL } from '../../config';
 
 function EditFeed() {
+  const accessToken = localStorage.getItem('ACCESS_TOKEN');
+  const loginFlag = accessToken !== null;
+
   const [post, setPost] = useState({});
   const [isImgUpdated, setIsImgUpdated] = useState(false);
   const { post_id } = useParams();
 
+  // console.log(`ai이미지:${post.ai_img}`);
+  // console.log('post object:', JSON.stringify(post, null, 2));
+
   // 게시글 상세 조회
   useEffect(() => {
-    axios
-      .get(`${API_URL}/api/posts/${post_id}`)
+    axiosInstance
+      .get(`${API_URL}/api/posts/${post_id}`, {
+        params: {
+          'login-flag': loginFlag,
+        },
+      })
       .then((response) => {
         setPost(response.data.data.post);
         console.log(response);
