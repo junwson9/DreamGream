@@ -122,7 +122,7 @@ function App() {
                 </>
               }
             />
-            <Route path="/LoginError" element={<LoginError />} />
+            <Route path="/loginError" element={<LoginError />} />
           </Routes>
         </div>
       )}

@@ -68,10 +68,10 @@ function MyFeed() {
         const response = await axiosInstance.get(
           `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
         );
-        const data = response.data.data.member;
+        const memberData = response.data.data.member;
         // member id 로컬스토리지에 저장
-        localStorage.setItem('member_id', data.member_id);
-        setUser(data);
+        localStorage.setItem('member_id', data.memberData);
+        setUser(memberData);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }

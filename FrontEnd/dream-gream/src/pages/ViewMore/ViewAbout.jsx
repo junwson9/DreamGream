@@ -35,7 +35,7 @@ function ViewAbout() {
     if (access_token) {
       navigate('/findmember');
     } else {
-      navigate('loginerror');
+      navigate('/loginerror');
     }
   };
 
