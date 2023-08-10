@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ModalForShare from './ModalForShare';
+import axiosInstance from '../../utils/axiosInterceptor';
+import { API_URL } from '../../config';
 
 function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
   const navigate = useNavigate();
@@ -13,6 +15,19 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
 
   const handleUpdateClick = () => {
     navigate(`/updatepost/${post.post_id}`);
+    setMineModalOpen(false);
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      const response = await axiosInstance.delete(`/api/posts/${post.post_id}`);
+      console.log('삭제 요청 성공', response);
+      navigate('/myfeed')
+      // 삭제 성공 시 필요한 작업 수행
+    } catch (error) {
+      console.error('삭제 요청 실패', error);
+      // 실패 시 에러 처리
+    }
     setMineModalOpen(false);
   };
 
@@ -52,6 +67,7 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
         <button
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white rounded-bl-[10px] rounded-br-[10px] border-b justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
+          onClick={handleDeleteClick}
         >
           <div className="text-center text-[#FF0000] text-sm">삭제하기</div>
         </button>

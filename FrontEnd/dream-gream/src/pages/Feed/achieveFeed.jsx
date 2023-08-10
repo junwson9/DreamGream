@@ -36,25 +36,13 @@ function AchieveFeed() {
   //     })
   //     .catch((error) => console.log(error));
   // }, []);
-  // useEffect(() => {
-  //   if (inView) 
-  //   {fetchNextPage();
-  //   console.log(postInfoList)
-  // }
-  // }, [inView]);
-  const handleScroll = () => {
-    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
-    if (scrollHeight - scrollTop === clientHeight) {
-      fetchNextPage();
-    }
-  };
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    if (inView) 
+    {fetchNextPage();
+    console.log(postInfoList)
+  }
+  }, [inView]);
+
 
   return (
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
