@@ -15,14 +15,21 @@ import ContentCard from '../../components/Feed/ContentCard';
 import { API_URL } from '../../config';
 
 function FeedDetail() {
+  const accessToken = localStorage.getItem('ACCESS_TOKEN');
+  const loginFlag = accessToken !== null;
+
   const loggedInUser = parseInt(localStorage.getItem('member_id'), 10);
 
   const [post, setPost] = useState({});
   const { post_id } = useParams();
 
   useEffect(() => {
-    axios
-      .get(`${API_URL}/api/posts/${post_id}`)
+    axiosInstance
+      .get(`${API_URL}/api/posts/${post_id}`, {
+        params: {
+          'login-flag': loginFlag,
+        },
+      })
       .then((response) => {
         setPost(response.data.data.post);
         console.log(response);
@@ -36,7 +43,7 @@ function FeedDetail() {
   return (
     <>
       <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
-        <Topbar />
+        <Topbar showCloseButton={false} />
         <div className="main">
           <Member post={post} />
           <FeedForDetail post={post} />
