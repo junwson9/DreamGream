@@ -20,7 +20,7 @@ public class CheerService {
     private final MemberService memberService;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void addCheer(Long postId, Long memberId) {
+    public void addCheer(Long postId) {
         Post post = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
 
@@ -32,7 +32,7 @@ public class CheerService {
         redisTemplate.opsForSet().add(keyMember, String.valueOf(postId));
     }
 
-    public void removeCheer(Long postId, Long memberId) {
+    public void removeCheer(Long postId) {
         Post post = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
 

@@ -176,8 +176,8 @@ public class PostService {
             // 로그인 상태면 응원 여부 업데이트
             if(loginFlag) {
                 Long memberId = memberService.getCurrentMemberId();
-                Boolean isCelebrated = redisTemplate.opsForSet().isMember(postId, memberId.toString());
-                post.updateIsCelebrated(isCelebrated);
+                Boolean isCheered = redisTemplate.opsForSet().isMember(postId, memberId.toString());
+                post.updateIsCheered(isCheered);
             }
         }
         return results;
