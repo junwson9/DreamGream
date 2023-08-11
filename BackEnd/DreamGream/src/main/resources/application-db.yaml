@@ -18,6 +18,7 @@ spring:
     redis:
       host: localhost
       port: 6379
+      password:
   jpa:
     hibernate:
       ddl-auto: create
@@ -45,6 +46,7 @@ spring:
     redis:
       host: localhost
       port: 6379
+      password:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -54,12 +56,13 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create #테이블을 새롭게 생성
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
         format_sql: true
+  # data.spl 파일이 DB에 적용됨 -> never로 바꿔도 됨
   sql:
     init:
       mode: always
@@ -73,11 +76,41 @@ spring:
     redis:
       host: ssafy-redis-dev
       port: 6379
+      password: ssafya609
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: ssafya609
     url: jdbc:mysql://ssafy-db:3306/dreamgreamdev?characterEncoding=UTF-8&serverTimezone=UTC
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        format_sql: true
+#  sql:
+#    init:
+#      mode: always
+
+--- # prod 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-prod"
+  data:
+    redis:
+      host: ssafy-redis
+      port: 6379
+      password: ssafya609
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ssafya609
+    url: jdbc:mysql://ssafy-db:3306/dreamgream?characterEncoding=UTF-8&serverTimezone=UTC
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     defer-datasource-initialization: true
@@ -91,29 +124,4 @@ spring:
   sql:
     init:
       mode: always
-
---- # prod 설정
-spring:
-  config:
-    activate:
-      on-profile: "db-prod"
-  data:
-    redis:
-      host: ssafy-redis
-      port: 6379
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: ssafya609
-    url: jdbc:mysql://ssafy-db:3306/dreamgream?characterEncoding=UTF-8&serverTimezone=UTC
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL57Dialect
-        format_sql: true
 
