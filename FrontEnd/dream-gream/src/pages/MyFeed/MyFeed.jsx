@@ -106,8 +106,6 @@ function MyFeed() {
         // 달성전, 달성후 따로 저장
         setPostList(post_list);
         setAchievedList(achieved_list);
-        console.log(postData);
-        console.log(achieveList);
       } catch (error) {
         console.error('Error while fetching data:', error);
         Navigate('/loginerror');
@@ -138,7 +136,6 @@ function MyFeed() {
   }, [memberId]);
 
   const handleCategoryChange = (newCategory) => {
-    console.log(category);
     if (category === newCategory) {
       setCategory(''); // 같은 카테고리면 전체 보기로 변경
     } else {
@@ -146,7 +143,6 @@ function MyFeed() {
     }
     setIsOverlayOpen(false);
   };
-  console.log(category);
 
   const achievedPercent = Math.floor(
     (achieveList.length / (achieveList.length + postList.length)) * 100,
@@ -297,6 +293,8 @@ function MyFeed() {
                 activeTab === 'inProgress' ? post.cheer_cnt : post.celebrate_cnt
               }
               postId={post.post_id}
+              isDisplay={post.is_display}
+              activeTab={activeTab === 'inProgress'}
             />
           ))}
           <br />

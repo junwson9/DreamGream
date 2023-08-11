@@ -11,7 +11,7 @@ import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
 
-function OtherFeed() {
+function otherFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
@@ -20,7 +20,6 @@ function OtherFeed() {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-  const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState('');
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const Navigate = useNavigate();
@@ -100,14 +99,11 @@ function OtherFeed() {
         const response = await axiosInstance.get(
           `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
         );
-        const postData = response.data.data;
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
         setPostList(post_list);
         setAchievedList(achieved_list);
-        console.log(postData);
-        console.log(achieveList);
       } catch (error) {
         console.error('Error while fetching data:', error);
         Navigate('/loginerror');
@@ -126,7 +122,6 @@ function OtherFeed() {
         const memberData = response.data.data.member;
 
         setUser(memberData);
-        setIsLoading(false);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -138,7 +133,6 @@ function OtherFeed() {
   }, [memberId]);
 
   const handleCategoryChange = (newCategory) => {
-    console.log(category);
     if (category === newCategory) {
       setCategory(''); // 같은 카테고리면 전체 보기로 변경
     } else {
@@ -146,7 +140,6 @@ function OtherFeed() {
     }
     setIsOverlayOpen(false);
   };
-  console.log(category);
 
   const achievedPercent = Math.floor(
     (achieveList.length / (achieveList.length + postList.length)) * 100,
@@ -288,32 +281,19 @@ function OtherFeed() {
             <MyFeedCard
               key={index}
               title={post.title}
-              aiImg={post.ai_img}
-              cheerCount={post.cheer_cnt}
+              Img={
+                activeTab === 'inProgress'
+                  ? post.ai_img
+                  : post.achieve_img || post.ai_img
+              }
+              likeCount={
+                activeTab === 'inProgress' ? post.cheer_cnt : post.celebrate_cnt
+              }
               postId={post.post_id}
+              isDisplay={post.is_display}
+              activeTab={activeTab === 'inProgress'}
             />
           ))}
-
-          {/* {activeTab === 'inProgress' // 달성중 탭이 선택된 경우
-            ? postList.map((post, index) => (
-                <MyFeedCard
-                  key={index}
-                  title={post.title}
-                  aiImg={post.ai_img}
-                  cheerCount={post.cheer_cnt}
-                  postId={post.post_id}
-                />
-              ))
-            : // 달성완료 탭이 선택된 경우
-              achieveList.map((post, index) => (
-                <MyFeedCard
-                  key={index}
-                  title={post.title}
-                  aiImg={post.ai_img}
-                  cheerCount={post.cheer_cnt}
-                  postId={post.post_id}
-                />
-              ))} */}
           <br />
           <br />
           <br />
@@ -352,4 +332,4 @@ function OtherFeed() {
   );
 }
 
-export default OtherFeed;
+export default otherFeed;
