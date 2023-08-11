@@ -39,9 +39,7 @@ function PostViewImage({ handleCloseIconClick }) {
 
   console.log(postData);
   const sendPostInfo = async () => {
-    console.log('게시물 보내!!!!');
     try {
-      console.log('게시물 보내!!!!');
       // POST 요청은 body에 실어 보냄
       await axiosInstance.post(`${API_URL}/api/posts`, {
         category_id: postData.subjectData.categoryID,
@@ -51,10 +49,8 @@ function PostViewImage({ handleCloseIconClick }) {
         is_display: postData.detailData.isPublic,
         ai_img: postData.imageUrl.url,
       });
-      console.log('게시물 전송완료!')
       dispatch({ type: 'CLEAR_IMAGE_URL' });
       navigate('/myfeed');
-      // 여기에서 내피드로? 물어보기 이건 라우터 옮기면된다
     } catch (e) {
       console.error(e);
     }

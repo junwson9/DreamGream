@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TopBar from '../../components/Common/Topbar';
-import TwoTapButton from '../../components/Button/TwoTapButton';
+import TwoTapButton from '../../components/Button/TwoTapButtonMyfeed';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as DownArrow } from '../../assets/DownArrow.svg';
 import CategoryButtons from './../../components/Button/CategoryButtons2';
@@ -15,16 +15,54 @@ function MyFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
+  const [memberId, setMemberId] = useState('');
+  const [activeTab, setActiveTab] = useState('inProgress');
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+  const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState('');
-  const Navigate = useNavigate();
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const Navigate = useNavigate();
+
   const handleFollowersClick = () => {
-    Navigate(`/follower/${user.member_id}`);
+    Navigate(`/follow/${user.member_id}`);
   };
 
   const handleFollowingsClick = () => {
-    Navigate(`/following/${user.member_id}`);
+    Navigate(`/follow/${user.member_id}`);
   };
+
+  const getFeedData = () => {
+    if (activeTab === 'inProgress') {
+      return postList;
+    } else {
+      return achieveList;
+    }
+  };
+
+  // 카테고리에 따라 렌더링할 데이터를 선택하는 함수
+  const getFilteredData = (data) => {
+    if (!category) {
+      return data; // 카테고리가 선택되지 않았으면 모든 데이터를 반환
+    } else {
+      const categoryId = categorysValue[category];
+      return data.filter((post) => post.category_id === categoryId); // 선택한 카테고리와 일치하는 데이터만 반환
+    }
+  };
+
+  const categorysValue = {
+    Travel: 1,
+    Health: 2,
+    Learning: 3,
+    Culture: 4,
+    Love: 5,
+    Food: 6,
+    Shopping: 7,
+    Work: 8,
+    etc: 9,
+  };
+
   const categorys = {
     Travel: '여행',
     Health: '건강/운동',
@@ -42,37 +80,37 @@ function MyFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
+          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
+        );
+        const memberIdData = response.data.data.member;
+        // member id 로컬스토리지에 저장
+        localStorage.setItem('member_id', memberIdData.member_id);
+        setMemberId(memberIdData.member_id);
+      } catch (error) {
+        console.error('Error while fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axiosInstance.get(
           `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
         );
-        // console.log(response);
+        const postData = response.data.data;
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
         setPostList(post_list);
         setAchievedList(achieved_list);
+        console.log(postData);
+        console.log(achieveList);
       } catch (error) {
         console.error('Error while fetching data:', error);
-      }
-    }
-
-    fetchData();
-  }, []);
-  // console.log(postList);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axiosInstance.get(
-          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
-        );
-        // console.log(response);
-        const data = response.data.data.member;
-        // member id 로컬스토리지에 저장
-        localStorage.setItem('member_id', data.member_id);
-        // console.log(data);
-        setUser(data);
-        // console.log(data);
-      } catch (error) {
-        console.error('Error while fetching data:', error);
+        Navigate('/loginerror');
       }
     }
 
@@ -80,27 +118,27 @@ function MyFeed() {
   }, []);
 
   useEffect(() => {
-    // console.log(user.memberId);
     async function fetchData() {
       try {
-        const member_id = localStorage.getItem('member_id');
-        console.log(member_id);
         const response = await axiosInstance.get(
-          `${API_URL}/api/members/${member_id}`,
+          `${API_URL}/api/members/${memberId}`,
         );
-        // console.log(response);
-        const data = response.data.data.member;
-        setUser(data);
-        // console.log(data);
+        const memberData = response.data.data.member;
+
+        setUser(memberData);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
     }
 
-    fetchData();
-  }, []);
-  console.log(user);
+    if (memberId) {
+      fetchData();
+    }
+  }, [memberId]);
+
   const handleCategoryChange = (newCategory) => {
+    console.log(category);
     if (category === newCategory) {
       setCategory(''); // 같은 카테고리면 전체 보기로 변경
     } else {
@@ -108,6 +146,13 @@ function MyFeed() {
     }
     setIsOverlayOpen(false);
   };
+  console.log(category);
+
+  const achievedPercent = Math.floor(
+    (achieveList.length / (achieveList.length + postList.length)) * 100,
+  );
+  const achievedPercentBar = (achievedPercent * Number(232)) / Number(100);
+
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
       <div className="w-[360px] h-[60px] left-0 top-0 absolute">
@@ -120,9 +165,17 @@ function MyFeed() {
       </div>
       <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg">
         <div className="left-[109px] top-[-3px] absolute text-center"></div>
-        <div className="w-[154.63px] h-[17px] left-0 top-0 absolute bg-indigo-400 rounded-lg">
-          <div className="left-[77px] top-[-3px] absolute text-center"></div>
-        </div>
+        <div
+          style={{
+            width: `${achievedPercentBar}px`,
+            height: '17px',
+            left: '0',
+            top: '0',
+            position: 'absolute',
+            background: '#6366F1',
+            borderRadius: '0.375rem',
+          }}
+        />
       </div>
       <div
         className="w-[222px] h-10 justify-start items-start gap-[5px] inline-flex"
@@ -137,10 +190,7 @@ function MyFeed() {
               lineHeight: '18.20px',
             }}
           >
-            {Math.floor(
-              (achieveList.length / (achieveList.length + postList.length)) *
-                100,
-            )}
+            {achievedPercent}
             %
             <br />
           </span>
@@ -165,7 +215,7 @@ function MyFeed() {
             }}
           >
             <a style={{ cursor: 'pointer' }} onClick={handleFollowingsClick}>
-              {user.cnt_followers}
+              {user.cnt_followings}
               <br />
             </a>
           </span>
@@ -190,7 +240,7 @@ function MyFeed() {
             }}
           >
             <a style={{ cursor: 'pointer' }} onClick={handleFollowersClick}>
-              {user.cnt_followings}
+              {user.cnt_followers}
               <br />
             </a>
           </span>
@@ -221,6 +271,9 @@ function MyFeed() {
           rightLabel="달성완료"
           leftValue={postList.length}
           rightValue={achieveList.length}
+          leftActive={activeTab === 'inProgress'} // 달성중 탭이 선택된 경우
+          onLeftTap={() => handleTabChange('inProgress')} // 달성중 탭 클릭 시 처리
+          onRightTap={() => handleTabChange('achieved')} // 달성완료 탭 클릭 시 처리
         />
       </div>
 
@@ -229,7 +282,7 @@ function MyFeed() {
           {postList.length}
         </div>
         <div className="top-[35px] left-[5px] absolute">
-          {postList.map((post, index) => (
+          {getFilteredData(getFeedData()).map((post, index) => (
             <MyFeedCard
               key={index}
               title={post.title}
@@ -238,6 +291,27 @@ function MyFeed() {
               postId={post.post_id}
             />
           ))}
+
+          {/* {activeTab === 'inProgress' // 달성중 탭이 선택된 경우
+            ? postList.map((post, index) => (
+                <MyFeedCard
+                  key={index}
+                  title={post.title}
+                  aiImg={post.ai_img}
+                  cheerCount={post.cheer_cnt}
+                  postId={post.post_id}
+                />
+              ))
+            : // 달성완료 탭이 선택된 경우
+              achieveList.map((post, index) => (
+                <MyFeedCard
+                  key={index}
+                  title={post.title}
+                  aiImg={post.ai_img}
+                  cheerCount={post.cheer_cnt}
+                  postId={post.post_id}
+                />
+              ))} */}
           <br />
           <br />
           <br />
