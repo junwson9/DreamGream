@@ -11,7 +11,7 @@ import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
 
-function MyFeed() {
+function OtherFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
@@ -288,17 +288,32 @@ function MyFeed() {
             <MyFeedCard
               key={index}
               title={post.title}
-              Img={
-                activeTab === 'inProgress'
-                  ? post.ai_img
-                  : post.achieve_img || post.ai_img
-              }
-              likeCount={
-                activeTab === 'inProgress' ? post.cheer_cnt : post.celebrate_cnt
-              }
+              aiImg={post.ai_img}
+              cheerCount={post.cheer_cnt}
               postId={post.post_id}
             />
           ))}
+
+          {/* {activeTab === 'inProgress' // 달성중 탭이 선택된 경우
+            ? postList.map((post, index) => (
+                <MyFeedCard
+                  key={index}
+                  title={post.title}
+                  aiImg={post.ai_img}
+                  cheerCount={post.cheer_cnt}
+                  postId={post.post_id}
+                />
+              ))
+            : // 달성완료 탭이 선택된 경우
+              achieveList.map((post, index) => (
+                <MyFeedCard
+                  key={index}
+                  title={post.title}
+                  aiImg={post.ai_img}
+                  cheerCount={post.cheer_cnt}
+                  postId={post.post_id}
+                />
+              ))} */}
           <br />
           <br />
           <br />
@@ -337,4 +352,4 @@ function MyFeed() {
   );
 }
 
-export default MyFeed;
+export default OtherFeed;
