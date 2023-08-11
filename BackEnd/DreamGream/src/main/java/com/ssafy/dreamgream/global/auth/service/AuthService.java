@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 
 public interface AuthService {
 
-	TokenResponseDto reissue(String accessToken, String refreshToken);
+	TokenResponseDto reissue(String refreshToken);
 
 	TokenResponseDto updateRoleToUser(Gender gender, Integer birthyear);
 

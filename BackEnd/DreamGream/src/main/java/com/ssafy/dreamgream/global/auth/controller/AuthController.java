@@ -32,9 +32,9 @@ public class AuthController {
 
 	@PostMapping("/token")
 	public ResponseEntity<?> reissue(HttpServletRequest request) {
-		String accessToken = jwtTokenProvider.resolveAccessToken(request);
+		log.info("토큰 재발급 요청 컨트롤러 도착");
 		String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
-		TokenResponseDto tokenResponseDto = authService.reissue(accessToken, refreshToken);
+		TokenResponseDto tokenResponseDto = authService.reissue(refreshToken);
 		ResponseDto responseDto = new ResponseDto(success, "토큰을 재발급했습니다.", Collections.singletonMap("token", tokenResponseDto));
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}

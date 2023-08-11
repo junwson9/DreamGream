@@ -37,14 +37,14 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	@Transactional
-	public TokenResponseDto reissue(String accessToken, String refreshToken) {
+	public TokenResponseDto reissue(String refreshToken) {
 		// Refresh Token 검증
 		if (!jwtTokenProvider.validateToken(refreshToken)) {
 			throw new InvalidRefreshTokenException("refresh token 정보가 유효하지 않음", ErrorCode.INVALID_REFRESH_TOKEN);
 		}
 
 		// Redis 의 Refresh Token 값과 비교
-		Long memberId = Long.valueOf(jwtTokenProvider.parseClaims(accessToken).getSubject());
+		Long memberId = Long.valueOf(jwtTokenProvider.parseClaims(refreshToken).getSubject());
 		log.info("memberId: {}", memberId);
 		String redisRefreshToken = (String) redisTemplate.opsForValue().get("RT:" + memberId);
 		log.info("refresh token of redis: {}", redisRefreshToken);
@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		// 새 토큰 생성 및 Redis 업데이트
-		Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+		Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
 		TokenResponseDto tokenResponseDto = jwtTokenProvider.generateTokenDto(authentication);
 		saveRefreshTokenRedis(authentication, tokenResponseDto);
 
