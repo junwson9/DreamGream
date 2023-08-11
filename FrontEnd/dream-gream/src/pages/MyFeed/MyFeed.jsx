@@ -15,6 +15,7 @@ function MyFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
+  // const [isMine, setIsMine] = useState('');
   const [memberId, setMemberId] = useState('');
   const [activeTab, setActiveTab] = useState('inProgress');
   const handleTabChange = (tab) => {

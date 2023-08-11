@@ -11,7 +11,7 @@ import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
 
-function otherFeed() {
+function OtherFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
@@ -332,4 +332,4 @@ function otherFeed() {
   );
 }
 
-export default otherFeed;
+export default OtherFeed;

@@ -13,9 +13,9 @@ function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
       console.log(isFollowed);
 
       const response = await axiosInstance.post(
-        `${API_URL}/api/members/follow/${toMemberId}`, // 일단 데이터가 없어서
+        `${API_URL}/api/members/follow/${toMemberId}`,
       );
-      setFollowed(true);
+      // setFollowed();
       console.log('성공');
     } catch (error) {
       console.error(error);
