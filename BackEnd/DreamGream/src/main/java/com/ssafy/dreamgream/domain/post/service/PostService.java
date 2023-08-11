@@ -58,6 +58,7 @@ public class PostService {
                 .aiImg(postRequestDto.getAiImg())
                 .isAchieved(false)
                 .isDisplay(postRequestDto.isDisplay())
+                .deadLine(postRequestDto.getDeadLine())
                 .build();
 
         postRepository.save(post);
