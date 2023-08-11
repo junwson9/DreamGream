@@ -2,14 +2,14 @@ import React ,{ useEffect, useState } from 'react';
 
 function ToTheTop() {
   // 토글 여부를 결정하는 state 선언
-  const [toggleBtn, setToggleBtn] = useState(true);
+  const [toggleBtn, setToggleBtn] = useState(false);
 
   // window 객체에서 scrollY 값을 받아옴
   // 어느정도 스크롤이 된건지 판단 후, 토글 여부 결정
   const handleScroll = () => {
     const { scrollY } = window;
 
-    if (scrollY > 200) {
+    if (scrollY > 5000) {
         setToggleBtn(true);
       } else {
         setToggleBtn(false);

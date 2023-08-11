@@ -1,23 +1,25 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable */
 import React, { useState, useEffect,Fragment } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import  { Pagination  } from 'swiper';
 import Topbar from '../../components/Common/Topbar';
-import CategoryButtons from '../../components/Button/CategoryButtons';
 import BestBucketList from '../../components/Feed/BestBucketList';
 import FeedForExplore from '../../components/Feed/FeedForExplore';
 import Member from '../../components/Feed/Member';
 import ScrapCelebrateBtns from '../../components/Button/ScrapCelebrateBtns';
-import ToTopButton from '../../components/Button/ToTopButton';
-import {UseInfiniteScroll} from '../../utils/useInfiniteScroll';
+import {UseInfiniteScroll} from '../../hooks/useInfiniteScroll';
 import { API_URL } from '../../config';
 
 function AchieveFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
   const {ref,inView} = useInView()
+  const accessToken = localStorage.getItem('ACCESS_TOKEN');
+  const loginFlag = accessToken !== null;
   const fetchInfiniteScrollData = (pageParam) => 
-     UseInfiniteScroll(pageParam, 10)
+     UseInfiniteScroll(loginFlag,pageParam, 10)
   ;
   const { data: postInfoList, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ['infinitePostList'],
@@ -32,16 +34,16 @@ function AchieveFeed() {
     }
     );
   
-  // useEffect(() => {
-  //   axios
-  //     .get(`${API_URL}/api/posts/best/achieved`)
-  //     .then((response) => {
-  //       setBestBucketList(response.data.data.post_list);
-  //       console.log(response);
-  //       console.log('달성후 베스트 조회에 성공');
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/api/posts/best/achieved`)
+      .then((response) => {
+        setBestBucketList(response.data.data.post_list);
+        console.log(response);
+        console.log('달성후 베스트 조회에 성공');
+      })
+      .catch((error) => console.log(error));
+  }, []);
   useEffect(() => {
     if (inView) {
       fetchNextPage()
@@ -55,19 +57,41 @@ function AchieveFeed() {
   }, [inView]);
 
   return (
+    
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
-      <Topbar />
-      {/* <div className="header">
-        <CategoryButtons />
+      <Topbar showCloseButton={false}/>
+      <div className="w-[360px] h-[200px] relative bg-white">
+          <div className="left-[26px] top-[8px] absolute text-zinc-800 text-lg font-bold leading-[25.20px]">
+            BEST 버킷리스트
+          </div>
+          <Swiper
+            slidesPerView={1}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Pagination]}
+            className="mySwiper"
+          >
+            {bestBucketList.map((bestBucketItem, index) => {
+              const isEvenIndex = index % 2 === 0;
+              const otherIndex = isEvenIndex ? index + 1 : index - 1;
+              const otherBestBucketItem = bestBucketList[otherIndex];
 
-        <br />
-        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-          BEST 버킷리스트
+              return (
+                <SwiperSlide key={index}>
+                  <BestBucketList
+                    className="A"
+                    bestBucketItem={bestBucketItem}
+                  />
+                  <BestBucketList
+                    className="B"
+                    bestBucketItem={otherBestBucketItem}
+                  />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         </div>
-        {bestBucketList.map((bestBucketItem, index) => (
-          <BestBucketList key={index} bestBucketItem={bestBucketItem} />
-        ))}
-      </div> */}
       <br />
       <hr />
       <div className="main">
@@ -100,42 +124,3 @@ function AchieveFeed() {
   );
 }
 export default AchieveFeed;
-//         <br />
-//         <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-//           BEST 버킷리스트
-//         </div>
-//         {bestBucketList.map((bestBucketItem) => (
-//           <BestBucketList bestBucketItem={bestBucketItem} />
-//         ))}
-//       </div>
-//       <br />
-//       <hr />
-//       <div className="main">
-//         {postInfoList?.pages.map((page) => (
-//           <Fragment key={page.postId}>
-//             <div className="article" key={page.postId}>
-//               <Member post={page} />
-//               <FeedForExplore post={page} />
-//               <ScrapCelebrateBtns post={page} />
-//               <br />
-//               <br />
-//               <hr />
-//             </div>
-//           </Fragment>
-//         ))}
-//         {isFetchingNextPage ? <div>로딩중</div> : <div ref={ref} />}
-//       </div>
-//       <div className="w-[360px] h-[66px] pl-[79px] pr-[81px] pt-[21px] pb-[11px] bg-white bg-opacity-0 flex-col justify-end items-center gap-0.5 inline-flex">
-//         <div className="text-center text-neutral-400 text-[11px] font-normal">
-//           Copyright ⓒ SSAFY. All rights reserved.
-//         </div>
-//       </div>
-//       <br />
-//       <br />
-//       <br />
-//       <br />
-//     </div>
-//   );
-// }
-
-// export default AchieveFeed;

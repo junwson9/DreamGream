@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function ModalForShare({ setShareModalOpen }) {
+  const navigate = useNavigate();
   const closeShareModal = () => {
     setShareModalOpen(false);
   };
 
+  const moveShare = () => {
+    navigate('/share')
+    
+  }
   return (
     <div
       className='"modal-container'
@@ -36,6 +42,8 @@ function ModalForShare({ setShareModalOpen }) {
         <button
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white rounded-bl-[10px] rounded-br-[10px] border-b justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
+          onClick={moveShare}
+        
         >
           <div className="text-center text-black text-sm">이미지 저장</div>
         </button>
