@@ -1,17 +1,30 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { shareKakao } from '../../utils/shareKakaoLink';
+import { setSharedPost } from '../../store/actions/shareActions';
 
-function ModalForShare({ setShareModalOpen }) {
+function ModalForShare({ setShareModalOpen,post }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const closeShareModal = () => {
     setShareModalOpen(false);
   };
-
+  
   const moveShare = () => {
+    console.log(post)
+    dispatch(setSharedPost(post));
     navigate('/share')
     
   }
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
   return (
     <div
       className='"modal-container'
@@ -36,6 +49,7 @@ function ModalForShare({ setShareModalOpen }) {
         <button
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white border-b border-zinc-300 justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
+          onClick={() => shareKakao('배포될 url/share', 'dream-gream')}        
         >
           <div className="text-center text-black text-sm">카카오로 공유</div>
         </button>
