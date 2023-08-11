@@ -3,11 +3,6 @@ package com.ssafy.dreamgream.global.config.jwt;
 import com.ssafy.dreamgream.global.common.exception.ErrorCode;
 import com.ssafy.dreamgream.global.common.exception.customException.ExpiredTokenException;
 import com.ssafy.dreamgream.global.common.exception.customException.InvalidTokenException;
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,6 +11,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Component
 @Slf4j
@@ -46,12 +47,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				if (ObjectUtils.isEmpty(isLogout)) {
 					Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
 					SecurityContextHolder.getContext().setAuthentication(authentication);
+				} else {
+					throw new InvalidTokenException("INVALIDATED TOKEN", ErrorCode.INVALID_TOKEN);
 				}
 			}
 		} catch (InvalidTokenException e) {
-			throw new InvalidTokenException("유효하지 않은 토큰", ErrorCode.INVALID_TOKEN);
+			throw new InvalidTokenException("INVALIDATED TOKEN", ErrorCode.INVALID_TOKEN);
 		} catch (ExpiredTokenException e) {
-			throw new ExpiredTokenException("만료된 토큰", ErrorCode.EXPIRED_TOKEN);
+			throw new ExpiredTokenException("EXPIRED TOKEN", ErrorCode.EXPIRED_TOKEN);
 		}
 
 		// 다음 필터로 request, response 전달
