@@ -33,7 +33,7 @@ function App() {
     <div className="App">
       {showSplash ? (
         <div className={`splash ${showSplash ? 'animate-splash' : ''}`}>
-          <img src="/splashscreen.png" alt="" />
+          <img src="/splashscreen.png" alt="" style={{ height: '100vh', width: '360px', objectFit: 'cover' }}/>
         </div>
       ) : (
         <div>
@@ -102,6 +102,7 @@ function App() {
                 <>
                   <CheerUpFeed />
                   <Navbar className="Navbar" />
+
                 </>
               }
             />
@@ -111,6 +112,7 @@ function App() {
                 <>
                   <AchieveFeed />
                   <Navbar className="Navbar" />
+
                 </>
               }
             />
