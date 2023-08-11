@@ -2,20 +2,21 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axiosInstance from '../../utils/axiosInterceptor';
-function MemberItem({ memberId, nickname, isFollowed, profileImg }) {
+import { API_URL } from '../../config';
+
+function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
   const defaultProfileImg = 'https://via.placeholder.com/48x48';
   const [followed, setFollowed] = useState(isFollowed);
-
   const handleRequest = async () => {
     try {
-      const response = await axiosInstance.post(
-        `http://i9a609.p.ssafy.io:8800/api/members/follow/${memberId}`, // 일단 데이터가 없어서
-      );
+      console.log(toMemberId);
+      console.log(isFollowed);
 
-      if (response.status === 200 && response.data.success) {
-        setFollowed(true);
-        console.log('성공');
-      }
+      const response = await axiosInstance.post(
+        `${API_URL}/api/members/follow/${toMemberId}`, // 일단 데이터가 없어서
+      );
+      setFollowed(true);
+      console.log('성공');
     } catch (error) {
       console.error(error);
       console.log('실패');
@@ -54,7 +55,7 @@ function MemberItem({ memberId, nickname, isFollowed, profileImg }) {
 }
 
 MemberItem.propTypes = {
-  memberId: PropTypes.string.isRequired,
+  tomemberId: PropTypes.string.isRequired,
   nickname: PropTypes.string.isRequired,
   profileImg: PropTypes.string,
   isFollowed: PropTypes.bool.isRequired,

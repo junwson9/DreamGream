@@ -1,24 +1,31 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/alt-text */
 // EditCheerImg.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
 import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
-function EditImg() {
+function EditImg({ post, isAiImg, onImageUpdate }) {
   const [mainImg, setMainImg] = useState('');
+  console.log(`mainImg=${mainImg}`);
+
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const initialMainImg = isAiImg ? post.ai_img : post.achievement_img;
+    setMainImg(initialMainImg);
+  });
 
   const setPreviewImg = (event) => {
     const reader = new FileReader();
-
     reader.onload = function (e) {
       setMainImg(e.target.result);
     };
-
     reader.readAsDataURL(event.target.files[0]);
+    onImageUpdate(event);
   };
 
   const addImg = () => {
@@ -60,10 +67,12 @@ function EditImg() {
               src={mainImg}
               alt="썸네일"
             />
-            <ClearBtn
-              className="absolute right-2 top-2 cursor-pointer"
-              onClick={clearImg}
-            />
+            {isAiImg ? null : (
+              <ClearBtn
+                className="absolute right-2 top-2 cursor-pointer"
+                onClick={clearImg}
+              />
+            )}
           </>
         ) : (
           <AddImgIcon

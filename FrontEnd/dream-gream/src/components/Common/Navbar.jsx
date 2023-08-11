@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import ToTheTop from '../Button/ToTopButton';
 
 function Navbar() {
   const location = useLocation();
@@ -13,7 +14,7 @@ function Navbar() {
     const path = location.pathname;
     if (path === '/cheerupfeed') {
       setActiveImage('feed');
-    } else if (path === '/acheivefeed') {
+    } else if (path === '/achievefeed') {
       setActiveImage('temple');
     } else if (path === '/myfeed') {
       setActiveImage('my');
@@ -23,6 +24,9 @@ function Navbar() {
   }, [location]);
   return (
     <div className="fixed h-16 bottom-0 bg-white shadow">
+      <div className="absolute z-50 bottom-[85px] left-[300px]">
+        <ToTheTop/>
+      </div>
       <div className="w-[360px] h-16 left-0 top-0 absolute bg-white shadow">
         <div className="h-16 left-0 top-0 absolute justify-start items-center inline-flex">
           <div className="w-[72px] h-16 relative">
@@ -43,7 +47,7 @@ function Navbar() {
             </Link>
           </div>
           <div className="w-[72px] h-16 relative">
-            <Link to="/acheivefeed">
+            <Link to="/achievefeed">
               <button
                 type="button"
                 className="w-[26px] h-[26px] left-[23px] top-[19px] absolute"

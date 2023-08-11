@@ -11,6 +11,8 @@ import ModalForShare from './ModalForShare';
 import ModalForMine from './ModalForMine';
 
 function Member({ post }) {
+  const loggedInUser = parseInt(localStorage.getItem('member_id'), 10);
+
   const defaultProfileImage =
     'https://grayround.com/common/img/default_profile.png';
 
@@ -64,13 +66,16 @@ function Member({ post }) {
               {post.created_date && extractTimePart(post.created_date)}
             </span>
             <span className="text-indigo-500 text-xs font-medium leading-none">
-              {/* ++데드라인 데이터추가 필요· 1년 이내 */}
-              {/* {post.deadline} */}
+              {post.is_achieved
+                ? post.achieved_date && (
+                    <span> · {extractTimePart(post.achieved_date)}</span>
+                  )
+                : post.dead_line && <span> · {post.dead_line}</span>}
             </span>
             {/* ##자신의 비공개 게시물만 보이도록 하는건 백쪽에서 그렇게 넘겨줄듯? */}
-            {post.isDisplay ? null : (
+            {post.is_display ? null : (
               <span className="text-indigo-500 text-xs font-medium leading-none">
-                {/* · 비공개 */}
+                · 비공개
               </span>
             )}
           </div>
@@ -78,13 +83,13 @@ function Member({ post }) {
         <button
           type="button"
           onClick={
-            post.memberId === 'logInUser' ? showShareModal : showMineModal
+            loggedInUser === post.member_id ? showMineModal : showShareModal
           }
         >
           <MoreVert />
         </button>
       </div>
-      {/* 로그인한 유저 본인게시물이냐에 따라 shareModal을 바로 렌더링하는건 고민해봐야할듯 */}
+      {/* ++로그인한 유저 본인게시물이냐에 따라 shareModal을 바로 렌더링하는건 고민해봐야할듯 */}
       {shareModalOpen && (
         <ModalForShare setShareModalOpen={setShareModalOpen} />
       )}
@@ -92,6 +97,7 @@ function Member({ post }) {
         <ModalForMine
           setMineModalOpen={setMineModalOpen}
           setShareModalOpen={setShareModalOpen}
+          post={post}
         />
       )}
     </div>

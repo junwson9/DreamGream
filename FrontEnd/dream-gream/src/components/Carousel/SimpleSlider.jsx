@@ -20,7 +20,7 @@ const SimpleSlider = () => {
   useEffect(() => {
     const randomIndexes = [];
     while (randomIndexes.length < 10) {
-      const randomIndex = Math.floor(Math.random() * 45) + 1;
+      const randomIndex = Math.floor(Math.random() * 29) + 1;
       if (!randomIndexes.includes(randomIndex)) {
         randomIndexes.push(randomIndex);
       }
@@ -35,7 +35,7 @@ const SimpleSlider = () => {
           <div key={index} className="flex flex-col h-auto">
             <img
               className="w-48 h-48 rounded-xl"
-              src={`${baseURL}${index}.png/150x150`}
+              src={`${baseURL}${index}.png`}
               alt={`Image ${index}`}
             />
           </div>
