@@ -63,6 +63,8 @@ public class JwtTokenProvider {
 		log.info("accessToken 유효 시간: {}", accessTokenExpiresIn);
 
 		String refreshToken = Jwts.builder()
+			.setSubject(memberId)
+			.claim(AUTHORITIES_KEY, authorities)
 			.setExpiration(refreshTokenExpiresIn)
 			.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
 			.compact();
@@ -92,6 +94,8 @@ public class JwtTokenProvider {
 		log.info("accessToken 유효 시간: {}", accessTokenExpiresIn);
 
 		String refreshToken = Jwts.builder()
+			.setSubject(memberId.toString())
+			.claim(AUTHORITIES_KEY, role)
 			.setExpiration(refreshTokenExpiresIn)
 			.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
 			.compact();
@@ -133,9 +137,9 @@ public class JwtTokenProvider {
 		}
 	}
 
-	public Authentication getAuthentication(String accessToken) {
+	public Authentication getAuthentication(String token) {
 		// 토큰 복호화
-		Claims claims = parseClaims(accessToken);
+		Claims claims = parseClaims(token);
 
 		// 클레임에서 권한 정보 가져오기
 		Collection<? extends GrantedAuthority> authorities = Arrays.stream(
@@ -150,12 +154,12 @@ public class JwtTokenProvider {
 	}
 
 	/**
-	 * Access Token 클레임에서 정보 가져오기
+	 * Token 클레임에서 정보 가져오기
 	 */
-	public static Claims parseClaims(String accessToken) {
+	public static Claims parseClaims(String token) {
 		try {
 			return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build()
-				.parseClaimsJws(accessToken).getBody();
+				.parseClaimsJws(token).getBody();
 		} catch (ExpiredJwtException e) {
 			return e.getClaims();
 		}
