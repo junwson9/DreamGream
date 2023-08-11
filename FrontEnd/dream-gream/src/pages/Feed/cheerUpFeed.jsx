@@ -74,10 +74,8 @@ function CheerUpFeed() {
           <div className="left-[26px] top-[8px] absolute text-zinc-800 text-lg font-bold leading-[25.20px]">
             BEST 버킷리스트
           </div>
-          {/* <div className="w-[308.12px] h-32 left-[26px] top-[47px] absolute"> */}
           <Swiper
             slidesPerView={1}
-            // spaceBetween={30}
             pagination={{
               clickable: true,
             }}
