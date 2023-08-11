@@ -16,7 +16,7 @@ class PromptHandler:
         response = await asyncio.to_thread(openai.Completion.create,
                                        engine='text-davinci-003', # gpt 엔진 종류
                                        prompt=prompt, # prompt 변수 전달
-                                       max_tokens=50, # 응답 길이 설정
+                                       max_tokens=70, # 응답 길이 설정
                                        temperature=0.7, # 낮을수록 일관성 상승 / 높을수록 다양성 상승
                                        n=1, # 답변 받을 개수
                                        stop=None, # 일정 토큰량 넘어가면 함수 호출 스탑
@@ -42,6 +42,16 @@ class PromptHandler:
             gender = "여성"
         else:
             gender = "남성"
+
+        if category_name == "etc":
+            category_name = "없어"
+        elif category_name == "Culture":
+            category_name = "Entertainment/Cultural life"
+
+        category = ["남성 1명과 여성 1명이 사이 좋게 있는 모습 또는 내가 알려준 버킷리스트 주인의 성별과는 다른 성별의 그림을 만들 수 있도록 명령어를 알려줘.",
+                    "만약 title에 취업하기,취뽀,취직하기 라는 단어가 들어가면 회사와 관련된 그림을 그릴 수 있게 문장을 작성해",
+                    "please write a new sentence that related title and includes the word 'dollar.' ",
+                    "부자에 관련된 문장을 작성하면 돼."]
     
         # LangChain PromptTemplate 사용
         prompt = PromptTemplate(
@@ -49,15 +59,31 @@ class PromptHandler:
             template=(
                 " {birthyear}년에 태어난 {gender}의 버킷리스트야. "
                 "내용은 {title}이고, 카테고리는 {category_name}. "
-                "이걸 그림으로 그릴 수 있게 영어로 번역해서 특징을 자세하게 추출해서 작성해줘. "
+                "이걸 그림으로 그릴 수 있게 특징을 자세하게 추출해서 작성해줘. "
                 "문장의 시작은 'a photo of'로 시작해. "
-                "만약 title에 취업하기,취뽀,취직하기 라는 단어가 들어가면 회사와 관련된 그림을 그릴 수 있게 문장을 작성하고, "
-                "만약 커플, 결혼이라는 단어가 들어가면 이성 커플로 설정해서 문장을 작성해줘 "
             )
         )
     
         # Template에 값 대입
         prompt = prompt.format(birthyear=birthyear, gender=gender, title=title, category_name=category_name)
+        lotto = ["로또","복권","당첨"]
+        rich = "부자"
+
+        if category_name == "Love":
+            prompt = prompt + category[0]
+        elif category_name == "Work":
+            prompt = prompt + category[1]
+        elif category_name == "없어":
+            for i in range(len(lotto)):
+                if lotto[i] in title:
+                    prompt = prompt + category[2]
+                    break
+                else:
+                    pass
+            
+            if rich in title:
+                prompt = prompt + category[3]
+            
 
         # API 비동기 요청
         response = await self.chat_gpt3(prompt)
