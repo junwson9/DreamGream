@@ -46,7 +46,7 @@ function App() {
             <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
             <Route path="/profileedit" element={<ProfileEdit />} />
             <Route
-              path="/follow/:memberId"
+              path="/follow/:toMemberId"
               element={
                 <>
                   <Follow />
@@ -67,7 +67,7 @@ function App() {
               }
             />
             <Route
-              path="/member/:memberId"
+              path="/member/:toMemberId"
               element={
                 <>
                   <OtherFeed />

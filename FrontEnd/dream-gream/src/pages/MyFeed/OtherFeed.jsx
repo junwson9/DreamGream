@@ -10,13 +10,16 @@ import CategoryButtons from './../../components/Button/CategoryButtons2';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
+import { useParams } from 'react-router-dom';
 
 function OtherFeed() {
+  const { toMemberId } = useParams(); // 피드 주인의 memberId
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
-  const [memberId, setMemberId] = useState('');
+  const [memberId, setMemberId] = useState(''); // 사용자의 memberId
   const [activeTab, setActiveTab] = useState('inProgress');
+  console.log(activeTab);
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -79,25 +82,7 @@ function OtherFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
-        );
-        const memberIdData = response.data.data.member;
-        // member id 로컬스토리지에 저장
-        localStorage.setItem('member_id', memberIdData.member_id);
-        setMemberId(memberIdData.member_id);
-      } catch (error) {
-        console.error('Error while fetching data:', error);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axiosInstance.get(
-          `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
+          `${API_URL}/api/posts/members/${toMemberId}`, // 개인 피드 조회
         );
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
@@ -117,7 +102,7 @@ function OtherFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/api/members/${memberId}`,
+          `${API_URL}/api/members/${toMemberId}`,
         );
         const memberData = response.data.data.member;
 
@@ -127,10 +112,10 @@ function OtherFeed() {
       }
     }
 
-    if (memberId) {
+    if (toMemberId) {
       fetchData();
     }
-  }, [memberId]);
+  }, [toMemberId]);
 
   const handleCategoryChange = (newCategory) => {
     if (category === newCategory) {
@@ -256,8 +241,8 @@ function OtherFeed() {
         className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
         onClick={() => Navigate('/profileEdit')}
       >
-        <div className="left-[9px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
-          프로필 수정
+        <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
+          팔로우
         </div>
       </div>
       <div className="top-[187px] absolute">
@@ -292,6 +277,7 @@ function OtherFeed() {
               postId={post.post_id}
               isDisplay={post.is_display}
               activeTab={activeTab === 'inProgress'}
+              isMineFlag={false}
             />
           ))}
           <br />

@@ -15,16 +15,15 @@ function MyFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
-  // const [isMine, setIsMine] = useState('');
-  const [memberId, setMemberId] = useState('');
+  const [memberId, setMemberId] = useState(''); // 사용자의 memberId
   const [activeTab, setActiveTab] = useState('inProgress');
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-  const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState('');
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const Navigate = useNavigate();
+  console.log(activeTab);
 
   const handleFollowersClick = () => {
     Navigate(`/follow/${user.member_id}`);
@@ -125,7 +124,6 @@ function MyFeed() {
         const memberData = response.data.data.member;
 
         setUser(memberData);
-        setIsLoading(false);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -296,6 +294,7 @@ function MyFeed() {
               postId={post.post_id}
               isDisplay={post.is_display}
               activeTab={activeTab === 'inProgress'}
+              isMineFlag={true}
             />
           ))}
           <br />
