@@ -11,6 +11,7 @@ import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
 import { useParams } from 'react-router-dom';
+import OtherFeedCard from '../../components/Feed/OtherFeedCard';
 
 function OtherFeed() {
   const { toMemberId } = useParams(); // 피드 주인의 memberId
@@ -19,7 +20,6 @@ function OtherFeed() {
   const [user, setUser] = useState('');
   const [memberId, setMemberId] = useState(''); // 사용자의 memberId
   const [activeTab, setActiveTab] = useState('inProgress');
-  console.log(activeTab);
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -87,6 +87,7 @@ function OtherFeed() {
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
+        console.log(achieved_list);
         setPostList(post_list);
         setAchievedList(achieved_list);
       } catch (error) {
@@ -263,7 +264,7 @@ function OtherFeed() {
         </div>
         <div className="top-[35px] left-[5px] absolute">
           {getFilteredData(getFeedData()).map((post, index) => (
-            <MyFeedCard
+            <OtherFeedCard
               key={index}
               title={post.title}
               Img={
@@ -277,7 +278,6 @@ function OtherFeed() {
               postId={post.post_id}
               isDisplay={post.is_display}
               activeTab={activeTab === 'inProgress'}
-              isMineFlag={false}
             />
           ))}
           <br />
