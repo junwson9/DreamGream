@@ -10,7 +10,9 @@ import CategoryBtnsForFeed from '../../components/Button/CategoryBtnsForFeed';
 import BestBucketList from '../../components/Feed/BestBucketList';
 import FeedForExplore from '../../components/Feed/FeedForExplore';
 import Member from '../../components/Feed/Member';
+import AcheiveBtn from '../../components/Button/AcheiveBtn';
 import ScrapCheerUpBtns from '../../components/Button/ScrapCheerUpBtns';
+import ScrapCelebrateBtns from '../../components/Button/ScrapCelebrateBtns';
 import { API_URL } from '../../config';
 import { UseInfiniteCheer } from '../../hooks/useInfiniteCheer';
 import 'swiper/swiper.min.css';
@@ -20,6 +22,7 @@ import './cheerUpFeed.css';
 function CheerUpFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
   const [categoryID, setCategoryID] = useState();
+  const loggedInUser = parseInt(localStorage.getItem('member_id'), 10);
   const accessToken = localStorage.getItem('ACCESS_TOKEN');
   const loginFlag = accessToken !== null;
   const { ref, inView } = useInView();
@@ -136,7 +139,16 @@ function CheerUpFeed() {
               <div className="article" key={post.post_id}>
                 <Member post={post} />
                 <FeedForExplore post={post} />
-                <ScrapCheerUpBtns post={post} />
+                {loggedInUser === post.member_id && !post.is_achieved && (
+                  <AcheiveBtn post={post} />
+                )}
+                {loggedInUser === post.member_id && post.is_achieved && null}
+                {loggedInUser !== post.member_id && !post.is_achieved && (
+                  <ScrapCheerUpBtns post={post} />
+                )}
+                {loggedInUser !== post.member_id && post.is_achieved && (
+                  <ScrapCelebrateBtns post={post} />
+                )}{' '}
                 <br />
                 <br />
                 <hr />

@@ -33,7 +33,7 @@ function Member({ post }) {
   const navigate = useNavigate();
 
   const goUserFeed = () => {
-    navigate(`/posts/members/${post.member_id}`);
+    navigate(`/member/${post.member_id}`);
   };
 
   // 날짜 데이터 시간 부분 자르기
