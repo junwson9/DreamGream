@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
+import myDefaultImg from '../../assets/default_profile.svg';
+import { useNavigate } from 'react-router-dom';
 
 function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
-  const defaultProfileImg = 'https://via.placeholder.com/48x48';
+  const defaultProfileImg = myDefaultImg;
   const [followed, setFollowed] = useState(isFollowed);
   const handleRequest = async () => {
     try {
@@ -15,14 +17,14 @@ function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
       const response = await axiosInstance.post(
         `${API_URL}/api/members/follow/${toMemberId}`,
       );
-      // setFollowed();
+      setFollowed(true);
       console.log('성공');
     } catch (error) {
       console.error(error);
       console.log('실패');
     }
   };
-
+  const navigate = useNavigate();
   const handleClick = () => {
     if (followed) {
       return;
@@ -30,6 +32,9 @@ function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
     handleRequest();
   };
 
+  const toProfile = () => {
+    navigate(`/member/${toMemberId}`);
+  };
   const buttonLabel = followed ? '팔로잉' : '팔로우';
 
   return (
@@ -38,6 +43,7 @@ function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
         className="w-[47.87px] h-12 left-[14.96px] top-[6px] absolute rounded-full"
         src={profileImg || defaultProfileImg}
         alt={profileImg ? `사용자 ${nickname}의 프로필 이미지` : 'Profile'}
+        onClick={toProfile} // 이미지 클릭 시 handleClick 호출
       />
       <div className="w-[177px] left-[85px] top-[18px] absolute text-neutral-700 text-base font-medium leading-snug">
         {nickname}

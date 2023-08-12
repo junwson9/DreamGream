@@ -10,10 +10,12 @@ import CategoryButtons from './../../components/Button/CategoryButtons2';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
+import myDefaultImg from '../../assets/default_profile.svg';
 
 function MyFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
+  const defaultProfileImg = myDefaultImg;
   const [user, setUser] = useState('');
   const [memberId, setMemberId] = useState(''); // 사용자의 memberId
   const [activeTab, setActiveTab] = useState('inProgress');
@@ -254,7 +256,14 @@ function MyFeed() {
           </span>
         </div>
       </div>
-      <div className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute" />
+      <img
+        className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute"
+        style={{
+          backgroundImage: `url(${user.profile_img || defaultProfileImg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
       <div
         className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
         onClick={() => Navigate('/profileEdit')}

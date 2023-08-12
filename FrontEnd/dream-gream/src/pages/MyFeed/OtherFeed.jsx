@@ -12,12 +12,17 @@ import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
 import { useParams } from 'react-router-dom';
 import OtherFeedCard from '../../components/Feed/OtherFeedCard';
+import myDefaultImg from '../../assets/default_profile.svg';
 
 function OtherFeed() {
   const { toMemberId } = useParams(); // 피드 주인의 memberId
   const [postList, setPostList] = useState([]);
+  const defaultProfileImg = myDefaultImg;
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
+  // const [followed, setFollowed] = useState(isFollowed);
+  // const buttonLabel = followed ? '팔로잉' : '팔로우';
+
   const [memberId, setMemberId] = useState(''); // 사용자의 memberId
   const [activeTab, setActiveTab] = useState('inProgress');
   const handleTabChange = (tab) => {
@@ -78,16 +83,37 @@ function OtherFeed() {
   };
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
 
+  // const handleRequest = async () => {
+  //   try {
+  //     console.log(toMemberId);
+
+  //     const response = await axiosInstance.post(
+  //       `${API_URL}/api/members/follow/${toMemberId}`,
+  //     );
+  //     setFollowed(true);
+  //     console.log('성공');
+  //   } catch (error) {
+  //     console.error(error);
+  //     console.log('실패');
+  //   }
+  // };
+  // const handleClick = () => {
+  //   if (followed) {
+  //     return;
+  //   }
+  //   handleRequest();
+  // };
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
           `${API_URL}/api/posts/members/${toMemberId}`, // 개인 피드 조회
         );
+        console.log(response);
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
-        console.log(achieved_list);
+        // console.log(achieved_list);
         setPostList(post_list);
         setAchievedList(achieved_list);
       } catch (error) {
@@ -108,6 +134,7 @@ function OtherFeed() {
         const memberData = response.data.data.member;
 
         setUser(memberData);
+        console.log(memberData);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -237,13 +264,20 @@ function OtherFeed() {
           </span>
         </div>
       </div>
-      <div className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute" />
+      <img
+        className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute"
+        style={{
+          backgroundImage: `url(${user.profile_img || defaultProfileImg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
       <div
         className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
-        onClick={() => Navigate('/profileEdit')}
+        // onClick={handleClick}
       >
         <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
-          팔로우
+          {/* {buttonLabel} */}
         </div>
       </div>
       <div className="top-[187px] absolute">

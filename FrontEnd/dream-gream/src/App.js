@@ -32,7 +32,11 @@ function App() {
     <div className="App">
       {showSplash ? (
         <div className={`splash ${showSplash ? 'animate-splash' : ''}`}>
-          <img src="/splashscreen.png" alt="" style={{ height: '100vh', width: '360px', objectFit: 'cover' }}/>
+          <img
+            src="/splashscreen.png"
+            alt=""
+            style={{ height: '100vh', width: '360px', objectFit: 'cover' }}
+          />
         </div>
       ) : (
         <div>
@@ -46,7 +50,7 @@ function App() {
             <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
             <Route path="/profileedit" element={<ProfileEdit />} />
             <Route
-              path="/follow/:toMemberId"
+              path="/follow/:memberId"
               element={
                 <>
                   <Follow />
@@ -92,7 +96,6 @@ function App() {
                 <>
                   <CheerUpFeed />
                   <Navbar className="Navbar" />
-
                 </>
               }
             />
@@ -102,7 +105,6 @@ function App() {
                 <>
                   <AchieveFeed />
                   <Navbar className="Navbar" />
-
                 </>
               }
             />
