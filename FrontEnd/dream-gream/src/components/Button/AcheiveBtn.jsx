@@ -7,7 +7,9 @@ function AcheiveBtn({ post }) {
   const navigate = useNavigate();
 
   const goAcheivementUpdatePage = () => {
-    navigate(`/updatepost/${post.post_id}`);
+    navigate(`/updatepost/${post.post_id}`, {
+      state: { change_is_achieved: true },
+    });
   };
   // ++이후 달성완료페이지에서 등록을 누르면 is_ahceived도 true로 같이 전달
 
