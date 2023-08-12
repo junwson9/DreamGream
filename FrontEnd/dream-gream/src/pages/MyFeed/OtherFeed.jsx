@@ -10,8 +10,11 @@ import CategoryButtons from './../../components/Button/CategoryButtons2';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
+import { useParams } from 'react-router-dom';
+import OtherFeedCard from '../../components/Feed/OtherFeedCard';
 
-function MyFeed() {
+function OtherFeed() {
+  const { toMemberId } = useParams(); // 피드 주인의 memberId
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
@@ -23,7 +26,6 @@ function MyFeed() {
   const [category, setCategory] = useState('');
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const Navigate = useNavigate();
-  console.log(activeTab);
 
   const handleFollowersClick = () => {
     Navigate(`/follow/${user.member_id}`);
@@ -80,31 +82,12 @@ function MyFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
+          `${API_URL}/api/posts/members/${toMemberId}`, // 개인 피드 조회
         );
-        const memberIdData = response.data.data.member;
-        // member id 로컬스토리지에 저장
-        localStorage.setItem('member_id', memberIdData.member_id);
-        setMemberId(memberIdData.member_id);
-      } catch (error) {
-        console.error('Error while fetching data:', error);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axiosInstance.get(
-          `${API_URL}/api/posts/myPosts`, // 개인 피드 조회
-        );
-        const postData = response.data.data;
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
-        console.log(post_list);
+        console.log(achieved_list);
         setPostList(post_list);
         setAchievedList(achieved_list);
       } catch (error) {
@@ -120,7 +103,7 @@ function MyFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/api/members/${memberId}`,
+          `${API_URL}/api/members/${toMemberId}`,
         );
         const memberData = response.data.data.member;
 
@@ -130,10 +113,10 @@ function MyFeed() {
       }
     }
 
-    if (memberId) {
+    if (toMemberId) {
       fetchData();
     }
-  }, [memberId]);
+  }, [toMemberId]);
 
   const handleCategoryChange = (newCategory) => {
     if (category === newCategory) {
@@ -259,8 +242,8 @@ function MyFeed() {
         className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
         onClick={() => Navigate('/profileEdit')}
       >
-        <div className="left-[9px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
-          프로필 수정
+        <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
+          팔로우
         </div>
       </div>
       <div className="top-[187px] absolute">
@@ -281,7 +264,7 @@ function MyFeed() {
         </div>
         <div className="top-[35px] left-[5px] absolute">
           {getFilteredData(getFeedData()).map((post, index) => (
-            <MyFeedCard
+            <OtherFeedCard
               key={index}
               title={post.title}
               Img={
@@ -335,4 +318,4 @@ function MyFeed() {
   );
 }
 
-export default MyFeed;
+export default OtherFeed;

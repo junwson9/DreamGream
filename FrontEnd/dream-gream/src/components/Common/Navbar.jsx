@@ -4,7 +4,7 @@ import ToTheTop from '../Button/ToTopButton';
 
 function Navbar() {
   const location = useLocation();
-  const [activeImage, setActiveImage] = useState('feed');
+  const [activeImage, setActiveImage] = useState('');
 
   const handleImageClick = (image) => {
     setActiveImage(image);
@@ -20,6 +20,8 @@ function Navbar() {
       setActiveImage('my');
     } else if (path === '/about') {
       setActiveImage('more');
+    } else {
+      setActiveImage('');
     }
   }, [location]);
   return (
