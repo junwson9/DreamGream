@@ -2,15 +2,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function FeedForDetail({ post }) {
   const [showFirstImage, setShowFirstImage] = useState(true);
-  const [mineModalOpen, setMineModalOpen] = useState(false); // 모달 열림 상태를 저장할 state
-  const [shareModalOpen, setShareModalOpen] = useState(false); // 모달 열림 상태를 저장할 state
 
   const handleImageToggle = () => {
     setShowFirstImage((prev) => !prev);
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="w-[360px] h-[448px] relative">
