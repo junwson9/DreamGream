@@ -107,11 +107,12 @@ public class MemberController {
 
 
     /**
-     * 개인피드 회원정보 조회 (id, 닉네임, 프로필, 팔로잉/팔로워 수)
+     * 개인피드 회원정보 조회 (id, 닉네임, 프로필, 팔로잉/팔로워 수, 로그인 회원의 팔로잉 여부)
      */
     @GetMapping("/{memberId}")
-    public ResponseEntity<?> getMemberInfo(@PathVariable Long memberId) {
-        MemberResponseDto memberResponseDto = memberService.getMemberInfo(memberId);
+    public ResponseEntity<?> getMemberInfo(@PathVariable Long memberId,
+                                            @RequestParam(value = "login-flag") Boolean loginFlag) {
+        MemberResponseDto memberResponseDto = memberService.getMemberInfo(memberId, loginFlag);
         ResponseDto responseDto = new ResponseDto(success, "회원 프로필을 조회합니다.",
             Collections.singletonMap("member", memberResponseDto));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
