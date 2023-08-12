@@ -7,12 +7,11 @@ import com.ssafy.dreamgream.domain.member.entity.Member;
 import com.ssafy.dreamgream.domain.member.enums.Gender;
 import com.ssafy.dreamgream.domain.member.repository.FollowRepository;
 import com.ssafy.dreamgream.domain.member.repository.MemberRepository;
-import com.ssafy.dreamgream.global.common.exception.customException.NotAuthorizedMemberException;
-import java.util.List;
-
 import com.ssafy.dreamgream.global.common.exception.ErrorCode;
 import com.ssafy.dreamgream.global.common.exception.customException.MemberNotFoundException;
+import com.ssafy.dreamgream.global.common.exception.customException.NotAuthorizedMemberException;
 import com.ssafy.dreamgream.global.s3.S3Uploader;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -124,7 +123,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public MemberResponseDto getMemberInfo(Long memberId) {
+    public MemberResponseDto getMemberInfo(Long memberId, Boolean loginFlag) {
         // 존재하지 않는 member인 경우
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("MemberNotFoundException", ErrorCode.MEMBER_NOT_FOUND));
@@ -133,12 +132,25 @@ public class MemberServiceImpl implements MemberService {
         Long cntFollowers = followRepository.countByToMember(member);
         Long cntFollowings = followRepository.countByFromMember(member);
 
+        // 로그인한 회원이 해당 회원을 팔로우 했는 지 가져오기
+        Boolean isFollowed = null;
+        if(loginFlag != null && loginFlag) {
+            Long currentMemberId = getCurrentMemberId();
+            int count = followRepository.countByToMemberIdAndFromMemberId(memberId, currentMemberId);
+            if(count == 0) {
+                isFollowed = false;
+            }  else {
+                isFollowed = true;
+            }
+        }
+
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
             .memberId(memberId)
             .nickname(member.getNickname())
             .profileImg(member.getProfileImg())
             .cntFollowers(cntFollowers)
             .cntFollowings(cntFollowings)
+            .isFollowed(isFollowed)
             .build();
 
         return memberResponseDto;
