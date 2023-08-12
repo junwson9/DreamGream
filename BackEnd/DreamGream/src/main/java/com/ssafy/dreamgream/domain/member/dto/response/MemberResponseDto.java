@@ -19,4 +19,6 @@ public class MemberResponseDto {
 
     private Long cntFollowings;
 
+    private Boolean isFollowed;
+
 }
