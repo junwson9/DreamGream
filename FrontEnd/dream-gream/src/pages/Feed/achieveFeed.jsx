@@ -1,39 +1,64 @@
 /* eslint-disable */
-import React, { useState, useEffect,Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import  { Pagination  } from 'swiper';
+import { Pagination } from 'swiper';
 import Topbar from '../../components/Common/Topbar';
+import CategoryBtnsForFeed from '../../components/Button/CategoryBtnsForFeed';
 import BestBucketList from '../../components/Feed/BestBucketList';
 import FeedForExplore from '../../components/Feed/FeedForExplore';
 import Member from '../../components/Feed/Member';
 import ScrapCelebrateBtns from '../../components/Button/ScrapCelebrateBtns';
-import {UseInfiniteScroll} from '../../hooks/useInfiniteScroll';
+import { UseInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { API_URL } from '../../config';
 
 function AchieveFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
-  const {ref,inView} = useInView()
+  const [categoryID, setCategoryID] = useState();
+
   const accessToken = localStorage.getItem('ACCESS_TOKEN');
   const loginFlag = accessToken !== null;
-  const fetchInfiniteScrollData = (pageParam) => 
-     UseInfiniteScroll(loginFlag,pageParam, 10)
-  ;
-  const { data: postInfoList, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const { ref, inView } = useInView();
+  const fetchInfiniteScrollData = (pageParam) =>
+    UseInfiniteScroll(loginFlag, pageParam, 10, categoryID);
+  const {
+    data: postInfoList,
+    fetchNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useInfiniteQuery(
     ['infinitePostList'],
-    ({pageParam = null}) => fetchInfiniteScrollData(pageParam),
+    ({ pageParam = null }) => fetchInfiniteScrollData(pageParam),
     {
       getNextPageParam: (lastPage) => {
         if (!lastPage.isLast) {
           return lastPage.nextLastPostId;
         }
         return undefined;
-      }
+      },
+    },
+  );
+
+  // 카테고리 버튼 클릭시 즉시 리렌더링 관련
+  const [shouldRefetch, setShouldRefetch] = useState(false);
+
+  // 카테고리 ID 변경 시 shouldRefetch 상태를 true로 설정
+  useEffect(() => {
+    setShouldRefetch(true);
+  }, [categoryID]);
+
+  // shouldRefetch 상태 변경 시 refetch 호출
+  useEffect(() => {
+    if (shouldRefetch) {
+      refetch();
+      setShouldRefetch(false); // 상태를 다시 false로 설정하여 무한 호출을 방지
     }
-    );
-  
+  }, [shouldRefetch]);
+
+  //
+
   useEffect(() => {
     axios
       .get(`${API_URL}/api/posts/best/achieved`)
@@ -57,10 +82,11 @@ function AchieveFeed() {
   }, [inView]);
 
   return (
-    
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
-      <Topbar showCloseButton={false}/>
-      <div className="w-[360px] h-[200px] relative bg-white">
+      <Topbar showCloseButton={false} />
+      <div className="header">
+        <CategoryBtnsForFeed setCategoryID={setCategoryID} />
+        <div className="w-[360px] h-[200px] relative bg-white">
           <div className="left-[26px] top-[8px] absolute text-zinc-800 text-lg font-bold leading-[25.20px]">
             BEST 버킷리스트
           </div>
@@ -92,25 +118,26 @@ function AchieveFeed() {
             })}
           </Swiper>
         </div>
+      </div>
       <br />
       <hr />
       <div className="main">
-  {postInfoList?.pages.map((page) => (
-    <Fragment key={page.nextLastPostId}>
-      {page.postList.map((post) => (
-        <div className="article" key={post.post_id}>
-          <Member post={post} />
-          <FeedForExplore post={post} />
-          <ScrapCelebrateBtns post={post} />
-          <br />
-          <br />
-          <hr />
-        </div>
-      ))}
-    </Fragment>
-  ))}
-  {isFetchingNextPage ? <div>로딩중</div> : <div ref={ref} />}
-</div>
+        {postInfoList?.pages.map((page) => (
+          <Fragment key={page.nextLastPostId}>
+            {page.postList.map((post) => (
+              <div className="article" key={post.post_id}>
+                <Member post={post} />
+                <FeedForExplore post={post} />
+                <ScrapCelebrateBtns post={post} />
+                <br />
+                <br />
+                <hr />
+              </div>
+            ))}
+          </Fragment>
+        ))}
+        {isFetchingNextPage ? <div>로딩중</div> : <div ref={ref} />}
+      </div>
       <div className="w-[360px] h-[66px] pl-[79px] pr-[81px] pt-[21px] pb-[11px] bg-white bg-opacity-0 flex-col justify-end items-center gap-0.5 inline-flex">
         <div className="text-center text-neutral-400 text-[11px] font-normal">
           Copyright ⓒ SSAFY. All rights reserved.
