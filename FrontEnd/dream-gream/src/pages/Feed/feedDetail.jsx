@@ -55,7 +55,7 @@ function FeedDetail() {
           </div>
           <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {post.is_acheived ? (
+            {post.is_achieved ? (
               <ContentCard title="달성 소감" post={post} />
             ) : null}
           </div>
