@@ -19,7 +19,7 @@ function Follow() {
   const [followingList, setFollowingList] = useState([]);
   const [isFollower, setIsFollower] = useState(true); // 초기 상태를 팔로워로 설정
   const { memberId } = useParams();
-
+  const [fetchedList, setFetchedList] = useState([]); // fetchedList 상태 추가
   const fetchData = async () => {
     try {
       const response = await axiosInstance.get(
@@ -33,8 +33,11 @@ function Follow() {
           isFollower ? '/followers' : '/followings'
         }`,
       );
-      const fetchedList =
-        followResponse.data.data[isFollower ? 'followerList' : 'followingList'];
+      const fetchedList = isFollower
+        ? followResponse.data.data.following_list
+        : followResponse.data.data.following_list;
+      setFetchedList(fetchedList);
+      console.log(fetchedList);
       if (isFollower) {
         setFollowerList(fetchedList);
         setFollowingList([]);
@@ -42,8 +45,8 @@ function Follow() {
         setFollowerList([]);
         setFollowingList(fetchedList);
       }
-      console.log(followerList);
-      console.log(followingList);
+      // console.log(followerList);
+      // console.log(followingList);
     } catch (error) {
       console.error('Error while fetching data:', error);
     }
@@ -52,7 +55,7 @@ function Follow() {
   useEffect(() => {
     fetchData(); // 초기 렌더링 시 fetchData 호출
   }, [memberId, isFollower]);
-
+  console.log(isFollower);
   const handleFollowStatusChange = async (memberId) => {
     try {
       // 팔로우 상태 변경 로직 구현
@@ -103,8 +106,8 @@ function Follow() {
         onLeftTap={handleLeftTap}
       />
       <div className="top-[125px] w-[360px] absolute">
-        {list && list.length > 0 ? (
-          list.map((item) => (
+        {fetchedList && fetchedList.length > 0 ? (
+          fetchedList.map((item) => (
             <MemberItem
               key={item.member_id}
               toMemberId={item.member_id}
