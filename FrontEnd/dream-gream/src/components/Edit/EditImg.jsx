@@ -8,24 +8,27 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
 import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
-function EditImg({ post, isAiImg, onImageUpdate }) {
+function EditImg({ post, isAiImg, imgFile, updateImgFile }) {
   const [mainImg, setMainImg] = useState('');
-  console.log(`mainImg=${mainImg}`);
 
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     const initialMainImg = isAiImg ? post.ai_img : post.achievement_img;
     setMainImg(initialMainImg);
-  });
+  }, [post, isAiImg]);
 
   const setPreviewImg = (event) => {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      setMainImg(e.target.result);
-    };
-    reader.readAsDataURL(event.target.files[0]);
-    onImageUpdate(event);
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        setMainImg(e.target.result);
+        updateImgFile(selectedFile);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+    console.log(`선택된파일: ${selectedFile}`);
   };
 
   const addImg = () => {
