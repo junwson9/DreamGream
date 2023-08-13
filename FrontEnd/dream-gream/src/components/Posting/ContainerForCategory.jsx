@@ -4,9 +4,12 @@ import OpenHooks from '../../hooks/OpenHooks';
 import { ReactComponent as ArrowIcon } from '../../assets/leftIcon.svg';
 import DropDown from './Dropdown';
 
-function ContainerForCategory() {
+function ContainerForCategory({
+  selectedCategory,
+  setSelectedCategory,
+  setSelectedCategoryID,
+}) {
   const dropDownRef = useRef();
-  const [Category, setCategory] = useState('전체');
   const CategoryList = [
     '여행',
     '건강/운동',
@@ -18,7 +21,7 @@ function ContainerForCategory() {
     '일',
     '기타',
   ];
-
+  console.log(`컨테이너에서 카테고리:${selectedCategory}`);
   const [isOpen, setIsOpen] = OpenHooks(dropDownRef, false);
   const arrowIconStyle = {
     width: '24px',
@@ -28,13 +31,13 @@ function ContainerForCategory() {
 
   return (
     <div style={{ position: 'relative' }}>
-      <div ref={dropDownRef} className="whitespace-nowrap flex">
+      <div ref={dropDownRef} className="whitespace-nowrap flex ">
         <button
           onClick={() => setIsOpen(!isOpen)}
           type="button"
           className="flex items-center"
         >
-          {Category}
+          {selectedCategory}
           <ArrowIcon style={arrowIconStyle} />
         </button>
       </div>
@@ -62,7 +65,11 @@ function ContainerForCategory() {
                   key={index}
                   value={value}
                   setIsOpen={setIsOpen}
-                  setCategory={setCategory}
+                  onChangePeriod={() => {
+                    setSelectedCategory(value);
+                    setSelectedCategoryID(index + 1);
+                    setIsOpen(false);
+                  }}
                   isOpen={isOpen}
                   style={{ width: 'max-content' }}
                 />

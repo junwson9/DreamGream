@@ -1,23 +1,31 @@
-import { React, useState } from 'react';
+/* eslint-disable react/prop-types */
+import { React, useState, useEffect } from 'react';
 import Container from '../Posting/Container';
 import ToggleButton from '../Button/ToggleButton';
 import ContainerForCategory from '../Posting/ContainerForCategory';
 
-function EditInfo() {
-  const [isPublic, setIsPublic] = useState(false);
-
-  const onTogglePublic = () => {
-    setIsPublic((prevIsPublic) => !prevIsPublic);
-  };
-
+function EditInfo({
+  post,
+  selectedCategory,
+  setSelectedCategory,
+  selectedPeriod,
+  setSelectedPeriod,
+  isPublic,
+  setSelectedCategoryID,
+  onTogglePublic,
+}) {
   return (
     <div>
       <div className="w-[360px] h-14 mt-[18px] relative bg-white">
         <div className="left-[22px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
           카테고리
         </div>
-        <div className="left-[290px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
-          <ContainerForCategory />
+        <div className="left-[290px] top-[17px] mr-[333px] absolute text-center text-zinc-800 text-base font-normal">
+          <ContainerForCategory
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            setSelectedCategoryID={setSelectedCategoryID}
+          />
         </div>
         <div className="w-[360px] h-px left-0 top-[1px] absolute border border-neutral-100" />
       </div>
@@ -26,7 +34,11 @@ function EditInfo() {
           목표 시기
         </div>
         <div className="left-[290px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
-          <Container />
+          <Container
+            selectedPeriod={selectedPeriod}
+            onChangePeriod={setSelectedPeriod}
+            setSelectedCategoryID={setSelectedCategoryID}
+          />
         </div>
         <div className="w-[360px] h-px left-0 top-[1px] absolute border border-neutral-100" />
       </div>
