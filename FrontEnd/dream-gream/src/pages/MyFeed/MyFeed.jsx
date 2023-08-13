@@ -10,10 +10,13 @@ import CategoryButtons from './../../components/Button/CategoryButtons2';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
+import myDefaultImg from '../../assets/default_profile.svg';
+import runningIcon from '../../assets/icons/Running.gif';
 
 function MyFeed() {
   const [postList, setPostList] = useState([]);
   const [achieveList, setAchievedList] = useState([]);
+  const defaultProfileImg = myDefaultImg;
   const [user, setUser] = useState('');
   const [memberId, setMemberId] = useState(''); // 사용자의 memberId
   const [activeTab, setActiveTab] = useState('inProgress');
@@ -163,6 +166,20 @@ function MyFeed() {
       </div>
       <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg">
         <div className="left-[109px] top-[-3px] absolute text-center"></div>
+        <div>
+          <img
+            className="absolute"
+            style={{
+              left: `${achievedPercentBar - 20}px`,
+              width: '40px',
+              height: '40px',
+              top: `-${40}px`,
+              zIndex: 0, // 이미지를 위로 올리기 위한 z-index 값 설정
+            }}
+            src={runningIcon}
+            alt="Running"
+          />
+        </div>
         <div
           style={{
             width: `${achievedPercentBar}px`,
@@ -172,6 +189,7 @@ function MyFeed() {
             position: 'absolute',
             background: '#6366F1',
             borderRadius: '0.375rem',
+            zIndex: 1, // 배경을 아래로 내리기 위한 z-index 값 설정
           }}
         />
       </div>
@@ -254,7 +272,14 @@ function MyFeed() {
           </span>
         </div>
       </div>
-      <div className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute" />
+      <img
+        className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute"
+        style={{
+          backgroundImage: `url(${user.profile_img || defaultProfileImg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
       <div
         className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
         onClick={() => Navigate('/profileEdit')}
