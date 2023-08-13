@@ -11,10 +11,11 @@ import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
 import myDefaultImg from '../../assets/default_profile.svg';
-import runningIcon from '../../assets/icons/Running.gif';
+// import runningIcon from '../../assets/icons/Running.gif';
 
 function MyFeed() {
   const [postList, setPostList] = useState([]);
+  const [loginFlag, setLoginFlag] = useState('');
   const [achieveList, setAchievedList] = useState([]);
   const defaultProfileImg = myDefaultImg;
   const [user, setUser] = useState('');
@@ -77,7 +78,6 @@ function MyFeed() {
     Work: '일',
     etc: '기타',
   };
-  const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
 
   useEffect(() => {
     async function fetchData() {
@@ -120,10 +120,24 @@ function MyFeed() {
   }, []);
 
   useEffect(() => {
+    const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+
+    if (ACCESS_TOKEN) {
+      setLoginFlag('true');
+    } else {
+      setLoginFlag('false');
+    }
+    console.log(loginFlag);
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
           `${API_URL}/api/members/${memberId}`,
+          {
+            params: {
+              // query string으로 전달할 파라미터 추가
+              'login-flag': loginFlag,
+            },
+          },
         );
         const memberData = response.data.data.member;
 
@@ -147,10 +161,12 @@ function MyFeed() {
     setIsOverlayOpen(false);
   };
 
-  const achievedPercent = Math.floor(
+  const achievedPer = Math.floor(
     (achieveList.length / (achieveList.length + postList.length)) * 100,
   );
-  const achievedPercentBar = (achievedPercent * Number(232)) / Number(100);
+  const achievedPercent = achievedPer > 0 ? achievedPer : 0;
+  const achievedPercentBar =
+    achievedPercent > 0 ? (achievedPercent * Number(232)) / Number(100) : 0;
   // activeTab에 따라서 postList와 achieveList 선택
   const selectedList = activeTab === 'inProgress' ? postList : achieveList;
   const selectedListLength = selectedList.length;
@@ -167,7 +183,7 @@ function MyFeed() {
       <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg">
         <div className="left-[109px] top-[-3px] absolute text-center"></div>
         <div>
-          <img
+          {/* <img
             className="absolute"
             style={{
               left: `${achievedPercentBar - 20}px`,
@@ -178,7 +194,7 @@ function MyFeed() {
             }}
             src={runningIcon}
             alt="Running"
-          />
+          /> */}
         </div>
         <div
           style={{

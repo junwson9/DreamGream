@@ -49,6 +49,7 @@ function FindMember() {
           text={nickname}
           onInputChange={setNickname}
           onSaveClick={handleSaveClick}
+          onEnterKeyPress={handleSaveClick}
         />
       </div>
       <div>
