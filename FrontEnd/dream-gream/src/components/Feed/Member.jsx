@@ -33,7 +33,7 @@ function Member({ post }) {
   const navigate = useNavigate();
 
   const goUserFeed = () => {
-    navigate('/posts/members/{member_id}');
+    navigate(`/member/${post.member_id}`);
   };
 
   // 날짜 데이터 시간 부분 자르기
@@ -91,7 +91,7 @@ function Member({ post }) {
       </div>
       {/* ++로그인한 유저 본인게시물이냐에 따라 shareModal을 바로 렌더링하는건 고민해봐야할듯 */}
       {shareModalOpen && (
-        <ModalForShare setShareModalOpen={setShareModalOpen} />
+        <ModalForShare setShareModalOpen={setShareModalOpen} post={post} />
       )}
       {mineModalOpen && (
         <ModalForMine

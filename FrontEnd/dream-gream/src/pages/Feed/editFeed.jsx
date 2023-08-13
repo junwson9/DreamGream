@@ -1,28 +1,61 @@
 /* eslint-disable camelcase */
 /* eslint-disable jsx-a11y/alt-text */
 import { React, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import axios from 'axios';
 import axiosInstance from '../../utils/axiosInterceptor';
 
-import EditImg from '../../components/Edit/EditImg';
-import EditInfo from '../../components/Edit/EditInfo';
 import TopbarForEdit from '../../components/Edit/TopbarForEdit';
+import EditImg from '../../components/Edit/EditImg';
 import ContentCard from '../../components/Feed/ContentCard';
+import EditInfo from '../../components/Edit/EditInfo';
 import EditInfoForAcheive from '../../components/Edit/EditInfoForAcheive';
 import { API_URL } from '../../config';
 
 function EditFeed() {
+  const [post, setPost] = useState({});
+  const { post_id } = useParams();
+  const [imgFile, setimgFile] = useState('');
+  const [achievedDate, setAchievedDate] = useState('');
+
+  const handleDateChange = (event) => {
+    const selectedDateStr = event.target.value;
+    const selectedDate = new Date(selectedDateStr);
+    const formattedDate = selectedDate.toISOString();
+    setAchievedDate(formattedDate);
+
+    console.log(`formattedDate:${formattedDate}`);
+    console.log(`achievedDate:${achievedDate}`);
+  };
+  console.log(`achievedDate:${achievedDate}`);
+
+  const updateImgFile = (newimgFile) => {
+    setimgFile(newimgFile);
+  };
+
+  // 달성완료 버튼을 통해서 온건지 확인
+  const location = useLocation();
+  const isAchievedChanged = location.state && location.state.change_is_achieved;
+
   const accessToken = localStorage.getItem('ACCESS_TOKEN');
   const loginFlag = accessToken !== null;
 
-  const [post, setPost] = useState({});
-  const [isImgUpdated, setIsImgUpdated] = useState(false);
-  const { post_id } = useParams();
+  // 게시글 상태 업데이트 함수
+  const updatePostAchievedStatus = (newAchievedStatus) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      is_achieved: newAchievedStatus,
+    }));
+  };
 
-  // console.log(`ai이미지:${post.ai_img}`);
-  // console.log('post object:', JSON.stringify(post, null, 2));
+  // isAchievedChanged 값 변경 감지하여 post 상태 업데이트
+  useEffect(() => {
+    if (isAchievedChanged && !post.is_achieved) {
+      // Only update if isAchievedChanged is true and post.is_achieved is not already true
+      updatePostAchievedStatus(true);
+    }
+  }, [isAchievedChanged, post.is_achieved]);
 
   // 게시글 상세 조회
   useEffect(() => {
@@ -45,36 +78,31 @@ function EditFeed() {
     setPost((prevPost) => ({ ...prevPost, content: newContent }));
   };
 
-  // 이미지 수정
-  const handleImageUpdate = (event) => {
-    const formData = new FormData();
-    formData.append('image', event.target.files[0]);
-    formData.append('img_update_flag', 'true');
-
-    axiosInstance
-      .post(`${API_URL}/api/posts/${post_id}/unachieved`, formData)
-      .then((response) => {
-        setIsImgUpdated(true);
-        console.log(response);
-        console.log('이미지 수정');
-      })
-      .catch((error) => console.log(error));
-  };
   return (
     <div
       className="w-[360px] h-[800px] relative bg-white "
       style={{ overflow: 'auto', overflowX: 'hidden' }}
     >
-      <TopbarForEdit post={post} />
+      <TopbarForEdit
+        post={post}
+        isAchievedChanged={isAchievedChanged}
+        imgFile={imgFile}
+      />
       <hr />
 
       <div className="flex space-x-4 absolute top-[85px] left-1/2 transform translate-x-[-50%]">
-        <EditImg post={post} isAiImg onageUpdate={handleImageUpdate} />
+        <EditImg
+          post={post}
+          isAiImg
+          imgFile={imgFile}
+          updateImgFile={updateImgFile}
+        />
         {post.is_achieved && (
           <EditImg
             post={post}
             isAiImg={false}
-            onImageUpdate={handleImageUpdate}
+            imgFile={imgFile}
+            updateImgFile={updateImgFile}
           />
         )}
       </div>
@@ -102,10 +130,11 @@ function EditFeed() {
               <div className="card-title w-[97px] h-[9.17px] left-[10px] top-[9.09px] absolute text-zinc-800 text-[13px] font-medium leading-[16.90px]">
                 달성 소감
               </div>
+              {/* ++시작하는 마음의 내용과 동기화되는거 수정 */}
               <div
                 className="w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px]"
                 contentEditable
-                onInput={handleContentChange}
+                onBlur={handleContentChange}
                 dangerouslySetInnerHTML={{ __html: post.achievement_content }}
               />
             </div>
@@ -119,9 +148,19 @@ function EditFeed() {
         )}
       </div>
 
-      <div className="w-[360px] h-14 left-0 top-[613px] absolute bg-white">
+      <div className="w-[360px] h-14 left-0 top-[813px] absolute bg-white">
         {/* ++세가지 인포정보 수정가능하도록 나중에 추가해야함 */}
-        {post.is_achieved ? <EditInfoForAcheive /> : <EditInfo />}
+        {post.is_achieved ? (
+          <EditInfoForAcheive
+            achievedDate={achievedDate}
+            handleDateChange={handleDateChange}
+          />
+        ) : (
+          <EditInfo
+            achievedDate={achievedDate}
+            handleDateChange={handleDateChange}
+          />
+        )}
       </div>
     </div>
   );
