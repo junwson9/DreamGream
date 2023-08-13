@@ -48,6 +48,7 @@ public class ImageService {
             }
         } catch (Exception e) {
             log.error("ERROR: 이미지 서버로 요청 전송 실패");
+            log.error(e.getMessage());
         }
 
         return ImageBytes;
