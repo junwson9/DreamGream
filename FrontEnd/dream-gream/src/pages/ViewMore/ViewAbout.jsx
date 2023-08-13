@@ -113,7 +113,12 @@ function ViewAbout() {
         <MemberItem toMemberId={user.member_id} nickname={user.nickname} />
       )}
       <div className="left-[28px] top-[223px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
-        ABOUT
+        <a
+          href="https://www.notion.so/Dream-Gream-2da668d3b0674103ab2f27661a5bd389"
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          ABOUT
+        </a>
       </div>
       <div className="left-[28px] top-[285px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
         서비스 이용약관
