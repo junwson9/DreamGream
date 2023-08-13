@@ -4,6 +4,7 @@ import asyncio
 import openai
 from models.prompt_request import PromptRequest
 from langchain import PromptTemplate
+import re
 
 load_dotenv()
 openai.api_key = os.getenv("API_KEY")
@@ -58,6 +59,7 @@ class PromptHandler:
                 " {birthyear}년에 태어난 {gender}의 버킷리스트야. "
                 "내용은 {title}이고, 카테고리는 {category_name}. "
                 "이걸 그림으로 그릴 수 있게 특징을 자세하게 추출해서 작성해줘. "
+                "만약 prompt에 사람을 넣어서 줄거라면 동양인으로 특정해서 묘사해줘. "
                 "문장의 시작은 'a photo of'로 시작해. "
             )
         )
@@ -85,6 +87,6 @@ class PromptHandler:
 
         # API 비동기 요청
         response = await self.chat_gpt3(prompt)
+        response['image_prompt'] = re.sub('[^a-zA-Z0-9\s\W]', '', response['image_prompt'])
         response['image_prompt'] = response['image_prompt'].lstrip('.\n')
-
         return response
