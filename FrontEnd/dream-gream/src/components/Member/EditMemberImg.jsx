@@ -14,6 +14,7 @@ function EditImg({ post, isAiImg, imgFile, updateImgFile }) {
   const fileInputRef = useRef(null);
 
   const setPreviewImg = (event) => {
+    console.log(11111);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const reader = new FileReader();

@@ -8,7 +8,7 @@ import TwoSolidButton from '../../components/Button/TwoSolidButtonProfile';
 import SelectSmall from '../../components/Button/SelectDropDown';
 import { API_URL } from '../../config';
 import myDefaultImg from '../../assets/default_profile.svg';
-import EditImg from '../../components/Member/EditMemberImg';
+import axiosInstance from './../../utils/axiosInterceptor';
 
 function ProfileEdit() {
   const [nickname, setNickname] = useState('');
@@ -68,37 +68,52 @@ function ProfileEdit() {
           },
         },
       );
-      console.log('Data successfully submitted:', response.data);
+      if (imgFile) {
+        const formData = new FormData();
+        formData.append('file', imgFile);
+
+        const imageResponse = await axiosInstance.put(
+          `${API_URL}/api/members/info/image`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        );
+        console.log('Image successfully updated:', imageResponse.data);
+      }
     } catch (error) {
       console.error('Error while submitting data:', error);
     }
   };
-  const updateImgFile = (newimgFile) => {
-    setimgFile(newimgFile);
-  };
 
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setimgFile(selectedFile);
+    const imgURL = URL.createObjectURL(selectedFile);
+    setProfileImg(imgURL);
+  };
+  const handleFileButtonClick = () => {
+    fileInputRef.current.click();
+  };
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
-      <div className="top-[260px] left-[127px] w-[107px] h-[29px] relative">
-        {/* <div className="w-[107px] h-[29px] left-0 top-0 absolute bg-neutral-200 rounded-lg"></div> */}
-        <img
-          className="w-[107px] h-[29px] left-0 top-0 absolute bg-neutral-200 rounded-lg"
-          style={{
-            backgroundImage: `url(${profileImg || defaultProfileImg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <div>
-          <EditImg
-            isAiImg={profileImg}
-            updateImgFile={updateImgFile}
-            imgFile={imgFile}
-          ></EditImg>
-        </div>
-        <div className="left-[9px] top-[5px] absolute text-center text-zinc-800 text-[13px] font-bold leading-snug">
+      {/* 프로필 사진 수정 버튼 */}
+      <div className="w-[107px] h-[29px] left-[128px] top-[240px] absolute bg-neutral-200 rounded-lg z-[1]">
+        <button
+          className="w-[107px] h-[29px] left-0 top-0 absolute text-center text-zinc-800 text-[13px] font-bold leading-snug"
+          onClick={handleFileButtonClick}
+        >
           프로필 사진 수정
-        </div>
+        </button>
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
       </div>
       <div className="w-[360px] h-[33px] top-[310px] absolute text-zinc-500 text-2xl font-normal text-center">
         {nickname}
@@ -113,6 +128,7 @@ function ProfileEdit() {
           }}
         />
       </div>
+      <div className="w-80 h-[110px] left-[20px] top-[120px] absolute"></div>
       <div className="w-80 h-[440px] left-[20px] top-[185px] absolute">
         <div className="left-0 top-[195px] absolute text-zinc-800 text-[14px] font-medium leading-[41.60px]">
           닉네임

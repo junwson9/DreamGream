@@ -22,7 +22,7 @@ function OtherFeed() {
   const [user, setUser] = useState('');
   // const [followed, setFollowed] = useState(isFollowed);
   // const buttonLabel = followed ? '팔로잉' : '팔로우';
-
+  const [loginFlag, setLoginFlag] = useState('');
   const [memberId, setMemberId] = useState(''); // 사용자의 memberId
   const [activeTab, setActiveTab] = useState('inProgress');
   const handleTabChange = (tab) => {
@@ -82,27 +82,12 @@ function OtherFeed() {
     etc: '기타',
   };
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+  if (ACCESS_TOKEN) {
+    setLoginFlag(true);
+  } else {
+    setLoginFlag(false);
+  }
 
-  // const handleRequest = async () => {
-  //   try {
-  //     console.log(toMemberId);
-
-  //     const response = await axiosInstance.post(
-  //       `${API_URL}/api/members/follow/${toMemberId}`,
-  //     );
-  //     setFollowed(true);
-  //     console.log('성공');
-  //   } catch (error) {
-  //     console.error(error);
-  //     console.log('실패');
-  //   }
-  // };
-  // const handleClick = () => {
-  //   if (followed) {
-  //     return;
-  //   }
-  //   handleRequest();
-  // };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -113,7 +98,6 @@ function OtherFeed() {
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
-        // console.log(achieved_list);
         setPostList(post_list);
         setAchievedList(achieved_list);
       } catch (error) {
@@ -130,6 +114,12 @@ function OtherFeed() {
       try {
         const response = await axiosInstance.get(
           `${API_URL}/api/members/${toMemberId}`,
+          {
+            params: {
+              // query string으로 전달할 파라미터 추가
+              'login-flag': { loginFlag },
+            },
+          },
         );
         const memberData = response.data.data.member;
 
