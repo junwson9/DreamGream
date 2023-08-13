@@ -53,7 +53,9 @@ function ShareImage(){
   <div className="w-3.5 h-[800px] left-0 top-0 absolute bg-[#7887D4] border border-[#7887D4]" />
   <div className='flex ml-[14px] pt-[500px]'>
   <RightEllipse className=""/>
-  <LeftEllipse className="ml-[302px]"/>
+  <div className='ml-[303px]'>
+  <LeftEllipse/>
+  </div>
   </div>
   </div>
   <div>
