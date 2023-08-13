@@ -14,7 +14,7 @@ function Posting() {
   let eventSource = null;
 
   const setupSSE = () => {
-    const member_id = localStorage.getItem("member_id");
+    const member_id = localStorage.getItem('member_id');
     eventSource = new EventSource(`${API_URL}/api/sse/${member_id}`); // Replace the URL with your SSE endpoint
 
     eventSource.onmessage = (event) => {
@@ -76,6 +76,11 @@ function Posting() {
   };
 
   useEffect(() => {
+    const access_token = localStorage.getItem('ACCESS_TOKEN');
+    console.log(access_token);
+    if (!access_token) {
+      navigate('/loginerror');
+    }
     setupSSE();
     return () => {
       // 컴포넌트가 언마운트되기 전에 SSE 연결 종료
