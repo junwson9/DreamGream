@@ -1,15 +1,12 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useRef,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ModalForShare from './ModalForShare';
 import axiosInstance from '../../utils/axiosInterceptor';
-import { API_URL } from '../../config';
 
 function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
   const navigate = useNavigate();
-
+  const modalRef = useRef(null);
   const closeMineModal = () => {
-    console.log('내모달 닫는다');
     setMineModalOpen(false);
   };
 
@@ -17,7 +14,11 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
     navigate(`/updatepost/${post.post_id}`);
     setMineModalOpen(false);
   };
-
+  const handleOutsideClick = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      closeMineModal();
+    }
+  };
   const handleDeleteClick = async () => {
     try {
       const response = await axiosInstance.delete(`/api/posts/${post.post_id}`);
@@ -30,6 +31,12 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
     }
     setMineModalOpen(false);
   };
+  useEffect(()=> {
+    window.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      window.removeEventListener('mousedown', handleOutsideClick);
+    }
+  }, []);
 
   return (
     <div
@@ -41,11 +48,15 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
         transform: 'translateX(-50%)',
         bottom: 0,
         zIndex: 100,
+        height:'100%',
+        
       }}
     >
-      <div className="w-[360px] h-[800px] bg-[#000000] opacity-[15%] relative" />
+      <div className="w-[360px] h-full bg-[#000000] opacity-[15%] relative" />
 
-      <div className="left-[11px] top-[617px] absolute flex-col justify-start items-start inline-flex">
+      <div className="left-[11px] bottom-[120px] absolute flex-col justify-start items-start inline-flex"
+      ref={modalRef}
+      >
         <button
           type="button"
           onClick={() => {
@@ -72,7 +83,7 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
           <div className="text-center text-[#FF0000] text-sm">삭제하기</div>
         </button>
       </div>
-      <div className="w-[340px] h-10 left-[9px] top-[749px] absolute justify-center items-center inline-flex">
+      <div className="w-[340px] h-10 left-[9px] bottom-16 absolute justify-center items-center inline-flex">
         <button
           type="button"
           onClick={closeMineModal}
