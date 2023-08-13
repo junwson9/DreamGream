@@ -1,16 +1,21 @@
 /* eslint-disable react/prop-types */
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import Container from '../Posting/Container';
 import ToggleButton from '../Button/ToggleButton';
 import ContainerForCategory from '../Posting/ContainerForCategory';
 
 // eslint-disable-next-line no-unused-vars
-function EditInfoForAcheive({ achievedDate, handleDateChange }) {
-  const [isPublic, setIsPublic] = useState(false);
-
-  const onTogglePublic = () => {
-    setIsPublic((prevIsPublic) => !prevIsPublic);
-  };
+function EditInfoForAcheive({
+  post,
+  achievedDate,
+  handleDateChange,
+  selectedCategory,
+  setSelectedCategory,
+  isPublic,
+  setSelectedCategoryID,
+  onTogglePublic,
+}) {
+  console.log(`achieveDted:${achievedDate}`);
 
   return (
     <div>
@@ -19,7 +24,11 @@ function EditInfoForAcheive({ achievedDate, handleDateChange }) {
           카테고리
         </div>
         <div className="left-[290px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
-          <ContainerForCategory />
+          <ContainerForCategory
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            setSelectedCategoryID={setSelectedCategoryID}
+          />
         </div>
         <div className="w-[360px] h-px left-0 top-[1px] absolute border border-neutral-100" />
       </div>
@@ -31,6 +40,7 @@ function EditInfoForAcheive({ achievedDate, handleDateChange }) {
           <input
             type="date"
             className="border border-neutral-200 p-1 rounded"
+            value={achievedDate.split('T')[0]}
             onChange={handleDateChange}
           />
         </div>

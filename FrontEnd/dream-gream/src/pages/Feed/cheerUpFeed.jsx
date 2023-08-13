@@ -108,24 +108,27 @@ function CheerUpFeed() {
             modules={[Pagination]}
             className="mySwiper"
           >
-            {bestBucketList.map((bestBucketItem, index) => {
-              const isEvenIndex = index % 2 === 0;
-              const otherIndex = isEvenIndex ? index + 1 : index - 1;
-              const otherBestBucketItem = bestBucketList[otherIndex];
+            {bestBucketList
+              .filter(
+                (bestBucketItem, index) =>
+                  index === 0 || index === 2 || index === 4 || index === 6,
+              )
+              .map((bestBucketItem, index) => {
+                const otherBestBucketItem = bestBucketList[index * 2 + 1];
 
-              return (
-                <SwiperSlide key={index}>
-                  <BestBucketList
-                    className="A"
-                    bestBucketItem={bestBucketItem}
-                  />
-                  <BestBucketList
-                    className="B"
-                    bestBucketItem={otherBestBucketItem}
-                  />
-                </SwiperSlide>
-              );
-            })}
+                return (
+                  <SwiperSlide key={index}>
+                    <BestBucketList
+                      className="A"
+                      bestBucketItem={bestBucketItem}
+                    />
+                    <BestBucketList
+                      className="B"
+                      bestBucketItem={otherBestBucketItem}
+                    />
+                  </SwiperSlide>
+                );
+              })}
           </Swiper>
           {/* </div> */}
         </div>

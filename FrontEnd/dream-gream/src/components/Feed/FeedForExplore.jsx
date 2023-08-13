@@ -4,14 +4,22 @@
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AchievementStampImage from '../../assets/images/AchievementStamp.png';
 
 function FeedForExplore({ post }) {
   const navigate = useNavigate();
-  const [showFirstImage, setShowFirstImage] = useState(true);
+  const [showFirstImage, setShowFirstImage] = useState(!post.achievement_img);
+
+  useEffect(() => {
+    setShowFirstImage(!post.achievement_img);
+  }, [post.achievement_img]);
+
   const handleImageToggle = () => {
-    setShowFirstImage((prev) => !prev);
+    if (post.achievement_img) {
+      setShowFirstImage((prev) => !prev);
+    }
   };
 
   const goFeedDetail = () => {
@@ -46,8 +54,9 @@ function FeedForExplore({ post }) {
       </div>
       <div
         className="w-[360px] h-[360px] left-0 top-0 absolute "
-        onClick={post.is_achieved ? handleImageToggle : null}
+        onClick={post.achievement_img ? handleImageToggle : null}
       >
+        {/* showFirstImage: 이미지 넘기는 토글 관련 */}
         {showFirstImage ? (
           <img
             className="w-[360px] h-[360px] left-0 top-0 absolute"
@@ -56,7 +65,7 @@ function FeedForExplore({ post }) {
           />
         ) : (
           // 2번 이미지 없는 경우 1번 이미지만 보이도록
-          post.is_achieved && (
+          post.achievement_img && (
             <img
               className="w-[360px] h-[360px] left-0 top-0 absolute"
               src={post.achievement_img}
@@ -67,12 +76,12 @@ function FeedForExplore({ post }) {
         {post.is_achieved && (
           <img
             className="w-[135px] h-[135px] left-[225px] top-[1px] absolute"
-            src="https://via.placeholder.com/135x135"
+            src={AchievementStampImage}
             alt="달성완료 도장 이미지"
           />
         )}
       </div>
-      {post.is_achieved && (
+      {post.achievement_img && (
         <div className="bar w-[140px] h-1.5 left-[110px] top-[345px] absolute">
           <div
             className={`leftbar w-[70px] h-1.5 left-[0px] top-[-0px] absolute ${
