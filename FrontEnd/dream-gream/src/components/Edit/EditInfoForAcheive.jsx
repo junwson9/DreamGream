@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import { React, useState } from 'react';
 import Container from '../Posting/Container';
 import ToggleButton from '../Button/ToggleButton';
 import ContainerForCategory from '../Posting/ContainerForCategory';
 
-function EditInfoForAcheive() {
+// eslint-disable-next-line no-unused-vars
+function EditInfoForAcheive({ achievedDate, handleDateChange }) {
   const [isPublic, setIsPublic] = useState(false);
 
   const onTogglePublic = () => {
@@ -29,6 +31,7 @@ function EditInfoForAcheive() {
           <input
             type="date"
             className="border border-neutral-200 p-1 rounded"
+            onChange={handleDateChange}
           />
         </div>
         <div className="w-[360px] h-px left-0 top-[1px] absolute border border-neutral-100" />
