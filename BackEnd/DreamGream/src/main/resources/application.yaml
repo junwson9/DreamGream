@@ -16,7 +16,7 @@ spring:
       dev:
         - db-dev
         - rabbitmq-dev
-        - prompt-prod
+        - prompt-dev
         - auth-dev
     include:
       - oauth
