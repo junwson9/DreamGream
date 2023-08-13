@@ -87,6 +87,55 @@ function OtherFeed() {
   } else {
     setLoginFlag(false);
   }
+  const renderFollowButton = () => {
+    if (user.is_followed) {
+      return (
+        <div
+          className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
+          onClick={handleUnFollowClick}
+        >
+          <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
+            팔로우 취소
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-primary-600 rounded-lg absolute"
+          onClick={handleFollowClick}
+        >
+          <div className="left-[22px] top-[5px] absolute text-center text-white text-xs font-bold leading-snug">
+            팔로우
+          </div>
+        </div>
+      );
+    }
+  };
+
+  // 팔로우 클릭 처리
+  const handleFollowClick = async () => {
+    try {
+      // 팔로우 등록 요청
+      await axiosInstance.post(`${API_URL}/api/members/follow/${toMemberId}`);
+      // 팔로우 상태 업데이트
+      setUser((prevUser) => ({ ...prevUser, is_followed: true }));
+    } catch (error) {
+      console.error('Error while following:', error);
+    }
+  };
+
+  // 언팔로우 클릭 처리
+  const handleUnFollowClick = async () => {
+    try {
+      // 언팔로우 등록 요청
+      await axiosInstance.delete(`${API_URL}/api/members/follow/${toMemberId}`);
+      // 팔로우 상태 업데이트
+      setUser((prevUser) => ({ ...prevUser, is_followed: false }));
+    } catch (error) {
+      console.error('Error while unfollowing:', error);
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -282,7 +331,7 @@ function OtherFeed() {
         // onClick={handleClick}
       >
         <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
-          {/* {buttonLabel} */}
+          {renderFollowButton}
         </div>
       </div>
       <div className="top-[187px] absolute">
