@@ -8,6 +8,42 @@ spring:
     port: 5672
     username: guest
     password: guest
+rabbitmq:
+  exchange:
+    name: image-creation-exchange
+    type: direct
+
+  queue:
+    request:
+      name: image-creation-request-queue
+      routing-key: image.creation.request
+    response:
+      name: image-creation-response-queue
+      routing-key: image.creation.response
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "rabbitmq-dev"
+  # RabbitMQ 연결 정보
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: ssafya609
+rabbitmq:
+  exchange:
+    name: image-creation-dev-exchange
+    type: direct
+
+  queue:
+    request:
+      name: image-creation-request-dev-queue
+      routing-key: image.creation.dev.request
+    response:
+      name: image-creation-response-dev-queue
+      routing-key: image.creation.dev.response
 
 ---
 spring:
@@ -20,3 +56,15 @@ spring:
     port: 5672
     username: admin
     password: ssafya609
+rabbitmq:
+  exchange:
+    name: image-creation-exchange
+    type: direct
+
+  queue:
+    request:
+      name: image-creation-request-queue
+      routing-key: image.creation.request
+    response:
+      name: image-creation-response-queue
+      routing-key: image.creation.response
