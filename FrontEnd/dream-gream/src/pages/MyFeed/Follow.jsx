@@ -20,6 +20,12 @@ function Follow() {
     try {
       const response = await axiosInstance.get(
         `${API_URL}/api/members/${memberId}`,
+        {
+          params: {
+            // query string으로 전달할 파라미터 추가
+            'login-flag': true,
+          },
+        },
       );
       const memberData = response.data.data.member;
       setMember(memberData);
