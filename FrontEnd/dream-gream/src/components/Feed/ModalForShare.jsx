@@ -5,19 +5,18 @@ import { useDispatch } from 'react-redux';
 import { shareKakao } from '../../utils/shareKakaoLink';
 import { setSharedPost } from '../../store/actions/shareActions';
 
-function ModalForShare({ setShareModalOpen,post }) {
+function ModalForShare({ setShareModalOpen, post }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const closeShareModal = () => {
     setShareModalOpen(false);
   };
-  
+
   const moveShare = () => {
-    console.log(post)
+    console.log(post);
     dispatch(setSharedPost(post));
-    navigate('/share')
-    
-  }
+    navigate('/share');
+  };
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
@@ -57,7 +56,6 @@ function ModalForShare({ setShareModalOpen,post }) {
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white rounded-bl-[10px] rounded-br-[10px] border-b justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
           onClick={moveShare}
-        
         >
           <div className="text-center text-black text-sm">이미지 저장</div>
         </button>

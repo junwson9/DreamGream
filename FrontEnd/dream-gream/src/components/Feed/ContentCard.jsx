@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { ReactComponent as ToggleClose } from '../../assets/icons/ToggleClose.svg';
 
-function ContentCard({ title, post }) {
+function ContentCard({ title, post, isBefore }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleCard = () => {
@@ -16,7 +16,6 @@ function ContentCard({ title, post }) {
     ${isOpen ? 'h-[36px]' : 'h-[180px]'}
     `}
     >
-      {/* ++나중에 상위 페이지에서 렌더링 할때, 달성소감이라는 텍스트도 props로 전달해서 텍스트가 표시되도록 */}
       <div className="card-title w-[97px] h-[9.17px] left-[10px] top-[9.09px] absolute text-zinc-800 text-[13px] font-medium leading-[16.90px]">
         {title}
       </div>
@@ -31,21 +30,23 @@ function ContentCard({ title, post }) {
           <ToggleClose />
         </button>
       </div>
-      {post.is_acheived ? (
+      {isBefore ? (
+        // <div className="w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px]">
         <div
-          className={`w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px] ${
-            isOpen ? 'hidden' : ''
-          }`}
-        >
-          {post.acheivement_content}
-        </div>
-      ) : (
-        <div
-          className={`w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px] ${
-            isOpen ? 'hidden' : ''
-          }`}
+          className={`w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px] 
+          ${isOpen ? 'hidden' : ''}
+          `}
         >
           {post.content}
+        </div>
+      ) : (
+        // <div className="w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px] ">
+        <div
+          className={`w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px] 
+          ${isOpen ? 'hidden' : ''}
+          `}
+        >
+          {post.achievement_content}
         </div>
       )}
     </div>
