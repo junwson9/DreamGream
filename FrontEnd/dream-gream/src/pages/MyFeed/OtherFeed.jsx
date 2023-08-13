@@ -100,9 +100,9 @@ function OtherFeed() {
         const response = await axiosInstance.post(
           `${API_URL}/api/members/follow/${toMemberId}`,
         );
+        console.log(response);
       }
       // 팔로우 상태 업데이트
-      console.log(response);
       setUser((prevUser) => ({
         ...prevUser,
         is_followed: !prevUser.is_followed,
@@ -299,7 +299,7 @@ function OtherFeed() {
         }}
       />
       <div
-        className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
+        className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute text-center"
         onClick={handleFollowToggle}
       >
         <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
