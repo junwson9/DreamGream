@@ -127,14 +127,22 @@ function ViewAbout() {
       {isLoggedin && (
         <>
           <div className="left-[28px] top-[533px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
-            <div type="button" onClick={handleLogout}>
+            <button
+              type="button"
+              onClick={handleLogout}
+              style={{ cursor: 'pointer' }}
+            >
               로그아웃
-            </div>
+            </button>
           </div>
           <div className="left-[28px] top-[471px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
-            <div type="button" onClick={handleFindMember}>
+            <button
+              type="button"
+              onClick={handleFindMember}
+              style={{ cursor: 'pointer' }}
+            >
               친구 찾기
-            </div>
+            </button>
           </div>
         </>
       )}

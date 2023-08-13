@@ -68,16 +68,18 @@ function ProfileEdit() {
           },
         },
       );
+      console.log(imgFile);
       if (imgFile) {
         const formData = new FormData();
         formData.append('file', imgFile);
         console.log(formData);
 
-        const imageResponse = await axiosInstance.put(
+        const imageResponse = await axios.post(
           `${API_URL}/api/members/info/image`,
           formData,
           {
             headers: {
+              Authorization: `Bearer ${ACCESS_TOKEN}`,
               'Content-Type': 'multipart/form-data',
             },
           },

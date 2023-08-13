@@ -161,10 +161,12 @@ function MyFeed() {
     setIsOverlayOpen(false);
   };
 
-  const achievedPercent = Math.floor(
+  const achievedPer = Math.floor(
     (achieveList.length / (achieveList.length + postList.length)) * 100,
   );
-  const achievedPercentBar = (achievedPercent * Number(232)) / Number(100);
+  const achievedPercent = achievedPer > 0 ? achievedPer : 0;
+  const achievedPercentBar =
+    achievedPercent > 0 ? (achievedPercent * Number(232)) / Number(100) : 0;
   // activeTab에 따라서 postList와 achieveList 선택
   const selectedList = activeTab === 'inProgress' ? postList : achieveList;
   const selectedListLength = selectedList.length;
