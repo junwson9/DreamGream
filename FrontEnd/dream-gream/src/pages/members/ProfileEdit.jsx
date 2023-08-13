@@ -107,6 +107,7 @@ function ProfileEdit() {
         <button
           className="w-[107px] h-[29px] left-0 top-0 absolute text-center text-zinc-800 text-[13px] font-bold leading-snug"
           onClick={handleFileButtonClick}
+          style={{ cursor: 'pointer' }}
         >
           프로필 사진 수정
         </button>
