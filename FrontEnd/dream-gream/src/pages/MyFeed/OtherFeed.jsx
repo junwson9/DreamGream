@@ -81,12 +81,7 @@ function OtherFeed() {
     Work: '일',
     etc: '기타',
   };
-  const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
-  if (ACCESS_TOKEN) {
-    setLoginFlag(true);
-  } else {
-    setLoginFlag(false);
-  }
+
   const renderFollowButton = () => {
     if (user.is_followed) {
       return (
@@ -159,6 +154,12 @@ function OtherFeed() {
   }, []);
 
   useEffect(() => {
+    const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+    if (ACCESS_TOKEN) {
+      setLoginFlag(true);
+    } else {
+      setLoginFlag(false);
+    }
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
@@ -166,7 +167,7 @@ function OtherFeed() {
           {
             params: {
               // query string으로 전달할 파라미터 추가
-              'login-flag': { loginFlag },
+              'login-flag': loginFlag,
             },
           },
         );
@@ -200,6 +201,7 @@ function OtherFeed() {
   // activeTab에 따라서 postList와 achieveList 선택
   const selectedList = activeTab === 'inProgress' ? postList : achieveList;
   const selectedListLength = selectedList.length;
+
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
       <div className="w-[360px] h-[60px] left-0 top-0 absolute">
