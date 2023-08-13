@@ -8,7 +8,7 @@ import { saveDetail } from '../../store/actions/postActions';
 
 function PostDetail({ handleCloseIconClick, handleNextButtonClick }) {
   const [detail, setDetail] = useState('');
-  const [isPublic, setIsPublic] = useState(false);
+  const [isPublic, setIsPublic] = useState(true);
   const textareaRef = useRef(null);
   const [selectedPeriod, setSelectedPeriod] = useState('언젠가');
   const dispatch = useDispatch();

@@ -1,5 +1,4 @@
 import React, { useRef } from 'react'
-import domtoimage from 'dom-to-image';
 import html2canvas from 'html2canvas';
 import { useSelector } from 'react-redux';
 import { saveAs } from 'file-saver';
