@@ -32,7 +32,7 @@ export const UseInfiniteScroll = async (
   }
 
   const postList = res.data.data.post_list.content;
-  console.log(`res:${res}`);
+  console.log('postList:', postList);
   const nextLastPostId = postList[postList.length - 1]?.post_id;
   return { postList, nextLastPostId, isLast: postList.length < size };
 };
