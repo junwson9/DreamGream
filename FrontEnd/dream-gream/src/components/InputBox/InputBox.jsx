@@ -23,7 +23,8 @@ function InputBox({
 
   const handleOnKeyPress = (e) => {
     if (e.key === 'Enter') {
-      handleSearchIconClick(); // Enter 입력이 되면 클릭 이벤트 실행
+      e.preventDefault(); // 기본 이벤트 제거
+      onSaveClick(text); // 검색 아이콘 클릭과 동일한 이벤트 발생시키기
     }
   };
 

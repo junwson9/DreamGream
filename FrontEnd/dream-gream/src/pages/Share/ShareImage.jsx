@@ -1,7 +1,6 @@
-import React, { useRef } from 'react'
+import React, { useRef,useEffect,useState } from 'react'
 import html2canvas from 'html2canvas';
 import { useSelector } from 'react-redux';
-import { saveAs } from 'file-saver';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as RightEllipse } from '../../assets/Ellipse60.svg';
 import { ReactComponent as LeftEllipse } from '../../assets/Ellipse61.svg';
@@ -30,6 +29,18 @@ function ShareImage() {
     });
   };
   const imgURL = `${sharedPost.ai_img}?data=1`;
+  const [fontSize, setFontSize] = useState(16);
+  useEffect(() => {
+  const { nickname } = sharedPost;
+  const { length } = nickname;
+  if (length <= 4) {
+    setFontSize(16);
+  } else if (length <= 8) {
+    setFontSize(13);
+  } else {
+    setFontSize(12);
+  }
+}, [sharedPost.nickname]);
 
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
@@ -64,7 +75,7 @@ function ShareImage() {
             ) : (
               <DefaultProfile className="w-[30px] h-[30px]" />
             )}
-            <div className="w-16 text-zinc-800 text-base font-normal leading-snug">
+            <div className="w-16 text-zinc-800 text-base font-normal leading-snug" style={{ fontSize }}>
               {sharedPost.nickname}
             </div>
           </div>

@@ -39,9 +39,7 @@ function OtherFeedCard({
               {activeTab ? <CheerUpIcon /> : <CelebrateIcon />}
             </div>
             {
-              <div className="w-[46px] top-[2px] left-[148px] absolute text-zinc-800 text-xs font-medium">
-                {isDisplay ? <LockOpenIcon /> : <LockCloseIcon />}
-              </div>
+              <div className="w-[46px] top-[2px] left-[148px] absolute text-zinc-800 text-xs font-medium"></div>
             }
             <div className="w-[46px] left-[18px] top-[-0px] absolute text-zinc-800 text-xs font-medium">
               {likeCount}
