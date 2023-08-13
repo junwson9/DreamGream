@@ -1,15 +1,26 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { shareKakao } from '../../utils/shareKakaoLink';
 import { setSharedPost } from '../../store/actions/shareActions';
 
+
+
 function ModalForShare({ setShareModalOpen, post }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const closeShareModal = () => {
     setShareModalOpen(false);
+  };
+  const handleCopyClipBoard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('클립보드에 링크가 복사되었어요.');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const moveShare = () => {
@@ -42,6 +53,7 @@ function ModalForShare({ setShareModalOpen, post }) {
         <button
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white rounded-tl-[10px] rounded-tr-[10px] border-b border-zinc-300 justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
+          onClick={() => handleCopyClipBoard(`${process.env.REACT_APP_PUBLIC_URL}${location.pathname}`)}
         >
           <div className="text-center text-black text-sm">URL 복사</div>
         </button>
