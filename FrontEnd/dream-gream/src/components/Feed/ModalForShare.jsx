@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect,useRef } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { shareKakao } from '../../utils/shareKakaoLink';
@@ -11,8 +11,14 @@ function ModalForShare({ setShareModalOpen, post }) {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const modalRef = useRef(null);
   const closeShareModal = () => {
     setShareModalOpen(false);
+  };
+  const handleOutsideClick = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      closeShareModal();
+    }
   };
   const handleCopyClipBoard = async (text) => {
     try {
@@ -33,7 +39,11 @@ function ModalForShare({ setShareModalOpen, post }) {
     script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
     script.async = true;
     document.body.appendChild(script);
-    return () => document.body.removeChild(script);
+    window.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.body.removeChild(script);
+      window.removeEventListener('mousedown', handleOutsideClick);
+    }
   }, []);
   return (
     <div
@@ -45,11 +55,13 @@ function ModalForShare({ setShareModalOpen, post }) {
         transform: 'translateX(-50%)',
         bottom: 0,
         zIndex: 999,
+        height: '100%',
       }}
     >
-      <div className="w-[360px] h-[800px] bg-[#000000] opacity-[15%] relative" />
+      <div className="w-[360px] h-full bg-[#000000] opacity-[15%] relative" />
 
-      <div className="left-[11px] top-[617px] absolute flex-col justify-start items-start inline-flex">
+      <div className="left-[11px] bottom-[120px] absolute flex-col justify-start items-start inline-flex"
+      ref={modalRef}>
         <button
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white rounded-tl-[10px] rounded-tr-[10px] border-b border-zinc-300 justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
@@ -72,7 +84,7 @@ function ModalForShare({ setShareModalOpen, post }) {
           <div className="text-center text-black text-sm">이미지 저장</div>
         </button>
       </div>
-      <div className="w-[340px] h-10 left-[9px] top-[749px] absolute justify-center items-center inline-flex">
+      <div className="w-[340px] h-10 left-[9px] bottom-16 absolute justify-center items-center inline-flex">
         <button
           type="button"
           onClick={closeShareModal}
