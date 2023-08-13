@@ -8,7 +8,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
 import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
-function EditImg({ post, isAiImg, imgFile, updateImgFile }) {
+function EditImg({ post, isAiImg, updateImgFile, setImgUpdateFlag }) {
   const [mainImg, setMainImg] = useState('');
 
   const fileInputRef = useRef(null);
@@ -37,6 +37,7 @@ function EditImg({ post, isAiImg, imgFile, updateImgFile }) {
 
   const clearImg = () => {
     setMainImg('');
+    setImgUpdateFlag(true);
   };
 
   return (
