@@ -36,10 +36,6 @@ logging:
   level:
     org:
       springframework: info
-      hibernate:
-        type:
-          descriptor:
-            sql: trace #query의 ?에 어떤 값이 들어가는 지 표기
   pattern:
     console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
 

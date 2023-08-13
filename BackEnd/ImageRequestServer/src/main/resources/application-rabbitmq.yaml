@@ -36,7 +36,6 @@ rabbitmq:
   exchange:
     name: image-creation-dev-exchange
     type: direct
-
   queue:
     request:
       name: image-creation-request-dev-queue
@@ -60,7 +59,6 @@ rabbitmq:
   exchange:
     name: image-creation-exchange
     type: direct
-
   queue:
     request:
       name: image-creation-request-queue
