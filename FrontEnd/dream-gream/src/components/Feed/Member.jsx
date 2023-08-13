@@ -33,7 +33,11 @@ function Member({ post }) {
   const navigate = useNavigate();
 
   const goUserFeed = () => {
-    navigate('/posts/members/{member_id}');
+    if (loggedInUser === post.member_id) {
+      navigate('/myfeed');
+    } else {
+      navigate(`/member/${post.member_id}`);
+    }
   };
 
   // 날짜 데이터 시간 부분 자르기
@@ -44,7 +48,7 @@ function Member({ post }) {
 
   return (
     <div className="member-container w-[360px] h-[75px] relative">
-      <div className="w-[347px] h-10 pl-[13px] pr-[15px] left-[6px] top-[18px] absolute justify-center items-center gap-[99px] inline-flex">
+      <div className="w-[347px] h-10 pl-[13px] pr-[15px] left-[6px] top-[18px] absolute justify-center items-center inline-flex">
         <div className="h-10 justify-start items-center gap-[7px] inline-flex">
           <img
             className="w-[39.67px] h-10 rounded-[999px]"
@@ -53,7 +57,7 @@ function Member({ post }) {
             onClick={goUserFeed}
             style={{ cursor: 'pointer' }}
           />
-          <div className="w-[200px]">
+          <div className="w-[299px]">
             <span
               className="text-black text-sm font-normal leading-tight  "
               onClick={goUserFeed}
@@ -68,7 +72,7 @@ function Member({ post }) {
             <span className="text-indigo-500 text-xs font-medium leading-none">
               {post.is_achieved
                 ? post.achieved_date && (
-                    <span> · {extractTimePart(post.achieved_date)}</span>
+                    <span> · {extractTimePart(post.achieved_date)} </span>
                   )
                 : post.dead_line && <span> · {post.dead_line}</span>}
             </span>
@@ -91,7 +95,7 @@ function Member({ post }) {
       </div>
       {/* ++로그인한 유저 본인게시물이냐에 따라 shareModal을 바로 렌더링하는건 고민해봐야할듯 */}
       {shareModalOpen && (
-        <ModalForShare setShareModalOpen={setShareModalOpen} post={post}/>
+        <ModalForShare setShareModalOpen={setShareModalOpen} post={post} />
       )}
       {mineModalOpen && (
         <ModalForMine

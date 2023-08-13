@@ -51,12 +51,12 @@ function FeedDetail() {
           <hr />
           <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <ContentCard title="시작하는 마음" post={post} />
+            <ContentCard title="시작하는 마음" post={post} isBefore />
           </div>
           <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {post.is_acheived ? (
-              <ContentCard title="달성 소감" post={post} />
+            {post.is_achieved ? (
+              <ContentCard title="달성 소감" post={post} isBefore={false} />
             ) : null}
           </div>
           <br />
