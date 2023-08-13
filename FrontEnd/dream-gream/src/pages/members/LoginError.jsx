@@ -11,7 +11,7 @@ function LoginError() {
   };
 
   const handleCancelClick = () => {
-    navigate(-1);
+    navigate('/');
   };
 
   return (

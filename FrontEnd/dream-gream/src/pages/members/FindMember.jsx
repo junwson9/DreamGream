@@ -12,6 +12,11 @@ function FindMember() {
   const [noResult, setNoResult] = useState(false);
   const [memberList, setMemberList] = useState([]); // 빈 배열로 초기화
   // console.log(memberList);
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      getDataList();
+    }
+  };
   const handleSaveClick = async (value) => {
     setNickname(value);
     console.log(nickname);
@@ -49,7 +54,7 @@ function FindMember() {
           text={nickname}
           onInputChange={setNickname}
           onSaveClick={handleSaveClick}
-          onEnterKeyPress={handleSaveClick}
+          onKeyPress={handleKeyPress} // 이벤트 핸들러 추가
         />
       </div>
       <div>
