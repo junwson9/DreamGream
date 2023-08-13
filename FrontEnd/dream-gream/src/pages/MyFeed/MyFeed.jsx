@@ -11,6 +11,7 @@ import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
 import myDefaultImg from '../../assets/default_profile.svg';
+import runningIcon from '../../assets/icons/Running.gif';
 
 function MyFeed() {
   const [postList, setPostList] = useState([]);
@@ -165,6 +166,20 @@ function MyFeed() {
       </div>
       <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg">
         <div className="left-[109px] top-[-3px] absolute text-center"></div>
+        <div>
+          <img
+            className="absolute"
+            style={{
+              left: `${achievedPercentBar - 20}px`,
+              width: '40px',
+              height: '40px',
+              top: `-${40}px`,
+              zIndex: 0, // 이미지를 위로 올리기 위한 z-index 값 설정
+            }}
+            src={runningIcon}
+            alt="Running"
+          />
+        </div>
         <div
           style={{
             width: `${achievedPercentBar}px`,
@@ -174,6 +189,7 @@ function MyFeed() {
             position: 'absolute',
             background: '#6366F1',
             borderRadius: '0.375rem',
+            zIndex: 1, // 배경을 아래로 내리기 위한 z-index 값 설정
           }}
         />
       </div>

@@ -13,7 +13,7 @@ import MyFeedCard from '../../components/Feed/MyFeedCard';
 import { useParams } from 'react-router-dom';
 import OtherFeedCard from '../../components/Feed/OtherFeedCard';
 import myDefaultImg from '../../assets/default_profile.svg';
-
+import runningIcon from '../../assets/icons/Running.gif';
 function OtherFeed() {
   const { toMemberId } = useParams(); // 피드 주인의 memberId
   const [postList, setPostList] = useState([]);
@@ -107,7 +107,7 @@ function OtherFeed() {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/api/posts/members/${toMemberId}`, // 개인 피드 조회
+          `${API_URL}/api/posts/members/${toMemberId}`, // 타인 피드 조회
         );
         console.log(response);
         const post_list = response.data.data.post_list;
@@ -171,8 +171,22 @@ function OtherFeed() {
         />
         <div className="w-[26px] h-[26px] left-[20px] top-[18px] absolute" />
       </div>
-      <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg">
+      <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg ">
         <div className="left-[109px] top-[-3px] absolute text-center"></div>
+        <div>
+          <img
+            className="absolute"
+            style={{
+              left: `${achievedPercentBar - 20}px`,
+              width: '40px',
+              height: '40px',
+              top: `-${40}px`,
+              zIndex: 0, // 이미지를 위로 올리기 위한 z-index 값 설정
+            }}
+            src={runningIcon}
+            alt="Running"
+          />
+        </div>
         <div
           style={{
             width: `${achievedPercentBar}px`,
@@ -182,6 +196,7 @@ function OtherFeed() {
             position: 'absolute',
             background: '#6366F1',
             borderRadius: '0.375rem',
+            zIndex: 1, // 배경을 아래로 내리기 위한 z-index 값 설정
           }}
         />
       </div>
