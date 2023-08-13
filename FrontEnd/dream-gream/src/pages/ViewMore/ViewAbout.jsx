@@ -9,8 +9,6 @@ import { API_URL } from '../../config';
 import axiosInstance from '../../utils/axiosInterceptor';
 import MemberItem from '../../components/Member/MemberItemAbout';
 
-// import 'swiper/swiper.css';
-
 function ViewAbout() {
   // accesstoken을 확인 -> 없어? 그러면 없는 기준으로 화면 띄워
   // 있어 -> 있으면 회원정보 조회하고 profileimg 닉네임 같은거 추가
@@ -18,6 +16,7 @@ function ViewAbout() {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
+  const [loginFlag, setLoginFlag] = useState('');
 
   useEffect(() => {
     const access_token = localStorage.getItem('ACCESS_TOKEN');
@@ -26,10 +25,23 @@ function ViewAbout() {
 
   useEffect(() => {
     async function fetchData() {
+      const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+      if (ACCESS_TOKEN) {
+        setLoginFlag(true);
+      } else {
+        setLoginFlag(false);
+      }
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/api/members/info`, // 멤버 id 조회 해야댐
+          `${API_URL}/api/members/info`,
+          {
+            params: {
+              // query string으로 전달할 파라미터 추가
+              'login-flag': loginFlag,
+            },
+          },
         );
+
         const memberData = response.data.data.member;
         setUser(memberData);
       } catch (error) {
@@ -115,14 +127,22 @@ function ViewAbout() {
       {isLoggedin && (
         <>
           <div className="left-[28px] top-[533px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
-            <div type="button" onClick={handleLogout}>
+            <button
+              type="button"
+              onClick={handleLogout}
+              style={{ cursor: 'pointer' }}
+            >
               로그아웃
-            </div>
+            </button>
           </div>
           <div className="left-[28px] top-[471px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
-            <div type="button" onClick={handleFindMember}>
+            <button
+              type="button"
+              onClick={handleFindMember}
+              style={{ cursor: 'pointer' }}
+            >
               친구 찾기
-            </div>
+            </button>
           </div>
         </>
       )}

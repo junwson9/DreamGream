@@ -75,7 +75,7 @@ function Navbar() {
                 className="w-[46px] h-[46px] left-[13px] top-[9px] absolute bg-indigo-400 rounded-full shadow flex    justify-center items-center"
               >
                 <img
-                  src="/PaintBrush.png"
+                  src="/paintbrush.png"
                   alt=""
                   className="w-[28px] h-[28px] relative"
                 />
