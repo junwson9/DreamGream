@@ -8,6 +8,7 @@ import TwoSolidButton from '../../components/Button/TwoSolidButtonProfile';
 import SelectSmall from '../../components/Button/SelectDropDown';
 import { API_URL } from '../../config';
 import myDefaultImg from '../../assets/default_profile.svg';
+import EditImg from '../../components/Member/EditMemberImg';
 
 function ProfileEdit() {
   const [nickname, setNickname] = useState('');
@@ -17,32 +18,11 @@ function ProfileEdit() {
   const [profileImg, setProfileImg] = useState('');
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
   const fileInputRef = useRef(null);
+  const [imgFile, setimgFile] = useState('');
 
   const handleYearSelection = (year) => {
     setBirthYear(year);
   };
-
-  // const imageSubmit = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('image', selectedImage);
-
-  //     const response = await axios.put(
-  //       `${API_URL}/members/info/image`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${ACCESS_TOKEN}`,
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       },
-  //     );
-  //     console.log('Data successfully submitted:', response.data);
-  //   } catch (error) {
-  //     console.error('Error while submitting data:', error);
-  //   }
-  // };
 
   const handleGenderSelection = (selectedGender) => {
     const genderValue = selectedGender === '남성' ? 'MALE' : 'FEMALE';
@@ -62,7 +42,7 @@ function ProfileEdit() {
         setNickname(user.nickname);
         setGender(user.gender);
         setBirthYear(user.birthyear);
-        setSelectedImage(user.profile_img);
+        setProfileImg(user.profile_img);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -93,36 +73,31 @@ function ProfileEdit() {
       console.error('Error while submitting data:', error);
     }
   };
+  const updateImgFile = (newimgFile) => {
+    setimgFile(newimgFile);
+  };
 
-  // const setPreviewImg = (event) => {
-  //   const selectedFile = event.target.files[0];
-  //   if (selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.onload = function (e) {
-  //       setMainImg(e.target.result);
-  //       updateImgFile(selectedFile);
-  //     };
-  //     reader.readAsDataURL(selectedFile);
-  //   }
-  //   console.log(`선택된파일: ${selectedFile}`);
-  // };
-
-  // const addImg = () => {
-  //   fileInputRef.current.click();
-  // };
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
       <div className="top-[260px] left-[127px] w-[107px] h-[29px] relative">
-        <div
+        {/* <div className="w-[107px] h-[29px] left-0 top-0 absolute bg-neutral-200 rounded-lg"></div> */}
+        <img
           className="w-[107px] h-[29px] left-0 top-0 absolute bg-neutral-200 rounded-lg"
-          // onChange={setPreviewImg}
-        >
-          <div
-            className="left-[9px] top-[5px] absolute text-center text-zinc-800 text-[13px] font-bold leading-snug"
-            // onClick={addImg}
-          >
-            프로필 사진 수정
-          </div>
+          style={{
+            backgroundImage: `url(${profileImg || defaultProfileImg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div>
+          <EditImg
+            isAiImg={profileImg}
+            updateImgFile={updateImgFile}
+            imgFile={imgFile}
+          ></EditImg>
+        </div>
+        <div className="left-[9px] top-[5px] absolute text-center text-zinc-800 text-[13px] font-bold leading-snug">
+          프로필 사진 수정
         </div>
       </div>
       <div className="w-[360px] h-[33px] top-[310px] absolute text-zinc-500 text-2xl font-normal text-center">

@@ -8,7 +8,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
 import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
-function EditMemberImg({ updateImgFile }) {
+function EditImg({ post, isAiImg, imgFile, updateImgFile }) {
   const [mainImg, setMainImg] = useState('');
 
   const fileInputRef = useRef(null);
@@ -30,9 +30,21 @@ function EditMemberImg({ updateImgFile }) {
     fileInputRef.current.click();
   };
 
+  const clearImg = () => {
+    setMainImg('');
+  };
+
   return (
     <div>
       <div className="addImg w-[147px] h-[147px] relative">
+        <div
+          className="w-[147px] h-[147px] left-0 top-0 absolute rounded-[13px] border border-zinc-800"
+          style={{
+            borderStyle: 'dotted',
+            borderColor: '#c4c4c4',
+            borderWidth: '3px',
+          }}
+        />
         <input
           ref={fileInputRef}
           type="file"
@@ -46,13 +58,29 @@ function EditMemberImg({ updateImgFile }) {
           }}
           onChange={setPreviewImg}
         />
-        <AddImgIcon
-          className="w-[70px] h-[70px] left-[37px] top-[39px] absolute cursor-pointer Z-[999]"
-          onClick={addImg}
-        />
+        {mainImg ? (
+          <>
+            <img
+              className="w-[147px] h-[147px] left-0 top-0 absolute rounded-[13px]"
+              src={mainImg}
+              alt="썸네일"
+            />
+            {isAiImg ? null : (
+              <ClearBtn
+                className="absolute right-2 top-2 cursor-pointer"
+                onClick={clearImg}
+              />
+            )}
+          </>
+        ) : (
+          <AddImgIcon
+            className="w-[70px] h-[70px] left-[37px] top-[39px] absolute cursor-pointer Z-[999]"
+            onClick={addImg}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-export default EditMemberImg;
+export default EditImg;
