@@ -5,9 +5,11 @@ import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 import { ReactComponent as RightArrowIcon } from '../../assets/icons/RightArrowIcon.svg';
 import { useNavigate } from 'react-router-dom';
+import myDefaultImg from '../../assets/default_profile.svg';
 
 function MemberItem({ toMemberId, nickname, profileImg }) {
-  const defaultProfileImg = 'https://via.placeholder.com/75x75';
+  const defaultProfileImg = myDefaultImg;
+
   const navigate = useNavigate();
 
   const navgateToProfile = () => {

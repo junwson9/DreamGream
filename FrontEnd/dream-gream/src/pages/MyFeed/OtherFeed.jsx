@@ -12,12 +12,17 @@ import { API_URL } from '../../config';
 import MyFeedCard from '../../components/Feed/MyFeedCard';
 import { useParams } from 'react-router-dom';
 import OtherFeedCard from '../../components/Feed/OtherFeedCard';
-
+import myDefaultImg from '../../assets/default_profile.svg';
+import runningIcon from '../../assets/icons/Running.gif';
 function OtherFeed() {
   const { toMemberId } = useParams(); // 피드 주인의 memberId
   const [postList, setPostList] = useState([]);
+  const defaultProfileImg = myDefaultImg;
   const [achieveList, setAchievedList] = useState([]);
   const [user, setUser] = useState('');
+  // const [followed, setFollowed] = useState(isFollowed);
+  // const buttonLabel = followed ? '팔로잉' : '팔로우';
+  const [loginFlag, setLoginFlag] = useState('');
   const [memberId, setMemberId] = useState(''); // 사용자의 memberId
   const [activeTab, setActiveTab] = useState('inProgress');
   const handleTabChange = (tab) => {
@@ -77,17 +82,71 @@ function OtherFeed() {
     etc: '기타',
   };
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+  if (ACCESS_TOKEN) {
+    setLoginFlag(true);
+  } else {
+    setLoginFlag(false);
+  }
+  const renderFollowButton = () => {
+    if (user.is_followed) {
+      return (
+        <div
+          className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
+          onClick={handleUnFollowClick}
+        >
+          <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
+            팔로우 취소
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-primary-600 rounded-lg absolute"
+          onClick={handleFollowClick}
+        >
+          <div className="left-[22px] top-[5px] absolute text-center text-white text-xs font-bold leading-snug">
+            팔로우
+          </div>
+        </div>
+      );
+    }
+  };
+
+  // 팔로우 클릭 처리
+  const handleFollowClick = async () => {
+    try {
+      // 팔로우 등록 요청
+      await axiosInstance.post(`${API_URL}/api/members/follow/${toMemberId}`);
+      // 팔로우 상태 업데이트
+      setUser((prevUser) => ({ ...prevUser, is_followed: true }));
+    } catch (error) {
+      console.error('Error while following:', error);
+    }
+  };
+
+  // 언팔로우 클릭 처리
+  const handleUnFollowClick = async () => {
+    try {
+      // 언팔로우 등록 요청
+      await axiosInstance.delete(`${API_URL}/api/members/follow/${toMemberId}`);
+      // 팔로우 상태 업데이트
+      setUser((prevUser) => ({ ...prevUser, is_followed: false }));
+    } catch (error) {
+      console.error('Error while unfollowing:', error);
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `${API_URL}/api/posts/members/${toMemberId}`, // 개인 피드 조회
+          `${API_URL}/api/posts/members/${toMemberId}`, // 타인 피드 조회
         );
+        console.log(response);
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
-        console.log(achieved_list);
         setPostList(post_list);
         setAchievedList(achieved_list);
       } catch (error) {
@@ -104,10 +163,17 @@ function OtherFeed() {
       try {
         const response = await axiosInstance.get(
           `${API_URL}/api/members/${toMemberId}`,
+          {
+            params: {
+              // query string으로 전달할 파라미터 추가
+              'login-flag': { loginFlag },
+            },
+          },
         );
         const memberData = response.data.data.member;
 
         setUser(memberData);
+        console.log(memberData);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }
@@ -144,8 +210,22 @@ function OtherFeed() {
         />
         <div className="w-[26px] h-[26px] left-[20px] top-[18px] absolute" />
       </div>
-      <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg">
+      <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg ">
         <div className="left-[109px] top-[-3px] absolute text-center"></div>
+        <div>
+          <img
+            className="absolute"
+            style={{
+              left: `${achievedPercentBar - 20}px`,
+              width: '40px',
+              height: '40px',
+              top: `-${40}px`,
+              zIndex: 0, // 이미지를 위로 올리기 위한 z-index 값 설정
+            }}
+            src={runningIcon}
+            alt="Running"
+          />
+        </div>
         <div
           style={{
             width: `${achievedPercentBar}px`,
@@ -155,6 +235,7 @@ function OtherFeed() {
             position: 'absolute',
             background: '#6366F1',
             borderRadius: '0.375rem',
+            zIndex: 1, // 배경을 아래로 내리기 위한 z-index 값 설정
           }}
         />
       </div>
@@ -237,13 +318,20 @@ function OtherFeed() {
           </span>
         </div>
       </div>
-      <div className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute" />
+      <img
+        className="w-[74px]  h-[74px] left-[16px] top-[76px] bg-zinc-300 rounded-full absolute"
+        style={{
+          backgroundImage: `url(${user.profile_img || defaultProfileImg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
       <div
         className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute"
-        onClick={() => Navigate('/profileEdit')}
+        // onClick={handleClick}
       >
         <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
-          팔로우
+          {renderFollowButton}
         </div>
       </div>
       <div className="top-[187px] absolute">

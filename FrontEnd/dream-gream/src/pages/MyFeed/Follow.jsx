@@ -2,24 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 import TopBar from '../../components/Common/Topbar2';
-import FollowItem from '../../components/Follow/FollowItem';
 import TwoTapButton from '../../components/Button/TwoTapButtonFollowAdd';
-import FollowList from '../../components/Follow/FollowList';
 import MemberItem from '../../components/Member/MemberItem';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
 
 function Follow() {
-  const [member, setMember] = useState([]);
-  const [page, setPage] = useState('0');
-  const [list, setList] = useState([]);
-  const [followerList, setFollowerList] = useState([]);
-  const [followingList, setFollowingList] = useState([]);
-  const [isFollower, setIsFollower] = useState(true); // 초기 상태를 팔로워로 설정
+  const [member, setMember] = useState({});
+  const [fetchedList, setFetchedList] = useState([]);
+  const [isFollower, setIsFollower] = useState(true);
+
+  // useParams를 사용하여 memberId 가져오기
   const { memberId } = useParams();
-  const [fetchedList, setFetchedList] = useState([]); // fetchedList 상태 추가
+
   const fetchData = async () => {
     try {
       const response = await axiosInstance.get(
@@ -34,19 +30,9 @@ function Follow() {
         }`,
       );
       const fetchedList = isFollower
-        ? followResponse.data.data.following_list
+        ? followResponse.data.data.follower_list
         : followResponse.data.data.following_list;
       setFetchedList(fetchedList);
-      console.log(fetchedList);
-      if (isFollower) {
-        setFollowerList(fetchedList);
-        setFollowingList([]);
-      } else {
-        setFollowerList([]);
-        setFollowingList(fetchedList);
-      }
-      // console.log(followerList);
-      // console.log(followingList);
     } catch (error) {
       console.error('Error while fetching data:', error);
     }
@@ -55,6 +41,7 @@ function Follow() {
   useEffect(() => {
     fetchData(); // 초기 렌더링 시 fetchData 호출
   }, [memberId, isFollower]);
+
   console.log(isFollower);
   const handleFollowStatusChange = async (memberId) => {
     try {
@@ -120,7 +107,7 @@ function Follow() {
             />
           ))
         ) : (
-          <div className="absolute top-[180px] left-[65px] text-center text-neutral-700 text-base font-medium leading-snug">
+          <div className="absolute top-[180px] left-[75px] text-center text-neutral-700 text-base font-medium leading-snug">
             <div style={{ textAlign: 'center' }}>
               {isFollower
                 ? '아직 팔로워인 사람이 없습니다.'

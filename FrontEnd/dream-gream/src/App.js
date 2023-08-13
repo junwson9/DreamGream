@@ -50,7 +50,7 @@ function App() {
             <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
             <Route path="/profileedit" element={<ProfileEdit />} />
             <Route
-              path="/follow/:toMemberId"
+              path="/follow/:memberId"
               element={
                 <>
                   <Follow />
