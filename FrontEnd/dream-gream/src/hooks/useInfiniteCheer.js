@@ -18,7 +18,6 @@ export const UseInfiniteCheer = async (
         'category-id': categoryID,
       },
     });
-    console.log('파람스 조회 성공');
   } else {
     res = await axiosInstance.get(
       `${API_URL}/api/posts/?last-post-id=${lastPostID}`,
@@ -32,6 +31,7 @@ export const UseInfiniteCheer = async (
   }
 
   const postList = res.data.data.post_list.content;
+  console.log('postList:', postList);
   const nextLastPostId = postList[postList.length - 1]?.post_id;
   return { postList, nextLastPostId, isLast: postList.length < size };
 };

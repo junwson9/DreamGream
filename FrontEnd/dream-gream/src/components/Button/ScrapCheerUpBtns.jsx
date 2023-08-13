@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/button-has-type */
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import axiosInstance from '../../utils/axiosInterceptor';
@@ -12,9 +12,14 @@ import { API_URL } from '../../config';
 
 function ScrapCheerUpBtns({ post }) {
   const [isCheered, setIsCheered] = useState(
-    post.is_cheered === null ? false : post.is_celebrateed,
+    post.is_cheered === null ? false : post.is_cheered,
   );
   const [cheerCount, setCheerCount] = useState(post.cheer_cnt);
+
+  useEffect(() => {
+    setCheerCount(post.cheer_cnt);
+    setIsCheered(post.is_cheered === null ? false : post.is_cheered);
+  }, [post]);
 
   const handleCheerClick = () => {
     const requestData = {

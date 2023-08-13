@@ -37,7 +37,6 @@ function FeedDetail() {
       })
       .catch((error) => console.log(error));
     console.log('상세조회 실패');
-    console.log(post_id);
   }, [post_id]);
 
   return (

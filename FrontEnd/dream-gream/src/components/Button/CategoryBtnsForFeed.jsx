@@ -59,6 +59,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 function CategoryBtnsForFeed({ setCategoryID }) {
   const categorys = {
+    All: { id: 0, category: '전체' },
     Travel: { id: 1, category: '여행' },
     Health: { id: 2, category: '건강/운동' },
     Learning: { id: 3, category: '배움' },
