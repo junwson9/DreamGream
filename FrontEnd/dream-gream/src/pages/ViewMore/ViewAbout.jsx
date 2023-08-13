@@ -13,16 +13,16 @@ function ViewAbout() {
   // accesstoken을 확인 -> 없어? 그러면 없는 기준으로 화면 띄워
   // 있어 -> 있으면 회원정보 조회하고 profileimg 닉네임 같은거 추가
   // const access_token = localStorage.getItem('ACCESS_TOKEN');
-  const [isLoggedin, setIsLoggedin] = useState(false);
+  const [isLoggedin, setIsLoggedin] = useState('');
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
   const [loginFlag, setLoginFlag] = useState('');
 
   useEffect(() => {
     const access_token = localStorage.getItem('ACCESS_TOKEN');
-    setIsLoggedin(!!access_token);
+    setIsLoggedin(!isLoggedin);
   }, []);
-
+  console.log(isLoggedin);
   useEffect(() => {
     async function fetchData() {
       const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
@@ -57,8 +57,8 @@ function ViewAbout() {
       await axiosInstance.post(`${API_URL}/api/auth/logout`);
       // 로그아웃하고 로그인 페이지로 이동시키기 or 메인피드로 이동시키기
       console.log('로그아웃 성공');
-      localStorage.removeItem('ACCESS_TOKEN');
-      localStorage.removeItem('member_id');
+      // localStorage.removeItem('ACCESS_TOKEN');
+      // localStorage.removeItem('member_id');
       navigate('/login');
     } catch (error) {
       console.log('로그아웃 실패');

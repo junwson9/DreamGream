@@ -23,16 +23,10 @@ function LoginError() {
         </div>
         <div className="w-[328px] h-[55px] left-0 top-[166px] absolute">
           <div
-            className="w-[150px] h-[55px] left-[173px] absolute flex justify-center items-center text-center text-zinc-800 text-base font-medium"
+            className="w-[300px] h-[55px] left-[173px] absolute flex justify-center items-center text-center text-zinc-800 text-base font-medium"
             onClick={handleLoginClick}
           >
             로그인 하기
-          </div>
-          <div
-            className="w-[150px] h-[55px] left-[6px] absolute  flex justify-center items-center text-center text-neutral-400 text-base font-medium"
-            onClick={handleCancelClick}
-          >
-            취소
           </div>
           <div className="w-[328px] h-[0px] left-0 top-[1px] absolute border border-neutral-200"></div>
           <div className="w-[54px] h-[0px] left-[164px] top-[1px] absolute origin-top-left rotate-90 border border-neutral-200"></div>
