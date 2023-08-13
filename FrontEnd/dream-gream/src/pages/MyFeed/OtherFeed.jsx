@@ -302,8 +302,8 @@ function OtherFeed() {
         className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute text-center"
         onClick={handleFollowToggle}
       >
-        <div className="left-[22px] top-[5px] absolute text-center text-neutral-700 text-xs font-bold leading-snug">
-          {user.is_followed ? '팔로잉취소' : '팔로잉'}
+        <div className="left-[22px] top-[5px] absolute text-neutral-700 text-xs font-bold leading-snug">
+          {user.is_followed ? '팔로잉' : '팔로잉취소'}
         </div>
       </div>
       <div className="top-[187px] absolute">
@@ -320,7 +320,7 @@ function OtherFeed() {
 
       <div className="w-[347px] left-[11px] top-[208px] h-8 relative">
         <div className="left-[6px] top-[8px] absolute text-zinc-800 text-[13px] font-normal leading-[18.20px]">
-          {selectedListLength}
+          {/* {selectedListLength} */}
         </div>
         <div className="top-[35px] left-[5px] absolute">
           {getFilteredData(getFeedData()).map((post, index) => (
