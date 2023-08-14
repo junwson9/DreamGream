@@ -66,14 +66,16 @@ function CheerUpFeed() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/posts/best`)
+      .get(`${API_URL}/api/posts/best`, {
+        params: { 'category-id': categoryID },
+      })
       .then((response) => {
         setBestBucketList(response.data.data.post_list);
         console.log('베스트 조회 성공');
         console.log(response);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [categoryID]);
 
   useEffect(() => {
     if (inView) {
