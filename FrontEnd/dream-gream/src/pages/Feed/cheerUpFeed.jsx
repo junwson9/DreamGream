@@ -92,7 +92,7 @@ function CheerUpFeed() {
       className="body"
       style={{ overflow: 'auto', overflowX: 'hidden', position: 'relative' }}
     >
-      <Topbar showCloseButton={false} showSimpleLogo />
+      <Topbar showCloseButton={false} showSimpleLogo showLeftButton={false} />
       <div className="header">
         <CategoryBtnsForFeed setCategoryID={setCategoryID} />
 
