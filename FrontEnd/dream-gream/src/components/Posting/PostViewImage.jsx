@@ -16,10 +16,10 @@ function PostViewImage({ handleCloseIconClick }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const subjectData = useSelector((state) => state.post.subject);
   const detailData = useSelector((state) => state.post.detail);
+  const [isPosting, setIsPosting] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-
   const handleImageLoad = () => {
     setIsModalOpen(true);
   };
@@ -40,6 +40,10 @@ function PostViewImage({ handleCloseIconClick }) {
 
   console.log(postData);
   const sendPostInfo = async () => {
+    if (isPosting) {
+      return; // 이미 요청 중인 경우 중복 요청 방지
+    }
+    setIsPosting(true);
     try {
       // POST 요청은 body에 실어 보냄
       await axiosInstance.post(`${API_URL}/api/posts`, {
@@ -54,6 +58,9 @@ function PostViewImage({ handleCloseIconClick }) {
       navigate('/myfeed');
     } catch (e) {
       console.error(e);
+    }
+    finally {
+      setIsPosting(false);
     }
   };
 
