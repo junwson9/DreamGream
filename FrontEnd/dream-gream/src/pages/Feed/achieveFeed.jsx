@@ -63,14 +63,17 @@ function AchieveFeed() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/posts/best/achieved`)
+      .get(`${API_URL}/api/posts/best/achieved`, {
+        params: { 'category-id': categoryID },
+      })
       .then((response) => {
         setBestBucketList(response.data.data.post_list);
         console.log(response);
         console.log('달성후 베스트 조회에 성공');
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [categoryID]);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage()

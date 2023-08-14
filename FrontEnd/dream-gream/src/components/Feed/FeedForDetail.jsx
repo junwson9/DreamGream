@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AchievementStampImage from '../../assets/images/AchievementStamp.png';
+import { ReactComponent as AchievemetStamp } from '../../assets/images/AchievementStamp.svg';
 
 function FeedForDetail({ post }) {
   const [showFirstImage, setShowFirstImage] = useState(!post.achievement_img);
@@ -46,11 +47,12 @@ function FeedForDetail({ post }) {
           )
         )}
         {post.is_achieved && (
-          <img
-            className="w-[135px] h-[135px] left-[225px] top-[1px] absolute"
-            src={AchievementStampImage}
-            alt="달성완료 도장 이미지"
-          />
+          // <img
+          //   className="w-[135px] h-[135px] left-[225px] top-[1px] absolute"
+          //   src={AchievementStampImage}
+          //   alt="달성완료 도장 이미지"
+          // />
+          <AchievemetStamp className="w-[135px] h-[135px] left-[225px] top-[1px] absolute" />
         )}
       </div>
       {post.achievement_img && (
