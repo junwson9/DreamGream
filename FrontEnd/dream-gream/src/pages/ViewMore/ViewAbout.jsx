@@ -77,7 +77,7 @@ function ViewAbout() {
 
   return (
     <div className="w-[360px] h-[800px] relative bg-white block">
-      <div className="top-[10px] left-[5px] absolute">
+      <div className="top-[12px] left-[15px] absolute">
         <LogoSecond />
       </div>
       <TopBar

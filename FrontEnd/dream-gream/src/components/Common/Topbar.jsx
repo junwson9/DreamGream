@@ -3,8 +3,8 @@
 import React from 'react';
 import { ReactComponent as LeftIcon } from '../../assets/leftIcon.svg';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
+import { ReactComponent as SimpleLogo } from '../../assets/LogoSecond.svg';
 import { useNavigate } from 'react-router-dom';
-import SimpleLogo from '../../assets/LogoSecond.svg';
 
 function TopBar({
   pathName,
@@ -15,7 +15,7 @@ function TopBar({
   showConfirmButton = true,
   showLeftButton = true,
   showCloseButton = true,
-  showSimpleLogo = true,
+  showSimpleLogo = false,
 }) {
   const navigate = useNavigate();
 
@@ -34,8 +34,8 @@ function TopBar({
   return (
     <div className="w-[360px] h-[60px] relative">
       {showSimpleLogo && (
-        <img
-          className="w-[105px] h-[38px] left-[45px] top-[14px] absolute z-[1]"
+        <SimpleLogo
+          className="w-[105px] h-[38px] left-[15px] top-[11px] absolute z-[1]"
           src={SimpleLogo}
         />
       )}

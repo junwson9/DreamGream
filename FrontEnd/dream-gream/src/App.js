@@ -18,6 +18,7 @@ import LoginError from './pages/members/LoginError';
 import UpdatePost from './pages/Feed/editFeed';
 import Follow from './pages/MyFeed/Follow';
 import OtherFeed from './pages/MyFeed/OtherFeed';
+import PostError from './pages/Posting/PostError';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -118,6 +119,7 @@ function App() {
               }
             />
             <Route path="/loginError" element={<LoginError />} />
+            <Route path="postError" element={<PostError/>} />
           </Routes>
         </div>
       )}

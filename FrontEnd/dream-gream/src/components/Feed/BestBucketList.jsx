@@ -33,10 +33,10 @@ function BestBucketList({ bestBucketItem }) {
           {bestBucketItem.title}
         </div>
 
-        {bestBucketItem.is_acheived ? (
+        {bestBucketItem.is_achieved ? (
           <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
             <CelebrateIcon className="mr-1" style={{ fill: 'white' }} />
-            {bestBucketItem.celeberate_cnt}
+            {bestBucketItem.celebrate_cnt}
           </div>
         ) : (
           <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
