@@ -306,12 +306,12 @@ function OtherFeed() {
         <div
           className={`top-[5px] absolute text-xs font-bold leading-snug 'text-neutral-700' ${
             user.is_followed
-              ? 'left-[22px]'
-              : 'left-[13px]' /* Change this to the desired color for unfollowed */
+              ? 'left-[13px]'
+              : 'left-[22px]' /* Change this to the desired color for unfollowed */
           }
   `}
         >
-          {user.is_followed ? '팔로잉' : '팔로잉취소'}
+          {user.is_followed ? '팔로잉취소' : '팔로우'}
         </div>
       </div>
       <div className="top-[187px] absolute">

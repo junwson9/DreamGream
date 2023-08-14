@@ -11,7 +11,7 @@ import { API_URL } from '../../config';
 function Follow() {
   const [member, setMember] = useState({});
   const [fetchedList, setFetchedList] = useState([]);
-  const [isFollower, setIsFollower] = useState(true);
+  const [isFollower, setIsFollower] = useState('');
 
   // useParams를 사용하여 memberId 가져오기
   const { memberId } = useParams();
@@ -29,7 +29,7 @@ function Follow() {
       );
       const memberData = response.data.data.member;
       setMember(memberData);
-
+      console.log(memberData);
       const followResponse = await axiosInstance.get(
         `${API_URL}/api/members/${memberId}${
           isFollower ? '/followers' : '/followings'
@@ -51,11 +51,6 @@ function Follow() {
   console.log(isFollower);
   const handleFollowStatusChange = async (memberId) => {
     try {
-      // 팔로우 상태 변경 로직 구현
-      // memberId에 해당하는 팔로우 상태를 변경하고 서버에 요청할 수도 있습니다.
-      // 이후 팔로우 상태 업데이트를 위해 필요한 로직을 구현하세요.
-
-      // 예시: 팔로우 상태를 업데이트하는 로직
       const updatedList = list.map((item) => {
         if (item.member_id === memberId) {
           return {
