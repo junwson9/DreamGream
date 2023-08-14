@@ -36,7 +36,7 @@ function OtherFeedCard({
           />
           <div className="w-[88px] h-[17px] relative">
             <div className="w-[46px] top-[-0px] absolute text-zinc-800 text-xs font-medium">
-              {activeTab ? <CheerUpIcon /> : <CelebrateIcon />}
+              {activeTab ? <CelebrateIcon /> : <CheerUpIcon />}
             </div>
             {
               <div className="w-[46px] top-[2px] left-[148px] absolute text-zinc-800 text-xs font-medium"></div>
