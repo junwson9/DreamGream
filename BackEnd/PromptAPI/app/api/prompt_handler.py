@@ -36,10 +36,12 @@ class PromptHandler:
         category_name = request.category_name
     
         # 전처리 부분
-        if gender == "F":
+        if gender == "FEMALE":
             gender = "여성"
-        else:
+        elif gender == "MALE":
             gender = "남성"
+        else:
+            print("gender : " + gender)
 
         if category_name == "etc":
             category_name = "없어"
