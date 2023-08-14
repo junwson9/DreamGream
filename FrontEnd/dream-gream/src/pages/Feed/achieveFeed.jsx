@@ -85,7 +85,7 @@ function AchieveFeed() {
 
   return (
     <div className="body" style={{ overflow: 'auto', overflowX: 'hidden' }}>
-      <Topbar showCloseButton={false} />
+      <Topbar showCloseButton={false} showLeftButton={false} />
       <div className="header">
         <CategoryBtnsForFeed setCategoryID={setCategoryID} />
         <div className="w-[360px] h-[200px] relative bg-white">

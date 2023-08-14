@@ -303,7 +303,14 @@ function OtherFeed() {
         className="w-[76px] h-[27px] top-[142px] left-[16px] relative bg-neutral-200 rounded-lg absolute text-center"
         onClick={handleFollowToggle}
       >
-        <div className="left-[22px] top-[5px] absolute text-neutral-700 text-xs font-bold leading-snug">
+        <div
+          className={`top-[5px] absolute text-xs font-bold leading-snug 'text-neutral-700' ${
+            user.is_followed
+              ? 'left-[22px]'
+              : 'left-[13px]' /* Change this to the desired color for unfollowed */
+          }
+  `}
+        >
           {user.is_followed ? '팔로잉' : '팔로잉취소'}
         </div>
       </div>
