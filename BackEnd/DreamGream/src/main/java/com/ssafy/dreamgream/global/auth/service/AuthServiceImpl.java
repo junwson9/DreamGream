@@ -109,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
 			redisTemplate.delete(key);
 			log.info("로그아웃하며 RT 삭제");
 		} else {
-			throw new InvalidRefreshTokenException("refresh token 정보가 일치하지 않음", ErrorCode.INVALID_REFRESH_TOKEN);
+			throw new InvalidRefreshTokenException("refresh token이 Redis에 존재하지 않음", ErrorCode.INVALID_REFRESH_TOKEN);
 		}
 
 		// Access Token 유효시간을 가져와서 BlackList 로 저장
