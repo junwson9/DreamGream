@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import axiosInstance from '../../utils/axiosInterceptor';
 import Loading from './Loding';
 import SolidButton from '../Button/SolidButton';
@@ -18,7 +19,13 @@ function PostViewImage({ handleCloseIconClick }) {
   const detailData = useSelector((state) => state.post.detail);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  useEffect (() => {
+    if (imageUrl.url === 'error' || imageUrl.url === null) {
+      navigate('/postError');
+    };
 
+  })
   const handleImageLoad = () => {
     setIsModalOpen(true);
   };
@@ -98,4 +105,5 @@ function PostViewImage({ handleCloseIconClick }) {
 PostViewImage.propTypes = {
   handleCloseIconClick: PropTypes.func.isRequired,
 };
+
 export default PostViewImage;

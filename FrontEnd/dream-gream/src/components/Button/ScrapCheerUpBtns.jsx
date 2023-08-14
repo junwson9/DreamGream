@@ -63,9 +63,15 @@ function ScrapCheerUpBtns({ post }) {
       .post(`${API_URL}/api/posts/${post.post_id}/scrap`, scrapData)
       .then((response) => {
         console.log('스크랩 완료', response);
-        toast.success('내 버킷리스트에 등록이 완료되었습니다', {
-          position: toast.POSITION.TOP_CENTER,
+        toast.info('내 버킷리스트에 등록이 완료되었습니다', {
+          position: 'top-center',
           autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
         });
       })
       .catch((error) => {

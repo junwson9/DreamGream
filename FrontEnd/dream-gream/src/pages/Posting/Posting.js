@@ -6,6 +6,7 @@ import PostSubject from '../../components/Posting/PostSubject';
 import PostDetail from '../../components/Posting/PostDetail';
 import PostViewImage from '../../components/Posting/PostViewImage';
 import { API_URL } from '../../config';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Posting() {
   const [activeComponent, setActiveComponent] = useState('PostSubject');
@@ -21,9 +22,9 @@ function Posting() {
       const data = JSON.parse(event.data);
       console.log('Received SSE message:', data);
 
+
       // 서버로부터 받은 데이터를 Redux store에 저장
       dispatch({ type: 'SET_SSE_DATA', payload: data });
-
       // SSE 연결 끊기
       eventSource.close();
     };
