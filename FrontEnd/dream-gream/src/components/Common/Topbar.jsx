@@ -35,7 +35,7 @@ function TopBar({
     <div className="w-[360px] h-[60px] relative">
       {showSimpleLogo && (
         <SimpleLogo
-          className="w-[105px] h-[38px] left-[45px] top-[11px] absolute z-[1]"
+          className="w-[105px] h-[38px] left-[15px] top-[11px] absolute z-[1]"
           src={SimpleLogo}
         />
       )}
