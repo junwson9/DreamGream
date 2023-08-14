@@ -18,6 +18,7 @@ function PostViewImage({ handleCloseIconClick }) {
   const detailData = useSelector((state) => state.post.detail);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
 
   const handleImageLoad = () => {
     setIsModalOpen(true);
@@ -98,4 +99,5 @@ function PostViewImage({ handleCloseIconClick }) {
 PostViewImage.propTypes = {
   handleCloseIconClick: PropTypes.func.isRequired,
 };
+
 export default PostViewImage;

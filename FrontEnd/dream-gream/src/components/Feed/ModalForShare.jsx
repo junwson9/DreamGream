@@ -2,6 +2,7 @@
 import React, { useEffect,useRef } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
 import { shareKakao } from '../../utils/shareKakaoLink';
 import { setSharedPost } from '../../store/actions/shareActions';
 
@@ -12,6 +13,7 @@ function ModalForShare({ setShareModalOpen, post }) {
   const location = useLocation();
   const dispatch = useDispatch();
   const modalRef = useRef(null);
+  const token = localStorage.getItem('ACCESS_TOKEN');
   const closeShareModal = () => {
     setShareModalOpen(false);
   };
@@ -23,16 +25,29 @@ function ModalForShare({ setShareModalOpen, post }) {
   const handleCopyClipBoard = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert('클립보드에 링크가 복사되었어요.');
+      toast.info('클립보드에 링크가 복사되었어요!', {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     } catch (err) {
       console.log(err);
     }
   };
 
   const moveShare = () => {
-    console.log(post);
+    if (!token) {
+      navigate('/loginerror')
+    }
+    else {
     dispatch(setSharedPost(post));
     navigate('/share');
+    }
   };
   useEffect(() => {
     const script = document.createElement('script');
@@ -69,10 +84,14 @@ function ModalForShare({ setShareModalOpen, post }) {
         >
           <div className="text-center text-black text-sm">URL 복사</div>
         </button>
+
+
+        {/* 로그인할때만 */}
+        
         <button
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white border-b border-zinc-300 justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
-          onClick={() => shareKakao('http://localhost:3000/share', 'dream-gream')}        
+          onClick={() => token ? shareKakao(`${process.env.REACT_APP_PUBLIC_URL}/feed/${post.post_id}`, 'dream-gream') : navigate('/loginerror')}        
         >
           <div className="text-center text-black text-sm">카카오로 공유</div>
         </button>

@@ -177,6 +177,7 @@ function MyFeed() {
           title={user.nickname}
           showConfirmButton={false}
           showCloseButton={false}
+          showSimpleLogo={false}
         />
         <div className="w-[26px] h-[26px] left-[20px] top-[18px] absolute" />
       </div>
@@ -318,7 +319,7 @@ function MyFeed() {
 
       <div className="w-[347px] left-[11px] top-[208px] h-8 relative">
         <div className="left-[6px] top-[8px] absolute text-zinc-800 text-[13px] font-normal leading-[18.20px]">
-          {selectedListLength}
+          {/* {selectedListLength} */}
         </div>
         <div className="top-[35px] left-[5px] absolute">
           {getFilteredData(getFeedData()).map((post, index) => (

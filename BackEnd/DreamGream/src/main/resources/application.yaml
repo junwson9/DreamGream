@@ -41,8 +41,8 @@ logging:
 
 jwt:
   secret: test123test1234test123test1234test123test1234test123test1234
-  access_time: 300000000 #5분
-  refresh_time: 1800000 #7일
+  access_time: 7200000 #2시간
+  refresh_time: 604800000 #7일
 
 
 cloud:
