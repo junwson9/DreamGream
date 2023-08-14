@@ -15,7 +15,7 @@ function TopBar({
   showConfirmButton = true,
   showLeftButton = true,
   showCloseButton = true,
-  showSimpleLogo = true,
+  showSimpleLogo = false,
 }) {
   const navigate = useNavigate();
 
