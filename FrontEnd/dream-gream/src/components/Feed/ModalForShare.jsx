@@ -91,7 +91,7 @@ function ModalForShare({ setShareModalOpen, post }) {
         <button
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white border-b border-zinc-300 justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
-          onClick={() => token ? shareKakao(`${process.env.REACT_APP_PUBLIC_URL}/share`, 'dream-gream') : navigate('/loginerror')}        
+          onClick={() => token ? shareKakao(`${process.env.REACT_APP_PUBLIC_URL}/feed/${post.post_id}`, 'dream-gream') : navigate('/loginerror')}        
         >
           <div className="text-center text-black text-sm">카카오로 공유</div>
         </button>
