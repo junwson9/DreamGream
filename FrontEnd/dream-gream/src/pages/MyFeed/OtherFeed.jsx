@@ -193,6 +193,7 @@ function OtherFeed() {
           title={user.nickname}
           showConfirmButton={false}
           showCloseButton={false}
+          showSimpleLogo={false}
         />
         <div className="w-[26px] h-[26px] left-[20px] top-[18px] absolute" />
       </div>
