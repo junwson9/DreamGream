@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -22,26 +23,28 @@ function BestBucketList({ bestBucketItem }) {
         onClick={goFeedDetail}
         style={{ cursor: 'pointer' }}
       >
-        <img
-          className="w-[148.24px] h-32 left-0 top-0 absolute rounded-lg"
-          onClick={goFeedDetail}
-          style={{ cursor: 'pointer' }}
-          src={bestBucketItem.achievement_img || bestBucketItem.ai_img}
-          alt="베스트버킷 이미지"
-        />
+        {bestBucketItem?.is_achieved !== null && bestBucketItem?.is_achieved ? (
+          <img
+            src={bestBucketItem?.achievement_img || bestBucketItem?.ai_img}
+            alt="Achievement or AI Image"
+          />
+        ) : (
+          <img src={bestBucketItem?.ai_img} alt="AI Image" />
+        )}
+
         <div className="w-[135.39px] h-[37.55px] left-[5.93px] top-[4.27px] absolute text-white text-base font-bold leading-snug">
-          {bestBucketItem.title}
+          {bestBucketItem?.title}
         </div>
 
-        {bestBucketItem.is_achieved ? (
+        {bestBucketItem?.is_achieved ? (
           <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
             <CelebrateIcon className="mr-1" style={{ fill: 'white' }} />
-            {bestBucketItem.celebrate_cnt}
+            {bestBucketItem?.celebrate_cnt}
           </div>
         ) : (
           <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
             <CheerUpIcon className="mr-1" style={{ fill: 'white' }} />
-            {bestBucketItem.cheer_cnt}
+            {bestBucketItem?.cheer_cnt}
           </div>
         )}
       </div>

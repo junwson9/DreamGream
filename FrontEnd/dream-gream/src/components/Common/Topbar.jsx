@@ -34,10 +34,7 @@ function TopBar({
   return (
     <div className="w-[360px] h-[60px] relative">
       {showSimpleLogo && (
-        <SimpleLogo
-          className="w-[105px] h-[38px] left-[15px] top-[11px] absolute z-[1]"
-          src={SimpleLogo}
-        />
+        <SimpleLogo className="w-[105px] h-[38px] left-[15px] top-[11px] absolute z-[1]" />
       )}
       {showLeftButton && (
         <LeftIcon

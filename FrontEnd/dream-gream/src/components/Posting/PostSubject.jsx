@@ -12,6 +12,7 @@ function PostSubject({ handleCloseIconClick, handleNextButtonClick }) {
   const [category, setCategory] = useState('기타');
   const [categoryID, setCategoryID] = useState(null);
   const textareaRef = useRef(null);
+  const [isPosting, setIsPosting] = useState(false);
   const dispatch = useDispatch();
 
   const onChange = (e) => {
@@ -19,6 +20,10 @@ function PostSubject({ handleCloseIconClick, handleNextButtonClick }) {
   };
 
   const onPostSubject = async () => {
+    if (isPosting) {
+      return; // 이미 요청 중인 경우 중복 요청 방지
+    }
+    setIsPosting(true);
     try {
       dispatch(saveSubject({ title, category, categoryID }));
       // POST 요청은 body에 실어 보냄
@@ -30,6 +35,9 @@ function PostSubject({ handleCloseIconClick, handleNextButtonClick }) {
       handleNextButtonClick();
     } catch (e) {
       console.error(e);
+    }
+    finally {
+      setIsPosting(false);
     }
   };
   useEffect(() => {
