@@ -13,26 +13,45 @@ function Follow() {
   const [member, setMember] = useState({});
   const [fetchedList, setFetchedList] = useState([]);
   const location = useLocation();
-  const isFollowing = new URLSearchParams(location.search).get('is_following');
-  const [isFollower, setIsFollower] = useState(isFollowing);
-
+  const [isFollower, setIsFollower] = useState(''); // 초기값을 false로 변경
+  const [leftActive, setLeftActive] = useState(!isFollower); // 초기값을 isFollower로 설정
   // useParams를 사용하여 memberId 가져오기
   const { memberId } = useParams();
 
+  useEffect(() => {
+    async function fetchMemberData() {
+      try {
+        const response = await axiosInstance.get(
+          `${API_URL}/api/members/${memberId}`,
+          {
+            params: {
+              'login-flag': true,
+            },
+          },
+        );
+        const isFollowing = new URLSearchParams(location.search).get(
+          'is_following',
+        );
+        console.log('ㅈㄴ중요' + isFollowing);
+        if (isFollowing === 'true') {
+          console.log(1111111111111111);
+          handleLeftTap();
+        } else {
+          console.log(222222222222);
+          handleRightTap();
+        }
+        const memberData = response.data.data.member;
+        setMember(memberData);
+      } catch (error) {
+        console.error('Error while fetching data:', error);
+      }
+    }
+
+    fetchMemberData();
+  }, []);
+
   const fetchData = async () => {
     try {
-      const response = await axiosInstance.get(
-        `${API_URL}/api/members/${memberId}`,
-        {
-          params: {
-            // query string으로 전달할 파라미터 추가
-            'login-flag': true,
-          },
-        },
-      );
-      const memberData = response.data.data.member;
-      setMember(memberData);
-      console.log(memberData);
       const followResponse = await axiosInstance.get(
         `${API_URL}/api/members/${memberId}${
           isFollower ? '/followers' : '/followings'
@@ -47,11 +66,24 @@ function Follow() {
     }
   };
 
+  const handleRightTap = () => {
+    setIsFollower(true);
+    fetchData();
+  };
+
+  const handleLeftTap = () => {
+    setIsFollower(false);
+    fetchData();
+  };
+
   useEffect(() => {
     fetchData(); // 초기 렌더링 시 fetchData 호출
   }, [memberId, isFollower]);
 
-  console.log(isFollower);
+  useEffect(() => {
+    setLeftActive(!isFollower);
+  }, [isFollower, leftActive]);
+
   const handleFollowStatusChange = async (memberId) => {
     try {
       const updatedList = list.map((item) => {
@@ -69,16 +101,6 @@ function Follow() {
     }
   };
 
-  const handleRightTap = () => {
-    setIsFollower(true);
-    fetchData();
-  };
-
-  const handleLeftTap = () => {
-    setIsFollower(false);
-    fetchData();
-  };
-
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
       <TopBar
@@ -92,7 +114,7 @@ function Follow() {
         rightLabel={`팔로워 ${member.cnt_followers}`}
         leftLabel={`팔로잉 ${member.cnt_followings}`}
         memberId={memberId}
-        leftActive={!isFollower}
+        leftActive={leftActive}
         onRightTap={handleRightTap}
         onLeftTap={handleLeftTap}
       />
@@ -124,4 +146,4 @@ function Follow() {
   );
 }
 
-export default Follow;
+export default React.memo(Follow);

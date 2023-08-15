@@ -12,28 +12,25 @@ function TwoTapButton({
   onRightTap, // 추가: 오른쪽 탭 클릭 시 실행할 함수
   onLeftTap, // 추가: 왼쪽 탭 클릭 시 실행할 함수
 }) {
-  const [isActive, setIsActive] = useState(leftActive); // 상태명을 isActive로 변경
+  // const [isActive, setIsActive] = useState(!leftActive); // 상태명을 isActive로 변경
   // const navigate = useNavigate();
-
+  console.log('레프트엑티브' + leftActive);
+  // console.log('액티브' + isActive);
   const handleLeftClick = () => {
-    setIsActive(false);
-    if (onLeftTap) {
-      onLeftTap(); // 왼쪽 탭 클릭 시 실행할 함수 호출
-    }
+    // setIsActive(false);
+    onLeftTap();
   };
 
   const handleRightClick = () => {
-    setIsActive(true);
-    if (onRightTap) {
-      onRightTap(); // 오른쪽 탭 클릭 시 실행할 함수 호출
-    }
+    // setIsActive(true);
+    onRightTap();
   };
 
   return (
     <div className="w-[360px] h-[60px] bg-white justify-start items-start inline-flex">
       <div
         className={`w-[180px] pt-[17px] flex-col justify-end items-center gap-[17px] inline-flex ${
-          isActive ? 'text-stone-300' : 'text-neutral-700'
+          !leftActive ? 'text-stone-300' : 'text-neutral-700'
         }`}
         onClick={handleLeftClick}
       >
@@ -42,13 +39,13 @@ function TwoTapButton({
         </div>
         <div
           className={`w-[180px] h-[3px] ${
-            isActive ? 'bg-stone-300' : 'bg-neutral-700'
+            !leftActive ? 'bg-stone-300' : 'bg-neutral-700'
           }`}
         />
       </div>
       <div
         className={`w-[180px] pt-[17px] flex-col justify-end items-center gap-[17px] inline-flex ${
-          isActive ? 'text-neutral-700' : 'text-stone-300'
+          !leftActive ? 'text-neutral-700' : 'text-stone-300'
         }`}
         onClick={handleRightClick}
       >
@@ -57,7 +54,7 @@ function TwoTapButton({
         </div>
         <div
           className={`w-[180px] h-[3px] ${
-            isActive ? 'bg-neutral-700' : 'bg-stone-300'
+            !leftActive ? 'bg-neutral-700' : 'bg-stone-300'
           }`}
         />
       </div>
@@ -65,4 +62,4 @@ function TwoTapButton({
   );
 }
 
-export default TwoTapButton;
+export default React.memo(TwoTapButton);

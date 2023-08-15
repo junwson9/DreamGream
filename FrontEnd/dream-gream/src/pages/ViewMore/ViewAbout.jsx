@@ -57,7 +57,8 @@ function ViewAbout() {
       await axiosInstance.post(`${API_URL}/api/auth/logout`);
       // 로그아웃하고 로그인 페이지로 이동시키기 or 메인피드로 이동시키기
       console.log('로그아웃 성공');
-      localStorage.removeItem('ACCESS_TOKEN');
+      localStorage.clear();
+
       // localStorage.removeItem('member_id');
       navigate('/login');
     } catch (error) {
