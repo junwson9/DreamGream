@@ -30,13 +30,12 @@ function MyFeed() {
   console.log(activeTab);
 
   const handleFollowersClick = () => {
-    Navigate(`/follow/${user.member_id}`);
+    Navigate(`/follow/${user.member_id}?is_follower=true`);
   };
 
   const handleFollowingsClick = () => {
-    Navigate(`/follow/${user.member_id}`);
+    Navigate(`/follow/${user.member_id}?is_following=false`);
   };
-
   const getFeedData = () => {
     if (activeTab === 'inProgress') {
       return postList;
