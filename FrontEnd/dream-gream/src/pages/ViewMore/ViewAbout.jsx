@@ -111,7 +111,11 @@ function ViewAbout() {
       {/* ... (이전 코드) */}
       {/* 로그인 상태에 따라 MemberItem 렌더링 */}
       {isLoggedin && (
-        <MemberItem toMemberId={user.member_id} nickname={user.nickname} />
+        <MemberItem
+          toMemberId={user.member_id}
+          nickname={user.nickname}
+          profileImg={user.profile_img}
+        />
       )}
       <div className="left-[28px] top-[223px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
         <a
