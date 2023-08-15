@@ -7,11 +7,14 @@ import MemberItem from '../../components/Member/MemberItem';
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInterceptor';
 import { API_URL } from '../../config';
+import { useLocation } from 'react-router-dom';
 
 function Follow() {
   const [member, setMember] = useState({});
   const [fetchedList, setFetchedList] = useState([]);
-  const [isFollower, setIsFollower] = useState('');
+  const location = useLocation();
+  const isFollowing = new URLSearchParams(location.search).get('is_following');
+  const [isFollower, setIsFollower] = useState(isFollowing);
 
   // useParams를 사용하여 memberId 가져오기
   const { memberId } = useParams();
