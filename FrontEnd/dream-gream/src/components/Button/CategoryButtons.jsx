@@ -11,7 +11,7 @@ function CategoryButtons({ setCategory, setCategoryID }) {
     Food: { id: 6, category: '음식' },
     Shopping: { id: 7, category: '쇼핑' },
     Work: { id: 8, category: '일' },
-    etc: { id: 9, category: '기타' },
+    Etc: { id: 9, category: '기타' },
   };
 
   const [selectedCategory, setSelectedCategory] = useState('etc');
