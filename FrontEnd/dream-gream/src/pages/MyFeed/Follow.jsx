@@ -61,6 +61,7 @@ function Follow() {
         ? followResponse.data.data.follower_list
         : followResponse.data.data.following_list;
       setFetchedList(fetchedList);
+      console.log(fetchedList);
     } catch (error) {
       console.error('Error while fetching data:', error);
     }
@@ -68,21 +69,21 @@ function Follow() {
 
   const handleRightTap = () => {
     setIsFollower(true);
-    fetchData();
+    // fetchData();
   };
 
   const handleLeftTap = () => {
     setIsFollower(false);
-    fetchData();
+    // fetchData();
   };
 
   useEffect(() => {
     fetchData(); // 초기 렌더링 시 fetchData 호출
-  }, [memberId, isFollower]);
+  }, [isFollower]);
 
   useEffect(() => {
     setLeftActive(!isFollower);
-  }, [isFollower, leftActive]);
+  }, [isFollower]);
 
   const handleFollowStatusChange = async (memberId) => {
     try {

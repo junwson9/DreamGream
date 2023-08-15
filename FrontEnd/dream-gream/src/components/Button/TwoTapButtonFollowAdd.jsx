@@ -16,15 +16,6 @@ function TwoTapButton({
   // const navigate = useNavigate();
   console.log('레프트엑티브' + leftActive);
   // console.log('액티브' + isActive);
-  const handleLeftClick = () => {
-    // setIsActive(false);
-    onLeftTap();
-  };
-
-  const handleRightClick = () => {
-    // setIsActive(true);
-    onRightTap();
-  };
 
   return (
     <div className="w-[360px] h-[60px] bg-white justify-start items-start inline-flex">
@@ -32,7 +23,7 @@ function TwoTapButton({
         className={`w-[180px] pt-[17px] flex-col justify-end items-center gap-[17px] inline-flex ${
           !leftActive ? 'text-stone-300' : 'text-neutral-700'
         }`}
-        onClick={handleLeftClick}
+        onClick={onLeftTap}
       >
         <div className="text-center text-base font-bold">
           {leftLabel} {leftValue}
@@ -47,7 +38,7 @@ function TwoTapButton({
         className={`w-[180px] pt-[17px] flex-col justify-end items-center gap-[17px] inline-flex ${
           !leftActive ? 'text-neutral-700' : 'text-stone-300'
         }`}
-        onClick={handleRightClick}
+        onClick={onRightTap}
       >
         <div className="text-center text-base font-bold">
           {rightLabel} {rightValue}
