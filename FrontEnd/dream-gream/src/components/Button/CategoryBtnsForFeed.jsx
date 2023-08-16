@@ -1,55 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
-// import React, { useState } from 'react';
-
-// function CategoryBtnsForFeed({ setCategory }) {
-//   const categorys = {
-//     Travel: { id: 1, category: '여행' },
-//     Health: { id: 2, category: '건강/운동' },
-//     Learning: { id: 3, category: '배움' },
-//     Culture: { id: 4, category: '문화/엔터' },
-//     Love: { id: 5, category: '사랑' },
-//     Food: { id: 6, category: '음식' },
-//     Shopping: { id: 7, category: '쇼핑' },
-//     Work: { id: 8, category: '일' },
-//     etc: { id: 9, category: '기타' },
-//   };
-//   const [selectedCategory, setSelectedCategory] = useState('etc');
-
-//   const handleClick = (category) => {
-//     setCategory(category);
-//     setSelectedCategory(category);
-//   };
-
-//   return (
-//     // <div style="width: 315px; height: 29px; justify-content: flex-start; align-items: flex-start; gap: 5px; display: inline-flex">
-//     <div className="w-[361px] h-[30px] relative">
-//       {/* <div className="w-[267px] flex flex-wrap justify-between"> */}
-
-//       {Object.keys(categorys).map((category) => (
-//         <>
-//           <button
-//             key={category}
-//             className={`w-[62px] h-[30px] px-[19px] py-1.5 rounded-[10px] border justify-center items-center gap-2.5 inline-flex ${
-//               selectedCategory === category
-//                 ? 'bg-indigo-400 text-white'
-//                 : 'bg-white text-indigo-400 border-indigo-400'
-//             }`}
-//             type="submit"
-//             onClick={() => handleClick(category)}
-//             style={{ marginBottom: '10px' }}
-//           >
-//             <div className="text-center text-[13px] font-bold leading-[18.20px] whitespace-nowrap">
-//               {categorys[category].category}
-//             </div>
-//           </button>
-//           <span />
-//         </>
-//       ))}
-//     </div>
-//   );
-// }
-// export default CategoryBtnsForFeed;
 
 import React, { useState } from 'react';
 import Slider from 'react-slick';
@@ -70,7 +20,7 @@ function CategoryBtnsForFeed({ setCategoryID }) {
     Work: { id: 8, category: '일' },
     etc: { id: 9, category: '기타' },
   };
-  const [selectedCategory, setSelectedCategory] = useState('etc');
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   const handleClick = (category) => {
     setCategoryID(categorys[category].id);
@@ -89,7 +39,6 @@ function CategoryBtnsForFeed({ setCategoryID }) {
   return (
     <div className="w-full flex justify-center">
       <div className="w-[320px] h-[40px] mt-[10px] relative">
-        {/* <div className="flex items-center"> */}
         <Slider {...sliderSettings}>
           {Object.keys(categorys).map((category) => (
             <div key={category} className="px-2">
@@ -110,7 +59,6 @@ function CategoryBtnsForFeed({ setCategoryID }) {
             </div>
           ))}
         </Slider>
-        {/* </div> */}
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ import PostSubject from '../../components/Posting/PostSubject';
 import PostDetail from '../../components/Posting/PostDetail';
 import PostViewImage from '../../components/Posting/PostViewImage';
 import { API_URL } from '../../config';
-import { ToastContainer, toast } from 'react-toastify';
 
 function Posting() {
   const [activeComponent, setActiveComponent] = useState('PostSubject');
@@ -20,6 +19,10 @@ function Posting() {
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      if (data.url === 'error') {
+        navigate('/posterror');
+        eventSource.close();
+      }
       console.log('Received SSE message:', data);
 
 
