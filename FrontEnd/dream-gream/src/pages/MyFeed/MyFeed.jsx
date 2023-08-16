@@ -171,6 +171,11 @@ function MyFeed() {
   const selectedListLength = selectedList.length;
   return (
     <div className="w-[360px] h-[800px] relative bg-white">
+      <img
+        src="../../assets/images/guide.png"
+        alt="Guide"
+        className="w-[360px] h-[800px] absolute top-0 left-0"
+      />
       <div className="w-[360px] h-[60px] left-0 top-0 absolute">
         <TopBar
           title={user.nickname}
@@ -182,20 +187,6 @@ function MyFeed() {
       </div>
       <div className="w-[218px] h-[17px] top-[105px] left-[120px] relative bg-zinc-300 rounded-lg">
         <div className="left-[109px] top-[-3px] absolute text-center"></div>
-        <div>
-          {/* <img
-            className="absolute"
-            style={{
-              left: `${achievedPercentBar - 20}px`,
-              width: '40px',
-              height: '40px',
-              top: `-${40}px`,
-              zIndex: 0, // 이미지를 위로 올리기 위한 z-index 값 설정
-            }}
-            src={runningIcon}
-            alt="Running"
-          /> */}
-        </div>
         <div
           style={{
             width: `${achievedPercentBar}px`,
@@ -315,7 +306,6 @@ function MyFeed() {
           onRightTap={() => handleTabChange('achieved')} // 달성완료 탭 클릭 시 처리
         />
       </div>
-
       <div className="w-[347px] left-[11px] top-[208px] h-8 relative">
         <div className="left-[6px] top-[8px] absolute text-zinc-800 text-[13px] font-normal leading-[18.20px]">
           {/* {selectedListLength} */}
