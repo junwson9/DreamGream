@@ -26,8 +26,11 @@ function MemberItem({ toMemberId, nickname, profileImg }) {
       <div className="w-6 h-6 relative origin-top-left -rotate-180" />
       <img
         className="w-[75px] h-[75px] left-[14.96px] top-[3px] absolute rounded-full"
-        src={profileImg || defaultProfileImg}
-        alt={profileImg ? `사용자 ${nickname}의 프로필 이미지` : 'Profile'}
+        style={{
+          backgroundImage: `url(${profileImg || defaultProfileImg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       />
       <div className="w-[177px] left-[110px] top-[25px] absolute text-neutral-700 text-xl font-medium leading-snug">
         {nickname}

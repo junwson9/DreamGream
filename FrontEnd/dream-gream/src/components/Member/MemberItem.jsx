@@ -6,7 +6,13 @@ import { API_URL } from '../../config';
 import myDefaultImg from '../../assets/default_profile.svg';
 import { useNavigate } from 'react-router-dom';
 
-function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
+function MemberItem({
+  toMemberId,
+  nickname,
+  isFollowed,
+  profileImg,
+  // leftActive,
+}) {
   const defaultProfileImg = myDefaultImg;
   const [followed, setFollowed] = useState(isFollowed);
   const handleRequest = async () => {
@@ -35,8 +41,9 @@ function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
   const toProfile = () => {
     navigate(`/member/${toMemberId}`);
   };
+  // const buttonLabelFollowing = followed ? '팔로잉취소' : '팔로우';
   const buttonLabel = followed ? '팔로잉' : '팔로우';
-
+  // const buttonLabel = leftActive ? buttonLabelFollowing : buttonLabelFollower;
   return (
     <div className="w-[360px] h-[69px] top-[10px] relative">
       <img
