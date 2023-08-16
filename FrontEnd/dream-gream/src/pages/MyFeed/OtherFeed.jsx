@@ -39,11 +39,11 @@ function OtherFeed() {
   const Navigate = useNavigate();
 
   const handleFollowersClick = () => {
-    Navigate(`/follow/${user.member_id}`);
+    Navigate(`/follow/${user.member_id}?is_following=false`);
   };
 
   const handleFollowingsClick = () => {
-    Navigate(`/follow/${user.member_id}`);
+    Navigate(`/follow/${user.member_id}?is_following=true`);
   };
 
   const getFeedData = () => {
