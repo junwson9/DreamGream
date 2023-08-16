@@ -19,6 +19,7 @@ import UpdatePost from './pages/Feed/editFeed';
 import Follow from './pages/MyFeed/Follow';
 import OtherFeed from './pages/MyFeed/OtherFeed';
 import PostError from './pages/Posting/PostError';
+import Guide from './pages/MyFeed/guide';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -49,6 +50,15 @@ function App() {
               element={<OAuth2RedirectHandler />}
             />
             <Route path="/Siginupgenderbirth" element={<SignupGenderBirth />} />
+            <Route
+              path="/guide"
+              element={
+                <>
+                  <Guide />
+                  <Navbar className="Navbar" />
+                </>
+              }
+            />
             <Route path="/profileedit" element={<ProfileEdit />} />
             <Route
               path="/follow/:memberId"

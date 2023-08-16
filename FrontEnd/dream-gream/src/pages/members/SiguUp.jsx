@@ -21,9 +21,8 @@ function SignupGenderBirth() {
   };
   const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
   const Navigate = useNavigate();
-  // console.log(selectedYear);
   const navigateToMyFeed = () => {
-    Navigate('/myfeed');
+    Navigate('/guide');
   };
   const handleGenderSelection = (selectedGender) => {
     setGender(selectedGender);
@@ -31,9 +30,6 @@ function SignupGenderBirth() {
   console.log(gender);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(gender);
-    // console.log(birthYear);
-    console.log(ACCESS_TOKEN);
     try {
       const response = await axios.put(
         `${API_URL}/api/auth/role`,
@@ -55,13 +51,8 @@ function SignupGenderBirth() {
       localStorage.setItem('ACCESS_TOKEN', access_token);
       const refresh_token = response.data.data.token.refresh_token;
       localStorage.setItem('REFRESH_TOKEN', refresh_token);
-
-      // ACCESS_TOKEN = tokenResponse.token.access_token;
-      // REFRESH_TOKEN = tokenResponse.token.refresh_token;
-      // Handle success
     } catch (error) {
       console.error(error);
-      // Handle error
     }
     navigateToMyFeed();
   };
