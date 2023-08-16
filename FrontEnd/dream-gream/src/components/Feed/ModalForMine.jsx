@@ -27,6 +27,7 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
     try {
       const response = await axiosInstance.delete(`/api/posts/${post.post_id}`);
       console.log('삭제 요청 성공', response);
+      navigate('/myfeed')
       // 삭제 성공 시 필요한 작업 수행
     } catch (error) {
       console.error('삭제 요청 실패', error);

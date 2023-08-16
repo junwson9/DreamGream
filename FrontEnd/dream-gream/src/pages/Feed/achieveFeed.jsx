@@ -93,7 +93,7 @@ function AchieveFeed() {
         <CategoryBtnsForFeed setCategoryID={setCategoryID} />
         <div className="w-[360px] h-[200px] relative bg-white">
           <div className="left-[26px] top-[8px] absolute text-zinc-800 text-lg font-bold leading-[25.20px]">
-            BEST 버킷리스트
+            BEST 달성완료
           </div>
           <Swiper
             slidesPerView={1}
