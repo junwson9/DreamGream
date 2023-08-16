@@ -11,7 +11,6 @@ function MemberItem({
   nickname,
   isFollowed,
   profileImg,
-  // leftActive,
 }) {
   const defaultProfileImg = myDefaultImg;
   const [followed, setFollowed] = useState(isFollowed);
@@ -41,9 +40,7 @@ function MemberItem({
   const toProfile = () => {
     navigate(`/member/${toMemberId}`);
   };
-  // const buttonLabelFollowing = followed ? '팔로잉취소' : '팔로우';
   const buttonLabel = followed ? '팔로잉' : '팔로우';
-  // const buttonLabel = leftActive ? buttonLabelFollowing : buttonLabelFollower;
   return (
     <div className="w-[360px] h-[69px] top-[10px] relative">
       <img

@@ -6,7 +6,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AchievementStampImage from '../../assets/images/AchievementStamp.png';
 import { ReactComponent as AchievemetStamp } from '../../assets/images/AchievementStamp.svg';
 
 function FeedForExplore({ post }) {
@@ -28,22 +27,7 @@ function FeedForExplore({ post }) {
   };
 
   return (
-    // <div className="w-[360px] h-[460px] relative">
-    //   <img
-    //     className="w-[360px] h-[360px] left-0 top-[-1px] absolute"
-    //     src={post.ai_img}
-    //     alt="전체 피드 이미지"
-    //     onClick={goFeedDetail}
-    //     style={{ cursor: 'pointer' }}
-    //   />
-    //   <div
-    //     className="w-[315px] left-[28px] top-[380px] absolute text-zinc-800 text-[17px] font-medium leading-normal"
-    //     onClick={goFeedDetail}
-    //     style={{ cursor: 'pointer' }}
-    //   >
-    //     {post.title}
-    //   </div>
-    // </div>
+
 
     <div
       className="w-[360px] h-[448px] relative"
@@ -75,11 +59,7 @@ function FeedForExplore({ post }) {
           )
         )}
         {post.is_achieved && (
-          // <img
-          //   className="w-[135px] h-[135px] left-[225px] top-[1px] absolute"
-          //   src={AchievementStampImage}
-          //   alt="달성완료 도장 이미지"
-          // />
+
           <AchievemetStamp className="w-[135px] h-[135px] left-[225px] top-[1px] absolute" />
         )}
       </div>

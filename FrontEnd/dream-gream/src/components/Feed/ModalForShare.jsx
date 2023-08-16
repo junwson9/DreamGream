@@ -2,7 +2,7 @@
 import React, { useEffect,useRef } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { shareKakao } from '../../utils/shareKakaoLink';
 import { setSharedPost } from '../../store/actions/shareActions';
 

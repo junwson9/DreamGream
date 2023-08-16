@@ -39,7 +39,6 @@ function CategoryBtnsForFeed({ setCategoryID }) {
   return (
     <div className="w-full flex justify-center">
       <div className="w-[320px] h-[40px] mt-[10px] relative">
-        {/* <div className="flex items-center"> */}
         <Slider {...sliderSettings}>
           {Object.keys(categorys).map((category) => (
             <div key={category} className="px-2">
@@ -60,7 +59,6 @@ function CategoryBtnsForFeed({ setCategoryID }) {
             </div>
           ))}
         </Slider>
-        {/* </div> */}
       </div>
     </div>
   );

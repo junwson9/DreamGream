@@ -23,7 +23,6 @@ function TopBar({
     navigate(-1);
   };
   const handleConfirmClick = async (event) => {
-    // console.log(onconfirm);
 
     if (onConfirm) {
       await onConfirm(event); // Trigger the onConfirm function (POST request)

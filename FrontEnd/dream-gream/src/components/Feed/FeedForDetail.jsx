@@ -47,11 +47,7 @@ function FeedForDetail({ post }) {
           )
         )}
         {post.is_achieved && (
-          // <img
-          //   className="w-[135px] h-[135px] left-[225px] top-[1px] absolute"
-          //   src={AchievementStampImage}
-          //   alt="달성완료 도장 이미지"
-          // />
+
           <AchievemetStamp className="w-[135px] h-[135px] left-[225px] top-[1px] absolute" />
         )}
       </div>

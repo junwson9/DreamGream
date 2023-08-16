@@ -3,8 +3,6 @@
 import React from 'react';
 import { ReactComponent as CheerUpIcon } from '../../assets/icons/SmallCheerUpIcon.svg';
 import { ReactComponent as CelebrateIcon } from '../../assets/icons/CelebrateIconSmall.svg';
-import { ReactComponent as LockCloseIcon } from '../../assets/icons/LockCloseIcon.svg';
-import { ReactComponent as LockOpenIcon } from '../../assets/icons/LockOpenIcon.svg';
 import { useNavigate } from 'react-router-dom';
 
 function OtherFeedCard({
