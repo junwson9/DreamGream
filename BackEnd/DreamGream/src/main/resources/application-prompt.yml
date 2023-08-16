@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: "prompt-local"
+prompt:
+  url: "http://localhost:8002/prompt"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "prompt-dev"
+prompt:
+  url: "http://prompt-api-dev:8002/api/prompt"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "prompt-prod"
+prompt:
+  url: "http://prompt-api:8002/api/prompt"
