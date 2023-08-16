@@ -119,7 +119,7 @@ function App() {
               }
             />
             <Route path="/loginError" element={<LoginError />} />
-            <Route path="postError" element={<PostError/>} />
+            <Route path="postError" element={<PostError />} />
           </Routes>
         </div>
       )}

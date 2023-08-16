@@ -57,7 +57,8 @@ function ViewAbout() {
       await axiosInstance.post(`${API_URL}/api/auth/logout`);
       // 로그아웃하고 로그인 페이지로 이동시키기 or 메인피드로 이동시키기
       console.log('로그아웃 성공');
-      localStorage.removeItem('ACCESS_TOKEN');
+      localStorage.clear();
+
       // localStorage.removeItem('member_id');
       navigate('/login');
     } catch (error) {
@@ -110,7 +111,11 @@ function ViewAbout() {
       {/* ... (이전 코드) */}
       {/* 로그인 상태에 따라 MemberItem 렌더링 */}
       {isLoggedin && (
-        <MemberItem toMemberId={user.member_id} nickname={user.nickname} />
+        <MemberItem
+          toMemberId={user.member_id}
+          nickname={user.nickname}
+          profileImg={user.profile_img}
+        />
       )}
       <div className="left-[28px] top-[223px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
         <a

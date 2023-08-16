@@ -3,10 +3,11 @@ import React from 'react';
 import { ReactComponent as LogoBig1 } from '../../assets/LogoBig1.svg';
 import { ReactComponent as KakaoLogin } from '../../assets/KakaoLogin.svg';
 import { API_URL } from '../../config';
+import { useNavigate } from 'react-router-dom';
 
 function LogIn() {
   const kauthUrl = `${API_URL}/oauth2/authorize/kakao`;
-
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -19,6 +20,13 @@ function LogIn() {
         <a href={kauthUrl}>
           <KakaoLogin />
         </a>
+        <div
+          className="absolute top-[700px] text-zinc-500 text-sm underline"
+          onClick={() => navigate('/')}
+          style={{ cursor: 'pointer' }}
+        >
+          비회원으로 둘러 볼래요!
+        </div>
       </div>
     </>
   );
