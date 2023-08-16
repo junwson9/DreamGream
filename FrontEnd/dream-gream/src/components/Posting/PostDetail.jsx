@@ -90,7 +90,7 @@ function PostDetail({ handleCloseIconClick, handleNextButtonClick }) {
         <div className="left-[22px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
           목표 시기
         </div>
-        <div className="left-[290px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
+        <div className="left-[270px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
           <Container
             selectedPeriod={selectedPeriod}
             onChangePeriod={setSelectedPeriod}
