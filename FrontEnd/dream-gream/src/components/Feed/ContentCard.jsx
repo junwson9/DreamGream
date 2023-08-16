@@ -31,7 +31,6 @@ function ContentCard({ title, post, isBefore }) {
         </button>
       </div>
       {isBefore ? (
-        // <div className="w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px]">
         <div
           className={`w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px] 
           ${isOpen ? 'hidden' : ''}
@@ -40,7 +39,6 @@ function ContentCard({ title, post, isBefore }) {
           {post.content}
         </div>
       ) : (
-        // <div className="w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px] ">
         <div
           className={`w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px] 
           ${isOpen ? 'hidden' : ''}

@@ -6,20 +6,11 @@ import { API_URL } from '../../config';
 import myDefaultImg from '../../assets/default_profile.svg';
 import { useNavigate } from 'react-router-dom';
 
-function MemberItem({
-  toMemberId,
-  nickname,
-  isFollowed,
-  profileImg,
-  // leftActive,
-}) {
+function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
   const defaultProfileImg = myDefaultImg;
   const [followed, setFollowed] = useState(isFollowed);
   const handleRequest = async () => {
     try {
-      console.log(toMemberId);
-      console.log(isFollowed);
-
       const response = await axiosInstance.post(
         `${API_URL}/api/members/follow/${toMemberId}`,
       );
@@ -41,9 +32,7 @@ function MemberItem({
   const toProfile = () => {
     navigate(`/member/${toMemberId}`);
   };
-  // const buttonLabelFollowing = followed ? '팔로잉취소' : '팔로우';
   const buttonLabel = followed ? '팔로잉' : '팔로우';
-  // const buttonLabel = leftActive ? buttonLabelFollowing : buttonLabelFollower;
   return (
     <div className="w-[360px] h-[69px] top-[10px] relative">
       <img

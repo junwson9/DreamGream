@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 function SolidButton({ name, onClick }) {
   const handleButtonClick = () => {
-    console.log('버튼 클릭!');
     onClick(); // sendPostInfo 함수 호출
   };
 
