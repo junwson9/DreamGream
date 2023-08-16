@@ -28,12 +28,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     const refreshToken = localStorage.getItem('REFRESH_TOKEN');
 
-    if (
-      error.response &&
-      error.response.status === 500 &&
-      error.response.message === 'EXPIRED TOKEN' &&
-      refreshToken
-    ) {
+    if (error.response && error.response.message === "EXPIRED TOKEN" && refreshToken) {
       try {
         const res = await axiosInstance.post(
           '/auth/token',
