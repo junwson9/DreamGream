@@ -46,7 +46,7 @@ class PromptHandler:
         if category_name == "etc":
             category_name = "없어"
         elif category_name == "Culture":
-            category_name = "Entertainment/Cultural life"
+            category_name = "Entertainment or Cultural life"
 
         category = ["남성 1명과 여성 1명이 사이 좋게 있는 모습 또는 내가 알려준 버킷리스트 주인의 성별과는 다른 성별의 그림을 만들 수 있도록 명령어를 알려줘.",
                     "만약 title에 취업하기,취뽀,취직하기 라는 단어가 들어가면 회사와 관련된 그림을 그릴 수 있게 문장을 작성해",
