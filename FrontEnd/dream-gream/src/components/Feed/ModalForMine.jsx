@@ -14,11 +14,15 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
     navigate(`/updatepost/${post.post_id}`);
     setMineModalOpen(false);
   };
+
   const handleOutsideClick = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       closeMineModal();
     }
-  };
+  };  
+
+
+  
   const handleDeleteClick = async () => {
     try {
       const response = await axiosInstance.delete(`/api/posts/${post.post_id}`);
@@ -29,8 +33,8 @@ function ModalForMine({ setMineModalOpen, setShareModalOpen, post }) {
       console.error('삭제 요청 실패', error);
       // 실패 시 에러 처리
     }
-    setMineModalOpen(false);
-  };
+    
+  }
   useEffect(()=> {
     window.addEventListener('mousedown', handleOutsideClick);
     return () => {

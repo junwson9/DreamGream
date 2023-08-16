@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect,useRef } from 'react';
+import React, { useEffect,useRef,useState } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { shareKakao } from '../../utils/shareKakaoLink';
 import { setSharedPost } from '../../store/actions/shareActions';
 
@@ -14,6 +14,7 @@ function ModalForShare({ setShareModalOpen, post }) {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const token = localStorage.getItem('ACCESS_TOKEN');
+  const [isCopyingUrl, setIsCopyingUrl] = useState(false);
   const closeShareModal = () => {
     setShareModalOpen(false);
   };
@@ -23,7 +24,9 @@ function ModalForShare({ setShareModalOpen, post }) {
     }
   };
   const handleCopyClipBoard = async (text) => {
+    if (isCopyingUrl) return;
     try {
+      setIsCopyingUrl(true);
       await navigator.clipboard.writeText(text);
       toast.info('클립보드에 링크가 복사되었어요!', {
         position: 'top-center',
@@ -35,8 +38,12 @@ function ModalForShare({ setShareModalOpen, post }) {
         progress: undefined,
         theme: 'light',
       });
+      closeShareModal();
     } catch (err) {
       console.log(err);
+    }
+    finally {
+      setIsCopyingUrl(false);
     }
   };
 
@@ -81,6 +88,7 @@ function ModalForShare({ setShareModalOpen, post }) {
           type="button"
           className="w-[340px] grow shrink basis-0 px-[157px] py-2.5 bg-white rounded-tl-[10px] rounded-tr-[10px] border-b border-zinc-300 justify-center items-center gap-2.5 inline-flex whitespace-nowrap"
           onClick={() => handleCopyClipBoard(`${process.env.REACT_APP_PUBLIC_URL}${location.pathname}`)}
+          disabled={isCopyingUrl}
         >
           <div className="text-center text-black text-sm">URL 복사</div>
         </button>

@@ -338,7 +338,7 @@ function OtherFeed() {
               Img={
                 activeTab === 'inProgress'
                   ? post.ai_img
-                  : post.achieve_img || post.ai_img
+                  : post.achievement_img || post.ai_img
               }
               likeCount={
                 activeTab === 'inProgress' ? post.cheer_cnt : post.celebrate_cnt
