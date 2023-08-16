@@ -18,11 +18,7 @@ function ViewAbout() {
   const [user, setUser] = useState([]);
   const [loginFlag, setLoginFlag] = useState('');
 
-  useEffect(() => {
-    const access_token = localStorage.getItem('ACCESS_TOKEN');
-    setIsLoggedin(!isLoggedin);
-  }, []);
-  console.log(isLoggedin);
+  console.log(loginFlag);
   useEffect(() => {
     async function fetchData() {
       const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
@@ -88,7 +84,7 @@ function ViewAbout() {
         showCloseButton={false}
       />
       {/* 로그인이 안되어 있을 때 UI */}
-      {!isLoggedin && (
+      {!loginFlag && (
         <div className="w-[320px] top-[100px] left-[30px] h-10 justify-start items-center gap-[79px] flex absolute">
           <div className="text-neutral-400 text-[15px] font-normal">
             로그인이 필요합니다.
@@ -110,7 +106,7 @@ function ViewAbout() {
       )}
       {/* ... (이전 코드) */}
       {/* 로그인 상태에 따라 MemberItem 렌더링 */}
-      {isLoggedin && (
+      {loginFlag && (
         <MemberItem
           toMemberId={user.member_id}
           nickname={user.nickname}
@@ -119,7 +115,7 @@ function ViewAbout() {
       )}
       <div className="left-[28px] top-[223px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
         <a
-          href="https://www.notion.so/Dream-Gream-2da668d3b0674103ab2f27661a5bd389"
+          href="https://toothsome-linseed-a13.notion.site/Dream-Gream-2da668d3b0674103ab2f27661a5bd389"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           ABOUT
@@ -134,7 +130,7 @@ function ViewAbout() {
       <div className="left-[28px] top-[409px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
         오픈소스 라이브러리
       </div>
-      {isLoggedin && (
+      {loginFlag && (
         <>
           <div className="left-[28px] top-[533px] absolute text-zinc-800 text-[19px] font-bold leading-relaxed">
             <button
