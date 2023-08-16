@@ -1,4 +1,5 @@
 import React ,{ useEffect, useState } from 'react';
+import { ReactComponent as Up } from '../../assets/up.svg';
 
 function ToTheTop() {
   // 토글 여부를 결정하는 state 선언
@@ -34,11 +35,11 @@ function ToTheTop() {
   return toggleBtn ? (
     <button type="button" onClick={goToTop} className="w-10 h-10 relative">
       <div className="w-10 h-10 left-0 top-0 absolute bg-indigo-400 rounded-full" />
-      <img
-        src="/up.png"
-        alt=""
-        className="w-[20px] h-[20px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-      />
+      <div
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+      >
+        <Up/>
+        </div>
     </button>
 
   ) : null;

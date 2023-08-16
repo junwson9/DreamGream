@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ToTheTop from '../Button/ToTopButton';
+import { ReactComponent as Feed } from '../../assets/feed.svg'
+import { ReactComponent as More } from '../../assets/more.svg';
+import { ReactComponent as My } from '../../assets/my.svg';
+import { ReactComponent as Temple } from '../../assets/temple.svg';
+import { ReactComponent as PaintBrush } from '../../assets/paintbrush.svg';
+import { ReactComponent as FeedActive } from '../../assets/feed-active.svg';
+import { ReactComponent as MyActive } from '../../assets/my-active.svg';
+import { ReactComponent as TempleActive } from '../../assets/temple-active.svg';
+import { ReactComponent as MoreActive } from '../../assets/more-active.svg';
+
 
 function Navbar() {
   const location = useLocation();
@@ -38,13 +48,12 @@ function Navbar() {
                 className="w-[27px] h-[27px] left-[22px] top-[19px] absolute"
                 onClick={() => handleImageClick('feed')}
               >
-                <img
-                  src={
-                    activeImage === 'feed' ? '/feed-active.png' : '/feed.png'
-                  }
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
+                <div
+                  className="w-[26px] h-[26px]">
+                    {
+                      activeImage === 'feed' ? <FeedActive/> : <Feed/>
+                    }
+                  </div>
               </button>
             </Link>
           </div>
@@ -55,15 +64,15 @@ function Navbar() {
                 className="w-[26px] h-[26px] left-[23px] top-[19px] absolute"
                 onClick={() => handleImageClick('temple')}
               >
-                <img
-                  src={
+                <div
+                    className="w-[26px] h-[26px]"
+                    >
+                    {
                     activeImage === 'temple'
-                      ? '/temple-active.png'
-                      : '/temple.png'
+                      ? <TempleActive/>
+                      : <Temple/>
                   }
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
+                  </div>
               </button>
             </Link>
           </div>
@@ -74,11 +83,10 @@ function Navbar() {
                 type="button"
                 className="w-[46px] h-[46px] left-[13px] top-[9px] absolute bg-indigo-400 rounded-full shadow flex    justify-center items-center"
               >
-                <img
-                  src="/paintbrush.png"
-                  alt=""
-                  className="w-[28px] h-[28px] relative"
-                />
+                <div
+                  className="w-[28px] h-[28px] relative">
+                    <PaintBrush/>
+                </div>
               </button>
             </Link>
           </div>
@@ -90,11 +98,10 @@ function Navbar() {
                 className="w-[26px] h-[26px] left-[23px] top-[19px] absolute"
                 onClick={() => handleImageClick('my')}
               >
-                <img
-                  src={activeImage === 'my' ? '/my-active.png' : '/my.png'}
-                  alt=""
-                  className="w-[26px] h-[26px]"
-                />
+                <div
+                  className="w-[26px] h-[26px]">
+                    {activeImage === 'my' ? <MyActive/> : <My/>}
+                </div>
               </button>
             </Link>
           </div>
@@ -106,13 +113,13 @@ function Navbar() {
                 className="w-[26px] h-[26px] left-[23px] top-[19px] absolute"
                 onClick={() => handleImageClick('more')}
               >
-                <img
-                  src={
-                    activeImage === 'more' ? '/more-active.png' : '/more.png'
-                  }
-                  alt=""
+                <div
                   className="w-[26px] h-[26px]"
-                />
+                  >
+                  {
+                    activeImage === 'more' ? <MoreActive/> : <More/>
+                  }
+                </div>
               </button>
             </Link>
           </div>
