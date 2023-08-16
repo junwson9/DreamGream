@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -19,12 +19,6 @@ function PostViewImage({ handleCloseIconClick }) {
   const [isPosting, setIsPosting] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (imageUrl.url === 'error') {
-      navigate('/posterror')
-    }
-  });
   
   const handleImageLoad = () => {
     setIsModalOpen(true);
@@ -70,7 +64,6 @@ function PostViewImage({ handleCloseIconClick }) {
     }
   };
 
-  console.log('Image URL:', imageUrl.url);
 
   return (
     <div>
