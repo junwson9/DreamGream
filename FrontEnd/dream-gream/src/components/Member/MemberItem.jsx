@@ -6,19 +6,11 @@ import { API_URL } from '../../config';
 import myDefaultImg from '../../assets/default_profile.svg';
 import { useNavigate } from 'react-router-dom';
 
-function MemberItem({
-  toMemberId,
-  nickname,
-  isFollowed,
-  profileImg,
-}) {
+function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
   const defaultProfileImg = myDefaultImg;
   const [followed, setFollowed] = useState(isFollowed);
   const handleRequest = async () => {
     try {
-      console.log(toMemberId);
-      console.log(isFollowed);
-
       const response = await axiosInstance.post(
         `${API_URL}/api/members/follow/${toMemberId}`,
       );
