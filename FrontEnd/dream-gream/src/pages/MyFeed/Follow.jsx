@@ -1,23 +1,23 @@
 /* eslint-disable */
 
 import React, { useState, useEffect } from 'react';
+import axiosInstance from '../../utils/axiosInterceptor';
+import { API_URL } from '../../config';
+import { useParams, useLocation } from 'react-router-dom';
 import TopBar from '../../components/Common/Topbar2';
 import TwoTapButton from '../../components/Button/TwoTapButtonFollowAdd';
 import MemberItem from '../../components/Member/MemberItem';
-import { useParams } from 'react-router-dom';
-import axiosInstance from '../../utils/axiosInterceptor';
-import { API_URL } from '../../config';
-import { useLocation } from 'react-router-dom';
 
 function Follow() {
-  const [member, setMember] = useState({});
-  const [fetchedList, setFetchedList] = useState([]);
-  const location = useLocation();
-  const [isFollower, setIsFollower] = useState(''); // 초기값을 false로 변경
-  const [leftActive, setLeftActive] = useState(!isFollower); // 초기값을 isFollower로 설정
-  // useParams를 사용하여 memberId 가져오기
-
   const { memberId } = useParams();
+  const location = useLocation();
+
+  const [member, setMember] = useState({});
+  const [isFollower, setIsFollower] = useState(false);
+  const [fetchedList, setFetchedList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true);
+  const [offset, setOffset] = useState(0);
 
   useEffect(() => {
     async function fetchMemberData() {
@@ -30,15 +30,17 @@ function Follow() {
             },
           },
         );
+
         const isFollowing = new URLSearchParams(location.search).get(
           'is_following',
         );
-        console.log('ㅈㄴ중요' + isFollowing);
+
         if (isFollowing === 'true') {
           handleLeftTap();
         } else {
           handleRightTap();
         }
+
         const memberData = response.data.data.member;
         setMember(memberData);
       } catch (error) {
@@ -49,44 +51,56 @@ function Follow() {
     fetchMemberData();
   }, []);
 
+  useEffect(() => {
+    fetchData(); // 초기 렌더링 시 fetchData 호출
+  }, [isFollower, offset]);
+
   const fetchData = async () => {
+    if (loading || !hasMoreData) return; // 진행 중인 상태에서는 보내지 않음
+    setLoading(true); // 로딩 중 상태로 변경
+
     try {
-      const followResponse = await axiosInstance.get(
+      const response = await axiosInstance.get(
         `${API_URL}/api/members/${memberId}${
           isFollower ? '/followers' : '/followings'
-        }`,
+        }?page=${offset}`,
       );
-      const fetchedList = isFollower
-        ? followResponse.data.data.follower_list
-        : followResponse.data.data.following_list;
-      setFetchedList(fetchedList);
-      console.log(fetchedList);
+
+      const newFetchedList = isFollower
+        ? response.data.data.follower_list
+        : response.data.data.following_list;
+
+      if (newFetchedList.length === 0) {
+        // 더 이상 데이터가 없으면 무한 스크롤 중단
+        setHasMoreData(false);
+      } else {
+        setFetchedList((prevList) => [...prevList, ...newFetchedList]);
+        setOffset(offset + 1); // 다음 페이지로 업데이트
+      }
     } catch (error) {
       console.error('Error while fetching data:', error);
+    } finally {
+      setLoading(false); // 로딩 상태 해제
     }
   };
 
   const handleRightTap = () => {
     setIsFollower(true);
-    // fetchData();
+    setFetchedList([]); // 리스트 초기화
+    setOffset(0); // 오프셋 값 초기화
+    setHasMoreData(true); // 무한 스크롤 다시 시작
   };
 
   const handleLeftTap = () => {
     setIsFollower(false);
-    // fetchData();
+    setFetchedList([]); // 리스트 초기화
+    setOffset(0); // 오프셋 값 초기화
+    setHasMoreData(true); // 무한 스크롤 다시 시작
   };
-
-  useEffect(() => {
-    fetchData(); // 초기 렌더링 시 fetchData 호출
-  }, [isFollower]);
-
-  useEffect(() => {
-    setLeftActive(!isFollower);
-  }, [isFollower]);
 
   const handleFollowStatusChange = async (memberId) => {
     try {
-      const updatedList = list.map((item) => {
+      const updatedList = fetchedList.map((item) => {
         if (item.member_id === memberId) {
           return {
             ...item,
@@ -95,7 +109,7 @@ function Follow() {
         }
         return item;
       });
-      setList(updatedList);
+      setFetchedList(updatedList);
     } catch (error) {
       console.error(error);
     }
@@ -114,7 +128,7 @@ function Follow() {
         rightLabel={`팔로워 ${member.cnt_followers}`}
         leftLabel={`팔로잉 ${member.cnt_followings}`}
         memberId={memberId}
-        leftActive={leftActive}
+        leftActive={!isFollower}
         onRightTap={handleRightTap}
         onLeftTap={handleLeftTap}
       />
@@ -141,6 +155,7 @@ function Follow() {
             </div>
           </div>
         )}
+        <div className="end-of-list" style={{ height: '70px' }} />
       </div>
     </div>
   );
