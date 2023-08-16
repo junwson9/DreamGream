@@ -107,6 +107,7 @@ function MyFeed() {
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
         console.log(post_list);
+        console.log(achieved_list);
         setPostList(post_list);
         setAchievedList(achieved_list);
       } catch (error) {
@@ -328,7 +329,7 @@ function MyFeed() {
               Img={
                 activeTab === 'inProgress'
                   ? post.ai_img
-                  : post.achieve_img || post.ai_img
+                  : post.achievement_img || post.ai_img
               }
               likeCount={
                 activeTab === 'inProgress' ? post.cheer_cnt : post.celebrate_cnt

@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response Interceptor
@@ -30,8 +30,11 @@ axiosInstance.interceptors.response.use(
 
     if (error.response && error.response.message === "EXPIRED TOKEN" && refreshToken) {
       try {
-
-        const res = await axiosInstance.post('/auth/token', {}, { headers: { 'X-Refresh-Token': refreshToken } });
+        const res = await axiosInstance.post(
+          '/auth/token',
+          {},
+          { headers: { 'X-Refresh-Token': refreshToken } },
+        );
         const newAccessToken = res.data.access_token;
         localStorage.setItem('token', newAccessToken);
 
@@ -43,7 +46,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

@@ -22,18 +22,23 @@ function ViewAbout() {
   useEffect(() => {
     async function fetchData() {
       const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
-      if (ACCESS_TOKEN) {
-        setLoginFlag(true);
-      } else {
+      console.log(ACCESS_TOKEN);
+
+      if (!ACCESS_TOKEN) {
+        // If ACCESS_TOKEN is not available, setLoginFlag(false) and exit
         setLoginFlag(false);
+        return;
       }
+
+      setLoginFlag(true);
+
       try {
         const response = await axiosInstance.get(
           `${API_URL}/api/members/info`,
           {
             params: {
               // query string으로 전달할 파라미터 추가
-              'login-flag': loginFlag,
+              'login-flag': true, // Always send true when making the request
             },
           },
         );
