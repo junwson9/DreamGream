@@ -12,8 +12,6 @@ function FollowItem({ name }) {
       <div className="w-[177px] left-[85px] top-[18px] absolute text-neutral-700 text-base font-medium leading-snug">
         {name}
       </div>
-      {/* <div className="w-[359px] h-[0px] left-[1px] top-[69px] absolute border border-zinc-300"></div> */}
-      {/* <div className="w-[84.76px] h-[27px] left-[247.31px] top-[17px] absolute"></div> */}
       <div className="w-[84.76px] h-[27px] left-[262px] top-[17px] absolute bg-neutral-200 rounded-lg">
         <div className="left-[11px] top-[4px] absolute text-center text-neutral-700 text-[13px] font-bold leading-snug">
           팔로잉 취소
