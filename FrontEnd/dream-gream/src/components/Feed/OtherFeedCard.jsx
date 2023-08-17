@@ -20,7 +20,6 @@ function OtherFeedCard({
   const handleCardClick = () => {
     navigate(`/feed/${postId}`);
   };
-  console.log('0');
   return (
     <div
       className="w-40 h-[221px] flex-col justify-start items-start gap-[3px] inline-flex z-[5] mr-2 mb-2"

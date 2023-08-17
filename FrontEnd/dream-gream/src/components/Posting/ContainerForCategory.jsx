@@ -21,7 +21,6 @@ function ContainerForCategory({
     '일',
     '기타',
   ];
-  console.log(`컨테이너에서 카테고리:${selectedCategory}`);
   const [isOpen, setIsOpen] = OpenHooks(dropDownRef, false);
   const arrowIconStyle = {
     width: '24px',

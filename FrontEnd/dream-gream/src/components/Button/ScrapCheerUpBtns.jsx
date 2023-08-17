@@ -4,13 +4,14 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInterceptor';
-
 import 'react-toastify/dist/ReactToastify.css';
 import { ReactComponent as CheerUpIcon } from '../../assets/icons/CheerUpIcon.svg';
 import { API_URL } from '../../config';
 
 function ScrapCheerUpBtns({ post }) {
+  const navigate = useNavigate()
   const [isCheered, setIsCheered] = useState(
     post.is_cheered === null ? false : post.is_cheered,
   );
@@ -30,27 +31,24 @@ function ScrapCheerUpBtns({ post }) {
       axiosInstance
         .post(`${API_URL}/api/posts/cheers/add`, requestData)
         .then((response) => {
-          console.log('응원하기 완료', response);
 
           setIsCheered(true);
           setCheerCount(cheerCount + 1);
         })
         .catch((error) => {
-          console.error('응원하기 에러', error);
+          navigate('/loginerror')
+          
         });
     } else {
       axiosInstance
         .post(`${API_URL}/api/posts/cheers/remove`, requestData)
         .then((response) => {
-          console.log('응원취소 완료', response);
 
           setIsCheered(false);
           setCheerCount(cheerCount - 1);
         })
         .catch((error) => {
-          console.error('응원취소 에러', error);
-          console.log(isCheered);
-          console.log(requestData);
+          navigate('/loginerror')
         });
     }
   };
@@ -62,7 +60,6 @@ function ScrapCheerUpBtns({ post }) {
     axiosInstance
       .post(`${API_URL}/api/posts/${post.post_id}/scrap`, scrapData)
       .then((response) => {
-        console.log('스크랩 완료', response);
         toast.info('내 버킷리스트에 등록이 완료되었습니다', {
           position: 'top-center',
           autoClose: 2000,
@@ -75,7 +72,7 @@ function ScrapCheerUpBtns({ post }) {
         });
       })
       .catch((error) => {
-        console.log('스크랩 에러 발생', error);
+        navigate('/loginerror')
       });
   };
 

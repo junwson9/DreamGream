@@ -15,10 +15,8 @@ function MemberItem({ toMemberId, nickname, isFollowed, profileImg }) {
         `${API_URL}/api/members/follow/${toMemberId}`,
       );
       setFollowed(true);
-      console.log('성공');
     } catch (error) {
       console.error(error);
-      console.log('실패');
     }
   };
   const navigate = useNavigate();

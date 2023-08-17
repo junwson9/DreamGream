@@ -8,7 +8,6 @@ export const UseInfiniteCheer = async (
   size,
   categoryID,
 ) => {
-  console.log(`categoryID=${categoryID}`);
 
   let res;
   if (lastPostID === null) {
@@ -31,7 +30,6 @@ export const UseInfiniteCheer = async (
   }
 
   const postList = res.data.data.post_list.content;
-  console.log('postList:', postList);
   const nextLastPostId = postList[postList.length - 1]?.post_id;
   return { postList, nextLastPostId, isLast: postList.length < size };
 };

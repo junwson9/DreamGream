@@ -15,7 +15,6 @@ function EditInfoForAcheive({
   setSelectedCategoryID,
   onTogglePublic,
 }) {
-  console.log(`achieveDted:${achievedDate}`);
 
   return (
     <div>

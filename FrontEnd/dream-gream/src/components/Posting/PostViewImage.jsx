@@ -38,7 +38,6 @@ function PostViewImage({ handleCloseIconClick }) {
   };
   // 여기에 다있음 @@@@@@@@@@@@@@@@@@@@@@@ 근데 목표시기도 정해야함!@@@@@@@@@@@@@
 
-  console.log(postData);
   const sendPostInfo = async () => {
     if (isPosting) {
       return; // 이미 요청 중인 경우 중복 요청 방지
