@@ -4,13 +4,18 @@ import React from 'react';
 import { ReactComponent as Guide } from '../../assets/guide.svg';
 import { useNavigate } from 'react-router-dom';
 
-function guide() {
+function GuideComponent() {
   const navigate = useNavigate();
+
   const handleClick = () => {
     navigate('/myfeed');
   };
 
-  return <Guide onClick={handleClick} />;
+  return (
+    <div className="Guide" onClick={handleClick}>
+      <Guide></Guide>
+    </div>
+  );
 }
 
-export default guide;
+export default GuideComponent;
