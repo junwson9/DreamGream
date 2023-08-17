@@ -52,7 +52,7 @@ public class SecurityConfig {
 
 			.oauth2Login()
 			.authorizationEndpoint()
-			.baseUri("/oauth2/authorize")
+			.baseUri("/api/oauth2/authorize")
 			.and()
 			.redirectionEndpoint()
 			.baseUri("/api/oauth2/callback/*")
