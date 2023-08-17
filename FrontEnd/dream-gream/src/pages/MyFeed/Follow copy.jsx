@@ -33,7 +33,6 @@ function Follow() {
         const isFollowing = new URLSearchParams(location.search).get(
           'is_following',
         );
-        console.log('ㅈㄴ중요' + isFollowing);
         if (isFollowing === 'true') {
           handleLeftTap();
         } else {
@@ -60,7 +59,6 @@ function Follow() {
         ? followResponse.data.data.follower_list
         : followResponse.data.data.following_list;
       setFetchedList(fetchedList);
-      console.log(fetchedList);
     } catch (error) {
       console.error('Error while fetching data:', error);
     }

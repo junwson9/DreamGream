@@ -14,7 +14,6 @@ function EditImg({ post, isAiImg, imgFile, updateImgFile }) {
   const fileInputRef = useRef(null);
 
   const setPreviewImg = (event) => {
-    console.log(11111);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const reader = new FileReader();
@@ -24,7 +23,6 @@ function EditImg({ post, isAiImg, imgFile, updateImgFile }) {
       };
       reader.readAsDataURL(selectedFile);
     }
-    console.log(`선택된파일: ${selectedFile}`);
   };
 
   const addImg = () => {

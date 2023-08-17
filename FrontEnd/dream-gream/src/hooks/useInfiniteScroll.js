@@ -8,7 +8,6 @@ export const UseInfiniteScroll = async (
   size,
   categoryID,
 ) => {
-  console.log(`categoryID=${categoryID}`);
   let res;
 
   if (lastPostID === null) {
@@ -18,7 +17,6 @@ export const UseInfiniteScroll = async (
         'category-id': categoryID,
       },
     });
-    console.log('요청감');
   } else {
     res = await axiosInstance.get(
       `${API_URL}/api/posts/achieved?last-post-id=${lastPostID}`,
@@ -32,7 +30,6 @@ export const UseInfiniteScroll = async (
   }
 
   const postList = res.data.data.post_list.content;
-  console.log('postList:', postList);
   const nextLastPostId = postList[postList.length - 1]?.post_id;
   return { postList, nextLastPostId, isLast: postList.length < size };
 };

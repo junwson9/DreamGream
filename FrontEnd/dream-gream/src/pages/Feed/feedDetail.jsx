@@ -32,11 +32,7 @@ function FeedDetail() {
       })
       .then((response) => {
         setPost(response.data.data.post);
-        console.log(response);
-        console.log('게시물 상세 조회');
       })
-      .catch((error) => console.log(error));
-    console.log('상세조회 실패');
   }, [post_id]);
 
   return (

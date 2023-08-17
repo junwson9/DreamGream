@@ -44,7 +44,6 @@ function EditFeed() {
   const updateImgFile = (newimgFile) => {
     setimgFile(newimgFile);
   };
-  console.log('카테고리아디:', selectedCategoryID);
   // 게시물 초기 정보 렌더링
   useEffect(() => {
     if (post && post.dead_line) {
@@ -104,9 +103,7 @@ function EditFeed() {
       })
       .then((response) => {
         setPost(response.data.data.post);
-        console.log(response);
       })
-      .catch((error) => console.log(error));
   }, []);
 
   // 게시글 내용 수정

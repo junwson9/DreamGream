@@ -39,8 +39,6 @@ function ModalForShare({ setShareModalOpen, post }) {
         theme: 'light',
       });
       closeShareModal();
-    } catch (err) {
-      console.log(err);
     }
     finally {
       setIsCopyingUrl(false);

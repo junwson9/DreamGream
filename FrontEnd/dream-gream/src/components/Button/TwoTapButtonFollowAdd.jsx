@@ -12,10 +12,6 @@ function TwoTapButton({
   onRightTap, // 추가: 오른쪽 탭 클릭 시 실행할 함수
   onLeftTap, // 추가: 왼쪽 탭 클릭 시 실행할 함수
 }) {
-  // const [isActive, setIsActive] = useState(!leftActive); // 상태명을 isActive로 변경
-  // const navigate = useNavigate();
-  console.log('레프트엑티브' + leftActive);
-  // console.log('액티브' + isActive);
 
   return (
     <div className="w-[360px] h-[60px] bg-white justify-start items-start inline-flex">
