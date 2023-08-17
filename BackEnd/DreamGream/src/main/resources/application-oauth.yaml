@@ -46,4 +46,4 @@ spring:
 
 auth:
   redirect:
-    url: "http://i9a609.p.ssafy.io:3000/oauth2/redirect"
+    url: "http://i9a609.p.ssafy.io/oauth2/redirect"
