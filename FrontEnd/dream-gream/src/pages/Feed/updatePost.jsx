@@ -10,10 +10,7 @@ function UpdatePost() {
     axios.get(`http://i9a609.p.ssafy.io:8000/api/posts/${postId}`)
       .then((response) => {
         // response에서 필요한 작업 수행
-        console.log('postId:', postId);
-        console.log('데이터 조회에 성공');
       })
-      .catch((error) => console.log(error));
   }, [postId]); // postId가 변경될 때마다 useEffect가 실행되도록 설정합니다
 
   return (

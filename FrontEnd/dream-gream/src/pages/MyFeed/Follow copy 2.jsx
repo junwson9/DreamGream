@@ -64,7 +64,6 @@ function Follow() {
       const newFetchedList = isFollower
         ? followResponse.data.data.follower_list
         : followResponse.data.data.following_list;
-      console.log(newFetchedList);
 
       if (newFetchedList.length === 0) {
         // 더 이상 데이터가 없으면 무한 스크롤 중단
@@ -73,7 +72,6 @@ function Follow() {
         setFetchedList((prevList) => [...prevList, ...newFetchedList]);
         setOffset(offset + 1); // 다음 페이지로 업데이트
       }
-      console.log(offset);
     } catch (error) {
       console.error('Error while fetching data:', error);
     } finally {

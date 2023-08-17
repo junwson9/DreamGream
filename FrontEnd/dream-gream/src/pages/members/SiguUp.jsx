@@ -27,7 +27,6 @@ function SignupGenderBirth() {
   const handleGenderSelection = (selectedGender) => {
     setGender(selectedGender);
   };
-  console.log(gender);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -43,9 +42,6 @@ function SignupGenderBirth() {
             'Content-Type': 'application/json',
           },
         },
-      );
-      console.log(
-        '새롭게 받은 토큰 : ' + response.data.data.token.access_token,
       );
       const access_token = response.data.data.token.access_token;
       localStorage.setItem('ACCESS_TOKEN', access_token);

@@ -23,7 +23,6 @@ function Posting() {
         navigate('/posterror');
         eventSource.close();
       }
-      console.log('Received SSE message:', data);
 
 
       // 서버로부터 받은 데이터를 Redux store에 저장
@@ -81,7 +80,6 @@ function Posting() {
 
   useEffect(() => {
     const access_token = localStorage.getItem('ACCESS_TOKEN');
-    console.log(access_token);
     if (!access_token) {
       navigate('/loginerror');
     }

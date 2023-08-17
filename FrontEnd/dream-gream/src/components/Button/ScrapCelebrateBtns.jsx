@@ -5,6 +5,7 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInterceptor';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +13,7 @@ import { ReactComponent as CelebrateIcon } from '../../assets/icons/CelebrateIco
 import { API_URL } from '../../config';
 
 function ScrapCelebrateBtns({ post }) {
+  const navigate = useNavigate()
   const [isCelebrated, setIsCelebrated] = useState(
     post.is_celebrateed === null ? false : post.is_celebrated,
   );
@@ -31,27 +33,23 @@ function ScrapCelebrateBtns({ post }) {
       axiosInstance
         .post(`${API_URL}/api/posts/celebrates/add`, requestData)
         .then((response) => {
-          console.log('축하하기 완료', response);
 
           setIsCelebrated(true);
           setCelebrateCount(celebrateCount + 1);
         })
         .catch((error) => {
-          console.error('축하하기 에러', error);
+          navigate('/loginerror')
         });
     } else {
       axiosInstance
         .post(`${API_URL}/api/posts/celebrates/remove`, requestData)
         .then((response) => {
-          console.log('축하취소 완료', response);
 
           setIsCelebrated(false);
           setCelebrateCount(celebrateCount - 1);
         })
         .catch((error) => {
-          console.error('축하취소 에러', error);
-          console.log(isCelebrated);
-          console.log(requestData);
+          navigate('/loginerror')
         });
     }
   };
@@ -63,14 +61,13 @@ function ScrapCelebrateBtns({ post }) {
     axiosInstance
       .post(`${API_URL}/api/posts/${post.post_id}/scrap`, scrapData)
       .then((response) => {
-        console.log('스크랩 완료', response);
         toast.success('내 버킷리스트에 등록이 완료되었습니다', {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 2000,
         });
       })
       .catch((error) => {
-        console.log('스크랩 에러 발생', error);
+        navigate('/loginerror')
       });
   };
 

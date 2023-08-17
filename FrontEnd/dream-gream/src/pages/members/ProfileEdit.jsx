@@ -68,11 +68,9 @@ function ProfileEdit() {
           },
         },
       );
-      console.log(imgFile);
       if (imgFile) {
         const formData = new FormData();
         formData.append('file', imgFile);
-        console.log(formData);
 
         const imageResponse = await axios.post(
           `${API_URL}/api/members/info/image`,
@@ -84,7 +82,6 @@ function ProfileEdit() {
             },
           },
         );
-        console.log('Image successfully updated:', imageResponse.data);
       }
     } catch (error) {
       console.error('Error while submitting data:', error);

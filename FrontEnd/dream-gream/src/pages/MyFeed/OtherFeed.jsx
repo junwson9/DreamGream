@@ -100,7 +100,6 @@ function OtherFeed() {
         const response = await axiosInstance.post(
           `${API_URL}/api/members/follow/${toMemberId}`,
         );
-        console.log(response);
       }
       // 팔로우 상태 업데이트
       setUser((prevUser) => ({
@@ -118,7 +117,6 @@ function OtherFeed() {
         const response = await axiosInstance.get(
           `${API_URL}/api/posts/members/${toMemberId}`, // 타인 피드 조회
         );
-        console.log(response);
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
@@ -140,7 +138,6 @@ function OtherFeed() {
     } else {
       setLoginFlag(false);
     }
-    console.log(loginFlag);
 
     async function fetchData() {
       try {
@@ -152,11 +149,8 @@ function OtherFeed() {
             },
           },
         );
-        console.log(response);
         const memberData = response.data.data.member;
         setUser(memberData);
-        console.log(memberData);
-        console.log(user);
       } catch (error) {
         console.error('Error while fetching data:', error);
       }

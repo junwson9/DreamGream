@@ -68,20 +68,15 @@ function AchieveFeed() {
       })
       .then((response) => {
         setBestBucketList(response.data.data.post_list);
-        console.log(response);
-        console.log('달성후 베스트 조회에 성공');
       })
-      .catch((error) => console.log(error));
   }, [categoryID]);
 
   useEffect(() => {
     if (inView) {
       fetchNextPage()
         .then(() => {
-          console.log(postInfoList); // 여기서 확인
         })
         .catch((error) => {
-          console.error('데이터 로딩 중 에러', error);
         });
     }
   }, [inView]);

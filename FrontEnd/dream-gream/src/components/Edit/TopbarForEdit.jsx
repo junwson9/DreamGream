@@ -17,7 +17,6 @@ function TopbarForEdit({
   achievedDate,
   imgUpdateFlag,
 }) {
-  console.log(`post.isachieved상태:${post.is_achieved}`);
   const navigate = useNavigate();
 
   const handleLeftIconClick = () => {
@@ -37,18 +36,13 @@ function TopbarForEdit({
       axiosInstance
         .post(`${API_URL}/api/posts/${post.post_id}/unachieved`, requestBody)
         .then((response) => {
-          console.log('수정완료:', response);
           navigate(-1);
         })
         .catch((error) => {
-          console.error('수정실패:', error);
-          console.log(requestBody);
         });
     }
     // 만약 post.is_achieved가 true라면, (달성후 요청)
     else {
-      // console.log(`달성후면 이게 실행됩니다`);
-      console.log(`imgUpdateFlag:${imgUpdateFlag}`);
 
       const formData = new FormData();
       const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
@@ -71,9 +65,7 @@ function TopbarForEdit({
         new Blob([achievedPostUpdateRequestDto], { type: 'application/json' }),
       );
 
-      console.log('어펜드확인');
       for (let value of formData.values()) {
-        console.log(value);
       }
       // 이미지 어펜드
       if (imgFile) {
@@ -85,7 +77,6 @@ function TopbarForEdit({
         );
       }
 
-      console.log(`postId:${post.post_id}`);
       axios
         .post(`${API_URL}/api/posts/${post.post_id}/achieved`, formData, {
           headers: {
@@ -94,12 +85,9 @@ function TopbarForEdit({
           },
         })
         .then((response) => {
-          console.log('달성 등록 완료:', response);
           navigate(-1);
         })
         .catch((error) => {
-          console.error('달성 등록 실패:', error);
-          console.log(requestPart);
         });
     }
   };

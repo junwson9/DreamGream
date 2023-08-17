@@ -11,7 +11,6 @@ function FindMember() {
   const [nickname, setNickname] = useState('');
   const [noResult, setNoResult] = useState(false);
   const [memberList, setMemberList] = useState([]); // 빈 배열로 초기화
-  // console.log(memberList);
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       getDataList();
@@ -19,17 +18,14 @@ function FindMember() {
   };
   const handleSaveClick = async (value) => {
     setNickname(value);
-    console.log(nickname);
 
     const queryParams = new URLSearchParams({ nickname: nickname }); // 넘어온 값 사용
     const url = `${API_URL}/api/members?${queryParams}`;
 
     try {
       const response = await axiosInstance.get(url);
-      console.log('Response from server:', response.data);
       const receivedMemberList = response.data.data.member_list;
       setMemberList(receivedMemberList);
-      console.log(receivedMemberList);
 
       // 검색 결과가 없을 때 noResult 상태를 설정
       if (!receivedMemberList || receivedMemberList.length === 0) {

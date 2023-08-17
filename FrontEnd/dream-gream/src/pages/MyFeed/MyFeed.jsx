@@ -27,7 +27,6 @@ function MyFeed() {
   const [category, setCategory] = useState('');
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const Navigate = useNavigate();
-  console.log(activeTab);
 
   const handleFollowersClick = () => {
     Navigate(`/follow/${user.member_id}?is_following=false`);
@@ -106,8 +105,6 @@ function MyFeed() {
         const post_list = response.data.data.post_list;
         const achieved_list = response.data.data.achieved_post_list;
         // 달성전, 달성후 따로 저장
-        console.log(post_list);
-        console.log(achieved_list);
         setPostList(post_list);
         setAchievedList(achieved_list);
       } catch (error) {
@@ -127,7 +124,6 @@ function MyFeed() {
     } else {
       setLoginFlag('false');
     }
-    console.log(loginFlag);
     async function fetchData() {
       try {
         const response = await axiosInstance.get(

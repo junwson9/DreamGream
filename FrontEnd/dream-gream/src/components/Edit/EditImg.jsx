@@ -28,7 +28,6 @@ function EditImg({ post, isAiImg, updateImgFile, setImgUpdateFlag }) {
       };
       reader.readAsDataURL(selectedFile);
     }
-    console.log(`선택된파일: ${selectedFile}`);
   };
 
   const addImg = () => {
