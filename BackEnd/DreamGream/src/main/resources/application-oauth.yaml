@@ -8,7 +8,7 @@ spring:
             client-id: 5259e8e054d186bbde75ddd66650a767
             client-secret: V20WmcBB6Jygxci1KqeKnl42UrHNwUtp
             scope: profile_nickname, account_email
-            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
+            redirect-uri: "https://i9a609.p.ssafy.io/api/oauth2/callback/{registrationId}"
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
         provider:
@@ -46,4 +46,4 @@ spring:
 
 auth:
   redirect:
-    url: "http://i9a609.p.ssafy.io/oauth2/redirect"
+    url: "https://i9a609.p.ssafy.io/oauth2/redirect"
