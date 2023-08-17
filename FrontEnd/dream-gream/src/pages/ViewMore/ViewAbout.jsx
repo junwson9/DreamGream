@@ -25,7 +25,6 @@ function ViewAbout() {
       console.log(ACCESS_TOKEN);
 
       if (!ACCESS_TOKEN) {
-        // If ACCESS_TOKEN is not available, setLoginFlag(false) and exit
         setLoginFlag(false);
         return;
       }
@@ -52,7 +51,7 @@ function ViewAbout() {
 
     fetchData();
   }, []);
-
+  console.log(loginFlag);
   const handleLogout = async () => {
     try {
       await axiosInstance.post(`${API_URL}/api/auth/logout`);
@@ -122,6 +121,7 @@ function ViewAbout() {
         <a
           href="https://toothsome-linseed-a13.notion.site/Dream-Gream-2da668d3b0674103ab2f27661a5bd389"
           style={{ textDecoration: 'none', color: 'inherit' }}
+          target="blank"
         >
           ABOUT
         </a>
