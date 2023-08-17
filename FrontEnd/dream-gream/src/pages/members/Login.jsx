@@ -6,7 +6,7 @@ import { API_URL } from '../../config';
 import { useNavigate } from 'react-router-dom';
 
 function LogIn() {
-  const kauthUrl = `${API_URL}/api/oauth2/authorize/kakao`;
+  const kauthUrl = `${API_URL}/oauth2/authorize/kakao`;
   const navigate = useNavigate();
   return (
     <>
