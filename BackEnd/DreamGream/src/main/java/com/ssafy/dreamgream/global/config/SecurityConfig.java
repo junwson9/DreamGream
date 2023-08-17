@@ -55,7 +55,7 @@ public class SecurityConfig {
 			.baseUri("/oauth2/authorize")
 			.and()
 			.redirectionEndpoint()
-			.baseUri("/oauth2/callback/*")
+			.baseUri("/api/oauth2/callback/*")
 			.and()
 			.successHandler(oAuth2AuthenticationSuccessHandler)
 			.failureHandler(oAuth2AuthenticationFailureHandler)
