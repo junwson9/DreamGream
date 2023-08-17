@@ -2,23 +2,21 @@
 
 # About Dream Gream
 
----
-
 - Draw Your Dream with AI
   AI로 그리는 버킷리스트 Dream Gream 🖌
 - 개발 기간: 2023.07.10~2023.08.18
 
-## Overview
+<br>
 
----
+# Overview
 
 - 막연하게 꿈만 꾸던 버킷리스트를 시각화 하여 그 꿈에 다가가는 것을 돕습니다.
 - 자신의 버킷리스트를 보관하고 간직하기 어려웠던 문제를 피드에 모음으로써 해결합니다.
 - 버킷리스트를 홀로 간직하는 것이 아니라 타인과의 네트워킹을 통해 동기부여 받을 수 있습니다.
 
-## Description
+<br>
 
----
+# Description
 
 - 드림그림은 사용자에게 ‘재미’ 와 ’소통’의 가치를 주고싶은 목표로 만들어진 서비스입니다.
 - 사용자가 자신의 버킷리스트를 입력하면, 이 정보는 생성형AI를 통해 그림으로 만들어집니다.
@@ -26,9 +24,9 @@
 - 버킷리스트를 달성하게 되면 달성완료 버튼을 누르고, 본인의 실제 달성사진을 업로드해 그림과 함께 간직할 수 있습니다.
 - 다른사람의 버킷리스트를 공유하고, 응원해주고, 축하해주면서 소셜 네트워킹이 가능합니다.
 
-## Main Features
+<br>
 
----
+# Main Features
 
 ### AI
 
@@ -61,24 +59,24 @@
 
 ### INFRA
 
-### 프로젝트 아키텍처
+1. 프로젝트 아키텍처
 
-![Untitled](./exec/image/Untitled.png)
+<img src="./exec/image/Untitled.png"/>
 
-## Screens
+<br>
 
----
+# Screens
 
 ### 회원가입/로그인/프로필
 
 - 카카오 소셜로그인
 - 최초 회원 가입 시 성별/나이 입력
 
-![login.gif](res/gif_file/01_login.gif)
+<img src="res/gif_file/01_login.gif"  width="300"/>
 
 - 프로필 이미지 등록
 
-![profile.gif](res/gif_file/02_profile.gif)
+<img src="res/gif_file/02_profile.gif"  width="300"/>
 
 ### 포스팅 등록
 
@@ -86,64 +84,61 @@
 - 꿈을 향한 다짐, 목표시기, 공개여부 선택
 - 로딩, 이미지 도착, 피드 올리기
 
-![포스팅등록.gif](res/gif_file/03_post.gif)
+<img src="res/gif_file/03_post.gif"  width="300"/>
 
 ### 달성완료 등록
 
-- 달성완료 등록
-  - 본인 사진 등록, 달성완료 소감 등록
-  - 이걸해냄 도장 지급
+- 본인 사진 등록, 달성완료 소감 등록
+- 이걸해냄 도장 지급
 
-![achievement.gif](res/gif_file/04_achievement.gif)
+<img src="res/gif_file/04_achievement.gif"  width="300"/>
 
 ### 마이피드
 
 - 카테고리 선택 및 달성 여부 탭 선택
 
-![myfeed.gif](res/gif_file/05_myfeed.gif)
+<img src="res/gif_file/05_myfeed.gif"  width="300"/>
 
 ### 팔로우/친구찾기
 
 - 팔로우 및 팔로잉, 팔로워 탭 선택
 - 닉네임 검색을 통한 친구 찾기
 
-![follow.gif](res/gif_file/06_follow.gif)
+<img src="res/gif_file/06_follow.gif"  width="300"/>
 
 ### 전체피드
 
-- 응원해요피드
+- 응원해요 피드
   - 카테고리별 조회 및 베스트 버킷리스트 조회
   - 응원해요(좋아요) 기능
   - 나도할래(스크랩) 기능
 
-![cheerupfeed.gif](res/gif_file/07_cheerupfeed.gif)
+<img src="res/gif_file/07_cheerupfeed.gif"  width="300"/>
 
-- 축하해요피드
+- 축하해요 피드
   - 카테고리별 조회 및 베스트 버킷리스트 조회
   - 축하해요(좋아요) 기능
   - 나도할래(스크랩) 기능
 
-![achievedfeed.gif](res/gif_file/08_achievedfeed.gif)
+<img src="res/gif_file/08_achievedfeed.gif"  width="300"/>
 
 ### 공유하기
 
 - 이미지 저장
 
-![share_imagedownload.gif](res/gif_file/09_share_imagedownload.gif)
+<img src="res/gif_file/09_share_imagedownload.gif"  width="300"/>
 
 - 카카오 공유 API 사용
 
-![share_kakao.gif](res/gif_file/09_share_kakao.gif)
+<img src="res/gif_file/09_share_kakao.gif"  width="300"/>
 
 - url 공유
 
-![share_url.gif](res/gif_file/09_share_url.gif)
+<img src="res/gif_file/09_share_url.gif"  width="300"/>
 
----
+<br><br>
 
-## Service ENV
-
----
+# Service ENV
 
 - node 18.15.0v
 - Java 11
@@ -156,9 +151,9 @@
 - Chatgpt3.5-api
 - Stable diffusion v2-api
 
-## Tools
+<br>
 
----
+# Tools
 
 - Gitlab
   - git-flow 전략으로 branch 관리
@@ -175,9 +170,9 @@
 - Figma
   - 와이어프레임 및 디자인
 
-## Stacks
+<br>
 
----
+# Stacks
 
 ### FE
 
@@ -195,8 +190,8 @@
 
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
 <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
-<img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
@@ -213,18 +208,18 @@
 <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white">
 <img src="https://img.shields.io/badge/ngrok-1F1E37?style=for-the-badge&logo=ngrok&logoColor=white">
 
-## Project Outputs
+<br><br>
 
----
+# Project Outputs
 
 - [기능명세서](https://docs.google.com/spreadsheets/d/1hSQxz9xcMZUKyNf-t6OM-5w9GZataRg_IBM1K6K1zDo/edit#gid=202236398)
 - [WBS](https://docs.google.com/spreadsheets/d/1LschveFKhA1YkkMzVmkjLK0wTwZ_OKCX4mUPU53BNs0/edit#gid=0)
 - [Notion](https://www.notion.so/_A609-b5cb58766173436485f3d0469f59880b?pvs=21)
 - [WireFrame & Design](https://www.figma.com/file/5dLrdcNUMg1AgGSjWIHWkp/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84-%EB%B0%8F-%EB%94%94%EC%9E%90%EC%9D%B8?type=design&node-id=0-1&mode=design)
 
-## Members
+<br>
 
----
+# Members
 
 - [박승휘](https://github.com/hwi29)(FE)
 - [최홍준](https://github.com/HBumzz)(FE)
