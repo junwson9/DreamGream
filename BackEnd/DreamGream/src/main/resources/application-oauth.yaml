@@ -6,7 +6,7 @@ spring:
           kakao:
             client-name: Kakao
             client-id: 5259e8e054d186bbde75ddd66650a767
-            client-secret: V20WmcBB6Jygxci1KqeKnl42UrHNwUtp
+            client-secret: "카카오톡 secret key"
             scope: profile_nickname, account_email
             redirect-uri: "https://i9a609.p.ssafy.io/api/oauth2/callback/{registrationId}"
             client-authentication-method: client_secret_post
