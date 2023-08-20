@@ -142,15 +142,21 @@ public class PostService {
 
         // postId에 대해 Redis에서 바로 조회
         for (PostListResponseDto post : postList) {
-            String postId = "celebrate_post_" + post.getPostId();
-            Long celebrateCnt = redisTemplate.opsForSet().size(postId);
+            String celebratePostId = "celebrate_post_" + post.getPostId();
+            Long celebrateCnt = redisTemplate.opsForSet().size(celebratePostId);
             post.updateCelebrateCnt(celebrateCnt);
 
-            // 로그인 상태면 축하 여부 업데이트
+            String cheerPostId = "cheer_post_" + post.getPostId();
+            Long cheerCnt = redisTemplate.opsForSet().size(cheerPostId);
+            post.updateCheerCnt(cheerCnt);
+
+            // 로그인 상태면 응원, 축하 여부 업데이트
             if(loginFlag) {
                 Long memberId = memberService.getCurrentMemberId();
-                Boolean isCelebrated = redisTemplate.opsForSet().isMember(postId, memberId.toString());
+                Boolean isCelebrated = redisTemplate.opsForSet().isMember(celebratePostId, memberId.toString());
                 post.updateIsCelebrated(isCelebrated);
+                Boolean isCheered = redisTemplate.opsForSet().isMember(cheerPostId, memberId.toString());
+                post.updateIsCheered(isCheered);
             }
         }
         return results;
@@ -175,14 +181,14 @@ public class PostService {
 
         // postId에 대해 Redis에서 바로 조회
         for (PostListResponseDto post : postList) {
-            String postId = "cheer_post_" + post.getPostId();
-            Long cheerCnt = redisTemplate.opsForSet().size(postId);
+            String cheerPostId = "cheer_post_" + post.getPostId();
+            Long cheerCnt = redisTemplate.opsForSet().size(cheerPostId);
             post.updateCheerCnt(cheerCnt);
 
             // 로그인 상태면 응원 여부 업데이트
             if(loginFlag) {
                 Long memberId = memberService.getCurrentMemberId();
-                Boolean isCheered = redisTemplate.opsForSet().isMember(postId, memberId.toString());
+                Boolean isCheered = redisTemplate.opsForSet().isMember(cheerPostId, memberId.toString());
                 post.updateIsCheered(isCheered);
             }
         }
