@@ -68,16 +68,14 @@ function AchieveFeed() {
       })
       .then((response) => {
         setBestBucketList(response.data.data.post_list);
-      })
+      });
   }, [categoryID]);
 
   useEffect(() => {
     if (inView) {
       fetchNextPage()
-        .then(() => {
-        })
-        .catch((error) => {
-        });
+        .then(() => {})
+        .catch((error) => {});
     }
   }, [inView]);
 
@@ -108,20 +106,15 @@ function AchieveFeed() {
 
                 return (
                   <SwiperSlide key={index}>
-                    <BestBucketList
-                      className="A"
-                      bestBucketItem={bestBucketItem}
-                    />
-                    <BestBucketList
-                      className="B"
-                      bestBucketItem={otherBestBucketItem}
-                    />
+                    <BestBucketList bestBucketItem={bestBucketItem} />
+                    <BestBucketList bestBucketItem={otherBestBucketItem} />
                   </SwiperSlide>
                 );
               })}
           </Swiper>
         </div>
       </div>
+      <br />
       <br />
       <hr />
       <div className="main">
