@@ -20,7 +20,7 @@ function EditInfo({
         <div className="left-[22px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
           카테고리
         </div>
-        <div className="left-[290px] top-[17px] mr-[333px] absolute text-center text-zinc-800 text-base font-normal">
+        <div className="left-[270px] top-[17px] mr-[333px] absolute text-center text-zinc-800 text-base font-normal">
           <ContainerForCategory
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
@@ -33,7 +33,7 @@ function EditInfo({
         <div className="left-[22px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
           목표 시기
         </div>
-        <div className="left-[290px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
+        <div className="left-[270px] top-[17px] absolute text-center text-zinc-800 text-base font-normal">
           <Container
             selectedPeriod={selectedPeriod}
             onChangePeriod={setSelectedPeriod}
