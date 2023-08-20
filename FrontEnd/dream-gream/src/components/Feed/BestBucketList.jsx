@@ -17,9 +17,9 @@ function BestBucketList({ bestBucketItem }) {
   };
 
   return (
-    <div className="w-[148.24px] h-32 relative">
+    <div className="w-[138.24px] h-[138.24px] relative ">
       <div
-        className="w-[148.24px] h-32 left-0 top-0 absolute bg-black bg-opacity-40 rounded-lg"
+        className="w-[138.24px] h-[138.24px] left-0 top-0 absolute bg-black bg-opacity-40 rounded-lg"
         onClick={goFeedDetail}
         style={{ cursor: 'pointer' }}
       >
@@ -27,22 +27,27 @@ function BestBucketList({ bestBucketItem }) {
           <img
             src={bestBucketItem?.achievement_img || bestBucketItem?.ai_img}
             alt="Achievement or AI Image"
+            style={{ borderRadius: '8px' }}
           />
         ) : (
-          <img src={bestBucketItem?.ai_img} alt="AI Image" />
+          <img
+            src={bestBucketItem?.ai_img}
+            alt="AI Image"
+            style={{ borderRadius: '8px' }}
+          />
         )}
 
-        <div className="w-[135.39px] h-[37.55px] left-[5.93px] top-[4.27px] absolute text-white text-base font-bold leading-snug">
+        <div className="w-[130px] h-[37.55px] left-[5.93px] top-[6.27px] absolute text-white text-base font-bold leading-snug">
           {bestBucketItem?.title}
         </div>
 
         {bestBucketItem?.is_achieved ? (
-          <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
+          <div className="w-[38.12px] h-[29.26px] left-[97.71px] top-[107px] absolute flex items-center text-white text-xs font-bold leading-none">
             <CelebrateIcon className="mr-1" style={{ fill: 'white' }} />
             {bestBucketItem?.celebrate_cnt}
           </div>
         ) : (
-          <div className="w-[38.12px] h-[29.26px] left-[102.71px] top-[99.06px] absolute flex items-center text-white text-xs font-bold leading-none">
+          <div className="w-[38.12px] h-[29.26px] left-[97.71px] top-[107px] absolute flex items-center text-white text-xs font-bold leading-none">
             <CheerUpIcon className="mr-1" style={{ fill: 'white' }} />
             {bestBucketItem?.cheer_cnt}
           </div>

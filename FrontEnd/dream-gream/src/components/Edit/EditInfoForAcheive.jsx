@@ -15,7 +15,6 @@ function EditInfoForAcheive({
   setSelectedCategoryID,
   onTogglePublic,
 }) {
-
   return (
     <div>
       <div className="w-[360px] h-14 mt-[18px] relative bg-white">
