@@ -11,7 +11,6 @@ function AcheiveBtn({ post }) {
       state: { change_is_achieved: true },
     });
   };
-  // ++이후 달성완료페이지에서 등록을 누르면 is_ahceived도 true로 같이 전달
 
   return (
     <div className="flex justify-center items-center">
