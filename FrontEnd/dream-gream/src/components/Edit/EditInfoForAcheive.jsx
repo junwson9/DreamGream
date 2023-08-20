@@ -6,7 +6,6 @@ import ContainerForCategory from '../Posting/ContainerForCategory';
 
 // eslint-disable-next-line no-unused-vars
 function EditInfoForAcheive({
-  post,
   achievedDate,
   handleDateChange,
   selectedCategory,
@@ -38,7 +37,7 @@ function EditInfoForAcheive({
           <input
             type="date"
             className="border border-neutral-200 p-1 rounded"
-            value={achievedDate.split('T')[0]}
+            value={new Date(achievedDate).toISOString().split('T')[0]}
             onChange={handleDateChange}
           />
         </div>

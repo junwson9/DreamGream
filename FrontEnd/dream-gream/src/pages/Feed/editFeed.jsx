@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable jsx-a11y/alt-text */
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import axiosInstance from '../../utils/axiosInterceptor';
@@ -21,6 +21,11 @@ function EditFeed() {
   const [selectedPeriod, setSelectedPeriod] = useState('');
   const [isPublic, setIsPublic] = useState('');
   const [imgUpdateFlag, setImgUpdateFlag] = useState('false');
+  const [mainImg, setMainImg] = useState('');
+  const [editedContent, setEditedContent] = useState(post.content);
+  const [editedAchievementContent, setEditedAchievementContent] = useState(
+    post.achievement_content,
+  );
 
   const today = new Date().toISOString();
 
@@ -73,6 +78,36 @@ function EditFeed() {
     setIsPublic((prevIsPublic) => !prevIsPublic);
   };
 
+  // 이미지 관련
+  const fileInputRef = useRef(null);
+
+  const setPreviewImg = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        setMainImg(e.target.result);
+        updateImgFile(selectedFile);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const addImg = () => {
+    fileInputRef.current.click();
+  };
+
+  const clearImg = () => {
+    setMainImg('');
+    setImgUpdateFlag(true);
+  };
+
+  useEffect(() => {
+    setEditedContent(post.content);
+    setEditedAchievementContent(post.achievement_content);
+    setMainImg(post.achievement_img);
+  }, [post]);
+
   // 달성완료 버튼을 통해서 온건지 확인
   const location = useLocation();
   const isAchievedChanged = location.state && location.state.change_is_achieved;
@@ -109,16 +144,6 @@ function EditFeed() {
       });
   }, []);
 
-  // 게시글 내용 수정
-  const handleContentChange = (event) => {
-    const newContent = event.target.innerHTML;
-    setPost((prevPost) => ({ ...prevPost, content: newContent }));
-  };
-  const handleAchieveContentChange = (event) => {
-    const newContent = event.target.innerHTML;
-    setPost((prevPost) => ({ ...prevPost, achievement_content: newContent }));
-  };
-
   return (
     <div
       className="w-[360px] h-[1000px] relative bg-white "
@@ -134,17 +159,26 @@ function EditFeed() {
         isPublic={isPublic}
         achievedDate={achievedDate}
         imgUpdateFlag={imgUpdateFlag}
+        editedContent={editedContent}
+        editedAchievementContent={editedAchievementContent}
       />
       <hr />
 
       <div className="flex space-x-4 absolute top-[85px] left-1/2 transform translate-x-[-50%]">
-        <EditImg post={post} isAiImg />
+        <EditImg
+          post={post}
+          isAiImg
+          mainImg={post.ai_img}
+          setPreviewImg={setPreviewImg}
+        />
         {post.is_achieved && (
           <EditImg
-            post={post}
             isAiImg={false}
-            updateImgFile={updateImgFile}
-            setImgUpdateFlag={setImgUpdateFlag}
+            mainImg={mainImg}
+            setPreviewImg={setPreviewImg}
+            addImg={addImg}
+            clearImg={clearImg}
+            fileInputRef={fileInputRef}
           />
         )}
       </div>
@@ -161,8 +195,8 @@ function EditFeed() {
           <div
             className="w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px]"
             contentEditable
-            onBlur={handleContentChange}
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            onBlur={(event) => setEditedContent(event.target.innerHTML)}
+            dangerouslySetInnerHTML={{ __html: editedContent }}
           />
         </div>
         {post.is_achieved && (
@@ -175,8 +209,10 @@ function EditFeed() {
               <div
                 className="w-[300px] left-[10px] top-[34px] absolute text-zinc-800 text-[13px] font-normal leading-[16.90px]"
                 contentEditable
-                onBlur={handleAchieveContentChange}
-                dangerouslySetInnerHTML={{ __html: post.achievement_content }}
+                onBlur={(event) =>
+                  setEditedAchievementContent(event.target.innerHTML)
+                }
+                dangerouslySetInnerHTML={{ __html: editedAchievementContent }}
                 placeholder="달성 소감을 입력해주세요."
               />
             </div>
@@ -193,29 +229,21 @@ function EditFeed() {
       <div className="w-[360px] h-14 left-0 top-[813px] absolute bg-white">
         {post.is_achieved ? (
           <EditInfoForAcheive
-            post={post}
             achievedDate={achievedDate}
             handleDateChange={handleDateChange}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
-            selectedPeriod={selectedPeriod}
-            setSelectedPeriod={setSelectedPeriod}
             isPublic={isPublic}
-            setIsPublic={setIsPublic}
             setSelectedCategoryID={setSelectedCategoryID}
             onTogglePublic={onTogglePublic}
           />
         ) : (
           <EditInfo
-            post={post}
-            achievedDate={achievedDate}
-            handleDateChange={handleDateChange}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
             selectedPeriod={selectedPeriod}
             setSelectedPeriod={setSelectedPeriod}
             isPublic={isPublic}
-            setIsPublic={setIsPublic}
             setSelectedCategoryID={setSelectedCategoryID}
             onTogglePublic={onTogglePublic}
           />

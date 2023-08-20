@@ -26,7 +26,6 @@ function CheerUpCelebrateBtns({ post }) {
   useEffect(() => {
     setCheerCount(post.cheer_cnt);
     setIsCheered(post.is_cheered === null ? false : post.is_cheered);
-    console.log(`cheerCount: ${cheerCount}`);
   }, [post]);
   useEffect(() => {
     setCelebrateCount(post.celebrate_cnt);
@@ -108,6 +107,7 @@ function CheerUpCelebrateBtns({ post }) {
               }`}
             >
               응원해요
+              <span /> <span />
               {cheerCount}
             </div>
           </div>
@@ -131,6 +131,7 @@ function CheerUpCelebrateBtns({ post }) {
               }`}
             >
               축하해요
+              <span /> <span />
               {celebrateCount}
             </div>
           </div>
