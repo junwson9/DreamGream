@@ -18,6 +18,7 @@ import { UseInfiniteCheer } from '../../hooks/useInfiniteCheer';
 import 'swiper/swiper.min.css';
 import 'swiper/swiper-bundle.min.css';
 import './cheerUpFeed.css';
+import SkeletonFeed from '../../components/Common/Skeleton';
 
 function CheerUpFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
@@ -71,14 +72,13 @@ function CheerUpFeed() {
       })
       .then((response) => {
         setBestBucketList(response.data.data.post_list);
-      })
+      });
   }, [categoryID]);
 
   useEffect(() => {
     if (inView) {
       fetchNextPage()
-        .then(() => {
-        })
+        .then(() => {})
         .catch((error) => {
           console.error('데이터 로딩 중 에러', error);
         });
@@ -136,6 +136,10 @@ function CheerUpFeed() {
       <div className="main">
         {postInfoList?.pages.map((page) => (
           <Fragment key={page.nextLastPostId}>
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
             {page.postList.map((post) => (
               <div className="article" key={post.post_id}>
                 <Member post={post} />
