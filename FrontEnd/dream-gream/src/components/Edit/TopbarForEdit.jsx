@@ -16,6 +16,8 @@ function TopbarForEdit({
   isPublic,
   achievedDate,
   imgUpdateFlag,
+  editedContent,
+  editedAchievementContent,
 }) {
   const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ function TopbarForEdit({
     // 만약 post.is_achieved가 false라면, (달성전 요청)
     if (!post.is_achieved) {
       const requestBody = {
-        content: post.content,
+        content: editedContent,
         dead_line: selectedPeriod,
         is_display: isPublic,
         category_id: selectedCategoryID,
@@ -38,22 +40,20 @@ function TopbarForEdit({
         .then((response) => {
           navigate(-1);
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     }
     // 만약 post.is_achieved가 true라면, (달성후 요청)
     else {
-
       const formData = new FormData();
       const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
       const requestPart = {
         //
-        content: post.content,
+        content: editedContent,
         dead_line: selectedPeriod,
         is_display: isPublic,
         is_achieved: post.is_achieved,
         //
-        achievement_content: post.achievement_content,
+        achievement_content: editedAchievementContent,
         achieved_date: achievedDate,
         img_update_flag: imgUpdateFlag,
         category_id: selectedCategoryID,
@@ -87,8 +87,7 @@ function TopbarForEdit({
         .then((response) => {
           navigate(-1);
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     }
   };
 
