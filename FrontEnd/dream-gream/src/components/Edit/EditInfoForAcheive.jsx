@@ -15,8 +15,6 @@ function EditInfoForAcheive({
   setSelectedCategoryID,
   onTogglePublic,
 }) {
-  const today = new Date().toISOString().split('T')[0];
-
   return (
     <div>
       <div className="w-[360px] h-14 mt-[18px] relative bg-white">
@@ -40,7 +38,7 @@ function EditInfoForAcheive({
           <input
             type="date"
             className="border border-neutral-200 p-1 rounded"
-            value={achievedDate.split('T')[0] || today}
+            value={achievedDate.split('T')[0]}
             onChange={handleDateChange}
           />
         </div>
