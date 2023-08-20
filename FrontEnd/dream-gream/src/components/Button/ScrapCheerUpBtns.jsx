@@ -11,7 +11,7 @@ import { ReactComponent as CheerUpIcon } from '../../assets/icons/CheerUpIcon.sv
 import { API_URL } from '../../config';
 
 function ScrapCheerUpBtns({ post }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isCheered, setIsCheered] = useState(
     post.is_cheered === null ? false : post.is_cheered,
   );
@@ -31,24 +31,21 @@ function ScrapCheerUpBtns({ post }) {
       axiosInstance
         .post(`${API_URL}/api/posts/cheers/add`, requestData)
         .then((response) => {
-
           setIsCheered(true);
           setCheerCount(cheerCount + 1);
         })
         .catch((error) => {
-          navigate('/loginerror')
-          
+          navigate('/loginerror');
         });
     } else {
       axiosInstance
         .post(`${API_URL}/api/posts/cheers/remove`, requestData)
         .then((response) => {
-
           setIsCheered(false);
           setCheerCount(cheerCount - 1);
         })
         .catch((error) => {
-          navigate('/loginerror')
+          navigate('/loginerror');
         });
     }
   };
@@ -72,7 +69,7 @@ function ScrapCheerUpBtns({ post }) {
         });
       })
       .catch((error) => {
-        navigate('/loginerror')
+        navigate('/loginerror');
       });
   };
 
@@ -105,6 +102,7 @@ function ScrapCheerUpBtns({ post }) {
               }`}
             >
               응원해요
+              <span /> <span />
               {cheerCount}
             </div>
           </div>

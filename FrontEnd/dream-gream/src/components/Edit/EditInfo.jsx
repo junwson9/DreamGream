@@ -5,7 +5,6 @@ import ToggleButton from '../Button/ToggleButton';
 import ContainerForCategory from '../Posting/ContainerForCategory';
 
 function EditInfo({
-  post,
   selectedCategory,
   setSelectedCategory,
   selectedPeriod,
