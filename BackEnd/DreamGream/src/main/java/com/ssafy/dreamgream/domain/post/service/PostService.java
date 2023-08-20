@@ -17,11 +17,13 @@ import com.ssafy.dreamgream.global.common.exception.customException.MemberNotFou
 import com.ssafy.dreamgream.global.common.exception.customException.NotAuthorizedToPostException;
 import com.ssafy.dreamgream.global.common.exception.customException.PostNotFoundException;
 import com.ssafy.dreamgream.global.s3.S3Uploader;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -70,7 +72,7 @@ public class PostService {
 
         // post가 존재하는 지 확인.
         Post post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         Long postMemberId = post.getMember().getMemberId();
 
         if (memberId != postMemberId) {
@@ -92,33 +94,33 @@ public class PostService {
 
         // post가 존재하는 지 확인.
         Post post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         Long postMemberId = post.getMember().getMemberId();
 
-        if (memberId != postMemberId) {
-            throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
+//        if (memberId != postMemberId) {
+//            throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
+//        } else {
+        modelMapper.map(achievedPostUpdateRequestDto, post);
+        Category category = categoryRepository.findById(achievedPostUpdateRequestDto.getCategoryId())
+                .orElseThrow();
+        post.setCategory(category);
+        if (achievedPostUpdateRequestDto.getImgUpdateFlag() && file.isEmpty()) {
+            // 기존의 사진 파일 지우고 새로운 사진을 올리지 않았을 경우
+            post.setAchievementImg(null);
+        } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == true && !file.isEmpty()) {
+            // 기존의 사진 파일 지우고 새로운 사진을 올릴 경우, S3 거쳐서 이미지 url 저장
+            String imageUrl = s3Uploader.getImageUrl("post", file, memberId);
+            post.setAchievementImg(imageUrl);
+        } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == false && !file.isEmpty()) {
+            // 달성전 => 달성후 피드 수정
+            String imageUrl = s3Uploader.getImageUrl("post", file, memberId);
+            post.setAchievementImg(imageUrl);
         } else {
-            modelMapper.map(achievedPostUpdateRequestDto, post);
-            Category category = categoryRepository.findById(achievedPostUpdateRequestDto.getCategoryId())
-                    .orElseThrow();
-            post.setCategory(category);
-            if (achievedPostUpdateRequestDto.getImgUpdateFlag() && file.isEmpty()) {
-                // 기존의 사진 파일 지우고 새로운 사진을 올리지 않았을 경우
-                post.setAchievementImg(null);
-            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == true && !file.isEmpty()) {
-                // 기존의 사진 파일 지우고 새로운 사진을 올릴 경우, S3 거쳐서 이미지 url 저장
-                String imageUrl = s3Uploader.getImageUrl("post", file, memberId);
-                post.setAchievementImg(imageUrl);
-            } else if (achievedPostUpdateRequestDto.getImgUpdateFlag() == false && !file.isEmpty()){
-                // 달성전 => 달성후 피드 수정
-                String imageUrl = s3Uploader.getImageUrl("post", file, memberId);
-                post.setAchievementImg(imageUrl);
-            } else {
-                // 사진관련 변경사항 없을 경우
-            }
-            postRepository.save(post);
-            return post;
+            // 사진관련 변경사항 없을 경우
         }
+        postRepository.save(post);
+        return post;
+//        }
     }
 
 
@@ -129,10 +131,10 @@ public class PostService {
 
         Post lastPost = null;
 
-        if(lastPostId != null) {
+        if (lastPostId != null) {
             log.info("lasPostId가 있음");
             lastPost = postRepository.findById(lastPostId)
-                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
+                    .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         }
 
         Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPost, pageable);
@@ -150,8 +152,8 @@ public class PostService {
             Long cheerCnt = redisTemplate.opsForSet().size(cheerPostId);
             post.updateCheerCnt(cheerCnt);
 
-            // 로그인 상태면 응원, 축하 여부 업데이트
-            if(loginFlag) {
+            // 로그인 상태면 축하 여부 업데이트
+            if (loginFlag) {
                 Long memberId = memberService.getCurrentMemberId();
                 Boolean isCelebrated = redisTemplate.opsForSet().isMember(celebratePostId, memberId.toString());
                 post.updateIsCelebrated(isCelebrated);
@@ -168,10 +170,10 @@ public class PostService {
 
         Post lastPost = null;
 
-        if(lastPostId != null) {
+        if (lastPostId != null) {
             log.info("lasPostId가 있음");
             lastPost = postRepository.findById(lastPostId)
-                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
+                    .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         }
 
         Slice<PostListResponseDto> results = postRepository.findPublicPostsByAchievedStatus(categoryId, isAchieved, lastPost, pageable);
@@ -186,7 +188,7 @@ public class PostService {
             post.updateCheerCnt(cheerCnt);
 
             // 로그인 상태면 응원 여부 업데이트
-            if(loginFlag) {
+            if (loginFlag) {
                 Long memberId = memberService.getCurrentMemberId();
                 Boolean isCheered = redisTemplate.opsForSet().isMember(cheerPostId, memberId.toString());
                 post.updateIsCheered(isCheered);
@@ -199,7 +201,7 @@ public class PostService {
     public Map<String, List<PostListResponseDto>> findPublicPostsByMember(Long memberId) {
         // 존재하지 않는 memberId 예외 처리
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원", ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원", ErrorCode.MEMBER_NOT_FOUND));
 
         Map<String, List<PostListResponseDto>> resultMap = postRepository.findPostsByMember(memberId, true);
         return getRedisCntMap(resultMap);
@@ -244,7 +246,7 @@ public class PostService {
 
         // 로그인 상태인 경우 memberId 가져오기
         Long memberId = null;
-        if(loginFlag) {
+        if (loginFlag) {
             memberId = memberService.getCurrentMemberId();
         }
 
@@ -290,7 +292,7 @@ public class PostService {
 
         // post가 존재하는 지 확인.
         Post post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         Long postMemberId = post.getMember().getMemberId();
 
         if (memberId != postMemberId) {
@@ -319,7 +321,7 @@ public class PostService {
         Member currentMember = memberService.getCurrentMember();
 
         Post existingPost = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
 
         Post scrapPost = Post.builder()
                 .title(existingPost.getTitle())
