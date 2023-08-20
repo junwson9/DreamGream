@@ -8,37 +8,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ReactComponent as ClearBtn } from '../../assets/icons/ClearBtn.svg';
 import { ReactComponent as AddImgIcon } from '../../assets/AddImgIcon.svg';
 
-function EditImg({ post, isAiImg, updateImgFile, setImgUpdateFlag }) {
-  const [mainImg, setMainImg] = useState('');
-
-  const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    const initialMainImg = isAiImg ? post.ai_img : post.achievement_img;
-    setMainImg(initialMainImg);
-  }, [post, isAiImg]);
-
-  const setPreviewImg = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        setMainImg(e.target.result);
-        updateImgFile(selectedFile);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  };
-
-  const addImg = () => {
-    fileInputRef.current.click();
-  };
-
-  const clearImg = () => {
-    setMainImg('');
-    setImgUpdateFlag(true);
-  };
-
+function EditImg({
+  isAiImg,
+  mainImg,
+  setPreviewImg,
+  addImg,
+  clearImg,
+  fileInputRef,
+}) {
   return (
     <div>
       <div className="addImg w-[147px] h-[147px] relative">

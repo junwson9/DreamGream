@@ -85,6 +85,7 @@ function DoneCheerUpBtns({ post }) {
               }`}
             >
               응원해요
+              <span /> <span />
               {cheerCount}
             </div>
           </div>

@@ -13,7 +13,7 @@ import { ReactComponent as CelebrateIcon } from '../../assets/icons/CelebrateIco
 import { API_URL } from '../../config';
 
 function ScrapCelebrateBtns({ post }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isCelebrated, setIsCelebrated] = useState(
     post.is_celebrateed === null ? false : post.is_celebrated,
   );
@@ -33,23 +33,21 @@ function ScrapCelebrateBtns({ post }) {
       axiosInstance
         .post(`${API_URL}/api/posts/celebrates/add`, requestData)
         .then((response) => {
-
           setIsCelebrated(true);
           setCelebrateCount(celebrateCount + 1);
         })
         .catch((error) => {
-          navigate('/loginerror')
+          navigate('/loginerror');
         });
     } else {
       axiosInstance
         .post(`${API_URL}/api/posts/celebrates/remove`, requestData)
         .then((response) => {
-
           setIsCelebrated(false);
           setCelebrateCount(celebrateCount - 1);
         })
         .catch((error) => {
-          navigate('/loginerror')
+          navigate('/loginerror');
         });
     }
   };
@@ -67,7 +65,7 @@ function ScrapCelebrateBtns({ post }) {
         });
       })
       .catch((error) => {
-        navigate('/loginerror')
+        navigate('/loginerror');
       });
   };
 
@@ -102,6 +100,7 @@ function ScrapCelebrateBtns({ post }) {
               }`}
             >
               축하해요
+              <span /> <span />
               {celebrateCount}
             </div>
           </div>
