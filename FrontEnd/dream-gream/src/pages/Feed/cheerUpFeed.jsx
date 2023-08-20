@@ -13,6 +13,8 @@ import Member from '../../components/Feed/Member';
 import AcheiveBtn from '../../components/Button/AcheiveBtn';
 import ScrapCheerUpBtns from '../../components/Button/ScrapCheerUpBtns';
 import ScrapCelebrateBtns from '../../components/Button/ScrapCelebrateBtns';
+import CheerUpCelebrateBtns from '../../components/Button/CheerUpCelebrateBtns';
+import DoneCheerUpBtns from '../../components/Button/DoneCheerUpBtns';
 import { API_URL } from '../../config';
 import { UseInfiniteCheer } from '../../hooks/useInfiniteCheer';
 import 'swiper/swiper.min.css';
@@ -141,9 +143,11 @@ function CheerUpFeed() {
                 <Member post={post} />
                 <FeedForExplore post={post} />
                 {loggedInUser === post.member_id && !post.is_achieved && (
-                  <AcheiveBtn post={post} />
+                  <DoneCheerUpBtns post={post} />
                 )}
-                {loggedInUser === post.member_id && post.is_achieved && null}
+                {loggedInUser === post.member_id && post.is_achieved && (
+                  <CheerUpCelebrateBtns post={post} />
+                )}
                 {loggedInUser !== post.member_id && !post.is_achieved && (
                   <ScrapCheerUpBtns post={post} />
                 )}

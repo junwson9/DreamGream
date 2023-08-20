@@ -82,7 +82,7 @@ function PostDetail({ handleCloseIconClick, handleNextButtonClick }) {
             style={{ overflowY: 'hidden' }}
           />
         </div>
-        <div className="text-sm text-gray-500 mt-1 mr-[28px] absolute bottom-0 right-0">
+        <div className="text-sm text-gray-500 mt-1 absolute bottom-0 right-0">
           {detail.length}/500 {/* Display the character count */}
         </div>
       </div>

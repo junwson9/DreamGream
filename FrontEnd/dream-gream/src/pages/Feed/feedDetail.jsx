@@ -12,6 +12,8 @@ import ScrapCelebrateBtns from '../../components/Button/ScrapCelebrateBtns';
 import Navbar from '../../components/Common/Navbar';
 import Member from '../../components/Feed/Member';
 import ContentCard from '../../components/Feed/ContentCard';
+import CheerUpCelebrateBtns from '../../components/Button/CheerUpCelebrateBtns';
+import DoneCheerUpBtns from '../../components/Button/DoneCheerUpBtns';
 import { API_URL } from '../../config';
 
 function FeedDetail() {
@@ -32,7 +34,7 @@ function FeedDetail() {
       })
       .then((response) => {
         setPost(response.data.data.post);
-      })
+      });
   }, [post_id]);
 
   return (
@@ -56,9 +58,11 @@ function FeedDetail() {
           </div>
           <br />
           {loggedInUser === post.member_id && !post.is_achieved && (
-            <AcheiveBtn post={post} />
+            <DoneCheerUpBtns post={post} />
           )}
-          {loggedInUser === post.member_id && post.is_achieved && null}
+          {loggedInUser === post.member_id && post.is_achieved && (
+            <CheerUpCelebrateBtns post={post} />
+          )}
           {loggedInUser !== post.member_id && !post.is_achieved && (
             <ScrapCheerUpBtns post={post} />
           )}
