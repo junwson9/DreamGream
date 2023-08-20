@@ -75,17 +75,17 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException("PostNotFoundException", ErrorCode.POST_NOT_FOUND));
         Long postMemberId = post.getMember().getMemberId();
 
-        if (memberId != postMemberId) {
-            throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
-        } else {
-            modelMapper.map(unAchievedPostUpdateDto, post);
-            Category category = categoryRepository.findById(unAchievedPostUpdateDto.getCategoryId())
-                    .orElseThrow();
-            post.setCategory(category);
-            postRepository.save(post);
-            log.info(post.toString());
-            return post;
-        }
+//        if (memberId != postMemberId) {
+//            throw new NotAuthorizedToPostException("본인이 작성한 게시글이 아님", ErrorCode.NOT_AUTHORIZED_TO_POST);
+//        } else {
+        modelMapper.map(unAchievedPostUpdateDto, post);
+        Category category = categoryRepository.findById(unAchievedPostUpdateDto.getCategoryId())
+                .orElseThrow();
+        post.setCategory(category);
+        postRepository.save(post);
+        log.info(post.toString());
+        return post;
+//        }
     }
 
     @Transactional
