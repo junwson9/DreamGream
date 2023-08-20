@@ -3,12 +3,10 @@
 import { React, useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import axios from 'axios';
 import axiosInstance from '../../utils/axiosInterceptor';
 
 import TopbarForEdit from '../../components/Edit/TopbarForEdit';
 import EditImg from '../../components/Edit/EditImg';
-import ContentCard from '../../components/Feed/ContentCard';
 import EditInfo from '../../components/Edit/EditInfo';
 import EditInfoForAcheive from '../../components/Edit/EditInfoForAcheive';
 import { API_URL } from '../../config';
@@ -23,6 +21,9 @@ function EditFeed() {
   const [selectedPeriod, setSelectedPeriod] = useState('');
   const [isPublic, setIsPublic] = useState('');
   const [imgUpdateFlag, setImgUpdateFlag] = useState('false');
+
+  const today = new Date().toISOString();
+
   const categorys = {
     Travel: { id: 1, category: '여행' },
     Health: { id: 2, category: '건강/운동' },
@@ -57,6 +58,8 @@ function EditFeed() {
     }
     if (post && post.achieved_date) {
       setAchievedDate(post.achieved_date);
+    } else {
+      setAchievedDate(today);
     }
     const matchingCategory = Object.values(categorys).find(
       (category) => category.id === post.category_id,
@@ -103,7 +106,7 @@ function EditFeed() {
       })
       .then((response) => {
         setPost(response.data.data.post);
-      })
+      });
   }, []);
 
   // 게시글 내용 수정

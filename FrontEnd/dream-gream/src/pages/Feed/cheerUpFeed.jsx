@@ -71,14 +71,13 @@ function CheerUpFeed() {
       })
       .then((response) => {
         setBestBucketList(response.data.data.post_list);
-      })
+      });
   }, [categoryID]);
 
   useEffect(() => {
     if (inView) {
       fetchNextPage()
-        .then(() => {
-        })
+        .then(() => {})
         .catch((error) => {
           console.error('데이터 로딩 중 에러', error);
         });
@@ -131,6 +130,7 @@ function CheerUpFeed() {
           {/* </div> */}
         </div>
       </div>
+      <br />
       <br />
       <hr />
       <div className="main">
