@@ -17,6 +17,7 @@ import CheerUpCelebrateBtns from '../../components/Button/CheerUpCelebrateBtns';
 import DoneCheerUpBtns from '../../components/Button/DoneCheerUpBtns';
 import { UseInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { API_URL } from '../../config';
+import SkeletonFeed from '../../components/Common/Skeleton';
 
 function AchieveFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
@@ -122,6 +123,10 @@ function AchieveFeed() {
       <div className="main">
         {postInfoList?.pages.map((page) => (
           <Fragment key={page.nextLastPostId}>
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
             {page.postList.map((post) => (
               <div className="article" key={post.post_id}>
                 <Member post={post} />

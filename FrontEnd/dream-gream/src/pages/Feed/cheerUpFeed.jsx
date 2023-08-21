@@ -20,6 +20,7 @@ import { UseInfiniteCheer } from '../../hooks/useInfiniteCheer';
 import 'swiper/swiper.min.css';
 import 'swiper/swiper-bundle.min.css';
 import './cheerUpFeed.css';
+import SkeletonFeed from '../../components/Common/Skeleton';
 
 function CheerUpFeed() {
   const [bestBucketList, setBestBucketList] = useState([]);
@@ -138,6 +139,10 @@ function CheerUpFeed() {
       <div className="main">
         {postInfoList?.pages.map((page) => (
           <Fragment key={page.nextLastPostId}>
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
             {page.postList.map((post) => (
               <div className="article" key={post.post_id}>
                 <Member post={post} />
